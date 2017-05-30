@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pe.com.sigbah.mapper.MaestroMapper">
+    
+    <resultMap id="getUbigeo" type="pe.com.sigbah.common.bean.UbigeoBean">
+		<result column="ID" property="idubigeo" />		
+		<result column="TIPO" property="coddpto" />
+		<result column="NOMBRE" property="nombre" />
+	</resultMap>
+    
+    <select id="listarUbigeo" parameterType="pe.com.sigbah.common.bean.UbigeoBean" resultMap="getUbigeo">
+    	SELECT  ID,
+				TIPO,
+				NOMBRE
+		FROM PARAMETRO
+    </select>
+  
+</mapper>
