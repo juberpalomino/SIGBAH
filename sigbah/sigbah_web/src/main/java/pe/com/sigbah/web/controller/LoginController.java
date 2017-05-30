@@ -54,15 +54,6 @@ public class LoginController extends BaseController {
 		}
 		return destino;
 	}
-	
-	/**
-	 * @return - Retorna a la vista JSP.
-	 */
-	@RequestMapping("/temporal")
-	public String temporal() {
-		return "temporal";
-	}
-	
 
 	/**
 	 * @return - Retorna al login maestro.
