@@ -54,7 +54,7 @@ public class LoginController extends BaseController {
 		}
 		return destino;
 	}
-
+ 
 	/**
 	 * @return - Retorna al login maestro.
 	 */

@@ -21,8 +21,4 @@
 		<put-attribute name="body" value="/WEB-INF/views/uncaughtException.jsp" />
 	</definition>
 	
-	<definition name="temporal" extends="public">
-		<put-attribute name="body" value="/WEB-INF/views/temporal.jsp" />
-	</definition>
-	
 </tiles-definitions>
