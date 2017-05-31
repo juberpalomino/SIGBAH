@@ -18,12 +18,12 @@
 	<tiles:insertAttribute name="regionTop" />
 	
 	<tiles:insertAttribute name="regionLeft" />
+	
+	<tiles:insertAttribute name="regionScripts" />
 		
 	<!-- #MAIN PANEL -->
 	<div id="main" role="main">
 	
-		<tiles:insertAttribute name="regionScripts" />
-		
 		<tiles:insertAttribute name="regionBody" />
 
 	</div>

@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import pe.com.sigbah.common.util.Constantes;
 
 /**
- * @className: MaestroController.java
+ * @className: ProductoController.java
  * @description: 
  * @date: 23 de jun. de 2017
  * @author: Administrador.
  */
 @Controller
-@RequestMapping("/maestro")
-public class MaestroController extends BaseController {
+@RequestMapping("/producto")
+public class ProductoController extends BaseController {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -38,7 +38,7 @@ public class MaestroController extends BaseController {
 					  Constantes.NIVEL_APP_CONSTROLLER, 
 					  this.getClass().getName(), e.getMessage()));
         }
-        return "opc_mnt_maestro";
+        return "opc_mnt_producto";
     }
 	
 }

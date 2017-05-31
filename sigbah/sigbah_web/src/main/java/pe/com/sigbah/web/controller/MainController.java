@@ -16,6 +16,7 @@ import pe.com.sigbah.common.util.ReadParameterProperties;
  * @author: SUMERIO
  */
 @Controller
+@RequestMapping("/main")
 public class MainController extends BaseController {
 
 	private static final long serialVersionUID = 1L;

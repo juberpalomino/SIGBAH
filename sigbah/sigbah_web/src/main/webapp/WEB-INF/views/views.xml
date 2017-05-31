@@ -6,7 +6,6 @@
 
 	<definition name="principal" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/principal.jsp" />
-	    <put-attribute name="regionScripts" value="/WEB-INF/views/mainScripts.jsp" />
 	</definition>
 	
 	<definition name="dataAccessFailure" extends="public">

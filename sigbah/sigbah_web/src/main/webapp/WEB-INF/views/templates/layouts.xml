@@ -13,6 +13,10 @@
 		<put-attribute name="regionBottom" value="/WEB-INF/views/mainFooter.jsp" />
 	</definition>
 	
+	<definition name="opc_mnt_maestro" template="/WEB-INF/views/modulo/mnt_maestro.jsp" />
+	
+	<definition name="opc_mnt_producto" template="/WEB-INF/views/modulo/mnt_productos.jsp" />
+	
 	<definition name="public" template="/WEB-INF/views/templates/default.jsp">
 		<put-attribute name="resources" value="/WEB-INF/views/mainResources.jsp" />
     	<put-attribute name="header" value="/WEB-INF/views/mainHeader.jsp" />

@@ -10,7 +10,7 @@
 
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Productos</li><li>Inicio</li>
+		<li>Maestro</li><li>Inicio</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -71,24 +71,6 @@
 										<td>35728</td>
 										<td>Fogo</td>
 										<td>03/04/14</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>Clark</td>
-										<td>1-516-859-1120</td>
-										<td>Nam Ac Inc.</td>
-										<td>7162</td>
-										<td>Machelen</td>
-										<td>03/23/13</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>Brendan</td>
-										<td>1-724-406-2487</td>
-										<td>Enim Commodo Limited</td>
-										<td>98611</td>
-										<td>Norman</td>
-										<td>02/13/14</td>
 									</tr>
 								</tbody>
 							</table>
