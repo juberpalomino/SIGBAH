@@ -24,6 +24,81 @@
 	
 		<!-- row -->
 		<div class="row">
+		
+			<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+					<header>
+						<span class="widget-icon"> <i class="fa fa-eye"></i> </span>
+						<h2>Default Elements</h2>
+		
+					</header>
+		
+					<!-- widget div-->
+					<div>
+		
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+		
+						</div>
+						<!-- end widget edit box -->
+		
+						<!-- widget content -->
+						<div class="widget-body">
+		
+							<form id="frm_elements" class="form-horizontal">
+							
+								<div class="form-group">
+									<label class="col-md-2 control-label">Text field</label>
+									<div class="col-md-10">
+										<input class="form-control" name="txt_field" placeholder="Default Text Field" type="text">
+									</div>
+								</div>
+		
+								<div class="form-group">
+									<label class="col-md-2 control-label">Password field</label>
+									<div class="col-md-10">
+										<input class="form-control" name="txt_pas_field" placeholder="Password field" type="password" value="mypassword">
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="col-md-2 control-label">Textarea</label>
+									<div class="col-md-10">
+										<textarea class="form-control" name="txt_area" placeholder="Textarea" rows="4"></textarea>
+									</div>
+								</div>
+								
+								<div class="form-actions">
+									<div class="row">
+										<div class="col-md-12">
+											<button class="btn btn-default" type="submit">
+												Cancel
+											</button>
+											<button class="btn btn-primary" type="button" id="btn_submit">
+												<i class="fa fa-save"></i>
+												Submit
+											</button>
+										</div>
+									</div>
+								</div>
+		
+							</form>
+		
+						</div>
+						<!-- end widget content -->
+		
+					</div>
+					<!-- end widget div -->
+		
+				</div>
+				<!-- end widget -->
+				
+			</article>	
+		
 	
 			<!-- NEW WIDGET START -->
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -98,3 +173,57 @@
 	
 </div>
 <!-- END MAIN CONTENT -->
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+		$('#frm_elements').bootstrapValidator({
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			fields : {
+				txt_field : {
+					validators : {
+						notEmpty : {
+							message : 'The first name is required'
+						}
+					}
+				},
+				txt_pas_field : {
+					validators : {
+						notEmpty : {
+							message : 'The last name is required'
+						}
+					}
+				},
+				txt_area : {
+					validators : {
+						notEmpty : {
+							message : 'The company name is required'
+						}
+					}
+				}
+			}
+		});
+		
+		$('#btn_submit').click(function() {
+			
+			var bootstrapValidator = $('#frm_elements').data('bootstrapValidator');
+			bootstrapValidator.validate();
+			if (bootstrapValidator.isValid()) {
+				
+				alert('procesar logica OK');
+				
+			}
+			
+		});
+		
+	});
+	
+</script>
+		
+		

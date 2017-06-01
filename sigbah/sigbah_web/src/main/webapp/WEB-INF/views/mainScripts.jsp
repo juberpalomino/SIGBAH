@@ -19,6 +19,9 @@
 <!-- MAIN APP JS FILE -->
 <script src="${pageContext.request.contextPath}/resources/js/app.seed.js"></script>
 
+<!-- BOOSTRAP VALIDATE -->
+<script src="${pageContext.request.contextPath}/resources/js/plugin/bootstrapvalidator/bootstrapValidator.min.js"></script>
+
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';
 </script>
