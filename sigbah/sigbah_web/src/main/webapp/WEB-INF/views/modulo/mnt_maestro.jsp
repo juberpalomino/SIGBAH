@@ -128,25 +128,19 @@
 							<table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
 								<thead>			                
 									<tr>
-										<th data-hide="phone">ID</th>
-										<th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Name</th>
-										<th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Phone</th>
-										<th>Company</th>
-										<th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Zip</th>
-										<th data-hide="phone,tablet">City</th>
-										<th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> Date</th>
+										<th data-hide="phone">Item</th>
+										<th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Codigo</th>
+										<th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Descripcion</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>1</td>
-										<td>Jennifer</td>
-										<td>1-342-463-8341</td>
-										<td>Et Rutrum Non Associates</td>
-										<td>35728</td>
-										<td>Fogo</td>
-										<td>03/04/14</td>
-									</tr>
+									<c:forEach items="${lis_maestro}" var="item">
+										<tr>
+											<td>${item.idubigeo}</td>
+											<td>${item.coddpto}</td>
+											<td>${item.nombre}</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 
