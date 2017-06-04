@@ -36,7 +36,7 @@ public class MaestroController extends BaseController {
     public String goInicio(HttpServletRequest request, Model model) {
         try {
         	model.addAttribute("lis_maestro", iMaestroService.listarUbigeo(new UbigeoBean()));
-               
+                  
         } catch (Exception e) {
         	log.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
 					  Constantes.NIVEL_APP_CONSTROLLER, 
