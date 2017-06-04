@@ -32,7 +32,7 @@ public class ProductoController extends BaseController {
 	@RequestMapping(value = "/inicio", method = RequestMethod.POST)
     public String goInicio(HttpServletRequest request, Model model) {
         try {
-        	
+        	 
             
         } catch (Exception e) {
         	log.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
