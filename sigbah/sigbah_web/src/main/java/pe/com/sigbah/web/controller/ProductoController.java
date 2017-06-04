@@ -25,7 +25,8 @@ public class ProductoController extends BaseController {
 //	private IMaestroService iMaestroService;
 	
 	/**
-	 * @param name - Nombre de la pagina asociado.
+	 * @param request 
+	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
 	@RequestMapping(value = "/inicio", method = RequestMethod.POST)
