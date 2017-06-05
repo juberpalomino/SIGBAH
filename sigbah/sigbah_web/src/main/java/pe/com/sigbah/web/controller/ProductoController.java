@@ -25,7 +25,8 @@ public class ProductoController extends BaseController {
 //	private IMaestroService iMaestroService;
 	
 	/**
-	 * @param name - Nombre de la pagina asociado.
+	 * @param request 
+	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
 	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
@@ -38,7 +39,7 @@ public class ProductoController extends BaseController {
 					  Constantes.NIVEL_APP_CONSTROLLER, 
 					  this.getClass().getName(), e.getMessage()));
         }
-        return "opc_mnt_producto";
+        return "producto";
     }
 	
 }

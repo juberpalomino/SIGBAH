@@ -261,7 +261,7 @@ public class BaseController implements Serializable {
 	 * 
 	 * @param messageSource
 	 * @param mensaje
-	 * @return
+	 * @return Retorna el mensaje del archivo properties.
 	 */
 	public static String getMensaje(MessageSource messageSource, String mensaje) {
 		return messageSource.getMessage(mensaje, null, Locale.getDefault());
@@ -273,7 +273,7 @@ public class BaseController implements Serializable {
 	 * @param messageSource
 	 * @param param
 	 * @param mensaje
-	 * @return
+	 * @return Retorna el mensaje del archivo properties.
 	 */
 	public static String getMensaje(MessageSource messageSource, Object[] param, String mensaje) {
 		return messageSource.getMessage(mensaje, param, Locale.getDefault());

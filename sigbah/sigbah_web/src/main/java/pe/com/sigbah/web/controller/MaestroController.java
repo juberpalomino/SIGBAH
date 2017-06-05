@@ -38,7 +38,8 @@ public class MaestroController extends BaseController {
 	private MessageSource messageSource;
 	
 	/**
-	 * @param name - Nombre de la pagina asociado.
+	 * @param request 
+	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
 	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
@@ -57,11 +58,11 @@ public class MaestroController extends BaseController {
 	/**
 	 * @param request
 	 * @param response
-	 * @return
+	 * @return objeto
 	 */
 	@RequestMapping(value = "/listarMaestros", method = RequestMethod.GET)
 	@ResponseBody
-	public Object listarMaestros(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public Object listarMaestros(HttpServletRequest request, HttpServletResponse response) {
 		List<UbigeoBean> lista = null;
 		try {			
 			UbigeoBean ubigeo = new UbigeoBean();			
@@ -72,9 +73,9 @@ public class MaestroController extends BaseController {
 				
 			}
 			
-//			lista = iMaestroService.listarUbigeo(ubigeo);
+			lista = iMaestroService.listarUbigeo(ubigeo);
 		} catch (Exception e) {
-			LOGGER.info(e.getMessage(),e);
+			LOGGER.error(e.getMessage(), e);
 			baseOutputBean = new BaseOutputBean();
 			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
 			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));

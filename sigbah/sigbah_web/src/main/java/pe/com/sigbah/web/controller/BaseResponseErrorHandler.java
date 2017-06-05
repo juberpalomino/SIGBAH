@@ -8,7 +8,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
 /**
- * @className: MyResponseErrorHandle.java
+ * @className: BaseResponseErrorHandler.java
  * @description: 
  * @date: 17 de may. de 2017
  * @author: SUMERIO.

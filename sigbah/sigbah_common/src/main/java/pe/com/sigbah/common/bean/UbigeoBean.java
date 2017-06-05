@@ -29,7 +29,10 @@ public class UbigeoBean extends BaseOutputBean {
 	}
 	
 	
-
+	/**
+	 * @param coddpto
+	 * @param nombre
+	 */
 	public UbigeoBean(String coddpto, String nombre) {
 		super();
 		this.coddpto = coddpto;

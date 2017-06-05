@@ -1,12 +1,14 @@
 package pe.com.sigbah.common.bean;
 
+import java.io.Serializable;
+
 /**
  * @className: BaseException1.java
  * @description: 
  * @date: 2 de jun. de 2017
  * @author: SUMERIO.
  */
-public class BaseOutputBean extends RuntimeException {
+public class BaseOutputBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String codigoRespuesta;
