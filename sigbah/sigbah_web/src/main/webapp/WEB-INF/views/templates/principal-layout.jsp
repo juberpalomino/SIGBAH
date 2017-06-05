@@ -15,11 +15,11 @@
 </head>
 <body class="">
 
-	<tiles:insertAttribute name="regionTop" />
+	<tiles:insertAttribute name="regionTop" flush="true" />
 	
-	<tiles:insertAttribute name="regionLeft" />
+	<tiles:insertAttribute name="regionLeft" flush="true" />
 	
-	<tiles:insertAttribute name="regionScripts" />
+	<tiles:insertAttribute name="regionScripts" flush="true" />
 		
 	<!-- #MAIN PANEL -->
 	<div id="main" role="main">
@@ -29,7 +29,7 @@
 	</div>
 	<!-- END #MAIN PANEL -->
 	
-	<tiles:insertAttribute name="regionBottom" />
+	<tiles:insertAttribute name="regionBottom" flush="true" />
 		
 </body>
 </html>
