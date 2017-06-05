@@ -15,11 +15,11 @@ import org.springframework.web.client.ResponseErrorHandler;
  */
 public class BaseResponseErrorHandler implements ResponseErrorHandler {
 	
-    private static final Logger log = LoggerFactory.getLogger(BaseResponseErrorHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseResponseErrorHandler.class);
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        log.error("Response error: {} {}", response.getStatusCode(), response.getStatusText());
+    	LOGGER.error("Response error: {} {}", response.getStatusCode(), response.getStatusText());
     }
 
     @Override
