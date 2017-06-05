@@ -6,7 +6,7 @@ package pe.com.sigbah.common.bean;
  * @date: 13 de jul. de 2016
  * @author: SUMERIO.
  */
-public class PerfilBean extends MBaseBean {
+public class PerfilBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	private Integer cod_rol;

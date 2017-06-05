@@ -81,55 +81,108 @@ $(function() {
     	var id_menu = $(this).attr('id');
         switch (id_menu) {
 	        case 'li_maestro':
-
-	        	ejecutarOpcionMenu('/maestro/inicio');
-	        	
+				$(location).attr('href', VAR_CONTEXT + '/maestro/inicio');	
 	            break;
 	        case 'li_widgets':
-	        	
-	        	ejecutarOpcionMenu('/producto/inicio');
-
+	        	$(location).attr('href', VAR_CONTEXT + '/producto/inicio');
 	            break;
 	    }
     });
 
 });
 
-function ejecutarOpcionMenu(url) {
+/**
+ * Componente que permite realizar peticiones de tipo Ajax al servidor.
+ * 
+ * @param {string}
+ *            metodoEnv - Metodo de envio. Puede ser POST o GET.
+ * @param {string}
+ *            direccionUrl - Url del controlador que gestionara la peticion.
+ * @param {string}
+ *            jsonString - Objeto en formato Json que contiene los datos de la
+ *            peticion.
+ * @param {string}
+ *            idBoton - Identificador del boton que dispara la peticion. Si no
+ *            es disparado por un boton, sera null.
+ * @param {requestCallback}
+ *            callback - Nombre de la funcion que se ejecutara al finalizar el
+ *            proceso. De indicarse null, se omite su uso.
+ */
+function consultarAjax(metodoEnv, direccionUrl, jsonString, contextPath, callback) {
 	$.ajax({
-		type: 'POST',
-		url: VAR_CONTEXT + url,
-		data: { },
-		dataType: 'text',
-		success: function(respuesta) {						
-			if (respuesta != null) {
-				refreshAppBody(respuesta)
-			} else {
-				alert('error');
-//				addWarnMessage(null, 'No se encuentra registrado la actual partida.');
-			}	
+		type : metodoEnv,
+		data : jsonString,
+		async : true,
+		url : direccionUrl,
+		timeout : 30000,
+		contentType : 'application/json',
+		success : function(respuesta) {
+			callback(respuesta);
 		},
-		error: function(jqXHR, error, errorThrown) {
-			var msg = 'Error:<br/>';
-			if (jqXHR.status && jqXHR.status == 400) {
-				msg = msg + jqXHR.responseText;
+		error : function(respuesta) {
+			var resp = null;
+			if (respuesta.status == '404') {
+				resp = {
+					'mensajeRespuesta' : 'El recurso solicitado no existe (HTTP: 404).',
+					'codigoRespuesta' : '99'
+				};
 			} else {
-				msg = msg + errorThrown;
+				resp = {
+					'mensajeRespuesta' : 'Error no identificado. ' + respuesta.status,
+					'codigoRespuesta' : '99'
+				};
 			}
-//			addErrorMessage(null, msg);
-			alert('error: '+msg);
+			callback(resp);
 		}
 	});
 }
 
-function refreshAppBody(data) {
-    refreshScript('main', data);
-    $('#main').show();
+/**
+ * Componente que permite realizar peticiones sincronas de tipo Ajax al servidor.
+ * 
+ * @param {string}
+ *            metodoEnv - Metodo de envio. Puede ser POST o GET.
+ * @param {string}
+ *            direccionUrl - Url del controlador que gestionara la peticion.
+ * @param {string}
+ *            jsonString - Objeto en formato Json que contiene los datos de la
+ *            peticion.
+ * @param {string}
+ *            idBoton - Identificador del boton que dispara la peticion. Si no
+ *            es disparado por un boton, sera null.
+ * @param {requestCallback}
+ *            callback - Nombre de la funcion que se ejecutara al finalizar el
+ *            proceso. De indicarse null, se omite su uso.
+ */
+function consultarAjaxSincrono(metodoEnv, direccionUrl, jsonString, contextPath, callback) {
+	$.ajax({
+		type : metodoEnv,
+		data : jsonString,
+		async : false,
+		url : direccionUrl,
+		timeout : 30000,
+		contentType : 'application/json',
+		success : function(respuesta) {
+			callback(respuesta);
+		},
+		error : function(respuesta) {
+			var resp = null;
+			if (respuesta.status == '404') {
+				resp = {
+					'mensajeRespuesta' : 'El recurso solicitado no existe (HTTP: 404).',
+					'codigoRespuesta' : '99'
+				};
+			} else {
+				resp = {
+					'mensajeRespuesta' : 'Error no identificado. ' + respuesta.status,
+					'codigoRespuesta' : '99'
+				};
+			}
+			callback(resp);
+		}
+	});
 }
 
-function refreshScript(refreshDiv, data) {
-    $('#' + refreshDiv).html(data);
-}
 
 function padDigits(number, digits) {
     return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
@@ -298,421 +351,6 @@ function simpleCboAjaxPopulateParam(parentId, parentParam, href, keyParamas, def
             endAjax();
         }
     }, href, keyParamas, parentParam);
-}
-
-// -----------
-// GESTION DE DATATABLES
-
-function simpleGenerateDatatable(url, layout, options, dblclick, fnimprimir) {
-    var settings = $.extend({
-        containerTable: '.containerDatatable',
-        idTable: 'tblGenerate',
-        styleTable: 'tblDatatable',
-        loading: true,
-        parameters: "",
-        vTableOptions: {},
-        tableOptions: $.extend({
-            bFilter: false,
-            paging: false,
-            ordering: true,
-            info: false,            
-            aLengthMenu: [
-                [5, 10, 20],
-                [5, 10, 20]
-            ],
-            iDisplayLength: 100
-        }, options.vTableOptions)
-    }, options);
-
-    // muestra loader
-    if (settings.loading) {
-        startAjax();
-    }
-
-    // EXTRACCIÓN DE DATA
-    var keyParams = new Array();
-    var headColumns = new Array();
-    var bodyColumns = new Array();
-    var no_ordenables = new Array();
-    var COMODIN = "%%COMODIN%%";
-    var COMODIN_LINK = COMODIN + "\")'>";
-
-    $.each(layout, function(i, col) {
-        var colSettings = $.extend({
-            'title': '',
-            'type': 'text',
-            'field': '',
-            'class': '',
-            'method': 'alert',
-            'label': '',
-            'icon': 'glyphicon-pencil'
-        }, col);
-        keyParams[i] = colSettings.field; //setea el key a extraer
-
-        if (colSettings['class'].indexOf("no-sort") > -1) {
-            no_ordenables.push(i);
-        }
-
-        if (colSettings.type == "text") {
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": colSettings['class']
-            };
-            bodyColumns[i] = "";
-        } else if (colSettings.type == "link") {
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": colSettings['class']
-            };
-			if (!esnulo(colSettings.label)) {
-				bodyColumns[i] = "<a class='" + colSettings['class'] + "' onClick='" + colSettings.method + "(\"" + COMODIN + "\")'>" + colSettings.label + "</a>";
-			} else {
-				bodyColumns[i] = "<a class='" + colSettings['class'] + "' onClick='" + colSettings.method + "(\"" + COMODIN_LINK;
-			}            
-        } else if (colSettings.type == "button") {
-            headColumns[i] = {
-                "title": colSettings.label,
-                "class": 'no-sort center'
-            };
-            bodyColumns[i] = "<button class='btn " + colSettings['class'] + " btn-xs' onClick='" +
-                colSettings.method + "(\"" + COMODIN + "\")' " +
-                "title='" + colSettings.title + "' field_cond='" + colSettings['field_cond'] + "'>" +
-                "<i class='ace-icon " + colSettings['icon'] + " icon-only'></i>" +
-                //		colSettings.label+
-                "</button>";
-            no_ordenables.push(i);
-        } else if (colSettings.type == "enum") {
-            var claseEnum = colSettings['class'] + ' colEnum';
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": claseEnum
-            };
-            bodyColumns[i] = COMODIN;
-        } else if (colSettings.type == "select") {
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": 'no-sort chkSelection ' + colSettings['class']
-            };
-            bodyColumns[i] = "SELECT";
-        } else if (colSettings.type == "chk") {
-            headColumns[i] = {
-                "title": colSettings.label,
-                "class": 'center'
-            };
-            bodyColumns[i] = "<label class='pos-rel'>"+
-							     "<input type='checkbox' class='ace' value='"+COMODIN+"' />"+
-								 "<span class='lbl'></span>"+
-							 "</label>";            
-        }
-
-    });
-
-    getMapToDataSet(function(dataSet) {
-            // reemplazando values
-            $.each(dataSet, function(i, row) {
-                $.each(row, function(j, col) {
-                    if (bodyColumns[j] != "") {
-                        if (bodyColumns[j] == COMODIN) {
-                            dataSet[i][j] = i + 1;
-                        } else if (bodyColumns[j] == 'SELECT') {
-                            dataSet[i][j] = "";
-                        } else {
-                        	var val_link = COMODIN + "\")'>";
-                        	if (bodyColumns[j].indexOf(val_link) > 0) {
-                        		var arr_link = dataSet[i][j].split('|');
-								var lab_link = '';
-								for (var t = 0; t < arr_link.length ; t++) {
-									if (t > 0) {
-										lab_link = lab_link + arr_link[t].trim() + '-';
-									}
-								}
-								lab_link = lab_link.substring(0, lab_link.length - 1);
-								var val_link = arr_link[0] + "\")'>" + lab_link + "</a>";
-								dataSet[i][j] = bodyColumns[j].replace(COMODIN_LINK, val_link);
-                        	} else {
-                        		dataSet[i][j] = bodyColumns[j].replace(COMODIN, dataSet[i][j]);
-                        	}
-                        }
-                    }
-                });
-            });
-
-            $(settings.containerTable).html("<table id='" + settings.idTable + "' class='table table-striped table-bordered table-hover " +
-                settings.styleTable + "'></table>");
-
-            oTable1 = $("#" + settings.idTable).dataTable({
-                "data": dataSet,
-                "columns": headColumns,
-                "bFilter": settings.tableOptions.bFilter,
-                "paging": settings.tableOptions.paging,
-                "ordering": settings.tableOptions.ordering,
-                "info": settings.tableOptions.info,
-                "language": {
-                    "url": VAR_CONTEXT + "/resources/js/Spanish.json"
-                },
-                "aoColumnDefs": [{
-                    'bSortable': false,
-                    'aTargets': no_ordenables
-                }],
-                "iDisplayLength": settings.tableOptions.iDisplayLength,
-                "aLengthMenu": settings.tableOptions.aLengthMenu,
-                "fnDrawCallback": function() {
-                    if (dblclick != null) {
-                        clickRowHandler(settings.idTable, dblclick);
-                    }
-                }
-            });
-
-            //TableTools settings
-            TableTools.classes.container = "btn-group btn-overlap";
-            TableTools.classes.print = {
-                "body": "DTTT_Print",
-                "info": "tableTools-alert gritter-item-wrapper gritter-info gritter-center white",
-                "message": "tableTools-print-navbar"
-            };
-
-            $('#div_table_tools').text('');
-
-            var tableTools_obj = null;
-            if (fnimprimir != null) {          	
-                tableTools_obj = new $.fn.dataTable.TableTools(oTable1, {
-                    "sSwfPath": VAR_CONTEXT + "/resources/js/dataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
-    		        "sRowSelector": "td:not(:last-child)",
-					"sRowSelect": "multi",
-					"fnRowSelected": function(row) {
-						$(row).find('input[type=checkbox]').get(0).checked = true;
-					},
-					"fnRowDeselected": function(row) {
-						$(row).find('input[type=checkbox]').get(0).checked = false;
-					},             
-                    "sSelectedClass": "success",
-                    "aButtons": [{
-						"sExtends": "csv",
-						"sToolTip": "Exportar a Excel",
-						"sButtonClass": "btn btn-white btn-primary  btn-bold",
-						"sButtonText": "<i class='fa fa-file-excel-o bigger-110 green'></i>"
-					}, {
-						"sExtends": "pdf",
-						"sToolTip": "Exportar a PDF",
-						"sButtonClass": "btn btn-white btn-primary  btn-bold",
-						"sButtonText": "<i class='fa fa-file-pdf-o bigger-110 red'></i>"
-					}]
-                });
-                
-                //we put a container before our table and append TableTools element to it
-                $(tableTools_obj.fnContainer()).appendTo($('.tableTools-container'));
-                
-                //select/deselect a row when the checkbox is checked/unchecked
-				$('#'+settings.idTable).on('click', 'td input[type=checkbox]' , function() {
-					var row = $(this).closest('tr').get(0);
-					if (this.checked) {
-						tableTools_obj.fnSelect(row);
-					} else {
-						tableTools_obj.fnDeselect($(this).closest('tr').get(0));
-					}
-				});
-                
-            } else {
-                tableTools_obj = new $.fn.dataTable.TableTools(oTable1, {
-                    "sSwfPath": VAR_CONTEXT + "/resources/js/dataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
-                    "sRowSelector": "td:not(:last-child)",
-                    "sRowSelect": "single",
-                    "sSelectedClass": "success",
-                    "aButtons": [{
-                        "sExtends": "xls",
-                        "sToolTip": "Exportar a Excel",
-                        "sButtonClass": "btn btn-white btn-primary btn-bold",
-                        "sButtonText": "<i class='fa fa-file-excel-o bigger-110 green'></i>"
-                    }, {
-						"sExtends": "pdf",
-						"sToolTip": "Exportar a PDF",
-						"sButtonClass": "btn btn-white btn-primary  btn-bold",
-						"sButtonText": "<i class='fa fa-file-pdf-o bigger-110 red'></i>"
-					}]
-                });
-                
-                //we put a container before our table and append TableTools element to it
-                $(tableTools_obj.fnContainer()).appendTo($('.tableTools-container'));
-            }
-
-            if (showLoader) {
-                endAjax();
-            }
-
-        },
-        url,
-        settings.parameters,
-        keyParams
-    );
-}
-
-/* Click event handler */
-function clickRowHandler(idDataTable, nameFunction) {
-
-    var myFuncs = {
-    	selUsuario: function(aData) {
-            $('#hid_usuario').val(aData[4]);
-        }
-    };
-
-    /* Link to detail page of selected row one click */
-    $('#' + idDataTable + ' tbody tr').bind('click', function() {
-        var aData = oTable1.fnGetData(this);
-        myFuncs[nameFunction](aData);
-    });
-}
-
-function simplePopulateDatatable(url, layout, options, dblclick, fnimprimir) {
-    var settings = $.extend({
-        containerTable: '.containerDatatable',
-        idTable: 'tblGenerate',
-        styleTable: 'tblDatatable',
-        loading: true,
-        parameters: "",
-        vTableOptions: {},
-        tableOptions: $.extend({
-            bFilter: false,
-            paging: false,
-            ordering: true,
-            info: false,            
-            aLengthMenu: [
-                [5, 10, 20],
-                [5, 10, 20]
-            ],
-            iDisplayLength: 500
-        }, options.vTableOptions)
-    }, options);
-
-    //			muestra loader
-    if (settings.loading) {
-        startAjax();
-    }
-
-    //			EXTRACCIÓN DE DATA
-    var keyParams = new Array();
-    var headColumns = new Array();
-    var bodyColumns = new Array();
-    var no_ordenables = new Array();
-    var COMODIN = "%%COMODIN%%";
-
-    $.each(layout, function(i, col) {
-        var colSettings = $.extend({
-            'title': '',
-            'type': 'text',
-            'field': '',
-            'class': '',
-            'method': 'alert',
-            'label': '',
-            'icon': 'glyphicon-pencil'
-        }, col);
-        keyParams[i] = colSettings.field; //setea el key a extraer
-
-        if (colSettings['class'].indexOf("no-sort") > -1) {
-            no_ordenables.push(i);
-        }
-
-        if (colSettings.type == "text") {
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": colSettings['class']
-            };
-            bodyColumns[i] = "";
-        } else if (colSettings.type == "link") {
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": colSettings['class']
-            };
-            bodyColumns[i] = "<a class='" + colSettings['class'] + "'  onClick='" + colSettings.method + "(\"" + COMODIN + "\")'>" + colSettings.label + "</a>";
-        } else if (colSettings.type == "button") {
-            headColumns[i] = {
-                "title": colSettings.label,
-                "class": 'no-sort center'
-            };
-            bodyColumns[i] = "<button class='btn " + colSettings['class'] + " btn-xs' onClick='" +
-                colSettings.method + "(\"" + COMODIN + "\")' " +
-                "title='" + colSettings.title + "'>" +
-                "<i class='ace-icon " + colSettings['icon'] + " icon-only'></i>" +
-                //		colSettings.label+
-                "</button>";
-            no_ordenables.push(i);
-        } else if (colSettings.type == "enum") {
-            var claseEnum = colSettings['class'] + ' colEnum';
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": claseEnum
-            };
-            bodyColumns[i] = COMODIN;
-        } else if (colSettings.type == "select") {
-            headColumns[i] = {
-                "title": colSettings.title,
-                "class": 'no-sort chkSelection ' + colSettings['class']
-            };
-            bodyColumns[i] = "SELECT";
-        } else if (colSettings.type == "chk") {
-            headColumns[i] = {
-                "title": colSettings.label,
-                "class": 'no-sort center'
-            };
-            bodyColumns[i] = "<label class='pos-rel'>"+
-							     "<input type='checkbox' class='ace' value='"+COMODIN+"' />"+
-								 "<span class='lbl'></span>"+
-							 "</label>";            
-            no_ordenables.push(i);
-        }
-
-    });
-
-    getMapToDataSet(function(dataSet) {
-            // reemplazando values
-            $.each(dataSet, function(i, row) {
-                $.each(row, function(j, col) {
-                    if (bodyColumns[j] != "") {
-                        if (bodyColumns[j] == COMODIN) {
-                            dataSet[i][j] = i + 1;
-                        } else if (bodyColumns[j] == "SELECT") {
-                            dataSet[i][j] = "";
-                        } else {
-                            dataSet[i][j] = bodyColumns[j].replace(COMODIN, dataSet[i][j]);
-                        }
-                    }
-                });
-            });
-
-            $(settings.containerTable).html("<table id='" + settings.idTable + "' class='table table-striped table-bordered table-hover " +
-                settings.styleTable + "'></table>");
-
-            oTable1 = $("#" + settings.idTable).dataTable({
-                "data": dataSet,
-                "columns": headColumns,
-                "bFilter": settings.tableOptions.bFilter,
-                "paging": settings.tableOptions.paging,
-                "ordering": settings.tableOptions.ordering,
-                "info": settings.tableOptions.info,
-                "language": {
-                    "url": VAR_CONTEXT + "/resources/js/Spanish.json"
-                },
-                "aoColumnDefs": [{
-                    'bSortable': false,
-                    'aTargets': no_ordenables
-                }],
-                "iDisplayLength": settings.tableOptions.iDisplayLength,
-                "aLengthMenu": settings.tableOptions.aLengthMenu,
-                "fnDrawCallback": function() {
-                    if (dblclick != null) {
-                        clickRowHandler(settings.idTable, dblclick);
-                    }
-                }
-            });
-
-            if (showLoader) {
-                endAjax();
-            }
-
-        },
-        url,
-        settings.parameters,
-        keyParams
-    );
 }
 
 function getMapToDataSet(parentFunction, href, params, keyParams) {

@@ -8,6 +8,10 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/principal.jsp" />
 	</definition>
 	
+	<definition name="maestro" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/modulo/mnt_maestro.jsp" />
+	</definition>
+	
 	<definition name="dataAccessFailure" extends="public">
 		<put-attribute name="body" value="/WEB-INF/views/dataAccessFailure.jsp" />
 	</definition>

@@ -9,14 +9,17 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import pe.com.sigbah.common.bean.BaseOutputBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
@@ -30,8 +33,9 @@ import pe.com.sigbah.common.util.DateUtil;
 public class BaseController implements Serializable {
 
 	private static final long serialVersionUID = 6674829455049670947L;
-	protected transient final Log log = LogFactory.getLog(getClass());
+	protected transient final Log LOGGER = LogFactory.getLog(getClass());
 	protected transient UsuarioBean usuarioBean = null;
+	protected transient BaseOutputBean baseOutputBean;
 	
 	/**
 	 * Devuelve el RequestAttributes.
@@ -238,6 +242,41 @@ public class BaseController implements Serializable {
 			}
 		}
 		return Constantes.EMPTY; 	
+	}
+	
+	/**
+	 * 
+	 * @param tiempo 
+	 * @return obtiene el tiempo que demoro un proceso
+	 */
+	public static String obtenerTiempoTranscurrido(long tiempo) {
+		String segundos = String.valueOf((int) (tiempo / 1000) % 60);
+		String minutos = String.valueOf((int) ((tiempo / (1000 * 60)) % 60));
+		String horas = String.valueOf((int) ((tiempo / (1000 * 60 * 60)) % 24));
+		return horas.concat(":").concat(minutos).concat(":").concat(segundos);
+	}
+
+	/**
+	 * Obtener mensaje i18n con Locale.Default
+	 * 
+	 * @param messageSource
+	 * @param mensaje
+	 * @return
+	 */
+	public static String getMensaje(MessageSource messageSource, String mensaje) {
+		return messageSource.getMessage(mensaje, null, Locale.getDefault());
+	}
+
+	/**
+	 * Obtener mensaje i18n con Locale.Default y parametros
+	 * 
+	 * @param messageSource
+	 * @param param
+	 * @param mensaje
+	 * @return
+	 */
+	public static String getMensaje(MessageSource messageSource, Object[] param, String mensaje) {
+		return messageSource.getMessage(mensaje, param, Locale.getDefault());
 	}
 	
 }

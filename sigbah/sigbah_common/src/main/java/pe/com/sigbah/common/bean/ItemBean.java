@@ -6,7 +6,7 @@ package pe.com.sigbah.common.bean;
  * @date: 18/02/2015 22:26:30
  * @author: SUMERIO.
  */
-public class ItemBean extends MBaseBean {
+public class ItemBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1920713534765475781L;
 	private Integer icodigo;

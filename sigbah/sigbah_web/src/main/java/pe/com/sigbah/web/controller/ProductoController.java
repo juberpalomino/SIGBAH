@@ -25,17 +25,16 @@ public class ProductoController extends BaseController {
 //	private IMaestroService iMaestroService;
 	
 	/**
-	 * @param request 
-	 * @param model 
+	 * @param name - Nombre de la pagina asociado.
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/inicio", method = RequestMethod.POST)
+	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
     public String goInicio(HttpServletRequest request, Model model) {
         try {
-        	 
+        	
             
         } catch (Exception e) {
-        	log.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
+        	LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
 					  Constantes.NIVEL_APP_CONSTROLLER, 
 					  this.getClass().getName(), e.getMessage()));
         }

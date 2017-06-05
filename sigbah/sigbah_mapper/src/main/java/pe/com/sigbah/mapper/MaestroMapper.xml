@@ -13,6 +13,14 @@
 				TIPO,
 				NOMBRE
 		FROM PARAMETRO
+		<where>
+			<if test="coddpto != null and coddpto != ''">
+		         TIPO = #{coddpto}
+		    </if>
+		    <if test="nombre != null and nombre != ''">
+		         NOMBRE = #{nombre}
+		    </if> 
+		</where>
     </select>
   
 </mapper>

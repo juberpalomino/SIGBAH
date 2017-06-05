@@ -6,7 +6,7 @@ package pe.com.sigbah.common.bean;
  * @date: 24 de jul. de 2016
  * @author: SUMERIO.
  */
-public class ModuloBean extends MBaseBean {
+public class ModuloBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;	
 	private Integer cod_modulo;

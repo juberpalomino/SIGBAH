@@ -48,7 +48,7 @@ public class LoginController extends BaseController {
 //			context().setAttribute("lis_pri_modulo", lis_pri_modulo, RequestAttributes.SCOPE_SESSION);
 //			context().setAttribute("lis_seg_modulo", lis_seg_modulo, RequestAttributes.SCOPE_SESSION);
 		} catch (Exception e) {
-			log.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
+			LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
 									  Constantes.NIVEL_APP_CONSTROLLER,
 									  this.getClass().getName(), e.getMessage()));
 		}

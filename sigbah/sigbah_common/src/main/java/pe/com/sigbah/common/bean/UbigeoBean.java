@@ -8,7 +8,7 @@ import java.util.Date;
  * @date: 16 de jun. de 2016
  * @author: SUMERIO.
  */
-public class UbigeoBean extends MBaseBean {
+public class UbigeoBean extends BaseOutputBean {
 	
 	private static final long serialVersionUID = 1L;
 	private int idubigeo;
@@ -27,6 +27,16 @@ public class UbigeoBean extends MBaseBean {
 	public UbigeoBean() {
 		super();
 	}
+	
+	
+
+	public UbigeoBean(String coddpto, String nombre) {
+		super();
+		this.coddpto = coddpto;
+		this.nombre = nombre;
+	}
+
+
 
 	/**
 	 * @return the idubigeo

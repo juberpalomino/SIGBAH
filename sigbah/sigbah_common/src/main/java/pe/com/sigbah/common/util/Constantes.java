@@ -25,6 +25,8 @@ public final class Constantes implements Serializable {
 	public static final String NIVEL_APP_CONSTROLLER = "CONTROLLER";
 	public static final String NIVEL_APP_REPORTER	 = "REPORTER";
 	public static final String ERROR_DOS_REGISTROS   = "query did not return a unique result: 2";
+	public static final String COD_EXITO_GENERAL = "01";
+	public static final String COD_ERROR_GENERAL = "99";
 
 	/* DATOS GENERALES */
 	public static final String EMPTY = "";
