@@ -169,4 +169,4 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/maestro.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/modulo/maestro.js"></script>

@@ -81,7 +81,7 @@ var calc_navbar_height = function() {
 			height = $('<div id="header"></div>').height();
 	
 		if (height === null)
-			return 49;
+			return 60;
 		// default
 		return height;
 	},

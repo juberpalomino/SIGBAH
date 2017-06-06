@@ -21,6 +21,8 @@
 <!-- #GOOGLE FONT -->
 <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/font-api.css">
 
+<link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/base.css">
+
 <!-- #APP SCREEN / ICONS -->
 <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/resources/img/splash/sptouch-icon-iphone.png">
 <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/img/splash/touch-icon-ipad.png">
