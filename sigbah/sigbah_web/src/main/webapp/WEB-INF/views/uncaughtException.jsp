@@ -1,35 +1,40 @@
-<div
-    xmlns:tiles        ="http://tiles.apache.org/tags-tiles"
-    xmlns:c            ="http://java.sun.com/jsp/jstl/core"
-    xmlns:spring    ="http://www.springframework.org/tags"
-    xmlns:jsp        ="http://java.sun.com/JSP/Page"
-    version            ="2.5">
-
-  <jsp:directive.page contentType="text/html;charset=UTF-8" />
-  <jsp:output omit-xml-declaration="yes" />
-  <spring:message var="title" code="error_uncaughtexception_title" htmlEscape="false" />
-        <h2>${title}</h2>
-        <p>
-            <spring:message code="error_uncaughtexception_problemdescription" />
-        </p>
-        <c:if test="${not empty exception}">
-            <p>
-                <h4>
-                    <spring:message code="exception_details" />
-                </h4>
-
-                <spring:message var="message" code="exception_message" />
-                <div id="_exception">
-                    <c:out value="${exception.localizedMessage}" />
-                </div>
-
-                <spring:message var="stacktrace" code="exception_stacktrace" />
-                <div id="_stacktrace">
-                    <c:forEach items="${exception.stackTrace}" var="trace">
-                      <c:out value="${trace}" />
-                      <br />
-                    </c:forEach>
-                </div>
-            </p>
-        </c:if>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+    
+<!-- MAIN CONTENT -->
+<div id="content">  
+	
+	<!-- widget grid -->
+	<section id="widget-grid" class="">
+	
+		<!-- row -->
+		<div class="row">
+		
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="text-center error-box">
+							<h1 class="error-text tada animated">
+								<i class="fa fa-times-circle text-danger error-icon-shadow"></i> Error 500
+							</h1>
+							<h2 class="font-xl"><strong>¡Oooops, algo salió mal!</strong></h2>
+							<br />
+							<p class="lead semi-bold">
+								<strong><spring:message code="error_uncaughtexception_problemdescription" /></strong><br><br>
+							</p>
+						</div>	
+					</div>
+							
+				</div>
+		
+			</div>
+			
+		</div>
+		<!-- end row -->
+		
+	</section>
+	<!-- end widget grid -->
+	
 </div>
+<!-- END MAIN CONTENT -->

@@ -21,7 +21,8 @@
 	<!-- Use annotation for configuration-->
 	<context:annotation-config />
 	
-	<mvc:view-controller path="/resourceNotFound"/>
+	<mvc:view-controller path="/resourceNotFound" />
+	<mvc:view-controller path="/uncaughtException" />
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
     

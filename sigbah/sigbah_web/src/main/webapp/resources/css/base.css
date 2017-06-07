@@ -1,3 +1,11 @@
 #header {
 	height: 60px !important;
 }
+#div-titulo {
+	color: black; 
+	font-size: 15px;
+}
+#div-usuario {
+	color: blue; 
+	font-size: 13px;
+}

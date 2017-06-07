@@ -17,10 +17,10 @@
 				<div class="col-sm-4">
 					<img src="${pageContext.request.contextPath}/resources/img/logo-wfp.png" class="img-responsive">
 				</div>
-				<div class="col-sm-4" style="color: black; font-size: 15px;">
+				<div id="div-titulo" class="col-sm-4">
 					Sistema de Gestión de Bienes de Ayuda Humanitaria - SIGBAH
 				</div>
-				<div class="col-sm-4" style="color: blue; font-size: 13px;">
+				<div id="div-usuario" class="col-sm-4">
 					Usuario: Juan Perez <br> INDECI CENTRAL
 				</div>
 			</div>

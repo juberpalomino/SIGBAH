@@ -17,15 +17,15 @@
 	</definition>
 	
 	<definition name="dataAccessFailure" extends="public">
-		<put-attribute name="body" value="/WEB-INF/views/dataAccessFailure.jsp" />
+		<put-attribute name="regionBody" value="/WEB-INF/views/dataAccessFailure.jsp" />
 	</definition>
 
 	<definition name="resourceNotFound" extends="public">
-		<put-attribute name="body" value="/WEB-INF/views/resourceNotFound.jsp" />
+		<put-attribute name="regionBody" value="/WEB-INF/views/resourceNotFound.jsp" />
 	</definition>
 
 	<definition name="uncaughtException" extends="public">
-		<put-attribute name="body" value="/WEB-INF/views/uncaughtException.jsp" />
+		<put-attribute name="regionBody" value="/WEB-INF/views/uncaughtException.jsp" />
 	</definition>
 	
 </tiles-definitions>
