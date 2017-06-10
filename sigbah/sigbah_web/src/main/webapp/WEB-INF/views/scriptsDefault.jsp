@@ -18,3 +18,10 @@
 
 <!-- MAIN APP JS FILE -->
 <script src="${pageContext.request.contextPath}/resources/js/app.seed.js"></script>
+
+<script type="text/javascript">
+	var VAR_CONTEXT = '${pageContext.request.contextPath}';
+</script>
+
+<!-- BASE APP JS FILE -->
+<script src="${pageContext.request.contextPath}/resources/js/base.js"></script>

@@ -104,44 +104,27 @@
 			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 	
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false">
+				<div class="jarviswidget jarviswidget-color-darken">
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 						<h2>Standard Data Tables </h2>
-	
 					</header>
 	
 					<!-- widget div-->
 					<div>
-	
-						<!-- widget edit box -->
-						<div class="jarviswidget-editbox">
-							<!-- This area used as dropdown edit box -->
-	
-						</div>
-						<!-- end widget edit box -->
-	
+					
 						<!-- widget content -->
-						<div class="widget-body no-padding">
-	
-							<table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+						<div class="widget-body">
+
+							<table id="tbl_mnt_comercial" class="table table-bordered table-hover">
 								<thead>			                
 									<tr>
-										<th data-hide="phone">Item</th>
-										<th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Codigo</th>
-										<th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Descripcion</th>
+										<th>Item</th>
+										<th>Codigo</th>
+										<th>Descripcion</th>
 									</tr>
 								</thead>
-								<tbody>
-									<c:forEach items="${lis_maestro}" var="item">
-										<tr>
-											<td>${item.idubigeo}</td>
-											<td>${item.coddpto}</td>
-											<td>${item.nombre}</td>
-										</tr>
-									</c:forEach>
-								</tbody>
 							</table>
 
 						</div>

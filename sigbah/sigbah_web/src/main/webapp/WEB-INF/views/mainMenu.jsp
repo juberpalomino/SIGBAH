@@ -48,7 +48,7 @@
 						<a href="#">Ingresos</a>
 						<ul>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Orden de Ingreso</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Ingreso</a>
 							</li>
 						</ul>
 					</li>
@@ -56,13 +56,13 @@
 						<a href="#">Salidas</a>
 						<ul>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Manifiesto de Carga</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Manifiesto de Carga</a>
 							</li>
 							<li>
-								<a href="glyph.html"><i class="fa fa-plane"></i>Orden de Salida</a>
+								<a href="glyph.html"><i class="fa fa-caret-right"></i>Orden de Salida</a>
 							</li>
 							<li>
-								<a href="glyph.html"><i class="fa fa-plane"></i>Guia de Remision</a>
+								<a href="glyph.html"><i class="fa fa-caret-right"></i>Guia de Remision</a>
 							</li>
 						</ul>
 					</li>
@@ -70,13 +70,13 @@
 						<a href="#">Inventarios</a>
 						<ul>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Cartilla de Inventario</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Cartilla de Inventario</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Cierre Mensual</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Cierre Mensual</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Stock de Productos</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Stock de Productos</a>
 							</li>
 						</ul>
 					</li>
@@ -84,37 +84,151 @@
 						<a href="#">Reportes</a>
 						<ul>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Orden de Ingreso</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Ingreso</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Orden de Salida</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Salida</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Guia de Remision</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Guia de Remision</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Manifiesto de Carga</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Manifiesto de Carga</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Acta de Entrega y Recepcion</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Acta de Entrega y Recepcion</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Reporte de Control de Calidad</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Reporte de Control de Calidad</a>
 							</li>
 							<li>
-								<a href="fa.html"><i class="fa fa-plane"></i>Kardex / Bincard</a>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Kardex / Bincard</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 			</li>
 		
+			<li>
+				<a href="#">
+					<i class="fa fa-lg fa-fw fa-archive"></i> 
+					<span class="menu-item-parent">Donaciones</span>
+				</a>
+				<ul>
+					<li>
+						<a href="general-elements.html">Registro de Donaciones</a>
+					</li>
+					<li>
+						<a href="#">Ingresos</a>
+						<ul>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Ingreso - Donaciones</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Salidas</a>
+						<ul>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden Salida - Donaciones</a>
+							</li>
+							<li>
+								<a href="glyph.html"><i class="fa fa-caret-right"></i>Guia de Remisión - Donaciones</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Reportes</a>
+						<ul>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Reporte de Donaciones</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Ingreso de Donaciones</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Salida de Donaciones</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
 		
-		
-		
-		
-		
-		
+			<li>
+				<a href="#">
+					<i class="fa fa-lg fa-fw fa-book"></i> 
+					<span class="menu-item-parent">Administración</span>
+				</a>
+				<ul>
+					<li>
+						<a href="general-elements.html">Parámetros</a>
+					</li>
+					<li>
+						<a href="#">Mantenimiento Tablas</a>
+						<ul>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Direcciones Desconcetradas</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Almacenes</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Gobiernos Regionales</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Gobiernos Locales</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Ubigeo</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Jefes de la DDI</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Catalogo de Productos</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Tipos de Movimiento</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Empleados</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Unidades de Medida</a>
+							</li>
+							
+							
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Usuarios del Sistema</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Tipos de Envase</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Marcas</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Donantes</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Empresas de Transportes</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Choferes</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Tablas de Referencia</a>
+							</li>
+							<li>
+								<a href="fa.html"><i class="fa fa-caret-right"></i>Declaratorias de Emergencia</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="general-elements.html">Raciones</a>
+					</li>
+				</ul>
+			</li>
 		
 		
 			<li id="li_maestro" class="li_men_opcion">
@@ -123,12 +237,7 @@
 					<span class="menu-item-parent">Maestro</span>
 				</a>
 			</li>
-			<li id="li_widgets" class="li_men_opcion">
-				<a href="#">
-					<i class="fa fa-lg fa-fw fa-list-alt"></i> 
-					<span class="menu-item-parent">Productos</span>
-				</a>
-			</li>			
+			
 		</ul>
 	</nav>
 
