@@ -10,11 +10,14 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Properties;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -36,6 +39,17 @@ public class BaseController implements Serializable {
 	protected transient final Log LOGGER = LogFactory.getLog(getClass());
 	protected transient UsuarioBean usuarioBean = null;
 	protected transient BaseOutputBean baseOutputBean;
+	private static final String FICHERO_PROPERTIES = "/WEB-INF/i18n/config.properties";
+	
+	@Autowired
+	private ServletContext context;
+	
+	/**
+	 * @param servletContext
+	 */
+	public void setServletContext(ServletContext servletContext) {
+	    this.context = servletContext;
+	}
 	
 	/**
 	 * Devuelve el RequestAttributes.
@@ -277,6 +291,40 @@ public class BaseController implements Serializable {
 	 */
 	public static String getMensaje(MessageSource messageSource, Object[] param, String mensaje) {
 		return messageSource.getMessage(mensaje, param, Locale.getDefault());
+	}
+	
+	/**
+	 * Método que lee una propiedad y retorna la ruta de la web principal.
+	 * @param key - Llave de codigo de valor;
+	 * @return El valor de la propiedad correspondiente a la llave.
+	 */
+	public String getPropiedad(String key) {
+		Properties properties = new Properties();
+		String directorio = null;
+		InputStream inputStream = null;
+		try {
+			inputStream = context.getResourceAsStream(FICHERO_PROPERTIES);
+			properties.load(inputStream);
+			if (inputStream == null) {
+				throw new FileNotFoundException("Archivo properties '" + FICHERO_PROPERTIES +"' no se encuentra en el classpath");
+			}
+			directorio = properties.getProperty(key);
+		} catch (IOException e) {			
+			LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
+									  	 Constantes.NIVEL_APP_CONSTROLLER, 
+									  	 this.getClass().getName(), e.getMessage()));
+		} finally {
+		    if (inputStream != null) {
+		    	try {
+					inputStream.close();
+				} catch (IOException e) {
+					LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
+											  	 Constantes.NIVEL_APP_CONSTROLLER, 
+											  	 this.getClass().getName(), e.getMessage()));
+				}
+		    }
+		}
+		return directorio;
 	}
 	
 }

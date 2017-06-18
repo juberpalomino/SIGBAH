@@ -1,3 +1,4 @@
+var listaControlCalidadCache = new Object();
 
 $(document).ready(function() {
 	
@@ -5,72 +6,100 @@ $(document).ready(function() {
 	$('#ul_ges_almacenes').css('display', 'block');
 	$('#li_con_calidad').addClass('active');
 	
-	$('#btn_submit').click(function() {
-		
-		var bootstrapValidator = $('#frm_elements').data('bootstrapValidator');
-		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
-			
-			var params = new Object();
-			
-			loadding(true);
-			
-			consultarAjaxSincrono('GET', '/maestro/listarMaestros', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarComercial(respuesta);
-				}
-				loadding(false);
-			});
+	inicializarDatos();
+	
+	$('#btn_buscar').click(function() {
 
+		var params = new Object();
+		
+		loadding(true);
+		
+		consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarControlCalidad(respuesta);
+			}
+			loadding(false);
+		});
+		
+	});
+	
+	$('#href_edi_con_calidad').click(function() {
+
+		var indices = [];
+		var codigo = ''
+		var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad').DataTable();
+		tbl_mnt_con_calidad.rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_con_calidad.rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+				var idUbigeo = listaControlCalidadCache[index].idubigeo;
+				codigo = codigo + idUbigeo + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			
 		}
 		
 	});
 	
 });
 
-function listarComercial(respuesta) {
+function inicializarDatos() {
+	if (codigoRespuesta == NOTIFICACION_ERROR) {
+		addErrorMessage(null, mensajeRespuesta);
+	} else {
 
-	var tbl_mnt_comercial = $('#tbl_mnt_comercial');
 
-	tbl_mnt_comercial.dataTable().fnDestroy();
+		
+		
+	}
+}
+
+function listarControlCalidad(respuesta) {
+
+	var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad');
+
+	tbl_mnt_con_calidad.dataTable().fnDestroy();
 	
-	tbl_mnt_comercial.dataTable({
+	tbl_mnt_con_calidad.dataTable({
 		data : respuesta,
-		columns : [
-				{	
-						data : 'idubigeo'
-				}, {	
-						data : 'coddpto'
-				}, {
-						data : 'nombre'
-				}
-//						}, {
-//								data : 'id_seguimiento',
-//								sClass : 'opc-center ',
-//								render: function(data, type, row) {
-//									if (ind_comercial == '1' && row.estado != '1') { // Anulado
-//										var btn_editar = '';
-//										if (row.estado != '5') { // Entregado Cliente
-//											btn_editar = '<button type="button" class="btn btn-success btn-xs btn_edi_reg_comercial" title="Editar Solicitud">'+
-//															'<span class="glyphicon glyphicon-pencil"></span>'+
-//														 '</button>';
-//										
-//										}
-//										var btn_anular = ' ';	 
-//										if (esnulo(row.cod_ord_pedido)) {
-//											btn_anular += '<button type="button" class="btn btn-danger btn-xs btn_anu_reg_comercial" title="Anular Solicitud">'+
-//															'<span class="glyphicon glyphicon-remove"></span>'+
-//														  '</button>';
-//										}
-//										return btn_editar + btn_anular;
-//									} else {
-//										return '';
-//									}											
-//								}
-//						}
-		],
+		columns : [ {
+			data : 'idubigeo',
+//			sClass : 'opc-center',
+			render: function(data, type, row) {
+				if (row.idubigeo != null) {
+					return '<label class="checkbox">'+
+								'<input type="checkbox" id="chk_ubigeo_'+data+'" name="chk_ubigeo"><i></i>'+
+							'</label>';	
+				} else {
+					return '';	
+				}											
+			}	
+		}, {
+			data : 'coddpto'
+		}, {
+			data : 'nombre'
+		}, {
+			data : 'codprov'
+		}, {
+			data : 'codprov'
+		}, {
+			data : 'codprov'
+		}, {
+			data : 'codprov'
+		}, {
+			data : 'codprov'
+		} ],
 		language : {
 				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
@@ -85,12 +114,7 @@ function listarComercial(respuesta) {
 		]
 	});
 	
-//			tbl_mnt_comercial.$('tr').click( function () {
-//				solicitud = tbl_mnt_comercial.fnGetData(this);
-//			});
+	listaControlCalidadCache = respuesta;
 
-	tbl_mnt_comercial.resize();
 }
-
-
 

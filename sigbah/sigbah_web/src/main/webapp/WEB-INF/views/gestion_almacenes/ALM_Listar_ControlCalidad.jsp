@@ -4,7 +4,8 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Gestión de Almacenes</li><li>Control de Calidad</li>
+		<li>Gestión de Almacenes</li>
+		<li>Control de Calidad</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -20,61 +21,68 @@
 		<div class="row">
 		
 			<!-- NEW WIDGET START -->
-			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<article class="col-xs-12 col-sm-12">
 		
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false">
+				<div class="jarviswidget">
 					<header>
-						<span class="widget-icon"> <i class="fa fa-eye"></i> </span>
-						<h2>Default Elements</h2>
-		
+						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
+						<h2>Búsqueda de Controles de Calidad</h2>
+						
+<!-- 						<div id="div_wid_ctrl_bus_con_calidad" class="jarviswidget-ctrls" role="menu">    -->
+<!-- 							<a href="#" class="button-icon jarviswidget-toggle-btn" rel="tooltip" title="" data-placement="bottom" data-original-title="Collapse"> -->
+<!-- 								<i class="fa fa-minus"></i> -->
+<!-- 							</a> -->
+<!-- 						</div> -->
+						
 					</header>
 		
 					<!-- widget div-->
-					<div>
-		
-						<!-- widget edit box -->
-						<div class="jarviswidget-editbox">
-							<!-- This area used as dropdown edit box -->
-		
-						</div>
-						<!-- end widget edit box -->
+					<div id="div_wid_bod_bus_con_calidad">
 		
 						<!-- widget content -->
 						<div class="widget-body">
 		
-							<form id="frm_elements" class="form-horizontal">
+							<form id="frm_con_calidad" class="form-horizontal">
 							
 								<div class="form-group">
-									<label class="col-md-2 control-label">Text field</label>
-									<div class="col-md-10">
-										<input class="form-control" name="txt_field" placeholder="Default Text Field" type="text">
+									<label class="col-sm-2 control-label label-sm">Año:</label>
+									<div class="col-sm-2">
+										<select id="sel_anio" class="form-control input-sm">
+											<option value="">&#60Seleccione&#62</option>
+											<c:forEach items="${lista_anio}" var="item">
+											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											</c:forEach>
+										</select>
 									</div>
-								</div>
-		
-								<div class="form-group">
-									<label class="col-md-2 control-label">Password field</label>
-									<div class="col-md-10">
-										<input class="form-control" name="txt_pas_field" placeholder="Password field" type="password" value="mypassword">
+									
+									<label class="col-sm-2 control-label label-sm">DDI:</label>
+									<div class="col-sm-2">
+										<select id="sel_anio" class="form-control input-sm">
+											<option value="">&#60Seleccione&#62</option>
+											<c:forEach items="${lista_ddi}" var="item">
+											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											</c:forEach>
+										</select>
 									</div>
-								</div>
-								
-								<div class="form-group">
-									<label class="col-md-2 control-label">Textarea</label>
-									<div class="col-md-10">
-										<textarea class="form-control" name="txt_area" placeholder="Textarea" rows="4"></textarea>
+									
+									<label class="col-sm-2 control-label label-sm">Almacén:</label>
+									<div class="col-sm-2">
+										<select id="sel_anio" class="form-control input-sm">
+											<option value="">&#60Seleccione&#62</option>
+											<c:forEach items="${lista_almacen}" var="item">
+											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											</c:forEach>
+										</select>
 									</div>
 								</div>
 								
 								<div class="form-actions">
 									<div class="row">
 										<div class="col-md-12">
-											<button class="btn btn-default" type="submit">
-												Cancel
-											</button>
-											<button class="btn btn-primary" type="button" id="btn_submit">
-												<i class="fa fa-save"></i>
-												Submit
+											<button class="btn btn-primary" type="button" id="btn_buscar">
+												<i class="fa fa-search"></i>
+												Buscar
 											</button>
 										</div>
 									</div>
@@ -95,28 +103,57 @@
 		
 	
 			<!-- NEW WIDGET START -->
-			<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<article class="col-xs-12 col-sm-12">
 	
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div class="jarviswidget jarviswidget-color-darken">
+				<div class="jarviswidget jarviswidget-color-blueLight">
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Standard Data Tables </h2>
+						<h2>Relación de Controles de Calidad</h2>
+						
+						<div class="jarviswidget-ctrls" role="menu">   
+							<a href="#" class="button-icon" rel="tooltip" title="" data-placement="bottom" data-original-title="Exportar Excel">
+								<i class="fa fa-file-excel-o"></i>
+							</a> 
+							<a href="#" class="button-icon" rel="tooltip" title="" data-placement="bottom" data-original-title="Imprimir">
+								<i class="fa fa-file-pdf-o"></i>
+							</a>
+							<a href="#" id="href_edi_con_calidad" class="button-icon" rel="tooltip" title="" data-placement="bottom" data-original-title="Editar">
+								<i class="fa fa-edit"></i>
+							</a>
+							<a href="#" class="button-icon" rel="tooltip" title="" data-placement="bottom" data-original-title="Nuevo">
+								<i class="fa fa-file-o"></i>
+							</a>
+						</div>
 					</header>
 	
 					<!-- widget div-->
 					<div>
 					
+						<!-- widget edit box -->
+						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
+							<input class="form-control" type="text">
+							<span class="note"><i class="fa fa-check text-success"></i> Change title to update and save instantly!</span>
+							
+						</div>
+						<!-- end widget edit box -->
+					
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_comercial" class="table table-bordered table-hover">
+							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th>Item</th>
-										<th>Codigo</th>
-										<th>Descripcion</th>
+										<th>Año</th>
+										<th>DDI</th>
+										<th>Almacén</th>
+										<th>N° Reporte de Control de Calidad</th>
+										<th>Fecha</th>
+										<th>Tipo de Control</th>
+										<th>Estado</th>
 									</tr>
 								</thead>
 							</table>
@@ -134,8 +171,6 @@
 			<!-- WIDGET END -->
 	
 		</div>
-	
-		<!-- end row -->
 	
 		<!-- end row -->
 	

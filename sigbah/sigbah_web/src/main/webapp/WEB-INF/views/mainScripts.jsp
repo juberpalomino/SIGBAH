@@ -32,6 +32,8 @@
 
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';
+	var codigoRespuesta = '${base.codigoRespuesta}';
+	var mensajeRespuesta = '${base.mensajeRespuesta}';
 </script>
 
 <!-- BASE APP JS FILE -->

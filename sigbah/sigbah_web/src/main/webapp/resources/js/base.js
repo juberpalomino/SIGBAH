@@ -81,6 +81,13 @@ $(function() {
     $('#ul_men_opcion').on('click', 'li.li_men_opcion', function(event) {
     	loadding(true);
     });
+    
+    $('.jarviswidget-toggle-btn').click(function() {
+//    	var id = $(this).parents().attr('id');
+//    	
+//    	$('#div_wid_bod_bus_con_calidad').addClass('hide');
+    	
+    });
 
 });
 

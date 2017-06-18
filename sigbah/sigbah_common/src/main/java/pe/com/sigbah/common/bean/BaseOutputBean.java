@@ -25,6 +25,14 @@ public class BaseOutputBean implements Serializable {
 	
 	/**
 	 * @param codigoRespuesta
+	 */
+	public BaseOutputBean(String codigoRespuesta) {
+		super();
+		this.codigoRespuesta = codigoRespuesta;
+	}
+
+	/**
+	 * @param codigoRespuesta
 	 * @param mensajeRespuesta
 	 */
 	public BaseOutputBean(String codigoRespuesta, String mensajeRespuesta) {

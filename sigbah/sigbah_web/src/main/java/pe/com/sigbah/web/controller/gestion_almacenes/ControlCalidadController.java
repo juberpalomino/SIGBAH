@@ -48,11 +48,18 @@ public class ControlCalidadController extends BaseController {
     public String goInicio(HttpServletRequest request, Model model) {
         try {
 //        	model.addAttribute("lis_maestro", iMaestroService.listarUbigeo(new UbigeoBean()));
+        	
+//        	System.out.println(getPropiedad("url.diana"));
+        	
+
+        	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
             
         } catch (Exception e) {
-        	LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
-					  Constantes.NIVEL_APP_CONSTROLLER, 
-					  this.getClass().getName(), e.getMessage()));
+        	LOGGER.error(e.getMessage(), e);
+        	baseOutputBean = new BaseOutputBean();
+			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
+			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));
+        	model.addAttribute("base", baseOutputBean);
         }
         return "listar_control_calidad";
     }
@@ -78,7 +85,10 @@ public class ControlCalidadController extends BaseController {
 			lista = iMaestroService.listarUbigeo(ubigeo);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-			return new BaseOutputBean(Constantes.COD_ERROR_GENERAL, getMensaje(messageSource, "msg.error.errorOperacion"));
+			baseOutputBean = new BaseOutputBean();
+			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
+			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));
+			return baseOutputBean;
 		}
 		return lista;
 	}

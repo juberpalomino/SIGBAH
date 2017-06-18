@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import pe.com.sigbah.common.util.ReadParameterProperties;
-
 /**
  * @className: MainController.java
  * @description: Clase principal de sistema de tesoreria.
@@ -41,7 +39,8 @@ public class MainController extends BaseController {
 	
 		context().removeAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 		context().removeAttribute("lis_modulo", RequestAttributes.SCOPE_SESSION);
-        return new ModelAndView("redirect:" + ReadParameterProperties.getRutaWebPrincipal());
+//        return new ModelAndView("redirect:" + ReadParameterProperties.getRutaWebPrincipal());
+		return null;
 	}	
 	
 	/**

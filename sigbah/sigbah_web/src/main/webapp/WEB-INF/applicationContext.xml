@@ -13,7 +13,7 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 						
-	<context:property-placeholder location="classpath:jdbc.properties" />
+	<context:property-placeholder location="/WEB-INF/i18n/jdbc.properties" />
 	
 	<!-- Package needed to be scanned for annotation -->
     <context:component-scan base-package="pe.com.sigbah" />

@@ -69,7 +69,7 @@ public final class Constantes implements Serializable {
 												
 	
 	/* CODIGO SISTEMA SIG_BAH */
-	public static final int CODIGO_SISTEMA_SIG_BAH = Integer.valueOf(ReadParameterProperties.getPropiedad("codigo.sistema.mig"));
+//	public static final int CODIGO_SISTEMA_SIG_BAH = Integer.valueOf(ReadParameterProperties.getPropiedad("codigo.sistema.mig"));
 	public static final String CODIGO_MODULO_SIG_BAH = "SIG_BAH";
 	public static final String CODIGO_ROL_ACTIVO = "1";
 	public static final String NOMBRE_MODULO = "Ingresos y Gastos";

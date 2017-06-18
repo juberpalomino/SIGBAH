@@ -8,7 +8,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.common.util.ReadParameterProperties;
 
 /**
  * @className: LoginController.java
@@ -63,7 +62,8 @@ public class LoginController extends BaseController {
 		context().removeAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 		context().removeAttribute("lis_pri_modulo", RequestAttributes.SCOPE_SESSION);
 		context().removeAttribute("lis_seg_modulo", RequestAttributes.SCOPE_SESSION);
-        return new ModelAndView("redirect:" + ReadParameterProperties.getRutaWebPrincipal());
+//        return new ModelAndView("redirect:" + ReadParameterProperties.getRutaWebPrincipal());
+		return null;
     }
 
 }
