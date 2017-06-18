@@ -45,7 +45,7 @@ public class ControlCalidadController extends BaseController {
 	 * @return - Retorna a la vista JSP.
 	 */
 	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
-    public String goInicio(HttpServletRequest request, Model model) {
+    public String inicio(Model model) {
         try {
 //        	model.addAttribute("lis_maestro", iMaestroService.listarUbigeo(new UbigeoBean()));
         	
@@ -67,7 +67,7 @@ public class ControlCalidadController extends BaseController {
 	/**
 	 * @param request
 	 * @param response
-	 * @return objeto
+	 * @return objeto en formato json
 	 */
 	@RequestMapping(value = "/listarControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -92,5 +92,30 @@ public class ControlCalidadController extends BaseController {
 		}
 		return lista;
 	}
+	
+	/**
+	 * @param request
+	 * @param model
+	 * @return - Retorna a la vista JSP.
+	 */
+	@RequestMapping(value = "/mantenimientoControlCalidad", method = RequestMethod.GET)
+    public String mantenimientoControlCalidad(HttpServletRequest request, Model model) {
+        try {
+//        	model.addAttribute("lis_maestro", iMaestroService.listarUbigeo(new UbigeoBean()));
+        	
+//        	System.out.println(getPropiedad("url.diana"));
+        	
+
+        	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
+            
+        } catch (Exception e) {
+        	LOGGER.error(e.getMessage(), e);
+        	baseOutputBean = new BaseOutputBean();
+			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
+			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));
+        	model.addAttribute("base", baseOutputBean);
+        }
+        return "mantenimiento_control_calidad";
+    }
 	
 }

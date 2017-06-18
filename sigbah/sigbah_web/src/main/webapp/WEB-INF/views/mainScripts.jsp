@@ -1,5 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <!-- #PLUGINS -->
 <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
 <script src="${pageContext.request.contextPath}/resources/js/libs/jquery-2.1.1.min.js"></script>
@@ -29,6 +27,9 @@
 
 <!-- CUSTOM NOTIFICATION -->
 <script src="${pageContext.request.contextPath}/resources/js/notification/SmartNotification.min.js"></script>
+
+<!-- JARVIS WIDGETS -->
+<script src="${pageContext.request.contextPath}/resources/js/smartwidgets/jarvis.widget.min.js"></script>
 
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';

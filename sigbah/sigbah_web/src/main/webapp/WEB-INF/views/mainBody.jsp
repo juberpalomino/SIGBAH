@@ -1,5 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
 

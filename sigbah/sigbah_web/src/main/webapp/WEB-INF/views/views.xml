@@ -28,4 +28,8 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_ControlCalidad.jsp" />
 	</definition>
 	
+	<definition name="mantenimiento_control_calidad" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Mostrar_ControlCalidad.jsp" />
+	</definition>
+	
 </tiles-definitions>

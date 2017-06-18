@@ -1,3 +1,5 @@
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+
 <!-- #HEADER -->
 <header id="header">
 
@@ -18,7 +20,7 @@
 					<img src="${pageContext.request.contextPath}/resources/img/logo-wfp.png" class="img-responsive">
 				</div>
 				<div id="div-titulo" class="col-sm-4">
-					Sistema de Gestión de Bienes de Ayuda Humanitaria - SIGBAH
+					<spring:message code="application_name" />
 				</div>
 				<div id="div-usuario" class="col-sm-4">
 					Usuario: Juan Perez <br> INDECI CENTRAL
