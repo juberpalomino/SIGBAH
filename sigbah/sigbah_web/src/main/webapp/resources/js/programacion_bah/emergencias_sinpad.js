@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	$('#frm_elements').bootstrapValidator({
+		$('#frm_elements').bootstrapValidator({
 		feedbackIcons : {
 			valid : 'glyphicon glyphicon-ok',
 			invalid : 'glyphicon glyphicon-remove',

@@ -68,9 +68,9 @@ public final class Constantes implements Serializable {
 	public static final String EXPRESION_MONEDA_DECIMAL = "###,###,##0.000";
 												
 	
-	/* CODIGO SISTEMA MIG */
-	public static final int CODIGO_SISTEMA_MIG = Integer.valueOf(ReadParameterProperties.getPropiedad("codigo.sistema.mig"));
-	public static final String CODIGO_MODULO_MIG = "MIYG";
+	/* CODIGO SISTEMA SIG_BAH */
+	public static final int CODIGO_SISTEMA_SIG_BAH = Integer.valueOf(ReadParameterProperties.getPropiedad("codigo.sistema.mig"));
+	public static final String CODIGO_MODULO_SIG_BAH = "SIG_BAH";
 	public static final String CODIGO_ROL_ACTIVO = "1";
 	public static final String NOMBRE_MODULO = "Ingresos y Gastos";
 	public static final String TABLA_NOMBRE_MODULO = "nombremodulo";

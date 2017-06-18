@@ -79,15 +79,7 @@ $(function() {
     });
     
     $('#ul_men_opcion').on('click', 'li.li_men_opcion', function(event) {
-    	var id_menu = $(this).attr('id');
-        switch (id_menu) {
-	        case 'li_maestro':
-				$(location).attr('href', VAR_CONTEXT + '/maestro/inicio');	
-	            break;
-	        case 'li_widgets':
-	        	$(location).attr('href', VAR_CONTEXT + '/producto/inicio');
-	            break;
-	    }
+    	loadding(true);
     });
 
 });

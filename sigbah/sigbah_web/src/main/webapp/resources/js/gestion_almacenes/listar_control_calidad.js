@@ -1,35 +1,9 @@
-$(document).ready(function() {
 
-	$('#frm_elements').bootstrapValidator({
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			txt_field : {
-				validators : {
-					notEmpty : {
-						message : 'The first name is required'
-					}
-				}
-			},
-			txt_pas_field : {
-				validators : {
-					notEmpty : {
-						message : 'The last name is required'
-					}
-				}
-			},
-			txt_area : {
-				validators : {
-					notEmpty : {
-						message : 'The company name is required'
-					}
-				}
-			}
-		}
-	});
+$(document).ready(function() {
+	
+	$('#li_ges_almacenes').addClass('active');
+	$('#ul_ges_almacenes').css('display', 'block');
+	$('#li_con_calidad').addClass('active');
 	
 	$('#btn_submit').click(function() {
 		
