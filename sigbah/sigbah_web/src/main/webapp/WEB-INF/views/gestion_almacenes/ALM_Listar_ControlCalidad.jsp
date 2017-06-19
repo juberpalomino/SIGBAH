@@ -15,7 +15,7 @@
 <div id="content">
 	
 	<!-- widget grid -->
-	<section id="widget-grid" class="">
+	<section id="sec_wid_grid" class="">
 	
 		<!-- row -->
 		<div class="row">

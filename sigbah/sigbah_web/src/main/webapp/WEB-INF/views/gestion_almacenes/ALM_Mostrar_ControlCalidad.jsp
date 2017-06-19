@@ -25,10 +25,8 @@
 			<article class="col-xs-12 col-sm-12">
 			
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div class="jarviswidget well">
+				<div class="jarviswidget">
 
-					<header></header>
-	
 					<!-- widget div-->
 					<div>
 	
@@ -54,11 +52,91 @@
 								</li>
 							</ul>
 	
-							<div id="myTabContent1" class="tab-content padding-10">
+							<div id="div_tab_content" class="tab-content padding-10">
 								<div class="tab-pane fade in active" id="div_dat_generales">
-									<p>
-										I have six locks on my door all in a row. When I go out, I lock every other one. I figure no matter how long somebody stands there picking the locks, they are always locking three.
-									</p>
+								
+									<form id="frm_con_calidad" class="form-horizontal">
+											
+										<div class="header-form opc-center">	
+											<strong><spring:message code="mantenimiento.control.calidad.titulo" /></strong>
+										</div>
+										
+										<div class="form-group"></div>
+										
+										<div class="form-group">
+											<div class="col-sm-3"></div>
+											<label class="col-sm-3 control-label label-sm label-bold"><spring:message code="mantenimiento.control.calidad.nro.control" />:</label>
+											<div class="col-sm-2">
+												<input type="text" name="txt_nro_con_calidad" name="txt_nro_con_calidad" class="form-control" disabled>
+											</div>
+										</div>												
+																
+										<div class="jarviswidget">
+											<header>
+												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
+												<h2><spring:message code="mantenimiento.control.calidad.pestania.titulo1" /></h2>
+											</header>
+								
+											<!-- widget div-->
+											<div>
+								
+												<!-- widget content -->
+												<div class="widget-body">
+								
+													<div class="form-group">
+														<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
+														<div class="col-sm-2">
+															<select id="sel_anio" class="form-control input-sm">
+																<option value=""><spring:message code="select.seleccione" /></option>
+																<c:forEach items="${lista_anio}" var="item">
+																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																</c:forEach>
+															</select>
+														</div>
+														
+														<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.ddi" />:</label>
+														<div class="col-sm-2">
+															<select id="sel_ddi" class="form-control input-sm">
+																<option value=""><spring:message code="select.seleccione" /></option>
+																<c:forEach items="${lista_ddi}" var="item">
+																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																</c:forEach>
+															</select>
+														</div>
+														
+														<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.almacen" />:</label>
+														<div class="col-sm-2">
+															<select id="sel_almacen" class="form-control input-sm">
+																<option value=""><spring:message code="select.seleccione" /></option>
+																<c:forEach items="${lista_almacen}" var="item">
+																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+													
+													<div class="form-actions">
+														<div class="row">
+															<div class="col-md-12">
+																<button class="btn btn-primary" type="button" id="btn_buscar">
+																	<i class="fa fa-search"></i>
+																	<spring:message code="button.search" />
+																</button>
+															</div>
+														</div>
+													</div>
+								
+												</div>
+												<!-- end widget content -->
+								
+											</div>
+											<!-- end widget div -->
+								
+										</div>
+										<!-- end widget -->
+									
+									</form>
+										
 								</div>
 								<div class="tab-pane fade" id="div_alimentarios">
 									<p>
