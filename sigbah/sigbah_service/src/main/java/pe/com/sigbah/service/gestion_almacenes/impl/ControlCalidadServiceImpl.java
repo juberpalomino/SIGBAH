@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.ItemBean;
-import pe.com.sigbah.mapper.gestion_almacenes.ControlCalidadMapper;
+import pe.com.sigbah.dao.gestion_almacenes.ControlCalidadDao;
 import pe.com.sigbah.service.gestion_almacenes.ControlCalidadService;
 import pe.com.sigbah.service.impl.GenericServiceImpl;
 
@@ -22,14 +22,14 @@ public class ControlCalidadServiceImpl extends GenericServiceImpl implements Con
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private ControlCalidadMapper controlCalidadMapper;
+	private ControlCalidadDao controlCalidadDao;
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.gestion_almacenes.ControlCalidadService#listarAnios(pe.com.sigbah.common.bean.ItemBean)
+	 * @see pe.com.sigbah.service.gestion_almacenes.ControlCalidadService#listarAnios()
 	 */
 	@Override
-	public List<ItemBean> listarAnios(ItemBean item) throws Exception {
-		return controlCalidadMapper.listarAnios(item);
+	public List<ItemBean> listarAnios() throws Exception {
+		return controlCalidadDao.listarAnios();
 	}
 
 }

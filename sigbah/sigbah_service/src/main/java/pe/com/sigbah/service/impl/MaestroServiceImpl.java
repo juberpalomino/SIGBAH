@@ -2,11 +2,9 @@ package pe.com.sigbah.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.UbigeoBean;
-import pe.com.sigbah.mapper.MaestroMapper;
 import pe.com.sigbah.service.IMaestroService;
 
 /**
@@ -20,8 +18,8 @@ public class MaestroServiceImpl extends GenericServiceImpl implements IMaestroSe
 
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
-	private MaestroMapper maestroMapper;
+//	@Autowired
+//	private MaestroMapper maestroMapper;
 	
 
 	/* (non-Javadoc)
@@ -29,7 +27,8 @@ public class MaestroServiceImpl extends GenericServiceImpl implements IMaestroSe
 	 */
 	@Override
 	public List<UbigeoBean> listarUbigeo(UbigeoBean ubigeo) throws Exception {
-		return maestroMapper.listarUbigeo(ubigeo);
+		return null;
+//		return maestroMapper.listarUbigeo(ubigeo);
 	}
 		
 }

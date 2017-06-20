@@ -19,7 +19,7 @@
 	
 		<dependency>
 			<groupId>pe.com.sigbah</groupId>
-			<artifactId>sigbah_mapper</artifactId>
+			<artifactId>sigbah_dao</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 	

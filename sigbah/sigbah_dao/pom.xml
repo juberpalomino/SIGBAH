@@ -8,14 +8,13 @@
 		<artifactId>sigbah</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>sigbah_mapper</artifactId>
-	<name>sigbah_mapper</name>
+	<artifactId>sigbah_dao</artifactId>
+	<name>sigbah_dao</name>
 	<url>http://maven.apache.org</url>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mybatis-version>3.2.2</mybatis-version>
-		<mybatis-spring-version>1.1.0</mybatis-spring-version>
+		<spring-version>3.2.3.RELEASE</spring-version>
 		<oracle-version>11.2.0.3</oracle-version>
 	</properties>
 	
@@ -27,18 +26,24 @@
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		
-		<!-- Mybatis -->
 		<dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${mybatis-version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>${mybatis-spring-version}</version>
-        </dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		
+		<!-- Spring Core -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- Oracle JDBC Driver -->
 		<dependency>

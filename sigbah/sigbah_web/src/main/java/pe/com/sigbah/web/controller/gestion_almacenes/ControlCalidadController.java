@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import pe.com.sigbah.common.bean.BaseOutputBean;
-import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.service.IMaestroService;
@@ -56,7 +55,7 @@ public class ControlCalidadController extends BaseController {
         	
 //        	System.out.println(getPropiedad("url.diana"));
         	
-        	model.addAttribute("lista_anio", controlCalidadService.listarAnios(new ItemBean()));
+        	model.addAttribute("lista_anio", controlCalidadService.listarAnios());
 
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
             

@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 	<name>sigbah</name>
 	<modules>
-		<module>sigbah_mapper</module>
+		<module>sigbah_dao</module>
 		<module>sigbah_service</module>
 		<module>sigbah_web</module>
 		<module>sigbah_report</module>
