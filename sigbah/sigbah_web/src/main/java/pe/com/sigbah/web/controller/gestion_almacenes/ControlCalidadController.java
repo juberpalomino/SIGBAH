@@ -41,7 +41,6 @@ public class ControlCalidadController extends BaseController {
 	private MessageSource messageSource;
 	
 	/**
-	 * @param request 
 	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
@@ -96,7 +95,6 @@ public class ControlCalidadController extends BaseController {
 	
 	/**
 	 * @param codigo 
-	 * @param request
 	 * @param model
 	 * @return - Retorna a la vista JSP.
 	 */
