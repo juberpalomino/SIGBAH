@@ -62,11 +62,11 @@
     <!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
 	
-	<bean class="org.springframework.web.client.RestTemplate">
-	    <property name="errorHandler">
-	        <bean class="pe.com.sigbah.web.controller.BaseResponseErrorHandler" />
-	    </property>
-	</bean>
+<!-- 	<bean class="org.springframework.web.client.RestTemplate"> -->
+<!-- 	    <property name="errorHandler"> -->
+<!-- 	        <bean class="pe.com.sigbah.web.controller.BaseResponseErrorHandler" /> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
 	
     <bean id="viewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
 

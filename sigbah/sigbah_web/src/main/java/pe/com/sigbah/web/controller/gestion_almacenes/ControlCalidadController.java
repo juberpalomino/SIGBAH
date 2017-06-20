@@ -11,6 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -94,16 +95,27 @@ public class ControlCalidadController extends BaseController {
 	}
 	
 	/**
+	 * @param codigo 
 	 * @param request
 	 * @param model
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/mantenimientoControlCalidad", method = RequestMethod.GET)
-    public String mantenimientoControlCalidad(HttpServletRequest request, Model model) {
+	@RequestMapping(value = "/mantenimientoControlCalidad/{codigo}", method = RequestMethod.GET)
+    public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, Model model) {
         try {
 //        	model.addAttribute("lis_maestro", iMaestroService.listarUbigeo(new UbigeoBean()));
         	
 //        	System.out.println(getPropiedad("url.diana"));
+        	
+        	if (!isNullInteger(codigo)) {
+        		
+        		System.out.println(codigo);
+        		
+        	} else {
+        		
+        		System.out.println("nuevo");
+        		
+        	}
         	
 
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));

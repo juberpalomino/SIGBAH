@@ -225,15 +225,7 @@
 					</li>
 				</ul>
 			</li>
-		
-		
-			<li class="li_men_opcion">
-				<a href="${pageContext.request.contextPath}/maestro/inicio">
-					<i class="fa fa-lg fa-fw fa-home"></i> 
-					<span class="menu-item-parent">Maestro</span>
-				</a>
-			</li>
-			
+	
 		</ul>
 	</nav>
 

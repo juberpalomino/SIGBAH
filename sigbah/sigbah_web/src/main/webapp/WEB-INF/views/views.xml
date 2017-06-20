@@ -19,11 +19,7 @@
 	<definition name="uncaughtException" extends="public">
 		<put-attribute name="regionBody" value="/WEB-INF/views/uncaughtException.jsp" />
 	</definition>
-	
-	<definition name="maestro" extends="principal-layout">
-	    <put-attribute name="regionBody" value="/WEB-INF/views/modulo/mnt_maestro.jsp" />
-	</definition>
-	
+
 	<definition name="listar_control_calidad" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_ControlCalidad.jsp" />
 	</definition>

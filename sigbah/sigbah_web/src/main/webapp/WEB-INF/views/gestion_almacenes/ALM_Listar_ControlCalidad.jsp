@@ -38,10 +38,12 @@
 		
 							<form id="frm_con_calidad" class="form-horizontal">
 							
+								<input type="hidden" id="hid_codigo" name="hid_codigo"> 
+							
 								<div class="form-group">
 									<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
 									<div class="col-sm-2">
-										<select id="sel_anio" class="form-control input-sm">
+										<select id="sel_anio" class="form-control">
 											<option value=""><spring:message code="select.seleccione" /></option>
 											<c:forEach items="${lista_anio}" var="item">
 											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -51,7 +53,7 @@
 									
 									<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.ddi" />:</label>
 									<div class="col-sm-2">
-										<select id="sel_ddi" class="form-control input-sm">
+										<select id="sel_ddi" class="form-control">
 											<option value=""><spring:message code="select.seleccione" /></option>
 											<c:forEach items="${lista_ddi}" var="item">
 											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -61,7 +63,7 @@
 									
 									<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.almacen" />:</label>
 									<div class="col-sm-2">
-										<select id="sel_almacen" class="form-control input-sm">
+										<select id="sel_almacen" class="form-control">
 											<option value=""><spring:message code="select.seleccione" /></option>
 											<c:forEach items="${lista_almacen}" var="item">
 											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>

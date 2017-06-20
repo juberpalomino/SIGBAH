@@ -55,7 +55,7 @@
 							<div id="div_tab_content" class="tab-content padding-10">
 								<div class="tab-pane fade in active" id="div_dat_generales">
 								
-									<form id="frm_con_calidad" class="form-horizontal">
+									<form id="frm_dat_generales" class="form-horizontal">
 											
 										<div class="header-form opc-center">	
 											<strong><spring:message code="mantenimiento.control.calidad.titulo" /></strong>
@@ -65,9 +65,9 @@
 										
 										<div class="form-group">
 											<div class="col-sm-3"></div>
-											<label class="col-sm-3 control-label label-sm label-bold"><spring:message code="mantenimiento.control.calidad.nro.control" />:</label>
+											<label class="col-sm-3 control-label label-bold"><spring:message code="mantenimiento.control.calidad.nro.control" />:</label>
 											<div class="col-sm-2">
-												<input type="text" name="txt_nro_con_calidad" name="txt_nro_con_calidad" class="form-control input-sm" disabled>
+												<input type="text" name="txt_nro_con_calidad" name="txt_nro_con_calidad" class="form-control" disabled>
 											</div>
 										</div>												
 																
@@ -84,9 +84,9 @@
 												<div class="widget-body">
 								
 													<div class="form-group">
-														<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
 														<div class="col-sm-2">
-															<select id="sel_anio" name="sel_anio" class="form-control input-sm">
+															<select id="sel_anio" name="sel_anio" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_anio}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -94,9 +94,9 @@
 															</select>
 														</div>
 														
-														<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.ddi" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="listar.control.calidad.busqueda.ddi" />:</label>
 														<div class="col-sm-2">
-															<select id="sel_ddi" name="sel_ddi" class="form-control input-sm">
+															<select id="sel_ddi" name="sel_ddi" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_ddi}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -104,9 +104,9 @@
 															</select>
 														</div>
 														
-														<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.almacen" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="listar.control.calidad.busqueda.almacen" />:</label>
 														<div class="col-sm-2">
-															<select id="sel_almacen" name="sel_almacen" class="form-control input-sm">
+															<select id="sel_almacen" name="sel_almacen" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_almacen}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -116,17 +116,17 @@
 													</div>
 													
 													<div class="form-group">
-														<label class="col-sm-2 control-label label-sm"><spring:message code="mantenimiento.control.calidad.fecha" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="mantenimiento.control.calidad.fecha" />:</label>
 														<div class="col-sm-2 smart-form">
 															<label class="input "> 
 																<i class="icon-append fa fa-calendar"></i>
-																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker input-sm">
+																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker">
 															</label>
 														</div>
 														
-														<label class="col-sm-2 control-label label-sm"><spring:message code="mantenimiento.control.calidad.estado" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="mantenimiento.control.calidad.estado" />:</label>
 														<div class="col-sm-2">
-															<select id="sel_estado" name="sel_estado" class="form-control input-sm">
+															<select id="sel_estado" name="sel_estado" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_ddi}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -134,9 +134,9 @@
 															</select>
 														</div>
 														
-														<label class="col-sm-2 control-label label-sm"><spring:message code="mantenimiento.control.calidad.nro.orden.compra" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="mantenimiento.control.calidad.nro.orden.compra" />:</label>
 														<div class="col-sm-2">
-															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control input-sm">
+															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_almacen}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -146,9 +146,9 @@
 													</div>
 													
 													<div class="form-group">
-														<label class="col-sm-2 control-label label-sm"><spring:message code="mantenimiento.control.calidad.tipo.control" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="mantenimiento.control.calidad.tipo.control" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_tip_control" name="sel_tip_control" class="form-control input-sm">
+															<select id="sel_tip_control" name="sel_tip_control" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_almacen}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -180,9 +180,9 @@
 												<div class="widget-body">
 								
 													<div class="form-group">
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.almacen" />:</label>
+														<label class="col-sm-3 control-label"><spring:message code="mantenimiento.control.calidad.almacen" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control input-sm">
+															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_anio}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -190,9 +190,9 @@
 															</select>
 														</div>
 														
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.encargado.almacen" />:</label>
+														<label class="col-sm-3 control-label"><spring:message code="mantenimiento.control.calidad.encargado.almacen" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control input-sm">
+															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_ddi}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -202,9 +202,9 @@
 													</div>
 													
 													<div class="form-group">
-														<label class="col-sm-9 control-label label-sm"><spring:message code="mantenimiento.control.calidad.inspector" />:</label>
+														<label class="col-sm-9 control-label"><spring:message code="mantenimiento.control.calidad.inspector" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_inspector" name="sel_inspector" class="form-control input-sm">
+															<select id="sel_inspector" name="sel_inspector" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_almacen}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -235,9 +235,9 @@
 												<div class="widget-body widget-body-50">
 								
 													<div class="form-group">
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.proveedor" />:</label>
+														<label class="col-sm-3 control-label"><spring:message code="mantenimiento.control.calidad.proveedor" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_proveedor" name="sel_proveedor" class="form-control input-sm">
+															<select id="sel_proveedor" name="sel_proveedor" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_anio}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -245,9 +245,9 @@
 															</select>
 														</div>
 														
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.representante" />:</label>
+														<label class="col-sm-3 control-label"><spring:message code="mantenimiento.control.calidad.representante" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_representante" name="sel_representante" class="form-control input-sm">
+															<select id="sel_representante" name="sel_representante" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_ddi}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -278,9 +278,9 @@
 												<div class="widget-body">
 								
 													<div class="form-group">
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.empresa.transporte" />:</label>
+														<label class="col-sm-3 control-label"><spring:message code="mantenimiento.control.calidad.empresa.transporte" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control input-sm">
+															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_anio}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -288,9 +288,9 @@
 															</select>
 														</div>
 														
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.chofer" />:</label>
+														<label class="col-sm-3 control-label"><spring:message code="mantenimiento.control.calidad.chofer" />:</label>
 														<div class="col-sm-3">
-															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control input-sm">
+															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
 																<option value=""><spring:message code="select.seleccione" /></option>
 																<c:forEach items="${lista_ddi}" var="item">
 																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
@@ -300,9 +300,9 @@
 													</div>
 													
 													<div class="form-group">
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.nro.placa" />:</label>
+														<label class="col-sm-3 control-label"><spring:message code="mantenimiento.control.calidad.nro.placa" />:</label>
 														<div class="col-sm-2">
-															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control input-sm">
+															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control">
 														</div>
 													</div>
 								
@@ -328,14 +328,14 @@
 												<div class="widget-body">
 								
 													<div class="form-group">
-														<label class="col-sm-2 control-label label-sm"><spring:message code="mantenimiento.control.calidad.tipo.bien" />:</label>
+														<label class="col-sm-2 control-label"><spring:message code="mantenimiento.control.calidad.tipo.bien" />:</label>
 														<div class="col-sm-10">
 															<div class="inline-group">
-																<label class="radio input-sm">
+																<label class="radio">
 																	<input type="radio" name="rb_tip_bien">
 																	<i></i><spring:message code="mantenimiento.control.calidad.alimentarios" />
 																</label>
-																<label class="radio input-sm">
+																<label class="radio">
 																	<input type="radio" name="rb_tip_bien">
 																	<i></i><spring:message code="mantenimiento.control.calidad.no.alimentarios" />
 																</label>
@@ -346,7 +346,7 @@
 													<div class="form-group">
 														<div class="col-sm-6 smart-form">
 															<section>														
-																<label class="control-label label-sm"><spring:message code="mantenimiento.control.calidad.conclusiones" />:</label>
+																<label class="control-label"><spring:message code="mantenimiento.control.calidad.conclusiones" />:</label>
 																<label class="textarea textarea-resizable"> 										
 																	<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" class="custom-scroll"></textarea> 
 																</label>
@@ -355,7 +355,7 @@
 														
 														<div class="col-sm-6 smart-form">
 															<section>
-																<label class="control-label label-sm"><spring:message code="mantenimiento.control.calidad.recomendaciones" />:</label>
+																<label class="control-label"><spring:message code="mantenimiento.control.calidad.recomendaciones" />:</label>
 																<label class="textarea textarea-resizable"> 										
 																	<textarea rows="3" name="txt_recomendaciones" id="txt_recomendaciones" class="custom-scroll"></textarea> 
 																</label>
