@@ -1,16 +1,16 @@
-package pe.com.sigbah.service.gestion_almacenes;
+package pe.com.sigbah.mapper.gestion_almacenes;
 
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ItemBean;
 
 /**
- * @className: ControlCalidadService.java
+ * @className: MaestroMapper.java
  * @description: 
- * @date: 19 de jun. de 2017
+ * @date: 9 de may. de 2017
  * @author: SUMERIO.
  */
-public interface ControlCalidadService {
+public interface ControlCalidadMapper {
 	
 	/**
 	 * @param item

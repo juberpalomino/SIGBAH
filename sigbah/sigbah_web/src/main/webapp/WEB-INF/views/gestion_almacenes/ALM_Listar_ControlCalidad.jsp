@@ -44,9 +44,8 @@
 									<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
 									<div class="col-sm-2">
 										<select id="sel_anio" class="form-control">
-											<option value=""><spring:message code="select.seleccione" /></option>
 											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											    <option value="${item.descripcionCorta}">${item.descripcionCorta}</option>
 											</c:forEach>
 										</select>
 									</div>

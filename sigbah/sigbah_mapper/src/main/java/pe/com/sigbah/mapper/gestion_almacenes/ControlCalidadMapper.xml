@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pe.com.sigbah.mapper.gestion_almacenes.ControlCalidadMapper">
+
+    <resultMap id="mapAnio" type="pe.com.sigbah.common.bean.ItemBean">
+	  	<result property="descripcionCorta" column="COD_ANIO" />		
+		<result property="descripcion" column="DESCRIPCION" />
+	</resultMap>
+	
+	<parameterMap id="getAnio" type="pe.com.sigbah.common.bean.ResultItemBean">
+<!-- 	    <parameter property="start_from" jdbcType="INTEGER" mode="IN"  /> -->
+	    <parameter property="itemBeans" jdbcType="CURSOR" mode="OUT" resultMap="mapAnio" />
+	</parameterMap>
+    
+    <select id="listarAnios" parameterMap="getAnio" statementType="CALLABLE">
+    	{call BAH_PKG_GENERAL.USP_SEL_TAB_ANIOS(?)}
+    </select>
+
+</mapper>
