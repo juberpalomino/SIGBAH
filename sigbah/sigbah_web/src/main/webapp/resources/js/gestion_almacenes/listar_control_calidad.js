@@ -53,6 +53,7 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
+			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/mantenimientoControlCalidad/';
 			$(location).attr('href', url + codigo);
 		}
