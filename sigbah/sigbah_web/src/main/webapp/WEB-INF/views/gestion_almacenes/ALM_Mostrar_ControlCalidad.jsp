@@ -117,10 +117,10 @@
 													
 													<div class="form-group">
 														<label class="col-sm-2 control-label label-sm"><spring:message code="mantenimiento.control.calidad.fecha" />:</label>
-														<div class="col-sm-2">
-															<label class="input"> 
+														<div class="col-sm-2 smart-form">
+															<label class="input "> 
 																<i class="icon-append fa fa-calendar"></i>
-																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker input-sm" data-dateformat='dd/mm/yy'>
+																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker input-sm">
 															</label>
 														</div>
 														
@@ -232,7 +232,7 @@
 											<div>
 								
 												<!-- widget content -->
-												<div class="widget-body">
+												<div class="widget-body widget-body-50">
 								
 													<div class="form-group">
 														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.proveedor" />:</label>
@@ -328,9 +328,8 @@
 												<div class="widget-body">
 								
 													<div class="form-group">
-														<label class="col-sm-3 control-label label-sm"><spring:message code="mantenimiento.control.calidad.tipo.bien" />:</label>
-														<div class="col-sm-9">
-															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control input-sm">															
+														<label class="col-sm-2 control-label label-sm"><spring:message code="mantenimiento.control.calidad.tipo.bien" />:</label>
+														<div class="col-sm-10">
 															<div class="inline-group">
 																<label class="radio input-sm">
 																	<input type="radio" name="rb_tip_bien">
@@ -345,39 +344,25 @@
 													</div>
 													
 													<div class="form-group">
-														<label class="col-sm-6 control-label label-sm"><spring:message code="mantenimiento.control.calidad.conclusiones" />:</label>
-														<label class="col-sm-6 control-label label-sm"><spring:message code="mantenimiento.control.calidad.recomendaciones" />:</label>
-													</div>	
+														<div class="col-sm-6 smart-form">
+															<section>														
+																<label class="control-label label-sm"><spring:message code="mantenimiento.control.calidad.conclusiones" />:</label>
+																<label class="textarea textarea-resizable"> 										
+																	<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" class="custom-scroll"></textarea> 
+																</label>
+															</section>
+														</div>
 														
-													<div class="form-group">
-														<div class="col-sm-3">
-															<label class="textarea textarea-resizable input-sm"> 										
-																<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" class="custom-scroll"></textarea> 
-															</label>
+														<div class="col-sm-6 smart-form">
+															<section>
+																<label class="control-label label-sm"><spring:message code="mantenimiento.control.calidad.recomendaciones" />:</label>
+																<label class="textarea textarea-resizable"> 										
+																	<textarea rows="3" name="txt_recomendaciones" id="txt_recomendaciones" class="custom-scroll"></textarea> 
+																</label>
+															</section>
 														</div>
-														<div class="col-sm-3">
-															<label class="textarea textarea-resizable input-sm"> 										
-																<textarea rows="3" name="txt_recomendaciones" id="txt_recomendaciones" class="custom-scroll"></textarea> 
-															</label>
-														</div>
-													</div>
-													
-													<div class="form-actions">
-														<div class="row">
-															<div class="col-md-12">
-																<button class="btn btn-primary" type="button" id="btn_grabar">
-																	<i class="fa fa-floppy-o "></i>
-																	<spring:message code="button.grabar" />
-																</button>
-																
-																<button class="btn" type="button" id="btn_salir">
-																	<i class="fa fa-mail-forward"></i>
-																	<spring:message code="button.salir" />
-																</button>
-															</div>
-														</div>
-													</div>
-								
+													</div>	
+
 												</div>
 												<!-- end widget content -->
 								
@@ -386,7 +371,26 @@
 								
 										</div>
 										<!-- end widget -->
-									
+										
+														
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-md-12 opc-center">
+													<button class="btn btn-primary" type="button" id="btn_grabar">
+														<i class="fa fa-floppy-o "></i>
+														<spring:message code="button.grabar" />
+													</button>
+													
+													&nbsp; &nbsp;
+													
+													<button class="btn btn-default" type="button" id="btn_salir">
+														<i class="fa fa-mail-forward"></i>
+														<spring:message code="button.salir" />
+													</button>
+												</div>
+											</div>
+										</div>					
+												
 									</form>
 										
 								</div>

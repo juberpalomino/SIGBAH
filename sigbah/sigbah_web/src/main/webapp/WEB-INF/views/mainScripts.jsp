@@ -31,6 +31,8 @@
 <!-- JARVIS WIDGETS -->
 <script src="${pageContext.request.contextPath}/resources/js/smartwidgets/jarvis.widget.min.js"></script>
 
+<script src="${pageContext.request.contextPath}/resources/js/date-time/bootstrap-datepicker.js"></script>
+
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';
 	var codigoRespuesta = '${base.codigoRespuesta}';

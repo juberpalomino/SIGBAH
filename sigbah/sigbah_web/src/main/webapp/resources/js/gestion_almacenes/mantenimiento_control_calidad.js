@@ -6,6 +6,12 @@ $(document).ready(function() {
 	$('#ul_ges_almacenes').css('display', 'block');
 	$('#li_con_calidad').addClass('active');
 	
+	$('.datepicker').datepicker({
+		autoclose: true,
+		todayHighlight: true,
+		dateFormat: 'dd/mm/yy'
+	});
+	
 	inicializarDatos();
 	
 	$('#btn_buscar').click(function(e) {

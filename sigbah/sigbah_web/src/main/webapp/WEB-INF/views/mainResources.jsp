@@ -15,5 +15,7 @@
 <!-- #GOOGLE FONT -->
 <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/font-api.css">
 
+<link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/datepicker.css" />
+
 <!-- Specific styles this will also ensure you retrain your customization with each SmartAdmin update -->
 <link rel="stylesheet" type="text/css" media="screen" href="${pageContext.request.contextPath}/resources/css/base.css">
