@@ -65,7 +65,11 @@ $(document).ready(function() {
 		var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad').DataTable();
 		tbl_mnt_con_calidad.rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_con_calidad.rows().$('input[type="checkbox"]')[index].checked) {
-				indices.push(index);
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
 				var idUbigeo = listaControlCalidadCache[index].idubigeo;
 				codigo = codigo + idUbigeo + '_';
 			}

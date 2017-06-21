@@ -1,4 +1,3 @@
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!-- RIBBON -->
@@ -28,7 +27,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2><spring:message code="listar.control.calidad.busqueda.titulo" /></h2>
+						<h2>Búsqueda de Controles de Calidad</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -39,10 +38,10 @@
 		
 							<form id="frm_con_calidad" class="form-horizontal">
 							
-								<input type="hidden" id="hid_codigo" name="hid_codigo"> 
+								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
 								<div class="form-group">
-									<label class="col-sm-1 control-label"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
+									<label class="col-sm-1 control-label">Año:</label>
 									<div class="col-sm-2">
 										<select id="sel_anio" name="sel_anio" class="form-control">
 											<c:forEach items="${lista_anio}" var="item">
@@ -51,7 +50,7 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-1 control-label"><spring:message code="listar.control.calidad.busqueda.ddi" />:</label>
+									<label class="col-sm-1 control-label">DDI:</label>
 									<div class="col-sm-2">
 										<select id="sel_ddi" name="sel_ddi" class="form-control">
 											<c:forEach items="${lista_ddi}" var="item">
@@ -60,7 +59,7 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-2 control-label"><spring:message code="listar.control.calidad.busqueda.almacen" />:</label>
+									<label class="col-sm-2 control-label">Almacén:</label>
 									<div class="col-sm-2">
 										<select id="sel_almacen" name="sel_almacen" class="form-control">
 											<c:forEach items="${lista_almacen}" var="item">
@@ -72,7 +71,7 @@
 									<div class="col-sm-2">
 										<button class="btn btn-primary" type="button" id="btn_buscar">
 											<i class="fa fa-search"></i>
-											<spring:message code="button.search" />
+											Buscar
 										</button>
 									</div>
 								</div>
@@ -98,23 +97,23 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2><spring:message code="listar.control.calidad.grilla.titulo" /></h2>
+						<h2>Relación de Controles de Calidad</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="<spring:message code="button.report.xls" />">
+								data-original-title="Exportar Excel">
 								<i class="fa fa-file-excel-o"></i>
 							</a> 
 							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="<spring:message code="button.print" />">
+								data-original-title="Imprimir">
 								<i class="fa fa-file-pdf-o"></i>
 							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="<spring:message code="button.edit" />">
+								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
 							</a>
 							<a href="#" id="href_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="<spring:message code="button.nuevo" />">
+								data-original-title="Nuevo">
 								<i class="fa fa-file-o"></i>
 							</a>
 						</div>
@@ -129,14 +128,14 @@
 							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
-										<th><spring:message code="table.column.item" /></th>
-										<th><spring:message code="table.column.anio" /></th>
-										<th><spring:message code="listar.control.calidad.grilla.ddi" /></th>
-										<th><spring:message code="listar.control.calidad.grilla.almacen" /></th>
-										<th><spring:message code="listar.control.calidad.grilla.nro.rep.con.calidad" /></th>
-										<th><spring:message code="table.column.fecha" /></th>
-										<th><spring:message code="listar.control.calidad.grilla.tipo.control" /></th>
-										<th><spring:message code="table.column.estado" /></th>
+										<th></th>
+										<th>Año</th>
+										<th>DDI</th>
+										<th>Almacén</th>
+										<th>N° Reporte de Control de Calidad</th>
+										<th>Fecha</th>
+										<th>Tipo de Control</th>
+										<th>Estado</th>
 									</tr>
 								</thead>
 							</table>

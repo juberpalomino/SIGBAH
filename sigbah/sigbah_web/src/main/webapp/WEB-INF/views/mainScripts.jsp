@@ -31,6 +31,10 @@
 <!-- JARVIS WIDGETS -->
 <script src="${pageContext.request.contextPath}/resources/js/smartwidgets/jarvis.widget.min.js"></script>
 
+<!-- JQUERY SELECT2 INPUT -->
+<script src="${pageContext.request.contextPath}/resources/js/plugin/select2/select2.min.js"></script>
+
+<!-- JQUERY CALENDAR INPUT -->
 <script src="${pageContext.request.contextPath}/resources/js/date-time/bootstrap-datepicker.js"></script>
 
 <script type="text/javascript">
