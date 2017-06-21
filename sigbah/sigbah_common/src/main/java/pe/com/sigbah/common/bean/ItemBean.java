@@ -8,9 +8,10 @@ package pe.com.sigbah.common.bean;
  */
 public class ItemBean extends BaseOutputBean {
 
-	private static final long serialVersionUID = 1920713534765475781L;
+	private static final long serialVersionUID = 1L;
+	
 	private Integer icodigo;
-	private short sicodigo;
+	private String vcodigo;
 	private String descripcion;
 	private String descripcionCorta;
 	
@@ -23,14 +24,12 @@ public class ItemBean extends BaseOutputBean {
 	
 	/**
 	 * @param icodigo - Código de la entidad, tipo Integer.
-	 * @param sicodigo - Código de la entidad, tipo short.
 	 * @param descripcion - Descripción de la entidad, tipo String.
 	 * @param descripcionCorta - Descripción corta de la entidad, tipo String.
 	 */
-	public ItemBean(Integer icodigo, short sicodigo, String descripcion, String descripcionCorta) {
+	public ItemBean(Integer icodigo, String descripcion, String descripcionCorta) {
 		super();
 		this.icodigo = icodigo;
-		this.sicodigo = sicodigo;
 		this.descripcion = descripcion;
 		this.descripcionCorta = descripcionCorta;
 	}
@@ -42,6 +41,16 @@ public class ItemBean extends BaseOutputBean {
 	public ItemBean(Integer icodigo, String descripcion) {
 		super();
 		this.icodigo = icodigo;
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @param vcodigo
+	 * @param descripcion
+	 */
+	public ItemBean(String vcodigo, String descripcion) {
+		super();
+		this.vcodigo = vcodigo;
 		this.descripcion = descripcion;
 	}
 
@@ -60,17 +69,17 @@ public class ItemBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the sicodigo
+	 * @return the vcodigo
 	 */
-	public short getSicodigo() {
-		return sicodigo;
+	public String getVcodigo() {
+		return vcodigo;
 	}
 
 	/**
-	 * @param sicodigo the sicodigo to set
+	 * @param vcodigo the vcodigo to set
 	 */
-	public void setSicodigo(short sicodigo) {
-		this.sicodigo = sicodigo;
+	public void setVcodigo(String vcodigo) {
+		this.vcodigo = vcodigo;
 	}
 
 	/**
@@ -91,8 +100,7 @@ public class ItemBean extends BaseOutputBean {
 	 * @return the descripcionCorta
 	 */
 	public String getDescripcionCorta() {
-		String desCorta = descripcionCorta;
-		return desCorta == null ? "" : desCorta;
+		return descripcionCorta;
 	}
 	
 	/**
@@ -107,7 +115,7 @@ public class ItemBean extends BaseOutputBean {
 	 */
 	@Override
 	public String toString() {
-		return "ItemBean [icodigo=" + icodigo + ", sicodigo=" + sicodigo
+		return "ItemBean [icodigo=" + icodigo 
 				+ ", descripcion=" + descripcion + ", descripcionCorta="
 				+ descripcionCorta + "]";
 	}

@@ -8,25 +8,52 @@ $(document).ready(function() {
 	
 	inicializarDatos();
 	
+	$('#frm_con_calidad').bootstrapValidator({
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			sel_anio : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Año.'
+					}
+				}
+			},
+			sel_ddi : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar DDI.'
+					}
+				}
+			}
+		}
+	});
+	
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
+		
+		var bootstrapValidator = $('#frm_con_calidad').data('bootstrapValidator');
+		bootstrapValidator.validate();
+		if (bootstrapValidator.isValid()) {
 
-		var params = { 
-			cod_anio : $('#sel_anio').val(),
-			cod_ddi : $('#sel_ddi').val(),
-			cod_almacen : $('#sel_almacen').val()
-		};
-		
-		loadding(true);
-		
-		consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
-			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-				addErrorMessage(null, respuesta.mensajeRespuesta);
-			} else {
-				listarControlCalidad(respuesta);
-			}
-			loadding(false);
-		});
+			var params = { 
+				cod_anio : $('#sel_anio').val(),
+				cod_ddi : $('#sel_ddi').val(),
+				cod_almacen : $('#sel_almacen').val()
+			};
+			
+			loadding(true);
+			
+			consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarControlCalidad(respuesta);
+				}
+				loadding(false);
+			});
+			
+		}
 		
 	});
 	

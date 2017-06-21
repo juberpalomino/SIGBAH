@@ -1,4 +1,5 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!-- RIBBON -->
 <div id="ribbon">
@@ -34,54 +35,47 @@
 					<div id="div_wid_bod_bus_con_calidad">
 		
 						<!-- widget content -->
-						<div class="widget-body">
+						<div class="widget-body widget-body-50">
 		
 							<form id="frm_con_calidad" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo"> 
 							
 								<div class="form-group">
-									<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
+									<label class="col-sm-1 control-label"><spring:message code="listar.control.calidad.busqueda.anio" />:</label>
 									<div class="col-sm-2">
-										<select id="sel_anio" class="form-control">
+										<select id="sel_anio" name="sel_anio" class="form-control">
 											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.descripcionCorta}">${item.descripcionCorta}</option>
+											    <option value="${item.vcodigo}">${item.vcodigo}</option>
 											</c:forEach>
 										</select>
 									</div>
 									
-									<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.ddi" />:</label>
+									<label class="col-sm-1 control-label"><spring:message code="listar.control.calidad.busqueda.ddi" />:</label>
 									<div class="col-sm-2">
-										<select id="sel_ddi" class="form-control">
-											<option value=""><spring:message code="select.seleccione" /></option>
+										<select id="sel_ddi" name="sel_ddi" class="form-control">
 											<c:forEach items="${lista_ddi}" var="item">
-											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											    <option value="${item.vcodigo}">${item.vcodigo}</option>
 											</c:forEach>
 										</select>
 									</div>
 									
-									<label class="col-sm-2 control-label label-sm"><spring:message code="listar.control.calidad.busqueda.almacen" />:</label>
+									<label class="col-sm-2 control-label"><spring:message code="listar.control.calidad.busqueda.almacen" />:</label>
 									<div class="col-sm-2">
-										<select id="sel_almacen" class="form-control">
-											<option value=""><spring:message code="select.seleccione" /></option>
+										<select id="sel_almacen" name="sel_almacen" class="form-control">
 											<c:forEach items="${lista_almacen}" var="item">
-											    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											    <option value="${item.vcodigo}">${item.vcodigo}</option>
 											</c:forEach>
 										</select>
 									</div>
-								</div>
-								
-								<div class="form-actions">
-									<div class="row">
-										<div class="col-md-12">
-											<button class="btn btn-primary" type="button" id="btn_buscar">
-												<i class="fa fa-search"></i>
-												<spring:message code="button.search" />
-											</button>
-										</div>
+									
+									<div class="col-sm-2">
+										<button class="btn btn-primary" type="button" id="btn_buscar">
+											<i class="fa fa-search"></i>
+											<spring:message code="button.search" />
+										</button>
 									</div>
 								</div>
-		
 							</form>
 		
 						</div>

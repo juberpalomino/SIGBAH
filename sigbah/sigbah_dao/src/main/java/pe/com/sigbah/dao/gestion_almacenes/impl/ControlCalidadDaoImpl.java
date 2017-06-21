@@ -1,5 +1,6 @@
 package pe.com.sigbah.dao.gestion_almacenes.impl;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.dao.gestion_almacenes.ControlCalidadDao;
 
 /**
@@ -27,12 +29,16 @@ import pe.com.sigbah.dao.gestion_almacenes.ControlCalidadDao;
  * @author: SUMERIO.
  */
 @Repository
-public class ControlCalidadDaoImpl extends JdbcDaoSupport implements ControlCalidadDao {
+public class ControlCalidadDaoImpl extends JdbcDaoSupport implements ControlCalidadDao, Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private transient final Log LOGGER = LogFactory.getLog(getClass());
 	
 	private SimpleJdbcCall objJdbcCall;
 	
+	/**
+	 * @param dataSource
+	 */
 	@Autowired
 	public ControlCalidadDaoImpl(DataSource dataSource) {
 		setDataSource(dataSource);
@@ -54,14 +60,14 @@ public class ControlCalidadDaoImpl extends JdbcDaoSupport implements ControlCali
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName("BAH_PKG_GENERAL");
-//			objJdbcCall.withSchemaName(schemaName);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
 			objJdbcCall.withProcedureName("USP_SEL_TAB_ANIOS");
 
 			Map<String, Object> out = objJdbcCall.withoutProcedureColumnMetaDataAccess()
 					.returningResultSet("OS_CURSOR", new RowMapper<ItemBean>() {
 						public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 							ItemBean item = new ItemBean();
-//							item.setCodigo(rs.getString("COD_ANIO"));
+							item.setVcodigo(rs.getString("COD_ANIO"));
 							item.setDescripcion(rs.getString("DESCRIPCION"));
 							return item;
 						}

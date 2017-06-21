@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import pe.com.sigbah.common.util.Constantes;
-
 /**
  * @className: LoginController.java
  * @description: Clase para manejar el login.
@@ -47,9 +45,7 @@ public class LoginController extends BaseController {
 //			context().setAttribute("lis_pri_modulo", lis_pri_modulo, RequestAttributes.SCOPE_SESSION);
 //			context().setAttribute("lis_seg_modulo", lis_seg_modulo, RequestAttributes.SCOPE_SESSION);
 		} catch (Exception e) {
-			LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
-									  Constantes.NIVEL_APP_CONSTROLLER,
-									  this.getClass().getName(), e.getMessage()));
+			LOGGER.error(e.getMessage(), e);
 		}
 		return destino;
 	}

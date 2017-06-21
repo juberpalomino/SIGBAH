@@ -57,31 +57,6 @@ public class BaseController implements Serializable {
 	 */
 	public RequestAttributes context() {
 		return RequestContextHolder.currentRequestAttributes();
-	}	
-
-	/**
-	 * Devuelve el error formateado con el nombre del método.
-	 * @param nombre - Nombre del método donde se genero el error, tipo String
-	 * @param nivel - Nivel donde se genero el error, tipo String
-	 * @param nombreClase - Nombre de la clase, tipo String
-	 * @param mensaje - Mensaje del error, tipo String
-	 * @return Mensaje formateado.
-	 */
-	public String getGenerarError(String nombre, String nivel, String nombreClase, String mensaje) {
-		StringBuffer error = new StringBuffer();
-		if(nivel.equals(Constantes.NIVEL_APP_CONSTROLLER)) {
-			error.append(Constantes.DIVISOR_ERROR_4);
-		}
-		error.append(Constantes.DIVISOR_ERROR_1);
-		error.append(nombreClase);
-		error.append(" - ");
-		error.append(nombre);
-		error.append(Constantes.DIVISOR_ERROR_2);
-		if(nivel.equals(Constantes.NIVEL_APP_DAO)) {
-			error.append(Constantes.DIVISOR_ERROR_3);
-		}
-		error.append(mensaje);	
-		return error.toString();
 	}
 	
 	/**
@@ -310,17 +285,13 @@ public class BaseController implements Serializable {
 			}
 			directorio = properties.getProperty(key);
 		} catch (IOException e) {			
-			LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
-									  	 Constantes.NIVEL_APP_CONSTROLLER, 
-									  	 this.getClass().getName(), e.getMessage()));
+			LOGGER.error(e.getMessage(), e);
 		} finally {
 		    if (inputStream != null) {
 		    	try {
 					inputStream.close();
 				} catch (IOException e) {
-					LOGGER.error(getGenerarError(Thread.currentThread().getStackTrace()[1].getMethodName(),
-											  	 Constantes.NIVEL_APP_CONSTROLLER, 
-											  	 this.getClass().getName(), e.getMessage()));
+					LOGGER.error(e.getMessage(), e);
 				}
 		    }
 		}

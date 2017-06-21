@@ -16,15 +16,6 @@ public final class Constantes implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/* MANEJO DE ERRORES */
-	public static final String DIVISOR_ERROR_1 	= "[";
-	public static final String DIVISOR_ERROR_2	= "]";
-	public static final String DIVISOR_ERROR_3 	= ": ";
-	public static final String DIVISOR_ERROR_4 	= "ERROR MIG: ";
-	public static final String NIVEL_APP_DAO		 = "DAO";
-	public static final String NIVEL_APP_SERVICE	 = "SERVICE";
-	public static final String NIVEL_APP_CONSTROLLER = "CONTROLLER";
-	public static final String NIVEL_APP_REPORTER	 = "REPORTER";
-	public static final String ERROR_DOS_REGISTROS   = "query did not return a unique result: 2";
 	public static final String COD_EXITO_GENERAL = "01";
 	public static final String COD_ERROR_GENERAL = "99";
 
@@ -68,12 +59,14 @@ public final class Constantes implements Serializable {
 	public static final String EXPRESION_MONEDA_DECIMAL = "###,###,##0.000";
 												
 	
-	/* CODIGO SISTEMA SIG_BAH */
-//	public static final int CODIGO_SISTEMA_SIG_BAH = Integer.valueOf(ReadParameterProperties.getPropiedad("codigo.sistema.mig"));
+	/* CODIGOS SISTEMA SIG_BAH */
 	public static final String CODIGO_MODULO_SIG_BAH = "SIG_BAH";
-	public static final String CODIGO_ROL_ACTIVO = "1";
-	public static final String NOMBRE_MODULO = "Ingresos y Gastos";
-	public static final String TABLA_NOMBRE_MODULO = "nombremodulo";
+	public static final String ESQUEMA_SIG_BAH = "SINPAD";
+	public static final String PACKAGE_ADMINISTRACION = "BAH_PKG_ADMINISTRACION";
+	public static final String PACKAGE_DONACION = "BAH_PKG_DONACION";
+	public static final String PACKAGE_GENERAL = "BAH_PKG_GENERAL";
+	public static final String PACKAGE_LOGISTICA = "BAH_PKG_LOGISTICA";
+	public static final String PACKAGE_PROGRAMACION = "BAH_PKG_PROGRAMACION";
 	
 
 	/* ESTADO ACTIVO */
@@ -84,7 +77,6 @@ public final class Constantes implements Serializable {
 	public static final String FLAG_ACTIVO = "S";
 	public static final String FLAG_INACTIVO = "N";
 	
-
 	public static final boolean ESTADO_ACTIVO_TRUE = true;
 	public static final boolean ESTADO_ACTIVO_FALSE = false;
 
@@ -101,38 +93,6 @@ public final class Constantes implements Serializable {
 	public static final String ACCION_CORRECTA = "Ok";
 	public static final String ACCION_CORRECTA_JSON = "{\"success\":1}";
 
-	/* ABREVIATURAS PARTES */
-	public static final String PARTE_DEMANDANTE = "DTE";
-	public static final String PARTE_DEMANDADO = "DDO";
-	public static final short NIVEL_SUB_MENU_PRIMARIO = 1;
-	public static final short NIVEL_SUB_MENU_SECUNDARIO = 2;
-	public static final short NIVEL_SUB_MENU_TERCIARIO = 3;
-	
-	/* MARCAS PARA MENSAJES DE ERROR */
-	public static final String MARCA_INICIO = ":mi:";
-	public static final String MARCA_FINAL = ":mf:";
-	public static final String MARCA_ISNULL_OJ = "[isNullcodOJ]";
-	public static final String MARCA_EXPEDIENTE = "Nro. Expediente : ";
-	public static final String ERROR_GRABAR_ARCHIVO_REPORTE = "Error al guardar el archivo reporte asociado.";
-	
-	/* TABLAS MAESTRAS */
-	public static final String TABLA_EMPRESA = "Tabempresa";
-	public static final String TABLA_EMPRESA_CODIGO = "icodempresa";
-	public static final String TABLA_EMPRESA_DESCRIPCION = "vrazsocial";
-	public static final String TABLA_TIPO_COMPROBANTE = "TTipoComprobante";
-	public static final String TABLA_USUARIO = "Tabusuario";
-	public static final String TABLA_USUARIO_CODIGO = "icodusuario";
-	
-	
-	/* TABLA UBIGEO Y PAIS */
-	public static final short CODIGO_PAIS_PERU = 80;
-	public static final short CODIGO_UBIGEO_DPTO_LIMA = 674;
-	public static final short CODIGO_UBIGEO_PROV_LIMA = 676;	
-	public static final String CODIGO_POSTAL_DPTO_LIMA = "15";
-	public static final String CODIGO_POSTAL_PROV_LIMA = "1501";
-	public static final short UBIGEO_DEPARTAMENTO = 1;
-	public static final short UBIGEO_PROVINCIA = 2;
-	public static final short UBIGEO_DISTRITO = 3;
 	
 	/* UNIDADES DE MEDIDA */
 	public static final String UNIDAD_MEDIDA_GLOBAL = "gbl";	

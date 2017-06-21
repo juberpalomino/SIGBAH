@@ -1,5 +1,6 @@
 package pe.com.sigbah.service.gestion_almacenes.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.dao.gestion_almacenes.ControlCalidadDao;
 import pe.com.sigbah.service.gestion_almacenes.ControlCalidadService;
-import pe.com.sigbah.service.impl.GenericServiceImpl;
 
 /**
  * @className: ControlCalidadServiceImpl.java
@@ -17,7 +17,7 @@ import pe.com.sigbah.service.impl.GenericServiceImpl;
  * @author: SUMERIO.
  */
 @Service
-public class ControlCalidadServiceImpl extends GenericServiceImpl implements ControlCalidadService {
+public class ControlCalidadServiceImpl implements ControlCalidadService, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	

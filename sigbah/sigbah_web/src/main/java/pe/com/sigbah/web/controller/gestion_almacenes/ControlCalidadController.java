@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import pe.com.sigbah.common.bean.BaseOutputBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.service.IMaestroService;
+import pe.com.sigbah.service.general.GeneralService;
 import pe.com.sigbah.service.gestion_almacenes.ControlCalidadService;
 import pe.com.sigbah.web.controller.BaseController;
 
@@ -36,10 +36,10 @@ public class ControlCalidadController extends BaseController {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired 
-	private IMaestroService iMaestroService;
+	private ControlCalidadService controlCalidadService;
 	
 	@Autowired 
-	private ControlCalidadService controlCalidadService;
+	private GeneralService generalService;
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -51,11 +51,10 @@ public class ControlCalidadController extends BaseController {
 	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
     public String inicio(Model model) {
         try {
-//        	model.addAttribute("lis_maestro", iMaestroService.listarUbigeo(new UbigeoBean()));
-        	
-//        	System.out.println(getPropiedad("url.diana"));
-        	
-        	model.addAttribute("lista_anio", controlCalidadService.listarAnios());
+
+        	model.addAttribute("lista_anio", generalService.listarAnios());
+        	model.addAttribute("lista_ddi", generalService.listarAnios());
+        	model.addAttribute("lista_almacen", generalService.listarAnios());
 
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
             
@@ -87,7 +86,7 @@ public class ControlCalidadController extends BaseController {
 				
 			}
 			
-			lista = iMaestroService.listarUbigeo(ubigeo);
+
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			baseOutputBean = new BaseOutputBean();
