@@ -32,6 +32,9 @@ public class Utilidades {
 	private Utilidades() {
 	}
 
+	/**
+	 * @return
+	 */
 	public static Utilidades getInstancia() {
 		if (!Utilidades.instanciated) {
 			Utilidades.instancia = new Utilidades();
@@ -40,6 +43,10 @@ public class Utilidades {
 		return Utilidades.instancia;
 	}
 
+	/**
+	 * @param response
+	 * @param usuario
+	 */
 	public void saveUserInCookie(HttpServletResponse response, UsuarioBean usuario) {
 		String serial = usuario.getUsuario();// +"/" +
 		// usuario.getDePrenombres();
@@ -57,6 +64,10 @@ public class Utilidades {
 		response.addCookie(cookie);
 	}
 
+	/**
+	 * @param request
+	 * @return
+	 */
 	public UsuarioBean loadUserFromCookie(HttpServletRequest request) {
 		UsuarioBean usuario = new UsuarioBean();
 		String user = giveMeCoockieValue(request, Constantes.USER_COOKIE_ID);
@@ -65,10 +76,18 @@ public class Utilidades {
 		return usuario;
 	}
 
+	/**
+	 * @param request
+	 * @return
+	 */
 	public UsuarioBean loadUserFromSession(HttpServletRequest request) {
 		return (UsuarioBean) ServletUtility.getInstancia().loadSessionAttribute(request, "usuario");
 	}
 
+	/**
+	 * @param user
+	 * @param usuario
+	 */
 	public void splitAndPopuleUser(String user, UsuarioBean usuario) {
 		if (!user.equals("")) {
 			String str[] = user.split("/");
@@ -78,6 +97,11 @@ public class Utilidades {
 		}
 	}
 
+	/**
+	 * @param request
+	 * @param cookieName
+	 * @return
+	 */
 	public String giveMeCoockieValue(HttpServletRequest request, String cookieName) {
 		String retval = "";
 		Cookie[] cookies = request.getCookies();
@@ -92,6 +116,12 @@ public class Utilidades {
 		return retval;
 	}
 
+	/**
+	 * @param in
+	 * @param response
+	 * @param contentType
+	 * @throws Exception
+	 */
 	public void readHttpAndWriteInOutputStream(InputStream in, HttpServletResponse response, String contentType)
 			throws Exception {
 		try {
@@ -114,6 +144,11 @@ public class Utilidades {
 		}
 	}
 
+	/**
+	 * @param in
+	 * @return
+	 * @throws Exception
+	 */
 	public StringBuffer readHttpAndWriteInOutput(InputStream in) throws Exception {
 		StringBuffer sf = new StringBuffer();
 		try {
@@ -129,6 +164,13 @@ public class Utilidades {
 		return sf;
 	}
 
+	/**
+	 * @param response
+	 * @param urlReporte
+	 * @return
+	 * @throws IOException
+	 * @throws ServletException
+	 */
 	public String procesaReportePrimerIntento(HttpServletResponse response, String urlReporte)
 			throws IOException, ServletException {
 		String urlRetval = null;
@@ -168,6 +210,14 @@ public class Utilidades {
 		return urlRetval;
 	}
 
+	/**
+	 * @param response
+	 * @param urlReporte
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 * @throws ServletException
+	 */
 	public String procesaReporteSegundoIntento(HttpServletResponse response, String urlReporte, Model model)
 			throws IOException, ServletException {
 
@@ -299,6 +349,10 @@ public class Utilidades {
 		return new String(chars, start, end);
 	}
 
+	/**
+	 * @param length
+	 * @return
+	 */
 	public static String generateRandomNumber2(int length) {
 		StringBuffer buffer = new StringBuffer();
 		String characters = "12345678901234567890";
@@ -316,6 +370,10 @@ public class Utilidades {
 		return buffer.toString();
 	}
 
+	/**
+	 * @param length
+	 * @return
+	 */
 	public static String generateRandomNumber(int length) {
 		String randomString = "";
 		try {
