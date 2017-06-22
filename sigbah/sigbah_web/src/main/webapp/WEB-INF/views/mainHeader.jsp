@@ -23,7 +23,7 @@
 					<spring:message code="application_name" />
 				</div>
 				<div id="div-usuario" class="col-sm-4">
-					Usuario: Juan Perez <br> INDECI CENTRAL
+					Usuario: ${usuario.nombreUsuario} <br> ${usuario.nombreDdi}
 				</div>
 			</div>
 		</div>	
@@ -45,7 +45,7 @@
 		<!-- logout button -->
 		<div id="logout" class="btn-header pull-right">
 			<span> 
-				<a href="login.html" title="Cerrar Sesión">
+				<a href="${pageContext.request.contextPath}/logout/inicio" title="Cerrar Sesión">
 					Salir
 					<i class="fa fa-sign-out"></i>
 				</a> 
@@ -58,3 +58,17 @@
 
 </header>
 <!-- END HEADER -->
+
+<script type="text/javascript">
+	try { 
+		// Si la session se encuentra inactiva		
+		if ('${usuario}' == null || '${usuario}' == '') {
+			if (confirm('Su session se encuentra inactiva, inicie nuevamente !!!')) {
+				window.location.href = '${pageContext.request.contextPath}/login';
+			} else {
+				window.location.href = '${pageContext.request.contextPath}/login';
+			}
+		}
+		
+	} catch(e) {}
+</script>

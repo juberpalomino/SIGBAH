@@ -1,30 +1,29 @@
 package pe.com.sigbah.common.bean;
 
+import java.io.Serializable;
+
 /**
  * @className: UsuarioBean.java
  * @description: 
- * @date: 17 de jun. de 2016
+ * @date: 17 de jun. de 2017
  * @author: SUMERIO.
  */
-public class UsuarioBean extends BaseOutputBean {
+public class UsuarioBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Integer cod_login;
-	private String cla_dinamica;
-	private Integer cod_usuario;
-	private String des_usuario;
-	private Integer cod_estado;
-	private Integer cod_area;
-	private String vcod_area;
-	private String des_area;
-	private Integer cod_rol;
-	private String des_rol;
-	private Integer cod_sistema;
-	private String des_sistema;
-	private String nombres;
-	private String apellidos;
-	private int ind_per_mig;
-
+	private Integer idUsuario;
+	private String usuario;
+	private String cargo;
+	private String nombreUsuario;
+	private Integer idDdi;
+	private String codigoDdi;
+	private String nombreDdi;
+	private Integer idAlmacen;
+	private String codigoAlmacen;
+	private String nombreAlmacen;
+	private String password;
+	private String sessionId;
+	
 	
 	/**
 	 * 
@@ -34,184 +33,216 @@ public class UsuarioBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the cod_login
+	 * @param usuario
+	 * @param password
 	 */
-	public Integer getCod_login() {
-		return cod_login;
+	public UsuarioBean(String usuario, String password) {
+		super();
+		this.usuario = usuario;
+		this.password = password;
 	}
-	/**
-	 * @param cod_login the cod_login to set
-	 */
-	public void setCod_login(Integer cod_login) {
-		this.cod_login = cod_login;
-	}
-	/**
-	 * @return the cla_dinamica
-	 */
-	public String getCla_dinamica() {
-		return cla_dinamica;
-	}
-	/**
-	 * @param cla_dinamica the cla_dinamica to set
-	 */
-	public void setCla_dinamica(String cla_dinamica) {
-		this.cla_dinamica = cla_dinamica;
-	}
-	/**
-	 * @return the cod_usuario
-	 */
-	public Integer getCod_usuario() {
-		return cod_usuario;
-	}
-	/**
-	 * @param cod_usuario the cod_usuario to set
-	 */
-	public void setCod_usuario(Integer cod_usuario) {
-		this.cod_usuario = cod_usuario;
-	}
-	/**
-	 * @return the des_usuario
-	 */
-	public String getDes_usuario() {
-		return des_usuario;
-	}
-	/**
-	 * @param des_usuario the des_usuario to set
-	 */
-	public void setDes_usuario(String des_usuario) {
-		this.des_usuario = des_usuario;
-	}
-	/**
-	 * @return the cod_estado
-	 */
-	public Integer getCod_estado() {
-		return cod_estado;
-	}
-	/**
-	 * @param cod_estado the cod_estado to set
-	 */
-	public void setCod_estado(Integer cod_estado) {
-		this.cod_estado = cod_estado;
-	}
-	/**
-	 * @return the cod_area
-	 */
-	public Integer getCod_area() {
-		return cod_area;
-	}
-	/**
-	 * @param cod_area the cod_area to set
-	 */
-	public void setCod_area(Integer cod_area) {
-		this.cod_area = cod_area;
-	}
-	/**
-	 * @return the vcod_area
-	 */
-	public String getVcod_area() {
-		return vcod_area;
-	}
-	/**
-	 * @param vcod_area the vcod_area to set
-	 */
-	public void setVcod_area(String vcod_area) {
-		this.vcod_area = vcod_area;
-	}
-	/**
-	 * @return the des_area
-	 */
-	public String getDes_area() {
-		return des_area;
-	}
-	/**
-	 * @param des_area the des_area to set
-	 */
-	public void setDes_area(String des_area) {
-		this.des_area = des_area;
-	}
-	/**
-	 * @return the cod_rol
-	 */
-	public Integer getCod_rol() {
-		return cod_rol;
-	}
-	/**
-	 * @param cod_rol the cod_rol to set
-	 */
-	public void setCod_rol(Integer cod_rol) {
-		this.cod_rol = cod_rol;
-	}
-	/**
-	 * @return the des_rol
-	 */
-	public String getDes_rol() {
-		return des_rol;
-	}
-	/**
-	 * @param des_rol the des_rol to set
-	 */
-	public void setDes_rol(String des_rol) {
-		this.des_rol = des_rol;
-	}
-	/**
-	 * @return the cod_sistema
-	 */
-	public Integer getCod_sistema() {
-		return cod_sistema;
-	}
-	/**
-	 * @param cod_sistema the cod_sistema to set
-	 */
-	public void setCod_sistema(Integer cod_sistema) {
-		this.cod_sistema = cod_sistema;
-	}
-	/**
-	 * @return the des_sistema
-	 */
-	public String getDes_sistema() {
-		return des_sistema;
-	}
-	/**
-	 * @param des_sistema the des_sistema to set
-	 */
-	public void setDes_sistema(String des_sistema) {
-		this.des_sistema = des_sistema;
-	}
-	/**
-	 * @return the nombres
-	 */
-	public String getNombres() {
-		return nombres;
-	}
-	/**
-	 * @param nombres the nombres to set
-	 */
-	public void setNombres(String nombres) {
-		this.nombres = nombres;
-	}
-	/**
-	 * @return the apellidos
-	 */
-	public String getApellidos() {
-		return apellidos;
-	}
-	/**
-	 * @param apellidos the apellidos to set
-	 */
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
-	/**
-	 * @return the ind_per_mig
-	 */
-	public int getInd_per_mig() {
-		return ind_per_mig;
-	}
-	/**
-	 * @param ind_per_mig the ind_per_mig to set
-	 */
-	public void setInd_per_mig(int ind_per_mig) {
-		this.ind_per_mig = ind_per_mig;
-	}	
 
+
+
+
+	/**
+	 * @return the idUsuario
+	 */
+	public Integer getIdUsuario() {
+		return idUsuario;
+	}
+
+
+	/**
+	 * @param idUsuario the idUsuario to set
+	 */
+	public void setIdUsuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+
+	/**
+	 * @return the usuario
+	 */
+	public String getUsuario() {
+		return usuario;
+	}
+
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+
+	/**
+	 * @return the cargo
+	 */
+	public String getCargo() {
+		return cargo;
+	}
+
+
+	/**
+	 * @param cargo the cargo to set
+	 */
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+
+
+	/**
+	 * @return the nombreUsuario
+	 */
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+
+	/**
+	 * @param nombreUsuario the nombreUsuario to set
+	 */
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
+
+	/**
+	 * @return the idDdi
+	 */
+	public Integer getIdDdi() {
+		return idDdi;
+	}
+
+
+	/**
+	 * @param idDdi the idDdi to set
+	 */
+	public void setIdDdi(Integer idDdi) {
+		this.idDdi = idDdi;
+	}
+
+
+	/**
+	 * @return the codigoDdi
+	 */
+	public String getCodigoDdi() {
+		return codigoDdi;
+	}
+
+
+	/**
+	 * @param codigoDdi the codigoDdi to set
+	 */
+	public void setCodigoDdi(String codigoDdi) {
+		this.codigoDdi = codigoDdi;
+	}
+
+
+	/**
+	 * @return the nombreDdi
+	 */
+	public String getNombreDdi() {
+		return nombreDdi;
+	}
+
+
+	/**
+	 * @param nombreDdi the nombreDdi to set
+	 */
+	public void setNombreDdi(String nombreDdi) {
+		this.nombreDdi = nombreDdi;
+	}
+
+
+	/**
+	 * @return the idAlmacen
+	 */
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+
+
+	/**
+	 * @param idAlmacen the idAlmacen to set
+	 */
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+
+
+	/**
+	 * @return the codigoAlmacen
+	 */
+	public String getCodigoAlmacen() {
+		return codigoAlmacen;
+	}
+
+
+	/**
+	 * @param codigoAlmacen the codigoAlmacen to set
+	 */
+	public void setCodigoAlmacen(String codigoAlmacen) {
+		this.codigoAlmacen = codigoAlmacen;
+	}
+
+
+	/**
+	 * @return the nombreAlmacen
+	 */
+	public String getNombreAlmacen() {
+		return nombreAlmacen;
+	}
+
+
+	/**
+	 * @param nombreAlmacen the nombreAlmacen to set
+	 */
+	public void setNombreAlmacen(String nombreAlmacen) {
+		this.nombreAlmacen = nombreAlmacen;
+	}
+
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @return the sessionId
+	 */
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	/**
+	 * @param sessionId the sessionId to set
+	 */
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "UsuarioBean [idUsuario=" + idUsuario + ", usuario=" + usuario + ", cargo=" + cargo + ", nombreUsuario="
+				+ nombreUsuario + ", idDdi=" + idDdi + ", codigoDdi=" + codigoDdi + ", nombreDdi=" + nombreDdi
+				+ ", idAlmacen=" + idAlmacen + ", codigoAlmacen=" + codigoAlmacen + ", nombreAlmacen=" + nombreAlmacen
+				+ ", password=" + password + "]";
+	}
+	
 }

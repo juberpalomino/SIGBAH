@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import pe.com.sigbah.common.bean.BaseOutputBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
+import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.service.general.GeneralService;
-import pe.com.sigbah.service.gestion_almacenes.ControlCalidadService;
-import pe.com.sigbah.web.controller.BaseController;
+import pe.com.sigbah.service.GeneralService;
+import pe.com.sigbah.service.LogisticaService;
+import pe.com.sigbah.web.controller.common.BaseController;
+import pe.com.sigbah.web.controller.common.Utilidades;
 
 /**
  * @className: ControlCalidadController.java
@@ -36,7 +38,7 @@ public class ControlCalidadController extends BaseController {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired 
-	private ControlCalidadService controlCalidadService;
+	private LogisticaService logisticaService;
 	
 	@Autowired 
 	private GeneralService generalService;
@@ -55,9 +57,9 @@ public class ControlCalidadController extends BaseController {
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	model.addAttribute("lista_ddi", generalService.listarAnios());
         	model.addAttribute("lista_almacen", generalService.listarAnios());
-
+        
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
-            
+
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
         	baseOutputBean = new BaseOutputBean();
@@ -85,6 +87,8 @@ public class ControlCalidadController extends BaseController {
 			if (ubigeo.getCoddpto() == null) {
 				
 			}
+			
+			
 			
 
 		} catch (Exception e) {

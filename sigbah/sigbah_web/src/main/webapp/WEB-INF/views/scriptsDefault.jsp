@@ -17,6 +17,12 @@
 <!-- MAIN APP JS FILE -->
 <script src="${pageContext.request.contextPath}/resources/js/app.seed.js"></script>
 
+<!-- JQUERY VALIDATE -->
+<script src="${pageContext.request.contextPath}/resources/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+
+<!-- JQUERY MASKED INPUT -->
+<script src="${pageContext.request.contextPath}/resources/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';
 </script>

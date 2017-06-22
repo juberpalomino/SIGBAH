@@ -14,6 +14,12 @@ import java.math.BigDecimal;
 public final class Constantes implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	/* USER STATUS */
+	public static final String USER_COOKIE_ID = "Usuario";
+    public static final String USER_ACCESS_COOKIE_ID = "Acceso";
+    public static final String SESSION_SATTUS = "State";
+    public static final int TI_IDENTIFICACION = 0;
 
 	/* MANEJO DE ERRORES */
 	public static final String COD_EXITO_GENERAL = "01";
