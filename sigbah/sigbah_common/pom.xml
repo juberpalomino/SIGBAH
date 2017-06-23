@@ -11,9 +11,12 @@
 	<artifactId>sigbah_common</artifactId>
 	<name>sigbah_common</name>
 	<url>http://maven.apache.org</url>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>3.2.3.RELEASE</spring.version>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 		    <groupId>commons-logging</groupId>
@@ -39,12 +42,13 @@
 	      	<artifactId>poi</artifactId>
 	      	<version>3.10-FINAL</version>
 	    </dependency>
-	
+	    
+	    <!-- Spring 3 dependencies -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
+
 	</dependencies>
 </project>
