@@ -33,7 +33,7 @@
 	</definition>
 	
 	<definition name="listar-donaciones" extends="principal-layout">
-	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/ALM_Listar_Donaciones.jsp" />
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
 	</definition>
 	
 </tiles-definitions>
