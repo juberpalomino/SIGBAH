@@ -1,6 +1,6 @@
 //GENERALES
 var NOTIFICACION_OK = '01';
-var NOTIFICACION_ERROR = '99';
+var NOTIFICACION_ERROR = '00';
 
 $(function() {
 

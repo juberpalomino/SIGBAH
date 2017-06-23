@@ -23,7 +23,7 @@ public final class Constantes implements Serializable {
 
 	/* MANEJO DE ERRORES */
 	public static final String COD_EXITO_GENERAL = "01";
-	public static final String COD_ERROR_GENERAL = "99";
+	public static final String COD_ERROR_GENERAL = "00";
 
 	/* DATOS GENERALES */
 	public static final String EMPTY = "";
