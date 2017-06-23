@@ -15,6 +15,9 @@ import pe.com.sigbah.common.bean.UsuarioBean;
  */
 public class UsuarioMapper implements RowMapper<UsuarioBean> {
 
+	/* (non-Javadoc)
+	 * @see org.springframework.jdbc.core.RowMapper#mapRow(java.sql.ResultSet, int)
+	 */
 	@Override
 	public UsuarioBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		UsuarioBean usuarioBean = new UsuarioBean();

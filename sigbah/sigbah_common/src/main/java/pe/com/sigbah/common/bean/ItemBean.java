@@ -21,7 +21,24 @@ public class ItemBean extends BaseOutputBean {
 	public ItemBean() {
 		super();
 	}
+
 	
+	/**
+	 * @param icodigo
+	 */
+	public ItemBean(Integer icodigo) {
+		super();
+		this.icodigo = icodigo;
+	}
+
+	/**
+	 * @param vcodigo
+	 */
+	public ItemBean(String vcodigo) {
+		super();
+		this.vcodigo = vcodigo;
+	}
+
 	/**
 	 * @param icodigo - Código de la entidad, tipo Integer.
 	 * @param descripcion - Descripción de la entidad, tipo String.

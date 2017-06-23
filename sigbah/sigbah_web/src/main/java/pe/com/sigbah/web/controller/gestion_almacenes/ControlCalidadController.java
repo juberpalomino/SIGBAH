@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.BaseOutputBean;
+import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
-import pe.com.sigbah.web.controller.common.Utilidades;
 
 /**
  * @className: ControlCalidadController.java
@@ -53,9 +54,11 @@ public class ControlCalidadController extends BaseController {
 	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
     public String inicio(Model model) {
         try {
+        	// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 
         	model.addAttribute("lista_anio", generalService.listarAnios());
-        	model.addAttribute("lista_ddi", generalService.listarAnios());
+        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi())));
         	model.addAttribute("lista_almacen", generalService.listarAnios());
         
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));

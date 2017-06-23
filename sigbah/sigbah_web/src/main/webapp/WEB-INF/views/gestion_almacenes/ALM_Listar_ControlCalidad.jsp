@@ -45,7 +45,7 @@
 									<div class="col-sm-2">
 										<select id="sel_anio" name="sel_anio" class="form-control">
 											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.vcodigo}">${item.vcodigo}</option>
+											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -54,7 +54,7 @@
 									<div class="col-sm-2">
 										<select id="sel_ddi" name="sel_ddi" class="form-control">
 											<c:forEach items="${lista_ddi}" var="item">
-											    <option value="${item.vcodigo}">${item.vcodigo}</option>
+											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -63,7 +63,7 @@
 									<div class="col-sm-2">
 										<select id="sel_almacen" name="sel_almacen" class="form-control">
 											<c:forEach items="${lista_almacen}" var="item">
-											    <option value="${item.vcodigo}">${item.vcodigo}</option>
+											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>

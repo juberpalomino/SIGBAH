@@ -3,8 +3,10 @@ package pe.com.sigbah.dao.impl;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,14 +16,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlOutParameter;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.util.Constantes;
+import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.dao.GeneralDao;
+import pe.com.sigbah.mapper.ItemMapper;
 
 /**
  * @className: GeneralDaoImpl.java
@@ -102,7 +110,7 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 						public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 							ItemBean item = new ItemBean();
 							item.setVcodigo(rs.getString("COD_ANIO"));
-							item.setDescripcion(rs.getString("DESCRIPCION"));
+							item.setDescripcion(rs.getString("NOMBRE_ANIO"));
 							return item;
 						}
 					}).execute(objJdbcCall);
@@ -129,10 +137,36 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.general.GeneralDao#listarDdi(pe.com.sigbah.common.bean.ItemBean)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ItemBean> listarDdi(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarDdi] Inicio ");
+		List<ItemBean> items = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DDI", itemBean.getIcodigo().toString(), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_DDI");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DDI", new SqlParameter("pi_IDE_DDI", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ItemMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			items = (List<ItemBean>) out.get("po_Lr_Recordset");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDdi] Fin ");
+		return items;
 	}
 
 	/* (non-Javadoc)
