@@ -2,6 +2,17 @@ var listaAlimentariosCache = new Object();
 var listaNoAlimentariosCache = new Object();
 var listaDocumentosCache = new Object();
 
+var frm_dat_generales = $('#frm_dat_generales');
+
+var tbl_det_alimentarios = $('#tbl_det_alimentarios');
+var frm_det_alimentarios = $('#frm_det_alimentarios');
+
+var tbl_det_no_alimentarios = $('#tbl_det_no_alimentarios');
+var frm_det_no_alimentarios = $('#frm_det_no_alimentarios');
+
+var tbl_det_documentos = $('#tbl_det_documentos');
+var frm_det_documentos = $('#frm_det_documentos');
+
 $(document).ready(function() {
 	
 	$('#li_ges_almacenes').addClass('active');
@@ -51,7 +62,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#frm_det_alimentarios').bootstrapValidator({
+	frm_det_alimentarios.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -135,7 +146,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#frm_det_no_alimentarios').bootstrapValidator({
+	frm_det_no_alimentarios.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -205,7 +216,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#frm_det_documentos').bootstrapValidator({
+	frm_det_documentos.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -286,7 +297,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		$('#h4_tit_alimentarios').html('Nuevo Producto');
-		$('#frm_det_alimentarios').trigger('reset');
+		frm_det_alimentarios.trigger('reset');
 		$('#hid_cod_producto').val('');
 		$('#div_det_alimentarios').modal('show');
 		
@@ -296,9 +307,8 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var tbl_det_alimentarios = $('#tbl_det_alimentarios').DataTable();
-		tbl_det_alimentarios.rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_alimentarios.rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_alimentarios.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_alimentarios.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
 			}
 		});
@@ -312,7 +322,7 @@ $(document).ready(function() {
 			var obj = listaAlimentariosCache[indices[0]];
 			
 			$('#h4_tit_alimentarios').html('Actualizar Producto');
-			$('#frm_det_alimentarios').trigger('reset');
+			frm_det_alimentarios.trigger('reset');
 			
 			$('#hid_cod_producto').val(obj.cod_producto);
 			
@@ -340,9 +350,8 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		var tbl_det_alimentarios = $('#tbl_det_alimentarios').DataTable();
-		tbl_det_alimentarios.rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_alimentarios.rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_alimentarios.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_alimentarios.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
 				var cod_producto = listaControlCalidadCache[index].cod_producto;
 				codigo = codigo + cod_producto + '_';
@@ -397,7 +406,7 @@ $(document).ready(function() {
 	$('#btn_gra_alimentario').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = $('#frm_det_alimentarios').data('bootstrapValidator');
+		var bootstrapValidator = frm_det_alimentarios.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
@@ -437,7 +446,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
-		$('#frm_det_no_alimentarios').trigger('reset');
+		frm_det_no_alimentarios.trigger('reset');
 		$('#hid_cod_no_producto').val('');
 		$('#div_det_no_alimentarios').modal('show');
 		
@@ -447,9 +456,8 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var tbl_det_no_alimentarios = $('#tbl_det_no_alimentarios').DataTable();
-		tbl_det_no_alimentarios.rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_no_alimentarios.rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_no_alimentarios.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_no_alimentarios.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
 			}
 		});
@@ -463,7 +471,7 @@ $(document).ready(function() {
 			var obj = listaNoAlimentariosCache[indices[0]];
 			
 			$('#h4_tit_no_alimentarios').html('Actualizar Producto');
-			$('#frm_det_no_alimentarios').trigger('reset');
+			frm_det_no_alimentarios.trigger('reset');
 			
 			$('#hid_cod_no_producto').val(obj.cod_producto);
 			
@@ -489,9 +497,8 @@ $(document).ready(function() {
 		
 		var indices = [];
 		var codigo = ''
-		var tbl_det_no_alimentarios = $('#tbl_det_no_alimentarios').DataTable();
-		tbl_det_no_alimentarios.rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_no_alimentarios.rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_no_alimentarios.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_no_alimentarios.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
 				var cod_producto = listaNoAlimentariosCache[index].cod_producto;
 				codigo = codigo + cod_producto + '_';
@@ -546,7 +553,7 @@ $(document).ready(function() {
 	$('#btn_gra_no_alimentario').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = $('#frm_det_no_alimentarios').data('bootstrapValidator');
+		var bootstrapValidator = frm_det_no_alimentarios.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
@@ -594,9 +601,8 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var tbl_det_documentos = $('#tbl_det_documentos').DataTable();
-		tbl_det_documentos.rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_documentos.rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_documentos.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_documentos.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
 			}
 		});
@@ -629,9 +635,8 @@ $(document).ready(function() {
 		
 		var indices = [];
 		var codigo = ''
-		var tbl_det_documentos = $('#tbl_det_documentos').DataTable();
-		tbl_det_documentos.rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_documentos.rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_documentos.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_documentos.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
 				var cod_producto = listaDocumentosCache[index].cod_producto;
 				codigo = codigo + cod_producto + '_';
@@ -686,7 +691,7 @@ $(document).ready(function() {
 	$('#btn_gra_documento').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = $('#frm_det_documentos').data('bootstrapValidator');
+		var bootstrapValidator = frm_det_documentos.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
@@ -736,4 +741,3 @@ function inicializarDatos() {
 		
 	}
 }
-

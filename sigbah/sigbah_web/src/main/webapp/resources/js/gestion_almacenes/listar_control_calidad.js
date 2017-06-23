@@ -1,5 +1,8 @@
 var listaControlCalidadCache = new Object();
 
+var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad');
+var frm_con_calidad = $('#frm_con_calidad');
+
 $(document).ready(function() {
 	
 	$('#li_ges_almacenes').addClass('active');
@@ -8,7 +11,7 @@ $(document).ready(function() {
 	
 	inicializarDatos();
 	
-	$('#frm_con_calidad').bootstrapValidator({
+	frm_con_calidad.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -32,7 +35,7 @@ $(document).ready(function() {
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = $('#frm_con_calidad').data('bootstrapValidator');
+		var bootstrapValidator = frm_con_calidad.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 
@@ -62,9 +65,8 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad').DataTable();
-		tbl_mnt_con_calidad.rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_con_calidad.rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_con_calidad.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_con_calidad.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
@@ -115,8 +117,6 @@ function inicializarDatos() {
 
 function listarControlCalidad(respuesta) {
 
-	var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad');
-
 	tbl_mnt_con_calidad.dataTable().fnDestroy();
 	
 	tbl_mnt_con_calidad.dataTable({
@@ -125,7 +125,7 @@ function listarControlCalidad(respuesta) {
 			data : 'idControlCalidad',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
-				if (row.idControlCalidad != null) {
+				if (data != null) {
 					return '<label class="checkbox">'+
 								'<input type="checkbox" id="chk_ubigeo_'+data+'" name="chk_ubigeo"><i></i>'+
 							'</label>';	
