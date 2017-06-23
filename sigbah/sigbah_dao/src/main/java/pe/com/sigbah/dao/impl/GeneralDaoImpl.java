@@ -30,6 +30,7 @@ import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.GeneralDao;
+import pe.com.sigbah.mapper.AlmacenMapper;
 import pe.com.sigbah.mapper.DdiMapper;
 
 /**
@@ -139,7 +140,7 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	@Override
 	public List<ItemBean> listarDdi(ItemBean itemBean) throws Exception {
 		LOGGER.info("[listarDdi] Inicio ");
-		List<ItemBean> items = new ArrayList<ItemBean>();
+		List<ItemBean> lista = new ArrayList<ItemBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
 			String parametro = Utils.getParam(itemBean.getIcodigo());			
@@ -159,13 +160,13 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 			
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 
-			items = (List<ItemBean>) out.get("po_Lr_Recordset");
+			lista = (List<ItemBean>) out.get("po_Lr_Recordset");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
 		LOGGER.info("[listarDdi] Fin ");
-		return items;
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -182,8 +183,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarAlmacen(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarAlmacen] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			String parametro = Utils.getParam(itemBean.getVcodigo());			
+			input_objParametros.addValue("pi_IDE_DDI", parametro, Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_ALMACEN");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DDI", new SqlParameter("pi_IDE_DDI", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new AlmacenMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("po_Lr_Recordset");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarAlmacen] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)

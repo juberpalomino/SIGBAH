@@ -1,10 +1,12 @@
 package pe.com.sigbah.service.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -21,5 +23,13 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	
 	@Autowired
 	private LogisticaDao logisticaDao;
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public List<ControlCalidadBean> listarControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
+		return logisticaDao.listarControlCalidad(controlCalidadBean);
+	}
 
 }

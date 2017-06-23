@@ -37,9 +37,9 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {
 
 			var params = { 
-				cod_anio : $('#sel_anio').val(),
-				cod_ddi : $('#sel_ddi').val(),
-				cod_almacen : $('#sel_almacen').val()
+				codigoAnio : $('#sel_anio').val(),
+				codigoDdi : $('#sel_ddi').val(),
+				codigoAlmacen : $('#sel_almacen').val()
 			};
 			
 			loadding(true);
@@ -70,8 +70,8 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idUbigeo = listaControlCalidadCache[index].idubigeo;
-				codigo = codigo + idUbigeo + '_';
+				var idControlCalidad = listaControlCalidadCache[index].idControlCalidad;
+				codigo = codigo + idControlCalidad + '_';
 			}
 		});
 		
@@ -122,10 +122,10 @@ function listarControlCalidad(respuesta) {
 	tbl_mnt_con_calidad.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idubigeo',
-//			sClass : 'opc-center',
+			data : 'idControlCalidad',
+			sClass : 'opc-center',
 			render: function(data, type, row) {
-				if (row.idubigeo != null) {
+				if (row.idControlCalidad != null) {
 					return '<label class="checkbox">'+
 								'<input type="checkbox" id="chk_ubigeo_'+data+'" name="chk_ubigeo"><i></i>'+
 							'</label>';	
@@ -134,19 +134,19 @@ function listarControlCalidad(respuesta) {
 				}											
 			}	
 		}, {
-			data : 'coddpto'
+			data : 'codigoAnio'
 		}, {
-			data : 'nombre'
+			data : 'idControlCalidad'
 		}, {
-			data : 'codprov'
+			data : 'nombreAlmacen'
 		}, {
-			data : 'codprov'
+			data : 'nroRepControlCalidad'
 		}, {
-			data : 'codprov'
+			data : 'fechaEmision'
 		}, {
-			data : 'codprov'
+			data : 'tipoControlCalidad'
 		}, {
-			data : 'codprov'
+			data : 'nombreEstado'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'

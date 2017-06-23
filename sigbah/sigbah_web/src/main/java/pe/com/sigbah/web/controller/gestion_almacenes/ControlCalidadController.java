@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.BaseOutputBean;
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
-import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
+import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
@@ -58,9 +59,16 @@ public class ControlCalidadController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 
         	model.addAttribute("lista_anio", generalService.listarAnios());
-        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi())));
-        	model.addAttribute("lista_almacen", generalService.listarAnios());
-        
+        	
+        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
+        	model.addAttribute("lista_ddi", listaDdi);
+        	
+        	ItemBean detalleDdi = null;
+        	if (!Utils.isEmpty(listaDdi) && listaDdi.size() == Constantes.ONE_INT) {
+        		detalleDdi = listaDdi.get(0);
+        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(detalleDdi.getVcodigo())));
+        	}
+        	
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {
@@ -81,19 +89,12 @@ public class ControlCalidadController extends BaseController {
 	@RequestMapping(value = "/listarControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		List<UbigeoBean> lista = null;
+		List<ControlCalidadBean> lista = null;
 		try {			
-			UbigeoBean ubigeo = new UbigeoBean();			
+			ControlCalidadBean controlCalidadBean = new ControlCalidadBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(ubigeo, request.getParameterMap());
-			
-			if (ubigeo.getCoddpto() == null) {
-				
-			}
-			
-			
-			
-
+			BeanUtils.populate(controlCalidadBean, request.getParameterMap());			
+			lista = logisticaService.listarControlCalidad(controlCalidadBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			baseOutputBean = new BaseOutputBean();

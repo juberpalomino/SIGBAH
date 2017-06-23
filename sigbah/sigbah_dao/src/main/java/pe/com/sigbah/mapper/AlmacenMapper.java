@@ -9,19 +9,19 @@ import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.util.Constantes;
 
 /**
- * @className: DdiMapper.java
+ * @className: AlmacenMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
  * @author: SUMERIO.
  */
-public class DdiMapper implements RowMapper<ItemBean> {
+public class AlmacenMapper implements RowMapper<ItemBean> {
 	
 	private boolean all_records = false; // Obtener todos los registros
 
 	/**
 	 * @param parametro
 	 */
-	public DdiMapper(String parametro) {
+	public AlmacenMapper(String parametro) {
 		if (parametro.equals(Constantes.PORCENTAJE)) {
 			all_records = true;
 		}
@@ -34,12 +34,13 @@ public class DdiMapper implements RowMapper<ItemBean> {
 	public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		ItemBean itemBean = new ItemBean();
 		if (all_records) {
-			itemBean.setVcodigo(rs.getString("IDE_DDI"));
-			itemBean.setDescripcion(rs.getString("NOMBRE_DDI"));
-			itemBean.setDescripcionCorta(rs.getString("COD_DDI"));
+			itemBean.setVcodigo(rs.getString("IDE_ALMACEN"));
+			itemBean.setDescripcion(rs.getString("NOMBRE_ALMACEN"));
+			itemBean.setDescripcionCorta(rs.getString("FK_IDE_DDI"));
 		} else {	
-			itemBean.setVcodigo(rs.getString("IDE_DDI"));
-			itemBean.setDescripcion(rs.getString("NOM_DDI"));
+			itemBean.setVcodigo(rs.getString("IDE_ALMACEN"));
+			itemBean.setDescripcion(rs.getString("NOMBRE_ALMACEN"));
+			itemBean.setDescripcionCorta(rs.getString("FK_IDE_DDI"));
 		}
 		return itemBean;
 	}
