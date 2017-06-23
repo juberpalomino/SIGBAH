@@ -28,8 +28,9 @@ import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.SpringUtil;
+import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.GeneralDao;
-import pe.com.sigbah.mapper.ItemMapper;
+import pe.com.sigbah.mapper.DdiMapper;
 
 /**
  * @className: GeneralDaoImpl.java
@@ -37,6 +38,7 @@ import pe.com.sigbah.mapper.ItemMapper;
  * @date: 21 de jun. de 2017
  * @author: SUMERIO.
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 @Repository
 public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serializable {
 
@@ -92,13 +94,11 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.general.GeneralDao#listarAnios()
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<ItemBean> listarAnios() throws Exception {
 		LOGGER.info("[listarAnios] Inicio ");
 		List<ItemBean> items = new ArrayList<ItemBean>();
 		try {
-			Collection<ItemBean> colItemBean = null;
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
@@ -115,8 +115,7 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 						}
 					}).execute(objJdbcCall);
 
-			colItemBean = (Collection<ItemBean>) out.get("po_Lr_Recordset");
-			items = new ArrayList(colItemBean);
+			items = new ArrayList((Collection<ItemBean>) out.get("po_Lr_Recordset"));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
@@ -137,14 +136,14 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.general.GeneralDao#listarDdi(pe.com.sigbah.common.bean.ItemBean)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<ItemBean> listarDdi(ItemBean itemBean) throws Exception {
 		LOGGER.info("[listarDdi] Inicio ");
 		List<ItemBean> items = new ArrayList<ItemBean>();
 		try {
-			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-			input_objParametros.addValue("pi_IDE_DDI", itemBean.getIcodigo().toString(), Types.VARCHAR);
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			String parametro = Utils.getParam(itemBean.getIcodigo());			
+			input_objParametros.addValue("pi_IDE_DDI", parametro, Types.VARCHAR);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -154,7 +153,7 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("pi_IDE_DDI", new SqlParameter("pi_IDE_DDI", Types.VARCHAR));
-			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ItemMapper()));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new DdiMapper(parametro)));
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
