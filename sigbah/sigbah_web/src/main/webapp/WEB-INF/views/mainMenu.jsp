@@ -113,8 +113,8 @@
 					<span class="menu-item-parent">Donaciones</span>
 				</a>
 				<ul id="ul_donaciones">
-					<li class="li_men_opcion">
-						<a href="general-elements.html">Registro de Donaciones</a>
+					<li id="li_reg_donaciones" class="li_men_opcion">
+						<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/inicio">Registro de Donaciones</a>
 					</li>
 					<li>
 						<a href="#">Ingresos</a>

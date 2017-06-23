@@ -32,4 +32,8 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Mostrar_ControlCalidad.jsp" />
 	</definition>
 	
+	<definition name="listar-donaciones" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/ALM_Listar_Donaciones.jsp" />
+	</definition>
+	
 </tiles-definitions>
