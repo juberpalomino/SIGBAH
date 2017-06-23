@@ -1,17 +1,14 @@
 package pe.com.sigbah.web.controller.seguridad;
 
-import java.io.Serializable;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestAttributes;
 
-import pe.com.sigbah.common.bean.UsuarioBean;
-import pe.com.sigbah.web.controller.common.Utilidades;
-import pe.com.sigbah.web.filter.ServletUtility;
+import pe.com.sigbah.web.controller.common.BaseController;
 
 /**
  * @className: LogoutController.java
@@ -21,7 +18,7 @@ import pe.com.sigbah.web.filter.ServletUtility;
  */
 @Controller
 @RequestMapping("/logout")
-public class LogoutController implements Serializable {
+public class LogoutController extends BaseController {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -32,15 +29,9 @@ public class LogoutController implements Serializable {
 	 */
 	@RequestMapping(value = "/inicio", method = {RequestMethod.GET, RequestMethod.POST})
     public String inicio(Model model, HttpServletRequest request) {
-		UsuarioBean usuario = Utilidades.getInstancia().loadUserFromSession(request);
-        String destino = "login";
-        // esto es para limpiar la session
-        if (usuario != null) {
-           usuario.setPassword(null);
-           usuario.setUsuario(null);
-        }      
-        ServletUtility.getInstancia().invalidateSession(request);
-        return destino;
+        context().removeAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+		context().removeAttribute("menuBean", RequestAttributes.SCOPE_SESSION);
+        return "forward:/login";
     }
 
 }

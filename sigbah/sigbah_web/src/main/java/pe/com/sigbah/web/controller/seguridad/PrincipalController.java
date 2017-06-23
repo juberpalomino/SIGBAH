@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.BaseOutputBean;
+import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.web.controller.common.BaseController;
 
@@ -41,7 +43,9 @@ public class PrincipalController extends BaseController {
         try {
 
         	// Retorno los datos de session
-//            UsuarioBean usuario = Utilidades.getInstancia().loadUserFromSession(request);
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+            
+            System.out.println(usuarioBean);
 
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
 

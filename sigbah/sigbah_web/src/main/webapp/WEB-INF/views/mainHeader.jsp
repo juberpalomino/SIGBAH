@@ -16,14 +16,14 @@
 	<div class="project-context hidden-xs">	
 		<div class="row">
 			<div class="col-xs-12">
-				<div class="col-sm-4">
+				<div class="col-sm-3">
 					<img src="${pageContext.request.contextPath}/resources/img/logo-wfp.png" class="img-responsive">
 				</div>
-				<div id="div-titulo" class="col-sm-4">
+				<div class="col-sm-5 div-titulo">
 					<spring:message code="application_name" />
 				</div>
-				<div id="div-usuario" class="col-sm-4">
-					Usuario: ${usuario.nombreUsuario} <br> ${usuario.nombreDdi}
+				<div class="col-sm-4 div-usuario">
+					Usuario: ${usuarioBean.nombreUsuario} <br> ${usuarioBean.nombreDdi}
 				</div>
 			</div>
 		</div>	
@@ -62,7 +62,7 @@
 <script type="text/javascript">
 	try { 
 		// Si la session se encuentra inactiva		
-		if ('${usuario}' == null || '${usuario}' == '') {
+		if ('${usuarioBean}' == null || '${usuarioBean}' == '') {
 			if (confirm('Su session se encuentra inactiva, inicie nuevamente !!!')) {
 				window.location.href = '${pageContext.request.contextPath}/login';
 			} else {

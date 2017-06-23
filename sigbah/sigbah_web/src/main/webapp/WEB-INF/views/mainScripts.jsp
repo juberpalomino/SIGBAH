@@ -3,7 +3,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/libs/jquery-2.1.1.min.js"></script>
 
 <!-- IMPORTANT: APP CONFIG -->
-<script src="${pageContext.request.contextPath}/resources/js/app.config.seed.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/app.config.js"></script>
 
 <!-- BOOTSTRAP JS -->
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap/bootstrap.min.js"></script>

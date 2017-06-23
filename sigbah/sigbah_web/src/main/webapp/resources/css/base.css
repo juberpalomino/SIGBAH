@@ -1,12 +1,12 @@
 #header {
 	height: 60px !important;
 }
-#div-titulo {
+.div-titulo {
 	color: black; 
 	font-size: 15px;
 }
-#div-usuario {
-	color: blue; 
+.div-usuario {
+	color: black; 
 	font-size: 13px;
 }
 .modal-loader {

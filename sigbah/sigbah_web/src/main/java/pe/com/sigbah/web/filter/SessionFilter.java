@@ -42,6 +42,8 @@ public class SessionFilter implements Filter {
                 uri = uri.substring(x);
             }
         }
+        
+        System.out.println("----> "+"usuario");
 
         HttpSession sesion = httpServletRequest.getSession(false);
 
@@ -59,9 +61,7 @@ public class SessionFilter implements Filter {
                         dispatcher.forward(request, response);
                   }
             }
-        } else if (uri.equals("/logout")) {
-            chain.doFilter(request, response);
-        } else if (uri.equals("/distrito")) {
+        } else if (uri.equals("/logout/inicio")) {
             chain.doFilter(request, response);
         } else if (uri.equals("/inicioErr")) {
             chain.doFilter(request, response);

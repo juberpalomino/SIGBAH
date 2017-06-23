@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.BaseOutputBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
@@ -19,7 +19,6 @@ import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.service.AdministracionService;
 import pe.com.sigbah.web.controller.common.BaseController;
-import pe.com.sigbah.web.filter.ServletUtility;
 
 /**
  * @className: LoginController.java
@@ -29,7 +28,6 @@ import pe.com.sigbah.web.filter.ServletUtility;
  */
 @Controller
 @RequestMapping("/login")
-@SessionAttributes(value = {"usuario"})
 public class LoginController extends BaseController {
 
 	private static final long serialVersionUID = 1L;
@@ -54,17 +52,15 @@ public class LoginController extends BaseController {
     
     /**
      * @param usuario
-     * @param model
      * @param result
      * @param request
      * @param response
 	 * @return - Retorna a la vista JSP.
      */
     @RequestMapping(method = RequestMethod.POST)
-    public String doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, Model model, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public String doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
     	String destino = "login";
         boolean isAccessOk = true;
-        //Mensaje msg = new Mensaje();
         
         if (usuario == null) {
             destino = "login";
@@ -89,9 +85,8 @@ public class LoginController extends BaseController {
                 usuario = null;
             }    
             
-            if (usuario != null) {                
-                model.addAttribute("usuario", usuario);
-                usuario.setSessionId(ServletUtility.getInstancia().loadSessionId(request));
+            if (usuario != null) {
+                context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
                 destino = "forward:/principal/inicio";
             }
         }
