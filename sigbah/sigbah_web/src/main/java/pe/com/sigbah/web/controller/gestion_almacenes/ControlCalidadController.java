@@ -67,9 +67,6 @@ public class ControlCalidadController extends BaseController {
 
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
-//        	baseOutputBean = new BaseOutputBean();
-//			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
-//			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));
         	model.addAttribute("base", getBaseRespuesta(null));
         }
         return "listar_control_calidad";
@@ -106,18 +103,16 @@ public class ControlCalidadController extends BaseController {
         try {
         	ControlCalidadBean controlCalidad = new ControlCalidadBean();
         	
+        	// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
         	if (!isNullInteger(codigo)) {
         		
-        		controlCalidad.setIdControlCalidad(codigo);
-        		
-        		
+        		controlCalidad = logisticaService.obtenerRegistroControlCalidad(codigo);
         		
         		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(usuarioBean.getIdDdi())));
         		
         	} else {
-        		
-        		// Retorno los datos de session
-            	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 
         		StringBuilder correlativo = new StringBuilder();
         		correlativo.append(usuarioBean.getCodigoDdi());
@@ -135,8 +130,6 @@ public class ControlCalidadController extends BaseController {
         		correlativo.append(respuestaCorrelativo.getNroControlCalidad());
         		
         		controlCalidad.setNroControlCalidad(correlativo.toString());        		
-        		controlCalidad.setIdDdi(usuarioBean.getIdDdi());
-        		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
         		
         		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
         		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
@@ -147,13 +140,18 @@ public class ControlCalidadController extends BaseController {
         			controlCalidad.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
         			controlCalidad.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
         			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+        			controlCalidad.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
         		}
         		
-        		if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
-            		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
-            	}
-        		
         	}
+        	
+        	if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
+        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
+        	}
+        	
+        	controlCalidad.setIdDdi(usuarioBean.getIdDdi());
+    		controlCalidad.setCodigoDdi(usuarioBean.getCodigoDdi());
+    		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
         	
         	model.addAttribute("controlCalidad", getParserObject(controlCalidad));
 
@@ -223,15 +221,11 @@ public class ControlCalidadController extends BaseController {
         	
         	controlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-			if (!isNullInteger(controlCalidadBean.getIdControlCalidad())) {
-				
+			if (!isNullInteger(controlCalidadBean.getIdControlCalidad())) {				
 				controlCalidad = logisticaService.actualizarRegistroControlCalidad(controlCalidadBean);
-				controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "Los datos se grabaron satisfactoriamente."));
-				
-			} else {
-			
-				controlCalidad = logisticaService.insertarRegistroControlCalidad(controlCalidadBean);
-			
+				controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "Los datos se grabaron satisfactoriamente."));				
+			} else {			
+				controlCalidad = logisticaService.insertarRegistroControlCalidad(controlCalidadBean);			
 			}
 			
 		} catch (Exception e) {

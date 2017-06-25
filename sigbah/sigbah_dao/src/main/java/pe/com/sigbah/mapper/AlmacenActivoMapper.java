@@ -3,6 +3,7 @@ package pe.com.sigbah.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.RowMapper;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
@@ -24,7 +25,7 @@ public class AlmacenActivoMapper implements RowMapper<ControlCalidadBean> {
 		controlCalidad.setCodigoAnio(rs.getString("COD_ANIO"));
 		controlCalidad.setCodigoMes(rs.getString("COD_MES"));
 		controlCalidad.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
-		controlCalidad.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
+		controlCalidad.setCodigoAlmacen(StringUtils.trimToEmpty(rs.getString("COD_ALMACEN")));
 		controlCalidad.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
 		controlCalidad.setNombreMes(rs.getString("NOMBRE_MES"));
 		return controlCalidad;

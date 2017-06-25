@@ -37,6 +37,7 @@ public class ControlCalidadBean extends BaseOutputBean {
 	private String nroOrdenCompra;
 	private Integer idEstado;
 	private String flagTipoBien;
+	private String provRep;
 	
 	
 	/**
@@ -374,6 +375,18 @@ public class ControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setIdAlmacenOrigen(Integer idAlmacenOrigen) {
 		this.idAlmacenOrigen = idAlmacenOrigen;
+	}
+	/**
+	 * @return the provRep
+	 */
+	public String getProvRep() {
+		return provRep;
+	}
+	/**
+	 * @param provRep the provRep to set
+	 */
+	public void setProvRep(String provRep) {
+		this.provRep = provRep;
 	}
 
 }

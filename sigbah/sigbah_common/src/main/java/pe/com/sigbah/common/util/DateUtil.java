@@ -27,7 +27,7 @@ public class DateUtil implements Serializable {
 	 */
 	public static Date obtenerFechaParseada(String formato, String fecha) {
 		try {
-			if(fecha != null){
+			if (fecha != null) {
 				SimpleDateFormat sdf = new SimpleDateFormat(formato);
 				return sdf.parse(fecha);
 			}
@@ -45,11 +45,11 @@ public class DateUtil implements Serializable {
 	 */
 	public static String obtenerFechaFormateada(String formato, Date fecha) {
 		try {
-			if(fecha != null){
+			if (fecha != null) {
 				SimpleDateFormat sdf = new SimpleDateFormat(formato);
 				return sdf.format(fecha);
 			}
-		}catch(Exception ex){
+		} catch(Exception ex) {
 			LOGGER.error(ex);
 		}
 		return null;
@@ -115,10 +115,12 @@ public class DateUtil implements Serializable {
 	* @return Fecha, tipo Date.
 	*/
 	public static Date getPrimerDiaSemanaActual(){
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.DAY_OF_MONTH, (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) -2)*-1 );
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),0,0,0);
-			return cal.getTime();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) -2)*-1 );
+		cal.set(cal.get(Calendar.YEAR), 
+				cal.get(Calendar.MONTH), 
+				cal.get(Calendar.DAY_OF_MONTH),0,0,0);
+		return cal.getTime();
 	}
 	 
 	/**
@@ -128,7 +130,9 @@ public class DateUtil implements Serializable {
 	public static Date getUltimoDiaSemanaActual(){
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DAY_OF_MONTH, ( 6 - Calendar.getInstance().get(Calendar.DAY_OF_WEEK)  ) );
-		cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),0,0,0);
+		cal.set(cal.get(Calendar.YEAR), 
+				cal.get(Calendar.MONTH), 
+				cal.get(Calendar.DAY_OF_MONTH),0,0,0);
 		return cal.getTime();
 	}	 
 	
@@ -138,6 +142,29 @@ public class DateUtil implements Serializable {
 	 */
 	public static int getAnioActual(){
 		return Calendar.getInstance().get(Calendar.YEAR);
+	}
+	
+	/**
+	 * Obtiene una fecha y hora parseada con el formato que se requiere.
+	 * @param fecha - La fecha que se desea parsear, tipo String.
+	 * @return Fecha con el formato requerido, tipo String.
+	 */
+	public static Date obtenerFechaHoraParseada(String fecha) {
+		try {
+			if (fecha != null) {			
+				SimpleDateFormat formatDate = new SimpleDateFormat(Constantes.FORMATO_FECHA);
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(formatDate.parse(fecha));
+				Calendar cal = Calendar.getInstance();	
+				calendar.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
+	        	calendar.set(Calendar.MINUTE, cal.get(Calendar.MINUTE));
+	        	calendar.set(Calendar.SECOND, cal.get(Calendar.SECOND));			
+	        	return calendar.getTime();
+			}			
+		} catch(Exception ex) {
+			LOGGER.error(ex);
+		}
+		return null;
 	}
 	
 }

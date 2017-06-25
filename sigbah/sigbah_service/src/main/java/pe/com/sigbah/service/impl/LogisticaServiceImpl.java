@@ -73,4 +73,12 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 		return logisticaDao.actualizarRegistroControlCalidad(controlCalidadBean);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroControlCalidad(java.lang.Integer)
+	 */
+	@Override
+	public ControlCalidadBean obtenerRegistroControlCalidad(Integer idControlCalidad) throws Exception {
+		return logisticaDao.obtenerRegistroControlCalidad(idControlCalidad);
+	}
+
 }

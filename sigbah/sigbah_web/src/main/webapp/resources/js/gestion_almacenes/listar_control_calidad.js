@@ -66,8 +66,8 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		tbl_mnt_con_calidad.dataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_con_calidad.dataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
@@ -128,7 +128,7 @@ function listarControlCalidad(respuesta) {
 			render: function(data, type, row) {
 				if (data != null) {
 					return '<label class="checkbox">'+
-								'<input type="checkbox" id="chk_ubigeo_'+data+'" name="chk_ubigeo"><i></i>'+
+								'<input type="checkbox"><i></i>'+
 							'</label>';	
 				} else {
 					return '';	

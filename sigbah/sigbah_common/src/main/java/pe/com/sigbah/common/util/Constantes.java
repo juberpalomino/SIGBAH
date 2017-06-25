@@ -109,6 +109,7 @@ public final class Constantes implements Serializable {
 	/* FECHA Y HORA */
 	public static final String FORMATO_FECHA = "dd/MM/yyyy";
 	public static final String FORMATO_FECHA_DB = "yyyy-MM-dd";
+	public static final String FORMATO_FECHA_HORA_DB = "EE MMM dd hh:mm:ss z yyyy";
 	public static final int DIA_ULTIMA_HORA = 23;
 	public static final int DIA_ULTIMO_SEGUNDO = 59;
 	public static final long L_23_HOURS_59 = 86400000;

@@ -54,4 +54,11 @@ public interface LogisticaDao {
 	 */
 	public abstract ControlCalidadBean actualizarRegistroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception;
 	
+	/**
+	 * @param idControlCalidad
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ControlCalidadBean obtenerRegistroControlCalidad(Integer idControlCalidad) throws Exception;
+	
 }
