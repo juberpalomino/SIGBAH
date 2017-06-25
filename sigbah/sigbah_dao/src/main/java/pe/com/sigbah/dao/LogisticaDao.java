@@ -3,6 +3,7 @@ package pe.com.sigbah.dao;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.OrdenCompraBean;
 
 /**
  * @className: LogisticaDao.java
@@ -18,5 +19,25 @@ public interface LogisticaDao {
 	 * @throws Exception
 	 */
 	public abstract List<ControlCalidadBean> listarControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception;
+	
+	/**
+	 * @param controlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ControlCalidadBean obtenerCorrelativo(ControlCalidadBean controlCalidadBean) throws Exception;
+	
+	/**
+	 * @param controlCalidadBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ControlCalidadBean> listarAlmacenActivo(ControlCalidadBean controlCalidadBean) throws Exception;
 
+	/**
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<OrdenCompraBean> listarOrdenCompra() throws Exception;
+	
 }

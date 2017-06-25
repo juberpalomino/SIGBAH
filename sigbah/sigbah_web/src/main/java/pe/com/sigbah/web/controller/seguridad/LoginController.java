@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestAttributes;
 
-import pe.com.sigbah.common.bean.BaseOutputBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
-import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.service.AdministracionService;
 import pe.com.sigbah.web.controller.common.BaseController;
 
@@ -33,10 +30,7 @@ public class LoginController extends BaseController {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired 
-	private AdministracionService administracionService;	
-	
-	@Autowired
-	private MessageSource messageSource;
+	private AdministracionService administracionService;
 
 	/**
 	 * @param request
@@ -55,10 +49,12 @@ public class LoginController extends BaseController {
      * @param result
      * @param request
      * @param response
+     * @param model 
 	 * @return - Retorna a la vista JSP.
      */
     @RequestMapping(method = RequestMethod.POST)
-    public String doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public String doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, 
+    		HttpServletRequest request, HttpServletResponse response, Model model) {
     	String destino = "login";
         boolean isAccessOk = true;
         
@@ -79,9 +75,7 @@ public class LoginController extends BaseController {
                
             } catch (Exception e) {
             	LOGGER.error(e.getMessage(), e);
-            	baseOutputBean = new BaseOutputBean();
-    			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
-    			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));
+            	model.addAttribute("base", getBaseRespuesta(null));
                 usuario = null;
             }    
             

@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.apache.commons.lang.StringUtils;
 
 import pe.com.sigbah.common.bean.UsuarioBean;
 
@@ -29,8 +30,9 @@ public class UsuarioMapper implements RowMapper<UsuarioBean> {
 		usuarioBean.setCodigoDdi(rs.getString("COD_DDI"));
 		usuarioBean.setNombreDdi(rs.getString("NOM_DDI"));
 		usuarioBean.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
-		usuarioBean.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
+		usuarioBean.setCodigoAlmacen(StringUtils.trimToEmpty(rs.getString("COD_ALMACEN")));
 		usuarioBean.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
+		usuarioBean.setPassword(rs.getString("PASSWORD"));
 		return usuarioBean;
 	}
 

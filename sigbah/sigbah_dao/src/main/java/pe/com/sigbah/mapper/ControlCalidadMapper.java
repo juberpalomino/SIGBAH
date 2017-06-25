@@ -24,9 +24,12 @@ public class ControlCalidadMapper implements RowMapper<ControlCalidadBean> {
 		controlCalidad.setIdControlCalidad(rs.getInt("IDE_CONTROL_CALIDAD"));
 		controlCalidad.setCodigoAnio(rs.getString("COD_ANIO"));
 		controlCalidad.setCodigoMes(rs.getString("COD_MES"));
-		controlCalidad.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN").trim());
-		controlCalidad.setNroRepControlCalidad(rs.getString("NRO_REP_CONTROL_CALIDAD"));
-		controlCalidad.setFechaEmision(rs.getDate("FEC_EMISION"));
+		controlCalidad.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));		
+		controlCalidad.setIdDdi(rs.getInt("IDE_DDI"));
+		controlCalidad.setCodigoDdi(rs.getString("COD_DDI"));
+		controlCalidad.setNombreDdi(rs.getString("NOM_DDI"));		
+		controlCalidad.setNroControlCalidad(rs.getString("NRO_REP_CONTROL_CALIDAD"));
+		controlCalidad.setFechaEmision(rs.getString("FECHA_EMISION"));
 		controlCalidad.setTipoControlCalidad(rs.getString("TIPO_CONTROL_CALIDAD"));
 		controlCalidad.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
 		return controlCalidad;

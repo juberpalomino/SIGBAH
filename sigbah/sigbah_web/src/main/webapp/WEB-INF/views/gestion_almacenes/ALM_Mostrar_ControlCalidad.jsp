@@ -34,19 +34,19 @@
 						<div class="widget-body">
 	
 							<ul id="ul_man_con_calidad" class="nav nav-tabs bordered">
-								<li class="active">
+								<li id="li_dat_generales" class="active">
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Datos Generales</a>
 								</li>
-								<li>
+								<li id="li_alimentarios">
 									<a href="#div_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Alimentarios</a>
 								</li>
-								<li>
+								<li id="li_no_alimentarios">
 									<a href="#div_no_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									No Alimentarios</a>
 								</li>
-								<li>
+								<li id="li_documentos">
 									<a href="#div_documentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Documentos</a>
 								</li>
@@ -57,7 +57,7 @@
 								
 									<form id="frm_dat_generales" class="form-horizontal">
 									
-										<input type="hidden" id="hid_codigo" value="${codigo}">
+										<input type="hidden" id="hid_con_calidad" value="${controlCalidad}" />
 											
 										<div class="header-form opc-center">	
 											<strong>Control de Calidad</strong>
@@ -69,7 +69,7 @@
 											<div class="col-sm-3"></div>
 											<label class="col-sm-3 control-label label-bold">N° Control de Calidad:</label>
 											<div class="col-sm-2">
-												<input type="text" name="txt_nro_con_calidad" name="txt_nro_con_calidad" class="form-control" disabled>
+												<input type="text" id="txt_nro_con_calidad" class="form-control" disabled>
 											</div>
 										</div>												
 																
@@ -85,51 +85,57 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								
-													<div class="form-group">
+													<div class="row">
 														<label class="col-sm-2 control-label">Año:</label>
-														<label id="lbl_anio" class="col-sm-2 control-label"></label>
-														
+														<div class="col-sm-2 form-group">
+															<input type="text" id="txt_anio" class="form-control" disabled>
+														</div>
+
 														<label class="col-sm-2 control-label">DDI:</label>
-														<label id="lbl_ddi" class="col-sm-2 control-label"></label>
-														
+														<div class="col-sm-2 form-group">
+															<input type="text" id="txt_ddi" class="form-control" disabled>
+														</div>
+
 														<label class="col-sm-2 control-label">Almacén:</label>
-														<label id="lbl_almacen" class="col-sm-2 control-label"></label>
+														<div class="col-sm-2 form-group">
+															<input type="text" id="txt_almacen" class="form-control" disabled>
+														</div>
 													</div>
 													
-													<div class="form-group">
+													<div class="row">
 														<label class="col-sm-2 control-label">Fecha:</label>
-														<div class="col-sm-2 smart-form">
+														<div class="col-sm-2 smart-form form-group">
 															<label class="input"> 
 																<i class="icon-append fa fa-calendar"></i>
-																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker">
+																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker" readonly>
 															</label>
 														</div>
 														
 														<label class="col-sm-2 control-label">Estado:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<select id="sel_estado" name="sel_estado" class="form-control">
-																<c:forEach items="${lista_ddi}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
-																</c:forEach>
-															</select>
-														</div>
-														
-														<label class="col-sm-2 control-label">Nº orden Compra:</label>
-														<div class="col-sm-2">
-															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control">
-																<c:forEach items="${lista_almacen}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																<c:forEach items="${lista_estado}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 													</div>
 													
-													<div class="form-group">
+													<div class="row">
+														<label class="col-sm-2 control-label">Nº orden Compra:</label>
+														<div class="col-sm-5 smart-form form-group">
+															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="select2 form-control">
+																<c:forEach items="${lista_orden_compra}" var="item">
+																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
+																</c:forEach>
+															</select>
+														</div>
+													
 														<label class="col-sm-2 control-label">Tipo de Control:</label>
-														<div class="col-sm-3">
+														<div class="col-sm-3 form-group">
 															<select id="sel_tip_control" name="sel_tip_control" class="form-control">
-																<c:forEach items="${lista_almacen}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																<c:forEach items="${lista_tipo_control}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -156,32 +162,34 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								
-													<div class="form-group">
+													<div class="row">
 														<label class="col-sm-3 control-label">Almacén:</label>
-														<div class="col-sm-3">
+														<div class="col-sm-3 form-group">
 															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control">
-																<c:forEach items="${lista_anio}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																<c:forEach items="${lista_almacen}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 														
 														<label class="col-sm-3 control-label">Encargado de Almacén:</label>
-														<div class="col-sm-3">
+														<div class="col-sm-3 form-group">
 															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
-																<c:forEach items="${lista_ddi}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																<c:forEach items="${lista_personal}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 													</div>
 													
-													<div class="form-group">
-														<label class="col-sm-9 control-label">Inspector:</label>
-														<div class="col-sm-3">
+													<div class="row">
+														<div class="col-sm-6 form-group"></div>
+														
+														<label class="col-sm-3 control-label">Inspector:</label>
+														<div class="col-sm-3 form-group">
 															<select id="sel_inspector" name="sel_inspector" class="form-control">
-																<c:forEach items="${lista_almacen}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																<c:forEach items="${lista_personal}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -208,21 +216,21 @@
 												<!-- widget content -->
 												<div class="widget-body widget-body-50">
 								
-													<div class="form-group">
+													<div class="row">
 														<label class="col-sm-3 control-label">Proveedor:</label>
-														<div class="col-sm-3">
+														<div class="col-sm-3 form-group">
 															<select id="sel_proveedor" name="sel_proveedor" class="form-control">
-																<c:forEach items="${lista_anio}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																<c:forEach items="${lista_proveedor}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcionCorta}</option>
 																</c:forEach>
 															</select>
 														</div>
 														
 														<label class="col-sm-3 control-label">Representante:</label>
-														<div class="col-sm-3">
+														<div class="col-sm-3 form-group">
 															<select id="sel_representante" name="sel_representante" class="form-control">
-																<c:forEach items="${lista_ddi}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+																<c:forEach items="${lista_personal}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -249,29 +257,26 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								
-													<div class="form-group">
+													<div class="row">
 														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
-														<div class="col-sm-3">
-															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control">
-																<c:forEach items="${lista_anio}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+														<div class="col-sm-3 form-group">
+															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
+																<c:forEach items="${lista_empresa_transporte}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 														
 														<label class="col-sm-3 control-label">Chofer:</label>
-														<div class="col-sm-3">
-															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
-																<c:forEach items="${lista_ddi}" var="item">
-																    <option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
-																</c:forEach>
+														<div class="col-sm-3 form-group">
+															<select id="sel_chofer" name="sel_chofer" class="form-control">
 															</select>
 														</div>
 													</div>
 													
-													<div class="form-group">
+													<div class="row">
 														<label class="col-sm-3 control-label">N° de Placa:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control">
 														</div>
 													</div>
@@ -297,28 +302,37 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								
-													<div class="form-group">
+													<div class="row">
 														<label class="col-sm-2 control-label">Tipo de Bien:</label>
-														<div class="col-sm-10">
+														
+														<div class="col-sm-1"></div>
+														
+														<div class="col-sm-2 form-group">
 															<div class="inline-group">
 																<label class="radio">
-																	<input type="radio" name="rb_tip_bien">
+																	<input type="radio" name="rb_tip_bien" value="1">
 																	<i></i>Alimentarios
-																</label>
+																</label>																
+															</div>
+														</div>
+														
+														<div class="col-sm-3 form-group">
+															<div class="inline-group">
 																<label class="radio">
-																	<input type="radio" name="rb_tip_bien">
+																	<input type="radio" name="rb_tip_bien" value="2">
 																	<i></i>No Alimentarios
 																</label>
 															</div>
 														</div>
 													</div>
 													
-													<div class="form-group">
+													<div class="row">
 														<div class="col-sm-6 smart-form">
 															<section>														
 																<label class="control-label">Conclusiones:</label>
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" class="custom-scroll"></textarea> 
+																	<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" 
+																		maxlength="500" class="custom-scroll"></textarea> 
 																</label>
 															</section>
 														</div>
@@ -327,7 +341,8 @@
 															<section>
 																<label class="control-label">Recomendaciones:</label>
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_recomendaciones" id="txt_recomendaciones" class="custom-scroll"></textarea> 
+																	<textarea rows="3" name="txt_recomendaciones" id="txt_recomendaciones" 
+																		maxlength="500" class="custom-scroll"></textarea> 
 																</label>
 															</section>
 														</div>
@@ -586,7 +601,7 @@
 								<div class="col-sm-3">
 									<select id="sel_producto" name="sel_producto" class="form-control select2">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -597,7 +612,7 @@
 								<div class="col-sm-3">
 									<select id="sel_uni_medida" name="sel_uni_medida" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -632,7 +647,7 @@
 								<div class="col-sm-2">
 									<select id="sel_primario" name="sel_primario" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -641,7 +656,7 @@
 								<div class="col-sm-2">
 									<select id="sel_olor" name="sel_olor" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -650,7 +665,7 @@
 								<div class="col-sm-2">
 									<select id="sel_textura" name="sel_textura" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -661,7 +676,7 @@
 								<div class="col-sm-2">
 									<select id="sel_secundario" name="sel_secundario" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -670,7 +685,7 @@
 								<div class="col-sm-2">
 									<select id="sel_color" name="sel_color" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -679,7 +694,7 @@
 								<div class="col-sm-2">
 									<select id="sel_sabor" name="sel_sabor" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -730,7 +745,7 @@
 								<div class="col-sm-3">
 									<select id="sel_no_producto" name="sel_no_producto" class="form-control select2">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -741,7 +756,7 @@
 								<div class="col-sm-3">
 									<select id="sel_no_uni_medida" name="sel_no_uni_medida" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -776,7 +791,7 @@
 								<div class="col-sm-2">
 									<select id="sel_no_primario" name="sel_no_primario" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -785,7 +800,7 @@
 								<div class="col-sm-2">
 									<select id="sel_no_tecnicas" name="sel_no_tecnicas" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -796,7 +811,7 @@
 								<div class="col-sm-2">
 									<select id="sel_no_secundario" name="sel_no_secundario" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -805,7 +820,7 @@
 								<div class="col-sm-2">
 									<select id="sel_no_conformidad" name="sel_no_conformidad" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -856,7 +871,7 @@
 								<div class="col-sm-3">
 									<select id="sel_tip_producto" name="sel_tip_producto" class="form-control">
 										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.cod_comprobante}">${item.nom_comprobante}</option>
+											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -915,4 +930,6 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
+<script> var controlCalidad = JSON.parse('${controlCalidad}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/mantenimiento_control_calidad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/validacion_mantenimiento_control_calidad.js"></script>

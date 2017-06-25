@@ -1,7 +1,5 @@
 package pe.com.sigbah.common.bean;
 
-import java.util.Date;
-
 /**
  * @className: ControlCalidadBean.java
  * @description: 
@@ -15,12 +13,17 @@ public class ControlCalidadBean extends BaseOutputBean {
 	private String codigoAnio;
 	private String codigoMes;
 	private String nombreAlmacen;
-	private String nroRepControlCalidad;
-	private Date fechaEmision;
-	private String tipoControlCalidad;
-	private String nombreEstado;
+	private Integer idDdi;
 	private String codigoDdi;
+	private String nombreDdi;
+	private String fechaEmision;
+	private String tipoControlCalidad;
+	private String nombreEstado;	
 	private String codigoAlmacen;
+	private String nroControlCalidad;
+	private Integer idAlmacen;
+	private String nombreMes;
+	private String tipo;
 	
 	
 	/**
@@ -72,27 +75,15 @@ public class ControlCalidadBean extends BaseOutputBean {
 		this.nombreAlmacen = nombreAlmacen;
 	}
 	/**
-	 * @return the nroRepControlCalidad
-	 */
-	public String getNroRepControlCalidad() {
-		return nroRepControlCalidad;
-	}
-	/**
-	 * @param nroRepControlCalidad the nroRepControlCalidad to set
-	 */
-	public void setNroRepControlCalidad(String nroRepControlCalidad) {
-		this.nroRepControlCalidad = nroRepControlCalidad;
-	}
-	/**
 	 * @return the fechaEmision
 	 */
-	public Date getFechaEmision() {
+	public String getFechaEmision() {
 		return fechaEmision;
 	}
 	/**
 	 * @param fechaEmision the fechaEmision to set
 	 */
-	public void setFechaEmision(Date fechaEmision) {
+	public void setFechaEmision(String fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
 	/**
@@ -142,6 +133,78 @@ public class ControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setCodigoAlmacen(String codigoAlmacen) {
 		this.codigoAlmacen = codigoAlmacen;
+	}
+	/**
+	 * @return the idDdi
+	 */
+	public Integer getIdDdi() {
+		return idDdi;
+	}
+	/**
+	 * @param idDdi the idDdi to set
+	 */
+	public void setIdDdi(Integer idDdi) {
+		this.idDdi = idDdi;
+	}
+	/**
+	 * @return the nombreDdi
+	 */
+	public String getNombreDdi() {
+		return nombreDdi;
+	}
+	/**
+	 * @param nombreDdi the nombreDdi to set
+	 */
+	public void setNombreDdi(String nombreDdi) {
+		this.nombreDdi = nombreDdi;
+	}
+	/**
+	 * @return the nroControlCalidad
+	 */
+	public String getNroControlCalidad() {
+		return nroControlCalidad;
+	}
+	/**
+	 * @param nroControlCalidad the nroControlCalidad to set
+	 */
+	public void setNroControlCalidad(String nroControlCalidad) {
+		this.nroControlCalidad = nroControlCalidad;
+	}
+	/**
+	 * @return the idAlmacen
+	 */
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+	/**
+	 * @param idAlmacen the idAlmacen to set
+	 */
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+	/**
+	 * @return the nombreMes
+	 */
+	public String getNombreMes() {
+		return nombreMes;
+	}
+	/**
+	 * @param nombreMes the nombreMes to set
+	 */
+	public void setNombreMes(String nombreMes) {
+		this.nombreMes = nombreMes;
+	}
+	/**
+	 * @return the tipo
+	 */
+	public String getTipo() {
+		return tipo;
+	}
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 }

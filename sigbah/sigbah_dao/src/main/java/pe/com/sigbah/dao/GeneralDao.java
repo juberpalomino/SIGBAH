@@ -249,5 +249,11 @@ public interface GeneralDao {
 	 * @throws Exception
 	 */
 	public abstract List<ItemBean> listarParametro(ItemBean itemBean) throws Exception;
+	
+	/**
+	 * @return Año actual.
+	 * @throws Exception
+	 */
+	public abstract String obtenerAnioActual() throws Exception;
 
 }

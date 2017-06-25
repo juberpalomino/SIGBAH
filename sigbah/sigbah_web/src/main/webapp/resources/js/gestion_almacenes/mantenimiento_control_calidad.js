@@ -22,245 +22,74 @@ $(document).ready(function() {
 	$('.datepicker').datepicker({
 		autoclose: true,
 		todayHighlight: true,
-		dateFormat: 'dd/mm/yy'
+		dateFormat: 'dd/mm/yy',
+		clearBtn: true
 	});
 	
 	inicializarDatos();
 	
-	$('#frm_dat_generales').bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			txt_fecha : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Fecha.'
-					}
-				}
-			},
-			sel_estado : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Estado.'
-					}
-				}
-			},
-			sel_nro_ord_compra : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Nº orden Compra.'
-					}
-				}
-			},
-			txt_nro_placa : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar N° de Placa.'
-					}
-				}
+	$('#txt_fecha').datepicker().on('changeDate', function(e) {
+		e.preventDefault();
+		if (!esnulo($(this).val())) {
+			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fecha');
+		}		
+	});
+	
+	$('#sel_tip_control').change(function() {
+		var val_tip_control = $(this).val();		
+		if (!esnulo(val_tip_control)) {
+//			frm_dat_generales.data('bootstrapValidator').resetForm();
+			if (val_tip_control == '3' || // Ingreso por Transferencias de Almacén
+					val_tip_control == '6') { // Salidas por Transferencias a Almacén
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_almacen');
+			} else if (val_tip_control == '1' || // Ingreso por Compra de productos
+						val_tip_control == '5') { // Ingreso por Donación
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_representante');
+				
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+				frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
 			}
 		}
 	});
 	
-	frm_det_alimentarios.bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_producto : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Producto.'
-					}
+	$('#sel_emp_transporte').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				icodigo : codigo
+			};			
+			loadding(true);
+			consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarChofer', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			        });
+			        $('#sel_chofer').html(options);
 				}
-			},
-			sel_uni_medida : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Unidad Medida.'
-					}
-				}
-			},
-			txt_fec_vencimiento : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha Vencimiento.'
-					}
-				}
-			},
-			txt_can_lote : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Lote.'
-					}
-				}
-			},
-			txt_can_muestra : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Muestra.'
-					}
-				}
-			},
-			sel_primario : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Primario.'
-					}
-				}
-			},
-			sel_olor : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Olor.'
-					}
-				}
-			},
-			sel_textura : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Textura.'
-					}
-				}
-			},
-			sel_secundario : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Secundario.'
-					}
-				}
-			},
-			sel_color : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Color.'
-					}
-				}
-			},
-			sel_sabor : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Sabor.'
-					}
-				}
-			}
-		}
-	});
-	
-	frm_det_no_alimentarios.bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_no_producto : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Producto.'
-					}
-				}
-			},
-			sel_no_uni_medida : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Unidad Medida.'
-					}
-				}
-			},
-			txt_no_fec_vencimiento : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha Vencimiento.'
-					}
-				}
-			},
-			txt_no_can_lote : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Lote.'
-					}
-				}
-			},
-			txt_no_can_muestra : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Muestra.'
-					}
-				}
-			},
-			sel_no_primario : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Primario.'
-					}
-				}
-			},
-			sel_no_tecnicas : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Técnicas.'
-					}
-				}
-			},
-			sel_no_secundario : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Secundario.'
-					}
-				}
-			},
-			sel_no_conformidad : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Conformidad.'
-					}
-				}
-			}
-		}
-	});
-	
-	frm_det_documentos.bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_tip_producto : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Tipo Documento.'
-					}
-				}
-			},
-			txt_nro_documento : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar N° Documento.'
-					}
-				}
-			},
-			txt_doc_fecha : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha.'
-					}
-				}
-			},
-			txt_sub_archivo : {
-				validators : {
-					notEmpty : {
-						message : 'Debe cargar el Archivo.'
-					}
-				}
-			}
+				loadding(false);
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+			});
+		} else {
+			$('#sel_chofer').html('');
 		}
 	});
 	
 	$('#btn_grabar').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = $('#frm_dat_generales').data('bootstrapValidator');
+//		frm_dat_generales.data('bootstrapValidator').resetForm();
+		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
 			
 			
-			
+			/*
 			var params = { 
 				cod_anio : $('#sel_anio').val(),
 				cod_ddi : $('#sel_ddi').val(),
@@ -279,6 +108,9 @@ $(document).ready(function() {
 				}
 				loadding(false);
 			});
+			*/
+			
+			addSuccessMessage(null, 'ok');
 			
 		}
 		
@@ -726,18 +558,27 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-
-		var codigo = $('#hid_codigo').val();
-		
-		if (!esnulo(codigo)) {
+		if (!esnulo(controlCalidad.idControlCalidad)) {
+			
+			
 			
 		} else {
 			
-			$('a[data-toggle="div_alimentarios"]').addClass('disabled');
-			$('a[data-toggle="div_no_alimentarios"]').addClass('disabled');
-			$('a[data-toggle="div_documentos"]').addClass('disabled');
+			$('#txt_nro_con_calidad').val(controlCalidad.nroControlCalidad);
+			
+			$('#li_alimentarios').addClass('disabled');
+			$('#li_no_alimentarios').addClass('disabled');
+			$('#li_documentos').addClass('disabled');
+			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
+
+			$('#txt_anio').val(controlCalidad.codigoAnio);
+			$('#txt_ddi').val(controlCalidad.nombreDdi);
+			$('#txt_almacen').val(controlCalidad.nombreAlmacen);
 			
 		}
 		
 	}
+	
+	$('#sel_nro_ord_compra').select2().trigger('change');
+	
 }

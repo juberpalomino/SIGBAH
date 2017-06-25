@@ -10,9 +10,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Properties;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
@@ -21,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import com.google.gson.Gson;
 
 import pe.com.sigbah.common.bean.BaseOutputBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
@@ -38,18 +38,21 @@ public class BaseController implements Serializable {
 	private static final long serialVersionUID = 6674829455049670947L;
 	protected transient final Log LOGGER = LogFactory.getLog(getClass());
 	protected transient UsuarioBean usuarioBean = null;
-	protected transient BaseOutputBean baseOutputBean;
-	private static final String FICHERO_PROPERTIES = "/WEB-INF/i18n/config.properties";
+//	protected transient BaseOutputBean baseOutputBean;
+//	private static final String FICHERO_PROPERTIES = "/WEB-INF/i18n/config.properties";
+	
+//	@Autowired
+//	private ServletContext context;
 	
 	@Autowired
-	private ServletContext context;
+	private MessageSource messageSource;
 	
 	/**
 	 * @param servletContext
 	 */
-	public void setServletContext(ServletContext servletContext) {
-	    this.context = servletContext;
-	}
+//	public void setServletContext(ServletContext servletContext) {
+//	    this.context = servletContext;
+//	}
 	
 	/**
 	 * Devuelve el RequestAttributes.
@@ -227,7 +230,7 @@ public class BaseController implements Serializable {
 			} else if (campo instanceof BigDecimal) {
 				return String.valueOf((BigDecimal) campo);
 			} else {
-				return (String) campo;
+				return campo.toString();
 			}
 		}
 		return Constantes.EMPTY; 	
@@ -273,29 +276,52 @@ public class BaseController implements Serializable {
 	 * @param key - Llave de codigo de valor;
 	 * @return El valor de la propiedad correspondiente a la llave.
 	 */
-	public String getPropiedad(String key) {
-		Properties properties = new Properties();
-		String directorio = null;
-		InputStream inputStream = null;
-		try {
-			inputStream = context.getResourceAsStream(FICHERO_PROPERTIES);
-			properties.load(inputStream);
-			if (inputStream == null) {
-				throw new FileNotFoundException("Archivo properties '" + FICHERO_PROPERTIES +"' no se encuentra en el classpath");
-			}
-			directorio = properties.getProperty(key);
-		} catch (IOException e) {			
-			LOGGER.error(e.getMessage(), e);
-		} finally {
-		    if (inputStream != null) {
-		    	try {
-					inputStream.close();
-				} catch (IOException e) {
-					LOGGER.error(e.getMessage(), e);
-				}
-		    }
+//	public String getPropiedad(String key) {
+//		Properties properties = new Properties();
+//		String directorio = null;
+//		InputStream inputStream = null;
+//		try {
+//			inputStream = context.getResourceAsStream(FICHERO_PROPERTIES);
+//			properties.load(inputStream);
+//			if (inputStream == null) {
+//				throw new FileNotFoundException("Archivo properties '" + FICHERO_PROPERTIES +"' no se encuentra en el classpath");
+//			}
+//			directorio = properties.getProperty(key);
+//		} catch (IOException e) {			
+//			LOGGER.error(e.getMessage(), e);
+//		} finally {
+//		    if (inputStream != null) {
+//		    	try {
+//					inputStream.close();
+//				} catch (IOException e) {
+//					LOGGER.error(e.getMessage(), e);
+//				}
+//		    }
+//		}
+//		return directorio;
+//	}
+	
+	/**
+	 * @param object
+	 * @return String 
+	 */
+	public static String getParserObject(Object object) {
+		return new Gson().toJson(object);
+	}
+	
+	/**
+	 * @param codigo
+	 * @return Objeto.
+	 */
+	public BaseOutputBean getBaseRespuesta(String codigo) {
+		BaseOutputBean baseOutputBean = new BaseOutputBean();
+		if (codigo != null && codigo.equals(Constantes.COD_EXITO_GENERAL)) {
+			baseOutputBean.setCodigoRespuesta(codigo);
+		} else {
+			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
+			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));
 		}
-		return directorio;
+		return baseOutputBean;
 	}
 	
 }

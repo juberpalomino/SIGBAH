@@ -2,8 +2,6 @@ package pe.com.sigbah.web.controller.seguridad;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +27,7 @@ public class PrincipalController extends BaseController {
 	
 //	@Autowired 
 //	private AdministracionService administracionService;	
-	
-	@Autowired
-	private MessageSource messageSource;
+
 	
 	/**
 	 * @param model 
@@ -51,12 +47,29 @@ public class PrincipalController extends BaseController {
 
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
-        	baseOutputBean = new BaseOutputBean();
-			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
-			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));
-        	model.addAttribute("base", baseOutputBean);
+        	model.addAttribute("base", getBaseRespuesta(null));
         }
         return "principal";
+    }
+	
+	/**
+	 * @param model 
+	 * @param request 
+	 * @return - Retorna a la vista JSP.
+	 */
+	@RequestMapping(value = "/resourceNotFound", method = RequestMethod.GET)
+    public String resourceNotFound(Model model, HttpServletRequest request) {
+        return "resourceNotFound";
+    }
+	
+	/**
+	 * @param model 
+	 * @param request 
+	 * @return - Retorna a la vista JSP.
+	 */
+	@RequestMapping(value = "/uncaughtException", method = RequestMethod.GET)
+    public String uncaughtException(Model model, HttpServletRequest request) {
+        return "uncaughtException";
     }
 
 }

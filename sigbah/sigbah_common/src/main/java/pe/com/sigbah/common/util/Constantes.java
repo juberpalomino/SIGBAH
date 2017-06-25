@@ -74,6 +74,9 @@ public final class Constantes implements Serializable {
 	public static final String PACKAGE_LOGISTICA = "BAH_PKG_LOGISTICA";
 	public static final String PACKAGE_PROGRAMACION = "BAH_PKG_PROGRAMACION";
 	
+	public static final String CODIGO_TIPO_ALMACEN = "A";
+	public static final String CODIGO_TIPO_DONACION = "D";
+	
 
 	/* ESTADO ACTIVO */
 	public static final int ESTADO_INACTIVO = 0;

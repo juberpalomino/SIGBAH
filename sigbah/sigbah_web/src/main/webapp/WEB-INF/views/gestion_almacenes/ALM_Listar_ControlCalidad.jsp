@@ -40,9 +40,9 @@
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
-								<div class="form-group">
+								<div class="row">
 									<label class="col-sm-1 control-label">Año:</label>
-									<div class="col-sm-2">
+									<div class="col-sm-2 form-group">
 										<select id="sel_anio" name="sel_anio" class="form-control">
 											<c:forEach items="${lista_anio}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
@@ -51,7 +51,7 @@
 									</div>
 									
 									<label class="col-sm-1 control-label">DDI:</label>
-									<div class="col-sm-2">
+									<div class="col-sm-2 form-group">
 										<select id="sel_ddi" name="sel_ddi" class="form-control">
 											<c:forEach items="${lista_ddi}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
@@ -60,7 +60,7 @@
 									</div>
 									
 									<label class="col-sm-2 control-label">Almacén:</label>
-									<div class="col-sm-2">
+									<div class="col-sm-2 form-group">
 										<select id="sel_almacen" name="sel_almacen" class="form-control">
 											<c:forEach items="${lista_almacen}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
@@ -68,13 +68,14 @@
 										</select>
 									</div>
 									
-									<div class="col-sm-2">
+									<div class="col-sm-2 opc-center">
 										<button class="btn btn-primary" type="button" id="btn_buscar">
 											<i class="fa fa-search"></i>
 											Buscar
 										</button>
 									</div>
 								</div>
+								
 							</form>
 		
 						</div>

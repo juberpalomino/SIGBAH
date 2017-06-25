@@ -297,4 +297,12 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 		return generalDao.listarParametro(itemBean);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#obtenerAnioActual()
+	 */
+	@Override
+	public String obtenerAnioActual() throws Exception {
+		return generalDao.obtenerAnioActual();
+	}
+
 }

@@ -770,4 +770,3 @@ function get_for_date(fecha) {
 	var fec_form = anio + '-' + mes + '-' + dia;
 	return new Date(fec_form);
 }
-

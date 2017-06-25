@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -30,6 +31,30 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public List<ControlCalidadBean> listarControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
 		return logisticaDao.listarControlCalidad(controlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativo(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public ControlCalidadBean obtenerCorrelativo(ControlCalidadBean controlCalidadBean) throws Exception {
+		return logisticaDao.obtenerCorrelativo(controlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarAlmacenActivo(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public List<ControlCalidadBean> listarAlmacenActivo(ControlCalidadBean controlCalidadBean) throws Exception {
+		return logisticaDao.listarAlmacenActivo(controlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarOrdenCompra()
+	 */
+	@Override
+	public List<OrdenCompraBean> listarOrdenCompra() throws Exception {
+		return logisticaDao.listarOrdenCompra();
 	}
 
 }

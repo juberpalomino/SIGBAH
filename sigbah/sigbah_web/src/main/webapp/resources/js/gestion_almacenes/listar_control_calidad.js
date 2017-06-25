@@ -136,11 +136,11 @@ function listarControlCalidad(respuesta) {
 		}, {
 			data : 'codigoAnio'
 		}, {
-			data : 'idControlCalidad'
+			data : 'nombreDdi'
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroRepControlCalidad'
+			data : 'nroControlCalidad'
 		}, {
 			data : 'fechaEmision'
 		}, {

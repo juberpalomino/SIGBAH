@@ -11,7 +11,9 @@ public class ItemBean extends BaseOutputBean {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer icodigo;
+	private Integer icodigoParam2;
 	private String vcodigo;
+	private String vcodigoParam2;
 	private String descripcion;
 	private String descripcionCorta;
 	
@@ -70,6 +72,16 @@ public class ItemBean extends BaseOutputBean {
 		this.vcodigo = vcodigo;
 		this.descripcion = descripcion;
 	}
+	
+	/**
+	 * @param icodigo
+	 * @param icodigoParam2
+	 */
+	public ItemBean(Integer icodigo, Integer icodigoParam2) {
+		super();
+		this.icodigo = icodigo;
+		this.icodigoParam2 = icodigoParam2;
+	}
 
 	/**
 	 * @return the icodigo
@@ -127,13 +139,42 @@ public class ItemBean extends BaseOutputBean {
 		this.descripcionCorta = descripcionCorta;
 	}
 
+	/**
+	 * @return the icodigoParam2
+	 */
+	public Integer getIcodigoParam2() {
+		return icodigoParam2;
+	}
+
+	/**
+	 * @param icodigoParam2 the icodigoParam2 to set
+	 */
+	public void setIcodigoParam2(Integer icodigoParam2) {
+		this.icodigoParam2 = icodigoParam2;
+	}
+
+	/**
+	 * @return the vcodigoParam2
+	 */
+	public String getVcodigoParam2() {
+		return vcodigoParam2;
+	}
+
+	/**
+	 * @param vcodigoParam2 the vcodigoParam2 to set
+	 */
+	public void setVcodigoParam2(String vcodigoParam2) {
+		this.vcodigoParam2 = vcodigoParam2;
+	}
+
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "ItemBean [icodigo=" + icodigo 
-				+ ", descripcion=" + descripcion + ", descripcionCorta="
+		return "ItemBean [icodigo=" + icodigo + ", icodigoParam2=" + icodigoParam2 + ", vcodigo=" + vcodigo
+				+ ", vcodigoParam2=" + vcodigoParam2 + ", descripcion=" + descripcion + ", descripcionCorta="
 				+ descripcionCorta + "]";
 	}
 
