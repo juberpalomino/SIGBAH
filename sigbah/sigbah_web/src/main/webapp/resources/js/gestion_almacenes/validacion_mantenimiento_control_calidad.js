@@ -83,22 +83,6 @@ $(document).ready(function() {
 				    }
 				}
 			},
-			sel_representante : {
-				validators : {
-					callback: {
-				        callback: function(value, validator, field) {
-				        	var val_tip_control = $('#sel_tip_control').val();                 		
-				    		if (val_tip_control == '1' || // Ingreso por Compra de productos
-				    				val_tip_control == '5') { // Ingreso por Donación
-				    			if (esnulo(value)) {
-				    				return { valid: false, message: 'Debe seleccionar Representante.'}
-				    			}
-				    		}
-				            return true;
-				        }
-				    }
-				}
-			},
 			
 			// Datos del Transporte
 			sel_emp_transporte : {
@@ -147,6 +131,15 @@ $(document).ready(function() {
 				            return true;
 				        }
 				    }
+				}
+			},
+			
+			// Productos
+			rb_tip_bien : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Tipo de Bien.'
+					}
 				}
 			}
 			

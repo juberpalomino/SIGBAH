@@ -24,6 +24,19 @@ public class ControlCalidadBean extends BaseOutputBean {
 	private Integer idAlmacen;
 	private String nombreMes;
 	private String tipo;
+	private Integer idTipoControl;
+	private Integer idEncargado;
+	private Integer idInspector;
+	private Integer idProveedor;
+	private Integer idEmpresaTransporte;
+	private Integer idChofer;
+	private String conclusiones;
+	private String recomendaciones;
+	private Integer idAlmacenOrigen;
+	private String nroPlaca;
+	private String nroOrdenCompra;
+	private Integer idEstado;
+	private String flagTipoBien;
 	
 	
 	/**
@@ -205,6 +218,162 @@ public class ControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	/**
+	 * @return the idTipoControl
+	 */
+	public Integer getIdTipoControl() {
+		return idTipoControl;
+	}
+	/**
+	 * @param idTipoControl the idTipoControl to set
+	 */
+	public void setIdTipoControl(Integer idTipoControl) {
+		this.idTipoControl = idTipoControl;
+	}
+	/**
+	 * @return the idEncargado
+	 */
+	public Integer getIdEncargado() {
+		return idEncargado;
+	}
+	/**
+	 * @param idEncargado the idEncargado to set
+	 */
+	public void setIdEncargado(Integer idEncargado) {
+		this.idEncargado = idEncargado;
+	}
+	/**
+	 * @return the idInspector
+	 */
+	public Integer getIdInspector() {
+		return idInspector;
+	}
+	/**
+	 * @param idInspector the idInspector to set
+	 */
+	public void setIdInspector(Integer idInspector) {
+		this.idInspector = idInspector;
+	}
+	/**
+	 * @return the idProveedor
+	 */
+	public Integer getIdProveedor() {
+		return idProveedor;
+	}
+	/**
+	 * @param idProveedor the idProveedor to set
+	 */
+	public void setIdProveedor(Integer idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+	/**
+	 * @return the idEmpresaTransporte
+	 */
+	public Integer getIdEmpresaTransporte() {
+		return idEmpresaTransporte;
+	}
+	/**
+	 * @param idEmpresaTransporte the idEmpresaTransporte to set
+	 */
+	public void setIdEmpresaTransporte(Integer idEmpresaTransporte) {
+		this.idEmpresaTransporte = idEmpresaTransporte;
+	}
+	/**
+	 * @return the idChofer
+	 */
+	public Integer getIdChofer() {
+		return idChofer;
+	}
+	/**
+	 * @param idChofer the idChofer to set
+	 */
+	public void setIdChofer(Integer idChofer) {
+		this.idChofer = idChofer;
+	}
+	/**
+	 * @return the conclusiones
+	 */
+	public String getConclusiones() {
+		return conclusiones;
+	}
+	/**
+	 * @param conclusiones the conclusiones to set
+	 */
+	public void setConclusiones(String conclusiones) {
+		this.conclusiones = conclusiones;
+	}
+	/**
+	 * @return the recomendaciones
+	 */
+	public String getRecomendaciones() {
+		return recomendaciones;
+	}
+	/**
+	 * @param recomendaciones the recomendaciones to set
+	 */
+	public void setRecomendaciones(String recomendaciones) {
+		this.recomendaciones = recomendaciones;
+	}
+	/**
+	 * @return the nroPlaca
+	 */
+	public String getNroPlaca() {
+		return nroPlaca;
+	}
+	/**
+	 * @param nroPlaca the nroPlaca to set
+	 */
+	public void setNroPlaca(String nroPlaca) {
+		this.nroPlaca = nroPlaca;
+	}
+	/**
+	 * @return the nroOrdenCompra
+	 */
+	public String getNroOrdenCompra() {
+		return nroOrdenCompra;
+	}
+	/**
+	 * @param nroOrdenCompra the nroOrdenCompra to set
+	 */
+	public void setNroOrdenCompra(String nroOrdenCompra) {
+		this.nroOrdenCompra = nroOrdenCompra;
+	}
+	/**
+	 * @return the idEstado
+	 */
+	public Integer getIdEstado() {
+		return idEstado;
+	}
+	/**
+	 * @param idEstado the idEstado to set
+	 */
+	public void setIdEstado(Integer idEstado) {
+		this.idEstado = idEstado;
+	}
+	/**
+	 * @return the flagTipoBien
+	 */
+	public String getFlagTipoBien() {
+		return flagTipoBien;
+	}
+	/**
+	 * @param flagTipoBien the flagTipoBien to set
+	 */
+	public void setFlagTipoBien(String flagTipoBien) {
+		this.flagTipoBien = flagTipoBien;
+	}
+	/**
+	 * @return the idAlmacenOrigen
+	 */
+	public Integer getIdAlmacenOrigen() {
+		return idAlmacenOrigen;
+	}
+	/**
+	 * @param idAlmacenOrigen the idAlmacenOrigen to set
+	 */
+	public void setIdAlmacenOrigen(Integer idAlmacenOrigen) {
+		this.idAlmacenOrigen = idAlmacenOrigen;
 	}
 
 }

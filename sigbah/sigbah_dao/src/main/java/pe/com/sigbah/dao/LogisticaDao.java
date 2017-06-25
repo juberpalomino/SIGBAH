@@ -40,4 +40,18 @@ public interface LogisticaDao {
 	 */
 	public abstract List<OrdenCompraBean> listarOrdenCompra() throws Exception;
 	
+	/**
+	 * @param controlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ControlCalidadBean insertarRegistroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception;
+
+	/**
+	 * @param controlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ControlCalidadBean actualizarRegistroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception;
+	
 }

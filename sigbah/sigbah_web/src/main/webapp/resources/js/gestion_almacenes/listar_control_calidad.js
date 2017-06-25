@@ -7,7 +7,8 @@ $(document).ready(function() {
 	
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
-	$('#li_con_calidad').addClass('active');
+	$('#li_con_calidad').attr('class', 'active');
+	$('#li_con_calidad').closest('li').children('a').attr('href', '#');
 	
 	inicializarDatos();
 	

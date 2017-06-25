@@ -110,6 +110,10 @@ public class ControlCalidadController extends BaseController {
         		
         		controlCalidad.setIdControlCalidad(codigo);
         		
+        		
+        		
+        		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(usuarioBean.getIdDdi())));
+        		
         	} else {
         		
         		// Retorno los datos de session
@@ -130,8 +134,8 @@ public class ControlCalidadController extends BaseController {
       
         		correlativo.append(respuestaCorrelativo.getNroControlCalidad());
         		
-        		controlCalidad.setNroControlCalidad(correlativo.toString());
-        		
+        		controlCalidad.setNroControlCalidad(correlativo.toString());        		
+        		controlCalidad.setIdDdi(usuarioBean.getIdDdi());
         		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
         		
         		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
@@ -140,6 +144,8 @@ public class ControlCalidadController extends BaseController {
         		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
         		if (!isEmpty(listaAlmacenActivo)) {
         			controlCalidad.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+        			controlCalidad.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+        			controlCalidad.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
         			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
         		}
         		
@@ -165,8 +171,7 @@ public class ControlCalidadController extends BaseController {
         	parametroEmpresaTransporte.setIcodigo(usuarioBean.getIdDdi());
         	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
         	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
-        	
-//        	model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(usuarioBean.getIdDdi())));
+     
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
@@ -196,6 +201,44 @@ public class ControlCalidadController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		ControlCalidadBean controlCalidad = null;
+		try {			
+			ControlCalidadBean controlCalidadBean = new ControlCalidadBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(controlCalidadBean, request.getParameterMap());
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	controlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+			if (!isNullInteger(controlCalidadBean.getIdControlCalidad())) {
+				
+				controlCalidad = logisticaService.actualizarRegistroControlCalidad(controlCalidadBean);
+				controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "Los datos se grabaron satisfactoriamente."));
+				
+			} else {
+			
+				controlCalidad = logisticaService.insertarRegistroControlCalidad(controlCalidadBean);
+			
+			}
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return controlCalidad;
 	}
 	
 }

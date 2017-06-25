@@ -23,6 +23,8 @@ public class AlmacenActivoMapper implements RowMapper<ControlCalidadBean> {
 		ControlCalidadBean controlCalidad = new ControlCalidadBean();
 		controlCalidad.setCodigoAnio(rs.getString("COD_ANIO"));
 		controlCalidad.setCodigoMes(rs.getString("COD_MES"));
+		controlCalidad.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
+		controlCalidad.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
 		controlCalidad.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
 		controlCalidad.setNombreMes(rs.getString("NOMBRE_MES"));
 		return controlCalidad;

@@ -13,7 +13,7 @@
 	
 	<tiles:insertAttribute name="regionResources" flush="true" />
 </head>
-<body class="">
+<body class="desktop-detected pace-done smart-style-3">
 
 	<tiles:insertAttribute name="regionTop" flush="true" />
 	

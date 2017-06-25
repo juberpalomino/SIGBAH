@@ -57,8 +57,8 @@
 								
 									<form id="frm_dat_generales" class="form-horizontal">
 									
-										<input type="hidden" id="hid_con_calidad" value="${controlCalidad}" />
-											
+										<input type="hidden" id="hid_cod_con_calidad" name="hid_cod_con_calidad">
+									
 										<div class="header-form opc-center">	
 											<strong>Control de Calidad</strong>
 										</div>
@@ -107,7 +107,7 @@
 														<div class="col-sm-2 smart-form form-group">
 															<label class="input"> 
 																<i class="icon-append fa fa-calendar"></i>
-																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker" readonly>
+																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker btn-readonly" readonly>
 															</label>
 														</div>
 														
@@ -221,18 +221,14 @@
 														<div class="col-sm-3 form-group">
 															<select id="sel_proveedor" name="sel_proveedor" class="form-control">
 																<c:forEach items="${lista_proveedor}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcionCorta}</option>
+																    <option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 														
 														<label class="col-sm-3 control-label">Representante:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_representante" name="sel_representante" class="form-control">
-																<c:forEach items="${lista_personal}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
+															<input type="text" id="txt_representante" class="form-control" disabled>
 														</div>
 													</div>
 								
@@ -277,7 +273,7 @@
 													<div class="row">
 														<label class="col-sm-3 control-label">N° de Placa:</label>
 														<div class="col-sm-2 form-group">
-															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control">
+															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control" maxlength="10">
 														</div>
 													</div>
 								
@@ -307,22 +303,16 @@
 														
 														<div class="col-sm-1"></div>
 														
-														<div class="col-sm-2 form-group">
-															<div class="inline-group">
-																<label class="radio">
-																	<input type="radio" name="rb_tip_bien" value="1">
-																	<i></i>Alimentarios
-																</label>																
-															</div>
-														</div>
-														
-														<div class="col-sm-3 form-group">
-															<div class="inline-group">
-																<label class="radio">
-																	<input type="radio" name="rb_tip_bien" value="2">
-																	<i></i>No Alimentarios
-																</label>
-															</div>
+														<div class="col-sm-6 form-group">
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_tip_bien" value="1">
+																Alimentarios
+															</label>
+															
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_tip_bien" value="2">
+																No Alimentarios
+															</label>															
 														</div>
 													</div>
 													

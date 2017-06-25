@@ -17,7 +17,8 @@ $(document).ready(function() {
 	
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
-	$('#li_con_calidad').addClass('active');
+	$('#li_con_calidad').attr('class', 'active');
+	$('#li_con_calidad').closest('li').children('a').attr('href', '#');
 	
 	$('.datepicker').datepicker({
 		autoclose: true,
@@ -30,9 +31,7 @@ $(document).ready(function() {
 	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
-		if (!esnulo($(this).val())) {
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fecha');
-		}		
+		frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fecha');	
 	});
 	
 	$('#sel_tip_control').change(function() {
@@ -51,6 +50,20 @@ $(document).ready(function() {
 				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
 				frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
 			}
+		}
+	});
+	
+	$('#sel_proveedor').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {
+			var arr = codigo.split('_');
+			if (arr.length > 1) {
+				$('#txt_representante').val(arr[1]);
+			} else {
+				$('#txt_representante').val('');
+			}			
+		} else {
+			$('#txt_representante').val('');
 		}
 	});
 	
@@ -82,36 +95,69 @@ $(document).ready(function() {
 	$('#btn_grabar').click(function(e) {
 		e.preventDefault();
 		
-//		frm_dat_generales.data('bootstrapValidator').resetForm();
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			
-			
-			
-			/*
-			var params = { 
-				cod_anio : $('#sel_anio').val(),
-				cod_ddi : $('#sel_ddi').val(),
-				cod_almacen : $('#sel_almacen').val()
+			var codigo = $('#hid_con_calidad').val();
+			var tipoBien = $('input[name="rb_tip_bien"]:checked').val();
+			var params = {
+				idControlCalidad : codigo,	
+				codigoAnio : $('#txt_anio').val(),
+				codigoDdi : controlCalidad.codigoDdi,
+				idAlmacen : controlCalidad.idAlmacen,
+				codigoAlmacen : controlCalidad.codigoAlmacen,
+				fechaEmision : $('#txt_fecha').val(),
+				idEstado : $('#sel_estado').val(),
+				nroOrdenCompra : $('#sel_nro_ord_compra').val(),
+				idTipoControl : $('#sel_tip_control').val(),
+				idAlmacenOrigen : $('#sel_ori_almacen').val(),
+				idEncargado : $('#sel_ori_en_almacen').val(),
+				idInspector : $('#sel_inspector').val(),
+				idProveedor : $('#sel_proveedor').val(),
+				idEmpresaTransporte : $('#sel_emp_transporte').val(),
+				idChofer : $('#sel_chofer').val(),
+				nroPlaca : $('#txt_nro_placa').val(),
+				flagTipoBien : tipoBien,
+				conclusiones : $('#txt_conclusiones').val(),
+				recomendaciones : $('#txt_recomendaciones').val()				
 			};
 			
 			loadding(true);
 			
-			consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/control-calidad/grabarControlCalidad', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					
-					addSuccessMessage(null, respuesta.mensajeRespuesta);
+					if (!esnulo(codigo)) {
+						
+						addSuccessMessage(null, respuesta.mensajeRespuesta);
+						
+					} else {
+						
+						$('#hid_cod_con_calidad').val(respuesta.idControlCalidad);
+						$('#txt_nro_con_calidad').val(respuesta.nroControlCalidad);
+						
+						if (tipoBien == '1') {					
+							$('#li_alimentarios').attr('class', '');
+							$('#li_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
+						} else {							
+							$('#li_no_alimentarios').attr('class', '');
+							$('#li_no_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
+						}
+						$('#li_documentos').attr('class', '');
+						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
+
+//						$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
+//						$('#li_con_calidad').closest('li').children('a').attr('href', '#');
+
+						addSuccessMessage(null, 'Se genero el N° Control de Calidad: '+respuesta.nroControlCalidad);
+						
+					}
 					
 				}
 				loadding(false);
-			});
-			*/
-			
-			addSuccessMessage(null, 'ok');
-			
+			});			
 		}
 		
 	});
@@ -559,6 +605,7 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		if (!esnulo(controlCalidad.idControlCalidad)) {
+			$('#hid_cod_con_calidad').val(controlCalidad.idControlCalidad);
 			
 			
 			

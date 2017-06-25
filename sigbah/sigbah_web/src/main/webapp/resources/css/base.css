@@ -50,3 +50,8 @@
 .widget-body-50 {
 	min-height: 50px !important;
 }
+
+.btn-readonly {
+    background-color: #eee !important;
+	opacity: 1 !important;
+}

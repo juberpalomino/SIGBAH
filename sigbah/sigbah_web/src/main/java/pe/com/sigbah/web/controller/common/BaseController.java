@@ -45,7 +45,7 @@ public class BaseController implements Serializable {
 //	private ServletContext context;
 	
 	@Autowired
-	private MessageSource messageSource;
+	protected transient MessageSource messageSource;
 	
 	/**
 	 * @param servletContext

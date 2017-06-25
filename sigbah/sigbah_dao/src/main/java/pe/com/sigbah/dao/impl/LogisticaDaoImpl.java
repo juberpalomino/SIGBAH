@@ -27,6 +27,7 @@ import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.util.Constantes;
+import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.LogisticaDao;
@@ -127,16 +128,18 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
-		
-			detalleUsuarioBean.setNroControlCalidad((String) out.get("po_CORRELATIVO"));
-			detalleUsuarioBean.setCodigoRespuesta((String) out.get("po_CODIGO_RESPUESTA"));
-			detalleUsuarioBean.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
 			
-			if (detalleUsuarioBean.getCodigoRespuesta().equals(Constantes.COD_ERROR_GENERAL)) {
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
 				LOGGER.info("[obtenerCorrelativo] Ocurrio un error en la operacion del USP_SEL_GENERA_CORREL_CALIDAD");
     			throw new Exception();
     		}
-			
+
+			detalleUsuarioBean.setNroControlCalidad((String) out.get("po_CORRELATIVO"));
+			detalleUsuarioBean.setCodigoRespuesta(codigoRespuesta);
+			detalleUsuarioBean.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
@@ -205,6 +208,97 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[listarOrdenCompra] Fin ");
 		return lista;
+	}
+
+	@Override
+	public ControlCalidadBean insertarRegistroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
+		LOGGER.info("[insertarRegistroControlCalidad] Inicio ");
+		ControlCalidadBean registroControlCalidad = new ControlCalidadBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_COD_ANIO", controlCalidadBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_MES", controlCalidadBean.getCodigoMes(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN", controlCalidadBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FLG_TIPO_PRODUCTO", controlCalidadBean.getFlagTipoBien(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_ALMACEN", controlCalidadBean.getCodigoAlmacen(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_DDI", controlCalidadBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FEC_EMISION", DateUtil.obtenerFechaParseada(Constantes.FORMATO_FECHA, controlCalidadBean.getFechaEmision()), Types.DATE);
+			input_objParametros.addValue("pi_FK_IDE_TIP_CONTROL", controlCalidadBean.getIdTipoControl(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_ENCARGADO", controlCalidadBean.getIdEncargado(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_INSPECTOR", controlCalidadBean.getIdInspector(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_PROVEEDOR", controlCalidadBean.getIdProveedor(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_EMP_TRANS", controlCalidadBean.getIdEmpresaTransporte(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_CHOFER", controlCalidadBean.getIdChofer(), Types.NUMERIC);			
+			input_objParametros.addValue("pi_CONCLUSIONES", controlCalidadBean.getConclusiones(), Types.VARCHAR);
+			input_objParametros.addValue("pi_RECOMENDACIONES", controlCalidadBean.getRecomendaciones(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN_OD", controlCalidadBean.getIdAlmacenOrigen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_NRO_PLACA", controlCalidadBean.getNroPlaca(), Types.VARCHAR);
+			input_objParametros.addValue("pi_NRO_ORDEN_COMPRA", controlCalidadBean.getNroOrdenCompra(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_ESTADO", controlCalidadBean.getIdEstado(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FLG_TIPO_BIEN", controlCalidadBean.getFlagTipoBien(), Types.VARCHAR);
+			input_objParametros.addValue("pi_USU_REGISTRO", controlCalidadBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withProcedureName("USP_INS_REGISTRA_CONTROL_CALID");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_FLG_TIPO_PRODUCTO", new SqlParameter("pi_FLG_TIPO_PRODUCTO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ALMACEN", new SqlParameter("pi_COD_ALMACEN", Types.VARCHAR));
+			output_objParametros.put("pi_COD_DDI", new SqlParameter("pi_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("pi_FEC_EMISION", new SqlParameter("pi_FEC_EMISION", Types.DATE));
+			output_objParametros.put("pi_FK_IDE_TIP_CONTROL", new SqlParameter("pi_FK_IDE_TIP_CONTROL", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_ENCARGADO", new SqlParameter("pi_FK_IDE_ENCARGADO", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_INSPECTOR", new SqlParameter("pi_FK_IDE_INSPECTOR", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_PROVEEDOR", new SqlParameter("pi_FK_IDE_PROVEEDOR", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_EMP_TRANS", new SqlParameter("pi_FK_IDE_EMP_TRANS", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_CHOFER", new SqlParameter("pi_FK_IDE_CHOFER", Types.NUMERIC));			
+			output_objParametros.put("pi_CONCLUSIONES", new SqlParameter("pi_CONCLUSIONES", Types.VARCHAR));
+			output_objParametros.put("pi_RECOMENDACIONES", new SqlParameter("pi_RECOMENDACIONES", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_ALMACEN_OD", new SqlParameter("pi_FK_IDE_ALMACEN_OD", Types.NUMERIC));
+			output_objParametros.put("pi_NRO_PLACA", new SqlParameter("pi_NRO_PLACA", Types.VARCHAR));
+			output_objParametros.put("pi_NRO_ORDEN_COMPRA", new SqlParameter("pi_NRO_ORDEN_COMPRA", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_ESTADO", new SqlParameter("pi_FK_IDE_ESTADO", Types.NUMERIC));
+			output_objParametros.put("pi_FLG_TIPO_BIEN", new SqlParameter("pi_FLG_TIPO_BIEN", Types.VARCHAR));
+			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));			
+			output_objParametros.put("po_PK_IDE_CONTROL_CALIDAD", new SqlOutParameter("po_PK_IDE_CONTROL_CALIDAD", Types.NUMERIC));
+			output_objParametros.put("po_NRO_CONTROL_CALIDAD", new SqlOutParameter("po_NRO_CONTROL_CALIDAD", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[insertarRegistroControlCalidad] Ocurrio un error en la operacion del USP_INS_REGISTRA_CONTROL_CALID");
+    			throw new Exception();
+    		}
+		
+			registroControlCalidad.setIdControlCalidad((Integer) out.get("po_PK_IDE_CONTROL_CALIDAD"));
+			registroControlCalidad.setNroControlCalidad((String) out.get("po_NRO_CONTROL_CALIDAD"));
+			registroControlCalidad.setCodigoRespuesta(codigoRespuesta);
+			registroControlCalidad.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[insertarRegistroControlCalidad] Fin ");
+		return registroControlCalidad;
+	}
+
+	@Override
+	public ControlCalidadBean actualizarRegistroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
