@@ -68,7 +68,7 @@ public class AdministracionDaoImpl extends JdbcDaoSupport implements Administrac
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_ADMINISTRACION);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_SEL_USUARIO");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();

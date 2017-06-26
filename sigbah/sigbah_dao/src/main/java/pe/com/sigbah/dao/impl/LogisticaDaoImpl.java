@@ -26,6 +26,7 @@ import org.springframework.stereotype.Repository;
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -33,6 +34,7 @@ import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.mapper.AlmacenActivoMapper;
 import pe.com.sigbah.mapper.ControlCalidadMapper;
+import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 
 /**
@@ -74,7 +76,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_LISTAR_CONTROL_CALIDAD");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
@@ -115,7 +117,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_SEL_GENERA_CORREL_CALIDAD");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
@@ -161,7 +163,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_CAB_ACTIVA_ALM");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
@@ -189,7 +191,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_SEL_TAB_ORDEN_COMPRA");
 
 			Map<String, Object> out = objJdbcCall.withoutProcedureColumnMetaDataAccess()
@@ -242,7 +244,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_INS_REGISTRA_CONTROL_CALID");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
@@ -328,7 +330,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_UPD_REGISTRA_CONTROL_CALID");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
@@ -390,7 +392,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
-			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SIG_BAH);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_CONTROL_CALIDA");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
@@ -424,6 +426,52 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[obtenerRegistroControlCalidad] Fin ");
 		return controlCalidad;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductoControlCalidad(pe.com.sigbah.common.bean.ProductoControlCalidadBean)
+	 */
+	@Override
+	public List<ProductoControlCalidadBean> listarProductoControlCalidad(ProductoControlCalidadBean producto) throws Exception {
+		LOGGER.info("[listarProductoControlCalidad] Inicio ");
+		List<ProductoControlCalidadBean> lista = new ArrayList<ProductoControlCalidadBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_ID_CONTROL_CALIDAD", producto.getIdControlCalidad(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FLG_TIPO_PRODUCTO", producto.getFlagTipoProducto(), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_PROD_CONTROL_CALID");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_ID_CONTROL_CALIDAD", new SqlParameter("pi_ID_CONTROL_CALIDAD", Types.NUMERIC));
+			output_objParametros.put("pi_FLG_TIPO_PRODUCTO", new SqlParameter("pi_FLG_TIPO_PRODUCTO", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ProductoControlCalidadMapper()));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[listarProductoControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_PROD_CONTROL_CALID");
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProductoControlCalidadBean>) out.get("po_Lr_Recordset");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductoControlCalidad] Fin ");
+		return lista;
 	}
 
 }

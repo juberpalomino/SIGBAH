@@ -408,7 +408,6 @@
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>N°<th>
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
 															<th>Lote</th>
@@ -471,7 +470,6 @@
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>N°<th>
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
 															<th>Lote</th>
@@ -531,7 +529,6 @@
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>N°<th>
 															<th>Tipo Documento</th>
 															<th>Nro Documento</th>
 															<th>Fecha</th>

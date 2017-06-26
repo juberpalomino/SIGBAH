@@ -16,6 +16,7 @@ public class BaseOutputBean implements Serializable {
 	private String indicador;
 	private String url;
 	private String usuarioRegistro;
+	private String usuarioActualizacion;
 
 	/**
 	 * 
@@ -122,6 +123,20 @@ public class BaseOutputBean implements Serializable {
 	 */
 	public void setUsuarioRegistro(String usuarioRegistro) {
 		this.usuarioRegistro = usuarioRegistro;
+	}
+
+	/**
+	 * @return the usuarioActualizacion
+	 */
+	public String getUsuarioActualizacion() {
+		return usuarioActualizacion;
+	}
+
+	/**
+	 * @param usuarioActualizacion the usuarioActualizacion to set
+	 */
+	public void setUsuarioActualizacion(String usuarioActualizacion) {
+		this.usuarioActualizacion = usuarioActualizacion;
 	}
 
 }

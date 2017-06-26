@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -79,6 +80,14 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public ControlCalidadBean obtenerRegistroControlCalidad(Integer idControlCalidad) throws Exception {
 		return logisticaDao.obtenerRegistroControlCalidad(idControlCalidad);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProductoControlCalidad(pe.com.sigbah.common.bean.ProductoControlCalidadBean)
+	 */
+	@Override
+	public List<ProductoControlCalidadBean> listarProductoControlCalidad(ProductoControlCalidadBean producto) throws Exception {
+		return logisticaDao.listarProductoControlCalidad(producto);
 	}
 
 }

@@ -646,15 +646,33 @@ function inicializarDatos() {
 			$('#txt_conclusiones').val(controlCalidad.conclusiones);
 			$('#txt_recomendaciones').val(controlCalidad.recomendaciones);
 			
+			// listarDetalleAlimentarios(listaAlimentarios);
+//			listarDetalleAlimentarios(new Object());
+			
+			var paramsProducto = { 
+				idControlCalidad : 1,
+				flagTipoProducto : '1'
+			};
+			
+			consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarProductoControlCalidad', paramsProducto, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarDetalleAlimentarios(respuesta);
+				}
+			});
+			
 		} else {
 			
 			$('#li_alimentarios').addClass('disabled');
 			$('#li_no_alimentarios').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
+			
+			listarDetalleAlimentarios(new Object());
 
 		}
-		
+
 	}
 	
 	$('#sel_nro_ord_compra').select2().trigger('change');
@@ -668,7 +686,7 @@ function listarDetalleAlimentarios(respuesta) {
 	tbl_det_alimentarios.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idControlCalidad',
+			data : 'idDetalleControlCalidad',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -678,21 +696,31 @@ function listarDetalleAlimentarios(respuesta) {
 				} else {
 					return '';	
 				}											
-			}	
+			}
 		}, {
-			data : 'codigoAnio'
+			data : 'nombreProducto'
 		}, {
-			data : 'nombreDdi'
+			data : 'nombreUnidad'
 		}, {
-			data : 'nombreAlmacen'
+			data : 'cantidadLote'
 		}, {
-			data : 'nroControlCalidad'
+			data : 'nombreUnidad'
 		}, {
-			data : 'fechaEmision'
+			data : 'nombreUnidad'
 		}, {
-			data : 'tipoControlCalidad'
+			data : 'nombreUnidad'
 		}, {
-			data : 'nombreEstado'
+			data : 'nombreUnidad'
+		}, {
+			data : 'nombreUnidad'
+		}, {
+			data : 'nombreUnidad'
+		}, {
+			data : 'nombreUnidad'
+		}, {
+			data : 'nombreUnidad'
+		}, {
+			data : 'nombreUnidad'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'

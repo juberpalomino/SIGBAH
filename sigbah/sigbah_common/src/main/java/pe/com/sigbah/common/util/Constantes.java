@@ -67,7 +67,7 @@ public final class Constantes implements Serializable {
 	
 	/* CODIGOS SISTEMA SIG_BAH */
 	public static final String CODIGO_MODULO_SIG_BAH = "SIG_BAH";
-	public static final String ESQUEMA_SIG_BAH = "SINPAD";
+	public static final String ESQUEMA_SINPAD = "SINPAD";
 	public static final String PACKAGE_ADMINISTRACION = "BAH_PKG_ADMINISTRACION";
 	public static final String PACKAGE_DONACION = "BAH_PKG_DONACION";
 	public static final String PACKAGE_GENERAL = "BAH_PKG_GENERAL";

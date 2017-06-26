@@ -4,6 +4,7 @@ import java.util.List;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 
 /**
  * @className: LogisticaDao.java
@@ -60,5 +61,12 @@ public interface LogisticaDao {
 	 * @throws Exception
 	 */
 	public abstract ControlCalidadBean obtenerRegistroControlCalidad(Integer idControlCalidad) throws Exception;
+	
+	/**
+	 * @param producto
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoControlCalidadBean> listarProductoControlCalidad(ProductoControlCalidadBean producto) throws Exception;
 	
 }

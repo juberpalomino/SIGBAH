@@ -1,5 +1,6 @@
 package pe.com.sigbah.web.controller.gestion_almacenes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.Utils;
@@ -112,6 +114,11 @@ public class ControlCalidadController extends BaseController {
         		
         		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
         		
+        		List<ProductoControlCalidadBean> listaAlimentarios = new ArrayList<ProductoControlCalidadBean>(); // Cambiar
+
+            	model.addAttribute("listaAlimentarios", getParserObject(listaAlimentarios));
+        		model.addAttribute("listaNoAlimentarios", getParserObject(listaAlimentarios));
+        		
         	} else {
 
         		StringBuilder correlativo = new StringBuilder();
@@ -142,7 +149,6 @@ public class ControlCalidadController extends BaseController {
         			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
         			controlCalidad.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
         		}
-        		
         	}
         	
         	if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
@@ -233,6 +239,27 @@ public class ControlCalidadController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return controlCalidad;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarProductoControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProductoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoControlCalidadBean> lista = null;
+		try {			
+			ProductoControlCalidadBean producto = new ProductoControlCalidadBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(producto, request.getParameterMap());			
+			lista = logisticaService.listarProductoControlCalidad(producto);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
 	}
 	
 }
