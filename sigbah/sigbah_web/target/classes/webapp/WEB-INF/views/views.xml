@@ -4,21 +4,40 @@
 	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
+	<definition name="login" extends="login-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/seguridad/login.jsp" />
+	</definition>
+
 	<definition name="principal" extends="principal-layout">
-	    <put-attribute name="regionBody" value="/WEB-INF/views/principal.jsp" />
-	    <put-attribute name="regionScripts" value="/WEB-INF/views/mainScripts.jsp" />
+	    <put-attribute name="regionBody" value="/WEB-INF/views/seguridad/principal.jsp" />
 	</definition>
 	
-	<definition name="dataAccessFailure" extends="public">
-		<put-attribute name="body" value="/WEB-INF/views/dataAccessFailure.jsp" />
+	<definition name="dataAccessFailure" extends="public-layout">
+		<put-attribute name="regionBody" value="/WEB-INF/views/default/dataAccessFailure.jsp" />
 	</definition>
 
-	<definition name="resourceNotFound" extends="public">
-		<put-attribute name="body" value="/WEB-INF/views/resourceNotFound.jsp" />
+	<definition name="resourceNotFound" extends="public-layout">
+		<put-attribute name="regionBody" value="/WEB-INF/views/default/resourceNotFound.jsp" />
 	</definition>
 
-	<definition name="uncaughtException" extends="public">
-		<put-attribute name="body" value="/WEB-INF/views/uncaughtException.jsp" />
+	<definition name="uncaughtException" extends="public-layout">
+		<put-attribute name="regionBody" value="/WEB-INF/views/default/uncaughtException.jsp" />
+	</definition>
+
+	<definition name="listar_control_calidad" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_ControlCalidad.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_control_calidad" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Mostrar_ControlCalidad.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
+	</definition>
+		
+	<definition name="mantenimiento_donaciones" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Mostrar_PropuestaDonaciones.jsp" />
 	</definition>
 	
 </tiles-definitions>
