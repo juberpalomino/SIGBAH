@@ -37,6 +37,7 @@ public class RegistroControlCalidadMapper implements RowMapper<ControlCalidadBea
 		controlCalidad.setIdInspector(rs.getInt("FK_IDE_INSPECTOR"));
 		controlCalidad.setIdProveedor(rs.getInt("FK_IDE_PROVEEDOR"));
 		controlCalidad.setProvRep(rs.getString("PROV_REP"));
+		controlCalidad.setIdEmpresaTransporte(rs.getInt("FK_IDE_EMP_TRANS"));
 		controlCalidad.setIdChofer(rs.getInt("FK_IDE_CHOFER"));
 		controlCalidad.setNroPlaca(rs.getString("NRO_PLACA"));
 		controlCalidad.setFlagTipoBien(rs.getString("FLG_TIPO_BIEN"));

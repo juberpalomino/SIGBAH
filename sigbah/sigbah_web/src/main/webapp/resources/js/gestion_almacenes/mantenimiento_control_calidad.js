@@ -629,9 +629,9 @@ function inicializarDatos() {
 			$('#txt_fecha').val(controlCalidad.fechaEmision);
 			$('#sel_estado').val(controlCalidad.idEstado);
 			$('#sel_nro_ord_compra').val(controlCalidad.nroOrdenCompra);
-			$('#sel_tip_control').val(controlCalidad.tipoControlCalidad);
-			$('#sel_ori_almacen').val(controlCalidad.codigoAlmacen);
-			$('#sel_ori_en_almacen').val(controlCalidad.idAlmacenOrigen);
+			$('#sel_tip_control').val(controlCalidad.idTipoControl);
+			$('#sel_ori_almacen').val(controlCalidad.idAlmacenOrigen);
+			$('#sel_ori_en_almacen').val(controlCalidad.idEncargado);
 			$('#sel_inspector').val(controlCalidad.idInspector);			
 			var val_idProveedor = controlCalidad.provRep;
 			$('#sel_proveedor').val(val_idProveedor);

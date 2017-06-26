@@ -110,7 +110,7 @@ public class ControlCalidadController extends BaseController {
         		
         		controlCalidad = logisticaService.obtenerRegistroControlCalidad(codigo);
         		
-        		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(usuarioBean.getIdDdi())));
+        		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
         		
         	} else {
 

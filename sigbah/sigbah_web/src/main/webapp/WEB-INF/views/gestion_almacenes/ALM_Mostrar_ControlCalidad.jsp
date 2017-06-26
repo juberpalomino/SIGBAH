@@ -266,6 +266,9 @@
 														<label class="col-sm-3 control-label">Chofer:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_chofer" name="sel_chofer" class="form-control">
+																<c:forEach items="${lista_chofer}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
 															</select>
 														</div>
 													</div>
