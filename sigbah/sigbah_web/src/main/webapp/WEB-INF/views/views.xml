@@ -35,5 +35,9 @@
 	<definition name="listar-donaciones" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
 	</definition>
+		
+	<definition name="mantenimiento_donaciones" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Mostrar_PropuestaDonaciones.jsp" />
+	</definition>
 	
 </tiles-definitions>
