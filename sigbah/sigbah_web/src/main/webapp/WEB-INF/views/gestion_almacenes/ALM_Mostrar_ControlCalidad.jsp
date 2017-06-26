@@ -570,7 +570,7 @@
 
 <!-- Modal -->
 <div id="div_det_alimentarios" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
@@ -632,31 +632,33 @@
 								<strong>Verificacion Fisica del Envase</strong>
 							</div>
 							
+							<div class="form-group"></div>
+							
 							<div class="form-group">																				
 								<label class="col-sm-2 control-label">Primario:</label>
 								<div class="col-sm-2">
 									<select id="sel_primario" name="sel_primario" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 								
 								<label class="col-sm-2 control-label">Olor:</label>
 								<div class="col-sm-2">
 									<select id="sel_olor" name="sel_olor" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 								
 								<label class="col-sm-2 control-label">Textura:</label>
 								<div class="col-sm-2">
 									<select id="sel_textura" name="sel_textura" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 							</div>
@@ -665,27 +667,27 @@
 								<label class="col-sm-2 control-label">Secundario:</label>
 								<div class="col-sm-2">
 									<select id="sel_secundario" name="sel_secundario" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 								
 								<label class="col-sm-2 control-label">Color:</label>
 								<div class="col-sm-2">
 									<select id="sel_color" name="sel_color" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 								
 								<label class="col-sm-2 control-label">Sabor:</label>
 								<div class="col-sm-2">
 									<select id="sel_sabor" name="sel_sabor" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 							</div>
@@ -714,7 +716,7 @@
 
 <!-- Modal -->
 <div id="div_det_no_alimentarios" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" id="btn_clo_no_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
@@ -776,22 +778,25 @@
 								<strong>Verificacion Fisica del Envase</strong>
 							</div>
 							
+							<div class="form-group"></div>
+							
 							<div class="form-group">																				
 								<label class="col-sm-2 control-label">Primario:</label>
 								<div class="col-sm-2">
 									<select id="sel_no_primario" name="sel_no_primario" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 								
 								<label class="col-sm-2 control-label">Técnicas:</label>
 								<div class="col-sm-2">
 									<select id="sel_no_tecnicas" name="sel_no_tecnicas" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Cumple</option>
+										<option value="2">No Cumple</option>
+										<option value="3">No Aplica</option>
 									</select>
 								</div>
 							</div>
@@ -800,18 +805,18 @@
 								<label class="col-sm-2 control-label">Secundario:</label>
 								<div class="col-sm-2">
 									<select id="sel_no_secundario" name="sel_no_secundario" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 								
 								<label class="col-sm-2 control-label">Conformidad:</label>
 								<div class="col-sm-2">
 									<select id="sel_no_conformidad" name="sel_no_conformidad" class="form-control">
-										<c:forEach items="${lista_ddi}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
+										<option value="">Seleccione</option>
+										<option value="1">Bueno</option>
+										<option value="2">Malo</option>
 									</select>
 								</div>
 							</div>
