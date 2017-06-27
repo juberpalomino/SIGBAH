@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.dao.LogisticaDao;
@@ -88,6 +89,46 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public List<ProductoControlCalidadBean> listarProductoControlCalidad(ProductoControlCalidadBean producto) throws Exception {
 		return logisticaDao.listarProductoControlCalidad(producto);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarProductoControlCalidad(pe.com.sigbah.common.bean.ProductoControlCalidadBean)
+	 */
+	@Override
+	public ProductoControlCalidadBean grabarProductoControlCalidad(ProductoControlCalidadBean productoControlCalidadBean) throws Exception {
+		return logisticaDao.grabarProductoControlCalidad(productoControlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarProductoControlCalidad(pe.com.sigbah.common.bean.ProductoControlCalidadBean)
+	 */
+	@Override
+	public ProductoControlCalidadBean eliminarProductoControlCalidad(ProductoControlCalidadBean productoControlCalidadBean) throws Exception {
+		return logisticaDao.eliminarProductoControlCalidad(productoControlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 */
+	@Override
+	public List<DocumentoControlCalidadBean> listarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		return logisticaDao.listarDocumentoControlCalidadBean(documentoControlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 */
+	@Override
+	public DocumentoControlCalidadBean grabarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		return logisticaDao.grabarDocumentoControlCalidadBean(documentoControlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 */
+	@Override
+	public DocumentoControlCalidadBean eliminarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		return logisticaDao.eliminarDocumentoControlCalidadBean(documentoControlCalidadBean);
 	}
 
 }

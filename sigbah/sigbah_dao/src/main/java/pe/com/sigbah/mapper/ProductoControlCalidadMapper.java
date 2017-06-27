@@ -23,7 +23,7 @@ public class ProductoControlCalidadMapper implements RowMapper<ProductoControlCa
 		ProductoControlCalidadBean producto = new ProductoControlCalidadBean();
 		producto.setIdDetalleControlCalidad(rs.getInt("IDE_DET_CONTROL_CAL"));
 		producto.setIdControlCalidad(rs.getInt("FK_IDE_CONTROL_CALIDAD"));
-		producto.setIdCategoriaProducto(rs.getInt("FK_IDE_CAT_PRODUCTO"));
+		producto.setIdProducto(rs.getInt("FK_IDE_CAT_PRODUCTO"));
 		producto.setNombreProducto(rs.getString("NOM_PRODUCTO"));
 		producto.setNombreUnidad(rs.getString("NOMBRE_UNID_MEDIDA"));
 		producto.setCantidadLote(rs.getBigDecimal("CANT_LOTE"));
@@ -44,6 +44,7 @@ public class ProductoControlCalidadMapper implements RowMapper<ProductoControlCa
 		producto.setValorConforProducto(rs.getString("VALOR_CONFOR_PRODUCTO"));
 		producto.setFlagEspecTecnicas(rs.getString("FLAG_ESPEC_TECNICAS"));
 		producto.setValorEspecTecnicas(rs.getString("VALOR_ESPEC_TECNICAS"));
+		producto.setFechaVencimiento(rs.getString("FECHA_VENCIMIENTO"));
 		return producto;
 	}
 

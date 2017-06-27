@@ -157,13 +157,6 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_uni_medida : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Unidad Medida.'
-					}
-				}
-			},
 			txt_fec_vencimiento : {
 				validators : {
 					notEmpty : {
@@ -238,13 +231,6 @@ $(document).ready(function() {
 				validators : {
 					notEmpty : {
 						message : 'Debe seleccionar Producto.'
-					}
-				}
-			},
-			sel_no_uni_medida : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Unidad Medida.'
 					}
 				}
 			},

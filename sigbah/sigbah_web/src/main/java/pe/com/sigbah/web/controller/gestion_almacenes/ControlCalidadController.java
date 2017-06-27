@@ -175,6 +175,10 @@ public class ControlCalidadController extends BaseController {
         	parametroEmpresaTransporte.setIcodigo(usuarioBean.getIdDdi());
         	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
         	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
+        	
+        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ItemBean(Constantes.FIVE_INT)));
+        	
+        	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
      
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
@@ -212,7 +216,7 @@ public class ControlCalidadController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
 		ControlCalidadBean controlCalidad = null;
@@ -229,7 +233,7 @@ public class ControlCalidadController extends BaseController {
 			
 			if (!isNullInteger(controlCalidadBean.getIdControlCalidad())) {				
 				controlCalidad = logisticaService.actualizarRegistroControlCalidad(controlCalidadBean);
-				controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "Los datos se grabaron satisfactoriamente."));				
+				controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 			} else {			
 				controlCalidad = logisticaService.insertarRegistroControlCalidad(controlCalidadBean);			
 			}
@@ -260,6 +264,68 @@ public class ControlCalidadController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarProductoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarProductoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		ProductoControlCalidadBean producto = null;
+		try {			
+			ProductoControlCalidadBean productoControlCalidadBean = new ProductoControlCalidadBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(productoControlCalidadBean, request.getParameterMap());
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	productoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+			producto = logisticaService.grabarProductoControlCalidad(productoControlCalidadBean);
+			
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/eliminarProductoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object eliminarProductoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		ProductoControlCalidadBean producto = null;
+		try {			
+			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleControlCalidad").split(Constantes.UNDERLINE);
+			for (String codigo : arrIdDetalleControlCalidad) {				
+				ProductoControlCalidadBean productoControlCalidadBean = new ProductoControlCalidadBean(getInteger(codigo));
+
+				// Retorno los datos de session
+	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+	        	
+	        	productoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+				producto = logisticaService.eliminarProductoControlCalidad(productoControlCalidadBean);				
+			}
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
 	}
 	
 }

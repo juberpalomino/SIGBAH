@@ -88,6 +88,8 @@ $(function() {
 //    	$('#div_wid_bod_bus_con_calidad').addClass('hide');
     	
     });
+    
+    formatMontoInput();
 
 });
 
@@ -110,7 +112,7 @@ function consultarAjax(metodoEnv, direccionUrl, jsonString, callback) {
 		async : true,
 		url : VAR_CONTEXT + direccionUrl,
 		timeout : 30000,
-		contentType : 'application/json',
+		dataType: 'json',
 		success : function(respuesta) {
 			callback(respuesta);
 		},
@@ -151,7 +153,7 @@ function consultarAjaxSincrono(metodoEnv, direccionUrl, jsonString, callback) {
 		async : false,
 		url : VAR_CONTEXT + direccionUrl,
 		timeout : 30000,
-		contentType : 'application/json',
+		dataType: 'json',
 		success : function(respuesta) {
 			callback(respuesta);
 		},
@@ -769,4 +771,199 @@ function get_for_date(fecha) {
 	var anio = fecha.substring(6, 10);
 	var fec_form = anio + '-' + mes + '-' + dia;
 	return new Date(fec_form);
+}
+
+function formatMontoInput() {
+	$(':input.monto-format').each(function(e,a){
+//		$(this).css('text-align','right');
+	});
+	
+	var wasPASTE = false;
+	
+	$(document).on('keydown', ':input:enabled:not([readonly]).monto-format', function(e) {
+		// Permitir: delete, backspace, tab and . (from keyboard), . (from numpad)
+		if ($.inArray(e.keyCode, [46, 8, 9, 190, 110]) !== -1 ||
+				// Permitir: Ctrl+C
+				(e.keyCode == 67 && e.ctrlKey === true) ||
+				// Permitir: Ctrl+V
+				(e.keyCode == 86 && e.ctrlKey === true) ||
+				// Permitir: Ctrl+X
+				(e.keyCode == 88 && e.ctrlKey === true) ||
+				// Permitir: Inicio, Fin, left, right
+				(e.keyCode == 36 || e.keyCode == 35 || e.keyCode == 37 || e.keyCode == 39)) {
+			// Dejarlos pasar
+			// Si se realiza un pegado
+			if (e.keyCode == 86 && e.ctrlKey === true) {
+				wasPASTE = true;
+			} else {
+				wasPASTE = false;
+			}
+			return;
+		}
+		// Ensure that it is a number and stop the keypress
+		if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+			wasPASTE = false;
+			e.preventDefault();
+		}
+		wasPASTE = false;
+	});
+	
+	$(':input:enabled:not([readonly]).monto-format').each(function(e, a) {
+		this.addEventListener('paste', function (e) {
+			console.log(e.target.id);
+			var pastedText = undefined;
+			if (window.clipboardData && window.clipboardData.getData) { // IE
+				pastedText = window.clipboardData.getData('Text');
+			} else if (e.clipboardData && e.clipboardData.getData) {
+				pastedText = e.clipboardData.getData('text/plain');
+			}
+			e.preventDefault();
+			if (fnValidarFormatoWebPymesWithComma(pastedText) || fnValidarFormatoWebPymesWithOutComma(pastedText)) {
+				if(/[,]/g.test(pastedText)){
+					pastedText = pastedText.replace(/[,]/g,'');
+				}
+				e.target.value = pastedText;
+			} else {
+				e.target.value = pastedText;
+				setTimeout(function () {
+					e.target.value = '';
+				}, 1000);
+			}
+			var frm = $('#'+this.id).parents('div[id*=frm-]');
+			$('#'+this.id).trigger('input');
+			if (frm.length == 0) {
+				//No posee validacion bootstrap
+				return;
+			}
+			var idfrm = frm[0].id;
+			var idelement = this.id;
+			$('#'+idfrm).formValidation('revalidateField', idelement);
+			return false;
+		});
+	});
+	
+	$(document).on('keyup', ':input:enabled:not([readonly]).monto-format', function() {
+		var text = this.value.trim();
+		if (wasPASTE) {
+			
+		} else {
+			if (fnValidarFormatoWebPymesWithOutComma(text)) {
+				return;
+			}
+			if (/^[.]{1}[0-9]{1,2}$/.test(text)) {
+				if (text.toString().split('.')[0].length == 0) {
+					text = '0'.concat(text);
+					this.value = text;
+					
+					var frm = $('#'+this.id).parents('div[id*=frm-]');
+					$('#'+this.id).trigger('input');
+					if (frm.length == 0) {
+						//No posee validacion bootstrap
+						return;
+					}
+					var idfrm = frm[0].id;
+					var idelement = this.id;
+					$('#'+idfrm).formValidation('revalidateField', idelement);
+					return;
+				}
+			}
+		}
+	});
+	
+	$(document).on('focusout', ':input:enabled:not([readonly]).monto-format', function() {
+		var formatNumber = $.isNumeric($(this).val()) ? formatMontoAll($(this).val()) : '';
+		$(this).val(formatNumber);
+		if (formatNumber == '' || $.isNumeric(formatNumber)) {
+			var frm = $('#'+this.id).parents('div[id*=frm-]');
+			if (frm.length == 0) {
+				//No posee validacion bootstrap
+				return;
+			}
+			var idfrm = frm[0].id;
+			var idelement = this.id;
+			$('#'+idfrm).formValidation('revalidateField', idelement);
+		}
+		return;
+	});
+	
+	$(document).on('focus', ':input:enabled:not([readonly]).monto-format', function() {
+		var value = parseFloat($(this).val().replace(/\,/g,''));
+		value = value == '0' ? '0' : (value ? $(this).val(value.toFixed(2)) : $(this).val(''));	// version considerando '0'
+	});
+}
+
+/**
+ * Validar formato webPymes con comas
+ * @param {String}variable
+ * @returns {Boolean}
+ */
+function fnValidarFormatoWebPymesWithComma(variable){
+	var f14d2	= new RegExp(/^(-?[0-9]{1,2}(,)){0,1}([0-9]{3}(,)){0,3}([0-9]{3})(\.[0-9]{1,2})?$/);
+	var f3d2	= new RegExp(/^-?([0-9]{1,3})(\.[0-9]{1,2})?$/);
+	
+	if (f14d2.test(variable) || f3d2.test(variable)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+/**
+ * Validar formato webPymes sin comas
+ * @param {String}variable
+ * @returns {Boolean}
+ */
+function fnValidarFormatoWebPymesWithOutComma(variable){
+	var f14d2	= new RegExp(/^(-?[0-9]{1,14})(\.[0-9]{1,2})?$/);
+	
+	if (f14d2.test(variable)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function formatMontoAll(monto) {
+	if ($.isNumeric(monto)) {
+		var textMonto = monto.toString();
+		monto = textMonto.trim().replace(/\,/g,'');//Suprimimos las comas antes de parsear el monto
+		if (monto.trim() == '') {
+			return "";
+		} else {
+			monto = parseFloat(monto).toFixed(2).toString();
+			var text = monto.trim();
+			if (fnValidarFormatoWebPymesWithOutComma(text)) {
+				var num = monto.trim().replace(/\,/g,'');
+				if (!isNaN(num)) {
+					num = num.toString().split('').reverse().join('').replace(/(?=\d*\,?)(\d{3})/g,'$1,');
+					num = num.split('').reverse().join('').replace(/^[\,]/,'');
+					if (num.indexOf('.') == -1 && num.length <= 12) {
+						num = num.concat('.00');
+					} else {
+						if (num.toString().split('.')[1] != undefined && num.toString().split('.')[1].length == 1) {
+							num = num.concat('0');
+						}
+					}
+					monto = num;
+				}
+			}
+		}
+		if (monto.charAt(0) == '-') {
+			monto = monto.substring(1, monto.length);
+			if (monto.charAt(0) == ',') {
+				monto = monto.substring(1, monto.length);
+			}
+			monto = ('-').concat(monto);
+		}
+		if (monto.charAt(0) == ',') {
+			monto = monto.substring(1, monto.length);
+		}
+	}
+	return monto
+}
+
+function formatMonto(numero) {
+	if (!esnulo(numero)) {
+		numero = numero.replace(/,/g , '');
+	}
+	return numero;
 }

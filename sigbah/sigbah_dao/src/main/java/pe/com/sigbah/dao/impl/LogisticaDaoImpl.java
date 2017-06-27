@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.util.Constantes;
@@ -34,6 +35,7 @@ import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.mapper.AlmacenActivoMapper;
 import pe.com.sigbah.mapper.ControlCalidadMapper;
+import pe.com.sigbah.mapper.DocumentoControlCalidadMapper;
 import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 
@@ -472,6 +474,264 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[listarProductoControlCalidad] Fin ");
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProductoControlCalidad(pe.com.sigbah.common.bean.ProductoControlCalidadBean)
+	 */
+	@Override
+	public ProductoControlCalidadBean grabarProductoControlCalidad(ProductoControlCalidadBean productoControlCalidadBean) throws Exception {
+		LOGGER.info("[grabarProductoControlCalidad] Inicio ");
+		ProductoControlCalidadBean registroProductoControlCalidad = new ProductoControlCalidadBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DET_CONTROL_CAL", productoControlCalidadBean.getIdControlCalidad(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_CONTROL_CALIDAD", productoControlCalidadBean.getIdControlCalidad(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_CAT_PRODUCTO", productoControlCalidadBean.getIdProducto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_CANT_LOTE", productoControlCalidadBean.getCantidadLote(), Types.NUMERIC);
+			input_objParametros.addValue("pi_CANT_MUESTRA", productoControlCalidadBean.getCantidadMuestra(), Types.NUMERIC);
+			input_objParametros.addValue("pi_PRIMARIO", productoControlCalidadBean.getPrimario(), Types.VARCHAR);
+			input_objParametros.addValue("pi_SECUNDARIO", productoControlCalidadBean.getSecundario(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_PAR_OLOR", productoControlCalidadBean.getParOlor(), Types.VARCHAR);
+			input_objParametros.addValue("pi_PAR_COLOR", productoControlCalidadBean.getParColor(), Types.VARCHAR);
+			input_objParametros.addValue("pi_PAR_TEXTURA", productoControlCalidadBean.getParTextura(), Types.VARCHAR);
+			input_objParametros.addValue("pi_PAR_SABOR", productoControlCalidadBean.getParSabor(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FLG_CONFOR_PRODUCTO", productoControlCalidadBean.getFlagConforProducto(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FLAG_ESPEC_TECNICAS", productoControlCalidadBean.getFlagEspecTecnicas(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FEC_VENCIMIENTO", DateUtil.obtenerFechaHoraParseada(productoControlCalidadBean.getFechaVencimiento()), Types.DATE);
+			input_objParametros.addValue("pi_USERNAME", productoControlCalidadBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_PRODUCTO_CC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DET_CONTROL_CAL", new SqlParameter("pi_IDE_DET_CONTROL_CAL", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_CONTROL_CALIDAD", new SqlParameter("pi_FK_IDE_CONTROL_CALIDAD", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_CAT_PRODUCTO", new SqlParameter("pi_FK_IDE_CAT_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("pi_CANT_LOTE", new SqlParameter("pi_CANT_LOTE", Types.NUMERIC));
+			output_objParametros.put("pi_CANT_MUESTRA", new SqlParameter("pi_CANT_MUESTRA", Types.NUMERIC));
+			output_objParametros.put("pi_PRIMARIO", new SqlParameter("pi_PRIMARIO", Types.VARCHAR));
+			output_objParametros.put("pi_SECUNDARIO", new SqlParameter("pi_SECUNDARIO", Types.VARCHAR));			
+			output_objParametros.put("pi_PAR_OLOR", new SqlParameter("pi_PAR_OLOR", Types.VARCHAR));
+			output_objParametros.put("pi_PAR_COLOR", new SqlParameter("pi_PAR_COLOR", Types.VARCHAR));
+			output_objParametros.put("pi_PAR_TEXTURA", new SqlParameter("pi_PAR_TEXTURA", Types.VARCHAR));
+			output_objParametros.put("pi_PAR_SABOR", new SqlParameter("pi_PAR_SABOR", Types.VARCHAR));
+			output_objParametros.put("pi_FLG_CONFOR_PRODUCTO", new SqlParameter("pi_FLG_CONFOR_PRODUCTO", Types.VARCHAR));
+			output_objParametros.put("pi_FLAG_ESPEC_TECNICAS", new SqlParameter("pi_FLAG_ESPEC_TECNICAS", Types.VARCHAR));
+			output_objParametros.put("pi_FEC_VENCIMIENTO", new SqlParameter("pi_FEC_VENCIMIENTO", Types.DATE));
+			output_objParametros.put("pi_USERNAME", new SqlParameter("pi_USERNAME", Types.VARCHAR));
+			output_objParametros.put("po_PK_IDE_DET_CONTROL_CAL", new SqlOutParameter("po_PK_IDE_DET_CONTROL_CAL", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[grabarProductoControlCalidad] Ocurrio un error en la operacion del USP_INS_UPD_PRODUCTO_CC");
+    			throw new Exception();
+    		}
+			
+			registroProductoControlCalidad.setCodigoRespuesta(codigoRespuesta);
+			registroProductoControlCalidad.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarProductoControlCalidad] Fin ");
+		return registroProductoControlCalidad;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarProductoControlCalidad(pe.com.sigbah.common.bean.ProductoControlCalidadBean)
+	 */
+	@Override
+	public ProductoControlCalidadBean eliminarProductoControlCalidad(ProductoControlCalidadBean productoControlCalidadBean) throws Exception {
+		LOGGER.info("[eliminarProductoControlCalidad] Inicio ");
+		ProductoControlCalidadBean registroProductoControlCalidad = new ProductoControlCalidadBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DET_CONTROL_CAL", productoControlCalidadBean.getIdDetalleControlCalidad(), Types.NUMERIC);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_PRODUCTO_CC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DET_CONTROL_CAL", new SqlParameter("pi_IDE_DET_CONTROL_CAL", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[eliminarProductoControlCalidad] Ocurrio un error en la operacion del USP_DEL_PRODUCTO_CC");
+    			throw new Exception();
+    		}
+			
+			registroProductoControlCalidad.setCodigoRespuesta(codigoRespuesta);
+			registroProductoControlCalidad.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarProductoControlCalidad] Fin ");
+		return registroProductoControlCalidad;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 */
+	@Override
+	public List<DocumentoControlCalidadBean> listarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		LOGGER.info("[listarDocumentoControlCalidadBean] Inicio ");
+		List<DocumentoControlCalidadBean> lista = new ArrayList<DocumentoControlCalidadBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_ID_CONTROL_CALIDAD", documentoControlCalidadBean.getIdControlCalidad(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_DOCUMENTO_CC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_ID_CONTROL_CALIDAD", new SqlParameter("pi_ID_CONTROL_CALIDAD", Types.NUMERIC));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new DocumentoControlCalidadMapper()));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[listarDocumentoControlCalidadBean] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENTO_CC");
+    			throw new Exception();
+    		}
+			
+			lista = (List<DocumentoControlCalidadBean>) out.get("po_Lr_Recordset");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDocumentoControlCalidadBean] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 */
+	@Override
+	public DocumentoControlCalidadBean grabarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		LOGGER.info("[grabarDocumentoControlCalidadBean] Inicio ");
+		DocumentoControlCalidadBean registroDocumentoControlCalidad = new DocumentoControlCalidadBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_FK_IDE_CONTROL_CALIDAD", documentoControlCalidadBean.getIdControlCalidad(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_TIP_DOCUMENTO", documentoControlCalidadBean.getIdTipoDocumento(), Types.NUMERIC);
+			input_objParametros.addValue("pi_NRO_DOCUMENTO", documentoControlCalidadBean.getNroDocumento(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FEC_DOCUMENTO", DateUtil.obtenerFechaHoraParseada(documentoControlCalidadBean.getFechaDocumento()), Types.DATE);
+			input_objParametros.addValue("pi_USU_REGISTRO", documentoControlCalidadBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_DOCUMENTO_CC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_FK_IDE_CONTROL_CALIDAD", new SqlParameter("pi_FK_IDE_CONTROL_CALIDAD", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_TIP_DOCUMENTO", new SqlParameter("pi_FK_IDE_TIP_DOCUMENTO", Types.NUMERIC));
+			output_objParametros.put("pi_NRO_DOCUMENTO", new SqlParameter("pi_NRO_DOCUMENTO", Types.NUMERIC));
+			output_objParametros.put("pi_FEC_DOCUMENTO", new SqlParameter("pi_FEC_DOCUMENTO", Types.DATE));
+			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
+			output_objParametros.put("po_PK_IDE_DOCUMENTO_CAL", new SqlOutParameter("po_PK_IDE_DOCUMENTO_CAL", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[grabarDocumentoControlCalidadBean] Ocurrio un error en la operacion del USP_INS_DOCUMENTO_CC");
+    			throw new Exception();
+    		}
+			
+			registroDocumentoControlCalidad.setCodigoRespuesta(codigoRespuesta);
+			registroDocumentoControlCalidad.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarDocumentoControlCalidadBean] Fin ");
+		return registroDocumentoControlCalidad;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 */
+	@Override
+	public DocumentoControlCalidadBean eliminarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		LOGGER.info("[eliminarDocumentoControlCalidadBean] Inicio ");
+		DocumentoControlCalidadBean registroDocumentoControlCalidad = new DocumentoControlCalidadBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DET_CONTROL_CAL", documentoControlCalidadBean.getIdDocumentoControlCalidad(), Types.NUMERIC);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_DOCUMENTO_CC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DET_CONTROL_CAL", new SqlParameter("pi_IDE_DET_CONTROL_CAL", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[eliminarDocumentoControlCalidadBean] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_CC");
+    			throw new Exception();
+    		}
+			
+			registroDocumentoControlCalidad.setCodigoRespuesta(codigoRespuesta);
+			registroDocumentoControlCalidad.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarDocumentoControlCalidadBean] Fin ");
+		return registroDocumentoControlCalidad;
 	}
 
 }

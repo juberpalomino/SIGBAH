@@ -55,3 +55,20 @@
     background-color: #eee !important;
 	opacity: 1 !important;
 }
+
+/* Oculta icono ordenamiento */
+table.dataTable thead .sorting, 
+table.dataTable thead .sorting_asc, 
+table.dataTable thead .sorting_desc {
+    background : none;
+}
+
+.modal-header {
+	background-color: #307ecc;
+	text-align: center !important;
+}
+
+.select2-container {
+	width: 100% !important;
+	padding: 0;
+}

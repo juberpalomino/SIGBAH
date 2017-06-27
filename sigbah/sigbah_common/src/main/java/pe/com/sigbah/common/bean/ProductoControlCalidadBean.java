@@ -13,7 +13,7 @@ public class ProductoControlCalidadBean extends BaseOutputBean {
 	private static final long serialVersionUID = 1L;
 	private Integer idDetalleControlCalidad;
 	private Integer idControlCalidad;
-	private Integer idCategoriaProducto;
+	private Integer idProducto;
 	private String nombreProducto;
 	private String nombreUnidad;
 	private BigDecimal cantidadLote;
@@ -35,7 +35,24 @@ public class ProductoControlCalidadBean extends BaseOutputBean {
 	private String flagEspecTecnicas;
 	private String valorEspecTecnicas;
 	private String flagTipoProducto;
+	private String fechaVencimiento;
+	private String arrIdDetalleControlCalidad;
 	
+	
+	/**
+	 * 
+	 */
+	public ProductoControlCalidadBean() {
+		super();
+	}
+
+	/**
+	 * @param idDetalleControlCalidad
+	 */
+	public ProductoControlCalidadBean(Integer idDetalleControlCalidad) {
+		super();
+		this.idDetalleControlCalidad = idDetalleControlCalidad;
+	}
 	
 	/**
 	 * @return the idDetalleControlCalidad
@@ -60,18 +77,6 @@ public class ProductoControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setIdControlCalidad(Integer idControlCalidad) {
 		this.idControlCalidad = idControlCalidad;
-	}
-	/**
-	 * @return the idCategoriaProducto
-	 */
-	public Integer getIdCategoriaProducto() {
-		return idCategoriaProducto;
-	}
-	/**
-	 * @param idCategoriaProducto the idCategoriaProducto to set
-	 */
-	public void setIdCategoriaProducto(Integer idCategoriaProducto) {
-		this.idCategoriaProducto = idCategoriaProducto;
 	}
 	/**
 	 * @return the nombreProducto
@@ -324,6 +329,42 @@ public class ProductoControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setFlagTipoProducto(String flagTipoProducto) {
 		this.flagTipoProducto = flagTipoProducto;
+	}
+	/**
+	 * @return the idProducto
+	 */
+	public Integer getIdProducto() {
+		return idProducto;
+	}
+	/**
+	 * @param idProducto the idProducto to set
+	 */
+	public void setIdProducto(Integer idProducto) {
+		this.idProducto = idProducto;
+	}
+	/**
+	 * @return the fechaVencimiento
+	 */
+	public String getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+	/**
+	 * @param fechaVencimiento the fechaVencimiento to set
+	 */
+	public void setFechaVencimiento(String fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+	/**
+	 * @return the arrIdDetalleControlCalidad
+	 */
+	public String getArrIdDetalleControlCalidad() {
+		return arrIdDetalleControlCalidad;
+	}
+	/**
+	 * @param arrIdDetalleControlCalidad the arrIdDetalleControlCalidad to set
+	 */
+	public void setArrIdDetalleControlCalidad(String arrIdDetalleControlCalidad) {
+		this.arrIdDetalleControlCalidad = arrIdDetalleControlCalidad;
 	}
 
 }

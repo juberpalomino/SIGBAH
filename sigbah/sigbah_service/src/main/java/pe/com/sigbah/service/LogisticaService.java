@@ -3,6 +3,7 @@ package pe.com.sigbah.service;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 
@@ -68,5 +69,40 @@ public interface LogisticaService {
 	 * @throws Exception 
 	 */
 	public abstract List<ProductoControlCalidadBean> listarProductoControlCalidad(ProductoControlCalidadBean producto) throws Exception;
+
+	/**
+	 * @param productoControlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ProductoControlCalidadBean grabarProductoControlCalidad(ProductoControlCalidadBean productoControlCalidadBean) throws Exception;
+	
+	/**
+	 * @param productoControlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoControlCalidadBean eliminarProductoControlCalidad(ProductoControlCalidadBean productoControlCalidadBean) throws Exception;
+	
+	/**
+	 * @param documentoControlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract List<DocumentoControlCalidadBean> listarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
+
+	/**
+	 * @param documentoControlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract DocumentoControlCalidadBean grabarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
+	
+	/**
+	 * @param documentoControlCalidadBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract DocumentoControlCalidadBean eliminarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
 	
 }
