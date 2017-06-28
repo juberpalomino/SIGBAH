@@ -519,7 +519,7 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
+			consultarAjaxSincrono('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -637,7 +637,7 @@ $(document).ready(function() {
 						arrIdDocumentoControlCalidad : codigo
 					};
 			
-					consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/eliminarDocumentoControlCalidad', params, function(respuesta) {
+					consultarAjaxSincrono('POST', '/gestion-almacenes/control-calidad/eliminarDocumentoControlCalidad', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							addErrorMessage(null, respuesta.mensajeRespuesta);
 						} else {							
@@ -691,6 +691,12 @@ $(document).ready(function() {
 		frm_det_documentos.data('bootstrapValidator').resetForm();
 	});
 	
+	$('#txt_sub_archivo').change(function(e) {
+		e.preventDefault();
+	    var url = $(this).val().split('\\').pop();
+	    $('#txt_lee_sub_archivo').val(url);
+	});
+	
 });
 
 function inicializarDatos() {
@@ -737,6 +743,8 @@ function inicializarDatos() {
 			$('input[name=rb_tip_bien]').prop('disabled', true);
 			
 			listarProductoControlCalidad(false);
+			
+			listarDocumentoControlCalidad(false);
 			
 		} else {
 			

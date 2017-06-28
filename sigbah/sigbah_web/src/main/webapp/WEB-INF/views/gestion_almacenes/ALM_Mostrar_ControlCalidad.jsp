@@ -903,7 +903,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">N° Documento:</label>
 								<div class="col-sm-4">
-									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control onlyNumbers">
+									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control" maxlength="18">
 								</div>								
 							</div>										
 
@@ -919,13 +919,13 @@
 							
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Subir Archivo:</label>
-								<div class="col-sm-4 smart-form">
+								<div class="col-sm-8 smart-form">
 									<div class="input input-file">
 										<span class="button">
-											<input type="file" id="txt_sub_archivo" name="txt_sub_archivo" onchange="this.parentNode.nextSibling.value = this.value">
+											<input type="file" id="txt_sub_archivo" name="txt_sub_archivo">
 											Cargar
 										</span>
-										<input type="text" readonly>
+										<input id="txt_lee_sub_archivo" type="text" readonly>
 									</div>
 								</div>								
 							</div>
