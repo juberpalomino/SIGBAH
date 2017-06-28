@@ -325,7 +325,7 @@ $(document).ready(function() {
 			}			
 			var params = { 
 				cod_producto : $('#hid_cod_producto').val(),
-				idControlCalidad : controlCalidad.idControlCalidad,
+				idControlCalidad : $('#hid_cod_con_calidad').val(),
 				idProducto : idProducto,
 				fechaVencimiento : $('#txt_fec_vencimiento').val(),
 				cantidadLote : formatMonto($('#txt_can_lote').val()),
@@ -506,7 +506,7 @@ $(document).ready(function() {
 			}
 			var params = { 
 				idDetalleControlCalidad : $('#hid_cod_no_producto').val(),
-				idControlCalidad : controlCalidad.idControlCalidad,
+				idControlCalidad : $('#hid_cod_con_calidad').val(),
 				idProducto : idProducto,
 				fechaVencimiento : $('#txt_no_fec_vencimiento').val(),
 				cantidadLote : formatMonto($('#txt_no_can_lote').val()),
@@ -662,7 +662,7 @@ $(document).ready(function() {
 			
 			var params = { 
 				idDocumentoControlCalidad : $('#hid_cod_documento').val(),
-				idControlCalidad : controlCalidad.idControlCalidad,
+				idControlCalidad : $('#hid_cod_con_calidad').val(),
 				idTipoDocumento : $('#sel_tip_producto').val(),
 				nroDocumento : $('#txt_nro_documento').val(),
 				fechaDocumento : $('#txt_doc_fecha').val()
@@ -779,7 +779,7 @@ function inicializarDatos() {
 
 function listarProductoControlCalidad(indicador) {
 	var params = { 
-		idControlCalidad : controlCalidad.idControlCalidad,
+		idControlCalidad : $('#hid_cod_con_calidad').val(),
 		flagTipoProducto : controlCalidad.flagTipoBien
 	};			
 	consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarProductoControlCalidad', params, function(respuesta) {
@@ -911,7 +911,7 @@ function listarDetalleNoAlimentarios(respuesta) {
 
 function listarDocumentoControlCalidad(indicador) {
 	var params = { 
-		idControlCalidad : controlCalidad.idControlCalidad
+		idControlCalidad : $('#hid_cod_con_calidad').val()
 	};			
 	consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarDocumentoControlCalidad', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
