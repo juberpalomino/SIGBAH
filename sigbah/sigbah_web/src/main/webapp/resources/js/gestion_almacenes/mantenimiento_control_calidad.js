@@ -31,7 +31,22 @@ $(document).ready(function() {
 	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
-		frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fecha');	
+		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
+	});
+	
+	$('#txt_fec_vencimiento').datepicker().on('changeDate', function(e) {
+		e.preventDefault();
+		frm_det_alimentarios.bootstrapValidator('revalidateField', $(this).attr('id'));	
+	});
+	
+	$('#txt_no_fec_vencimiento').datepicker().on('changeDate', function(e) {
+		e.preventDefault();
+		frm_det_no_alimentarios.bootstrapValidator('revalidateField', $(this).attr('id'));	
+	});
+	
+	$('#txt_doc_fecha').datepicker().on('changeDate', function(e) {
+		e.preventDefault();
+		frm_det_documentos.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
 	$('#sel_tip_control').change(function() {
@@ -97,7 +112,7 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			var codigo = $('#hid_con_calidad').val();
+			var codigo = $('#hid_cod_con_calidad').val();
 			var tipoBien = $('input[name="rb_tip_bien"]:checked').val();
 			var idProveedor = null;
 			var val_proveedor = $('#sel_proveedor').val();
@@ -111,6 +126,7 @@ $(document).ready(function() {
 				codigoAnio : $('#txt_anio').val(),
 				codigoMes : controlCalidad.codigoMes,
 				codigoDdi : controlCalidad.codigoDdi,
+				idDdi : controlCalidad.idDdi, 
 				idAlmacen : controlCalidad.idAlmacen,
 				codigoAlmacen : controlCalidad.codigoAlmacen,
 				fechaEmision : $('#txt_fecha').val(),
@@ -166,7 +182,7 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_salir').click(function(e) {
+	$('.btn_retornar').click(function(e) {
 		e.preventDefault();
 
 		loadding(true);					
@@ -180,6 +196,7 @@ $(document).ready(function() {
 
 		$('#h4_tit_alimentarios').html('Nuevo Producto');
 		frm_det_alimentarios.trigger('reset');
+		$('#txt_fec_vencimiento').datepicker('setDate', new Date());
 		
 		$('#sel_producto').select2().trigger('change');
 		$('#sel_producto').select2({
@@ -362,6 +379,7 @@ $(document).ready(function() {
 
 		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
 		frm_det_no_alimentarios.trigger('reset');
+		$('#txt_no_fec_vencimiento').datepicker('setDate', new Date());
 		
 		$('#sel_no_producto').select2().trigger('change');
 		$('#sel_no_producto').select2({
@@ -540,6 +558,7 @@ $(document).ready(function() {
 
 		$('#h4_tit_no_alimentarios').html('Nuevo Documento');
 		$('#frm_det_documentos').trigger('reset');
+		$('#txt_doc_fecha').datepicker('setDate', new Date());
 		$('#hid_cod_documento').val('');
 		$('#div_det_documentos').modal('show');
 		
@@ -566,12 +585,12 @@ $(document).ready(function() {
 			$('#h4_tit_documentos').html('Actualizar Documento');
 			$('#frm_det_documentos').trigger('reset');
 			
-			$('#hid_cod_documento').val(obj.cod_producto);
+			$('#hid_cod_documento').val(obj.idDocumentoControlCalidad);
 			
-			$('#sel_tip_producto').val(obj.cod_producto);
-			$('#txt_nro_documento').val(obj.cod_producto);
-			$('#txt_doc_fecha').val(obj.cod_producto);
-			$('#txt_sub_archivo').val(obj.cod_producto);
+			$('#sel_tip_producto').val(obj.idTipoDocumento);
+			$('#txt_nro_documento').val(obj.nroDocumento);
+			$('#txt_doc_fecha').val(obj.fechaDocumento);
+//			$('#txt_sub_archivo').val(obj.cod_producto);
 			
 			$('#div_det_documentos').modal('show');
 		}
@@ -586,8 +605,8 @@ $(document).ready(function() {
 		tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				var cod_producto = listaDocumentosCache[index].cod_producto;
-				codigo = codigo + cod_producto + '_';
+				var idDocumentoControlCalidad = listaDocumentosCache[index].idDocumentoControlCalidad;
+				codigo = codigo + idDocumentoControlCalidad + '_';
 			}
 		});
 		
@@ -615,16 +634,14 @@ $(document).ready(function() {
 					loadding(true);
 					
 					var params = { 
-						cod_producto : codigo
+						arrIdDocumentoControlCalidad : codigo
 					};
 			
-					consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
+					consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/eliminarDocumentoControlCalidad', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							addErrorMessage(null, respuesta.mensajeRespuesta);
-						} else {
-							
-							addSuccessMessage(null, respuesta.mensajeRespuesta);
-							
+						} else {							
+							addSuccessMessage(null, respuesta.mensajeRespuesta);							
 						}
 						loadding(false);
 					});
@@ -644,28 +661,34 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {
 			
 			var params = { 
-				cod_producto : $('#hid_cod_documento').val(),
-				cod_ddi : $('#sel_tip_producto').val(),
-				cod_ddi : $('#txt_nro_documento').val(),
-				cod_ddi : $('#txt_doc_fecha').val(),
-				cod_ddi : $('#txt_sub_archivo').val()
+				idDocumentoControlCalidad : $('#hid_cod_documento').val(),
+				idControlCalidad : controlCalidad.idControlCalidad,
+				idTipoDocumento : $('#sel_tip_producto').val(),
+				nroDocumento : $('#txt_nro_documento').val(),
+				fechaDocumento : $('#txt_doc_fecha').val()
+//				cod_ddi : $('#txt_sub_archivo').val()
 			};
 			
 			loadding(true);
 			
-			consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
+			consultarAjaxSincrono('POST', '/gestion-almacenes/control-calidad/grabarDocumentoControlCalidad', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					
-					addSuccessMessage(null, respuesta.mensajeRespuesta);
-					
+					listarDocumentoControlCalidad(true);
+					$('#div_det_documentos').modal('hide');
+					addSuccessMessage(null, respuesta.mensajeRespuesta);	
 				}
-				loadding(false);
 			});
 			
 		}
 		
+	});
+	
+	$('#btn_can_documento').click(function(e) {
+		e.preventDefault();
+		frm_det_documentos.data('bootstrapValidator').resetForm();
 	});
 	
 });
@@ -722,6 +745,18 @@ function inicializarDatos() {
 			$('#li_documentos').addClass('disabled');
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
 			
+			$('#txt_fecha').datepicker('setDate', new Date());
+			
+			var val_proveedor = $('#sel_proveedor').val();		
+			if (!esnulo(val_proveedor)) {
+				var arr = val_proveedor.split('_');
+				if (arr.length > 1) {
+					$('#txt_representante').val(arr[1]);
+				} else {
+					$('#txt_representante').val('');
+				}			
+			}
+			
 			listarDetalleAlimentarios(new Object());
 			listarDetalleNoAlimentarios(new Object());
 			listarDetalleDocumentos(new Object());
@@ -755,7 +790,6 @@ function listarProductoControlCalidad(indicador) {
 				$('input[name=rb_tip_bien]').prop('disabled', true);
 			} else {
 				$('input[name=rb_tip_bien]').prop('disabled', false);
-				
 			}
 		}
 	});
@@ -867,6 +901,22 @@ function listarDetalleNoAlimentarios(respuesta) {
 
 }
 
+function listarDocumentoControlCalidad(indicador) {
+	var params = { 
+		idControlCalidad : controlCalidad.idControlCalidad
+	};			
+	consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarDocumentoControlCalidad', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleDocumentos(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}
+	});
+}
+
 function listarDetalleDocumentos(respuesta) {
 
 	tbl_det_documentos.dataTable().fnDestroy();
@@ -874,7 +924,7 @@ function listarDetalleDocumentos(respuesta) {
 	tbl_det_documentos.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idDetalleControlCalidad',
+			data : 'idDocumentoControlCalidad',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -886,11 +936,18 @@ function listarDetalleDocumentos(respuesta) {
 				}											
 			}
 		}, {
-			data : 'nombreProducto'
+			data : 'nombreDocumento'
 		}, {
-			data : 'nombreUnidad'
+			data : 'nroDocumento',
+			render: function(data, type, row) {
+				if (data != null) {
+					return '<a href="#" onclick="descargarDocumento('+row.idDocumentoControlCalidad+');return false;">'+data+'</a>';	
+				} else {
+					return '';	
+				}											
+			}
 		}, {
-			data : 'cantidadLote'
+			data : 'fechaDocumento'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -905,3 +962,8 @@ function listarDetalleDocumentos(respuesta) {
 
 }
 
+function descargarDocumento(codigo) {
+	
+	
+	
+}

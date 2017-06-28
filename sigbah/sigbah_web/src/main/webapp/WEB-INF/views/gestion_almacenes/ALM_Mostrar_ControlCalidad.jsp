@@ -221,14 +221,7 @@
 														<div class="col-sm-3 form-group">
 															<select id="sel_proveedor" name="sel_proveedor" class="form-control">
 																<c:forEach items="${lista_proveedor}" var="item">
-																	<c:choose>
-																		<c:when test="${empty item.vcodigo}">
-																			<option value="${item.vcodigo}">${item.descripcion}</option>
-																		</c:when>
-																		<c:otherwise>
-																			<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
-																		</c:otherwise>
-																	</c:choose> 
+																	<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -264,6 +257,7 @@
 														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_empresa_transporte}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -322,7 +316,7 @@
 															<label class="radio radio-inline">
 																<input type="radio" name="rb_tip_bien" value="2">
 																No Alimentarios
-															</label>															
+															</label>																											
 														</div>
 													</div>
 													
@@ -368,13 +362,13 @@
 													
 													&nbsp; &nbsp;
 													
-													<button class="btn btn-default" type="button" id="btn_salir">
+													<button class="btn btn-default btn_retornar" type="button">
 														<i class="fa fa-mail-forward"></i>
 														Retornar
 													</button>
 												</div>
 											</div>
-										</div>					
+										</div>				
 												
 									</form>
 										
@@ -440,6 +434,17 @@
 									</div>
 									<!-- end widget -->
 									
+									<div class="form-actions">
+										<div class="row">
+											<div class="col-md-12 opc-center">
+												<button class="btn btn-default btn_retornar" type="button">
+													<i class="fa fa-mail-forward"></i>
+													Retornar
+												</button>
+											</div>
+										</div>
+									</div>
+									
 								</div>
 								
 								<div class="tab-pane fade" id="div_no_alimentarios">
@@ -499,6 +504,17 @@
 									</div>
 									<!-- end widget -->
 									
+									<div class="form-actions">
+										<div class="row">
+											<div class="col-md-12 opc-center">
+												<button class="btn btn-default btn_retornar" type="button">
+													<i class="fa fa-mail-forward"></i>
+													Retornar
+												</button>
+											</div>
+										</div>
+									</div>
+									
 								</div>
 								
 								<div class="tab-pane fade" id="div_documentos">
@@ -552,6 +568,17 @@
 									</div>
 									<!-- end widget -->
 									
+									<div class="form-actions">
+										<div class="row">
+											<div class="col-md-12 opc-center">
+												<button class="btn btn-default btn_retornar" type="button">
+													<i class="fa fa-mail-forward"></i>
+													Retornar
+												</button>
+											</div>
+										</div>
+									</div>
+									
 								</div>
 							</div>
 	
@@ -598,14 +625,7 @@
 								<div class="col-sm-5 smart-form form-group">
 									<select id="sel_producto" name="sel_producto" class="select2 form-control ">
 										<c:forEach items="${lista_producto}" var="item">
-											<c:choose>
-												<c:when test="${empty item.vcodigo}">
-													<option value="${item.vcodigo}">${item.descripcion}</option>
-												</c:when>
-												<c:otherwise>
-													<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
-												</c:otherwise>
-											</c:choose>
+											<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -749,14 +769,7 @@
 								<div class="col-sm-6 smart-form form-group">
 									<select id="sel_no_producto" name="sel_no_producto" class="select2 form-control">
 										<c:forEach items="${lista_producto}" var="item">
-											<c:choose>
-												<c:when test="${empty item.vcodigo}">
-													<option value="${item.vcodigo}">${item.descripcion}</option>
-												</c:when>
-												<c:otherwise>
-													<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
-												</c:otherwise>
-											</c:choose>
+											<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -878,7 +891,7 @@
 						
 							<div class="form-group">																				
 								<label class="col-sm-3 control-label">Tipo Documento:</label>
-								<div class="col-sm-3">
+								<div class="col-sm-8">
 									<select id="sel_tip_producto" name="sel_tip_producto" class="form-control">
 										<c:forEach items="${lista_tipo_documento}" var="item">
 											<option value="${item.vcodigo}">${item.descripcion}</option>
@@ -889,14 +902,14 @@
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">N° Documento:</label>
-								<div class="col-sm-3">
-									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control">
+								<div class="col-sm-4">
+									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control onlyNumbers">
 								</div>								
 							</div>										
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Fecha:</label>
-								<div class="col-sm-3 smart-form">
+								<div class="col-sm-4 smart-form">
 									<label class="input"> 
 										<i class="icon-append fa fa-calendar"></i>
 										<input type="text" name="txt_doc_fecha" id="txt_doc_fecha" class="datepicker btn-readonly" readonly>
@@ -906,7 +919,7 @@
 							
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Subir Archivo:</label>
-								<div class="col-sm-3">
+								<div class="col-sm-4 smart-form">
 									<div class="input input-file">
 										<span class="button">
 											<input type="file" id="txt_sub_archivo" name="txt_sub_archivo" onchange="this.parentNode.nextSibling.value = this.value">
@@ -930,7 +943,7 @@
 				
 				&nbsp; &nbsp;
 				
-				<button type="button" class="btn btn-default" data-dismiss="modal">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_documento">
 					<i class="fa fa-mail-forward"></i>
 					Cancelar
 				</button>

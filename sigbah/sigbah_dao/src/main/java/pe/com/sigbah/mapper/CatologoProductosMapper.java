@@ -21,8 +21,8 @@ public class CatologoProductosMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public CatologoProductosMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public CatologoProductosMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

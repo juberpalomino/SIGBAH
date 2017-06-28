@@ -26,7 +26,12 @@ public class RegistroControlCalidadMapper implements RowMapper<ControlCalidadBea
 		controlCalidad.setIdControlCalidad(rs.getInt("IDE_CONTROL_CALIDAD"));
 		controlCalidad.setCodigoAnio(rs.getString("COD_ANIO"));
 		controlCalidad.setCodigoMes(rs.getString("COD_MES"));
+		controlCalidad.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
+		controlCalidad.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
 		controlCalidad.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
+		controlCalidad.setIdDdi(rs.getInt("FK_IDE_DDI"));
+		controlCalidad.setCodigoDdi(rs.getString("COD_DDI"));
+		controlCalidad.setNombreDdi(rs.getString("NOM_DDI"));		
 		controlCalidad.setNroControlCalidad(rs.getString("NRO_REP_CONTROL_CALIDAD"));		
 		controlCalidad.setFechaEmision(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, rs.getDate("FEC_EMISION")));		
 		controlCalidad.setIdTipoControl(rs.getInt("COD_TIPO_CONTROL_CALIDAD"));

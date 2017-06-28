@@ -108,27 +108,27 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#listarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDocumentoControlCalidad(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
 	 */
 	@Override
-	public List<DocumentoControlCalidadBean> listarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
-		return logisticaDao.listarDocumentoControlCalidadBean(documentoControlCalidadBean);
+	public List<DocumentoControlCalidadBean> listarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		return logisticaDao.listarDocumentoControlCalidad(documentoControlCalidadBean);
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#grabarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarDocumentoControlCalidad(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
 	 */
 	@Override
-	public DocumentoControlCalidadBean grabarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
-		return logisticaDao.grabarDocumentoControlCalidadBean(documentoControlCalidadBean);
+	public DocumentoControlCalidadBean grabarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		return logisticaDao.grabarDocumentoControlCalidad(documentoControlCalidadBean);
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#eliminarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarDocumentoControlCalidad(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
 	 */
 	@Override
-	public DocumentoControlCalidadBean eliminarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
-		return logisticaDao.eliminarDocumentoControlCalidadBean(documentoControlCalidadBean);
+	public DocumentoControlCalidadBean eliminarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		return logisticaDao.eliminarDocumentoControlCalidad(documentoControlCalidadBean);
 	}
 
 }

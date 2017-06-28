@@ -21,8 +21,8 @@ public class PersonalMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public PersonalMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public PersonalMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

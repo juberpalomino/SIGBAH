@@ -21,8 +21,8 @@ public class ProveedorMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public ProveedorMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public ProveedorMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

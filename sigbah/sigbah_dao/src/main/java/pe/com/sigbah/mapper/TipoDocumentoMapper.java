@@ -21,8 +21,8 @@ public class TipoDocumentoMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public TipoDocumentoMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public TipoDocumentoMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

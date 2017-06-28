@@ -21,8 +21,8 @@ public class AlmacenMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public AlmacenMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public AlmacenMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

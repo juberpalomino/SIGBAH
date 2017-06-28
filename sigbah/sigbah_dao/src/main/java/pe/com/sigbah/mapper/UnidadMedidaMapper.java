@@ -21,8 +21,8 @@ public class UnidadMedidaMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public UnidadMedidaMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public UnidadMedidaMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

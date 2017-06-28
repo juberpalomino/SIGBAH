@@ -21,8 +21,8 @@ public class TipoControlCalidadMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public TipoControlCalidadMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public TipoControlCalidadMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

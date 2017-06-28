@@ -227,6 +227,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("pi_FLG_TIPO_PRODUCTO", controlCalidadBean.getFlagTipoBien(), Types.VARCHAR);
 			input_objParametros.addValue("pi_COD_ALMACEN", controlCalidadBean.getCodigoAlmacen(), Types.VARCHAR);
 			input_objParametros.addValue("pi_COD_DDI", controlCalidadBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_DDI", controlCalidadBean.getIdDdi(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FEC_EMISION", DateUtil.obtenerFechaHoraParseada(controlCalidadBean.getFechaEmision()), Types.DATE);
 			input_objParametros.addValue("pi_FK_IDE_TIP_CONTROL", controlCalidadBean.getIdTipoControl(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FK_IDE_ENCARGADO", controlCalidadBean.getIdEncargado(), Types.NUMERIC);
@@ -256,6 +257,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_FLG_TIPO_PRODUCTO", new SqlParameter("pi_FLG_TIPO_PRODUCTO", Types.VARCHAR));
 			output_objParametros.put("pi_COD_ALMACEN", new SqlParameter("pi_COD_ALMACEN", Types.VARCHAR));
 			output_objParametros.put("pi_COD_DDI", new SqlParameter("pi_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_DDI", new SqlParameter("pi_IDE_DDI", Types.NUMERIC));
 			output_objParametros.put("pi_FEC_EMISION", new SqlParameter("pi_FEC_EMISION", Types.DATE));
 			output_objParametros.put("pi_FK_IDE_TIP_CONTROL", new SqlParameter("pi_FK_IDE_TIP_CONTROL", Types.NUMERIC));
 			output_objParametros.put("pi_FK_IDE_ENCARGADO", new SqlParameter("pi_FK_IDE_ENCARGADO", Types.NUMERIC));
@@ -336,7 +338,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall.withProcedureName("USP_UPD_REGISTRA_CONTROL_CALID");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("pi_IDE_CONTROL_CALIDAD", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_CONTROL_CALIDAD", new SqlParameter("pi_IDE_CONTROL_CALIDAD", Types.NUMERIC));
 			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
 			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
@@ -357,7 +359,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_NRO_ORDEN_COMPRA", new SqlParameter("pi_NRO_ORDEN_COMPRA", Types.VARCHAR));
 			output_objParametros.put("pi_FK_IDE_ESTADO", new SqlParameter("pi_FK_IDE_ESTADO", Types.NUMERIC));
 			output_objParametros.put("pi_FLG_TIPO_BIEN", new SqlParameter("pi_FLG_TIPO_BIEN", Types.VARCHAR));
-			output_objParametros.put("pi_USU_MODIFICA", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
+			output_objParametros.put("pi_USU_MODIFICA", new SqlParameter("pi_USU_MODIFICA", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -594,11 +596,11 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#listarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarDocumentoControlCalidad(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
 	 */
 	@Override
-	public List<DocumentoControlCalidadBean> listarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
-		LOGGER.info("[listarDocumentoControlCalidadBean] Inicio ");
+	public List<DocumentoControlCalidadBean> listarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		LOGGER.info("[listarDocumentoControlCalidad] Inicio ");
 		List<DocumentoControlCalidadBean> lista = new ArrayList<DocumentoControlCalidadBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
@@ -623,7 +625,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[listarDocumentoControlCalidadBean] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENTO_CC");
+				LOGGER.info("[listarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENTO_CC");
     			throw new Exception();
     		}
 			
@@ -633,16 +635,16 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[listarDocumentoControlCalidadBean] Fin ");
+		LOGGER.info("[listarDocumentoControlCalidad] Fin ");
 		return lista;
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#grabarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarDocumentoControlCalidad(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
 	 */
 	@Override
-	public DocumentoControlCalidadBean grabarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
-		LOGGER.info("[grabarDocumentoControlCalidadBean] Inicio ");
+	public DocumentoControlCalidadBean grabarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		LOGGER.info("[grabarDocumentoControlCalidad] Inicio ");
 		DocumentoControlCalidadBean registroDocumentoControlCalidad = new DocumentoControlCalidadBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
@@ -675,7 +677,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[grabarDocumentoControlCalidadBean] Ocurrio un error en la operacion del USP_INS_DOCUMENTO_CC");
+				LOGGER.info("[grabarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_INS_DOCUMENTO_CC");
     			throw new Exception();
     		}
 			
@@ -686,16 +688,16 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[grabarDocumentoControlCalidadBean] Fin ");
+		LOGGER.info("[grabarDocumentoControlCalidad] Fin ");
 		return registroDocumentoControlCalidad;
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarDocumentoControlCalidadBean(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarDocumentoControlCalidad(pe.com.sigbah.common.bean.DocumentoControlCalidadBean)
 	 */
 	@Override
-	public DocumentoControlCalidadBean eliminarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
-		LOGGER.info("[eliminarDocumentoControlCalidadBean] Inicio ");
+	public DocumentoControlCalidadBean eliminarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
+		LOGGER.info("[eliminarDocumentoControlCalidad] Inicio ");
 		DocumentoControlCalidadBean registroDocumentoControlCalidad = new DocumentoControlCalidadBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
@@ -719,7 +721,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[eliminarDocumentoControlCalidadBean] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_CC");
+				LOGGER.info("[eliminarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_CC");
     			throw new Exception();
     		}
 			
@@ -730,7 +732,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[eliminarDocumentoControlCalidadBean] Fin ");
+		LOGGER.info("[eliminarDocumentoControlCalidad] Fin ");
 		return registroDocumentoControlCalidad;
 	}
 

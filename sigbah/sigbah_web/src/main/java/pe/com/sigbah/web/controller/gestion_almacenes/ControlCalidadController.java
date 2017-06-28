@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
@@ -57,12 +58,11 @@ public class ControlCalidadController extends BaseController {
 
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	
-        	String codigoDdi = getString(usuarioBean.getIdDdi());
-        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(codigoDdi));
+        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
         	model.addAttribute("lista_ddi", listaDdi);
         	
         	if (!Utils.isEmpty(listaDdi) && listaDdi.size() == Constantes.ONE_INT) {
-        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(codigoDdi)));
+        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
@@ -149,19 +149,19 @@ public class ControlCalidadController extends BaseController {
         			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
         			controlCalidad.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
         		}
+        		
+            	controlCalidad.setIdDdi(usuarioBean.getIdDdi());
+        		controlCalidad.setCodigoDdi(usuarioBean.getCodigoDdi());
+        		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
         	}
         	
         	if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	
-        	controlCalidad.setIdDdi(usuarioBean.getIdDdi());
-    		controlCalidad.setCodigoDdi(usuarioBean.getCodigoDdi());
-    		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
-        	
         	model.addAttribute("controlCalidad", getParserObject(controlCalidad));
 
-        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(Constantes.FOUR_INT)));
+        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	
         	model.addAttribute("lista_orden_compra", logisticaService.listarOrdenCompra());
         	
@@ -326,6 +326,89 @@ public class ControlCalidadController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return producto;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarDocumentoControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarDocumentoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		List<DocumentoControlCalidadBean> lista = null;
+		try {			
+			DocumentoControlCalidadBean documento = new DocumentoControlCalidadBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(documento, request.getParameterMap());			
+			lista = logisticaService.listarDocumentoControlCalidad(documento);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarDocumentoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarDocumentoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoControlCalidadBean documento = null;
+		try {			
+			DocumentoControlCalidadBean documentoControlCalidadBean = new DocumentoControlCalidadBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(documentoControlCalidadBean, request.getParameterMap());
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	documentoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+        	documento = logisticaService.grabarDocumentoControlCalidad(documentoControlCalidadBean);
+			
+        	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return documento;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/eliminarDocumentoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object eliminarDocumentoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoControlCalidadBean documento = null;
+		try {			
+			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDocumentoControlCalidad").split(Constantes.UNDERLINE);
+			for (String codigo : arrIdDetalleControlCalidad) {				
+				DocumentoControlCalidadBean documentoControlCalidadBean = new DocumentoControlCalidadBean(getInteger(codigo));
+
+				// Retorno los datos de session
+	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+	        	
+	        	documentoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+	        	documento = logisticaService.eliminarDocumentoControlCalidad(documentoControlCalidadBean);				
+			}
+
+			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return documento;
 	}
 	
 }

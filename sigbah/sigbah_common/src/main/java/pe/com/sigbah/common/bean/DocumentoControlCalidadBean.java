@@ -17,6 +17,7 @@ public class DocumentoControlCalidadBean extends BaseOutputBean {
 	private String fechaDocumento;
 	private String observacion;
 	private String rutaAlfresco;
+	private Integer idArchivoAlfresco;
 
 	
 	/**
@@ -144,6 +145,20 @@ public class DocumentoControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setNroDocumento(String nroDocumento) {
 		this.nroDocumento = nroDocumento;
+	}
+
+	/**
+	 * @return the idArchivoAlfresco
+	 */
+	public Integer getIdArchivoAlfresco() {
+		return idArchivoAlfresco;
+	}
+
+	/**
+	 * @param idArchivoAlfresco the idArchivoAlfresco to set
+	 */
+	public void setIdArchivoAlfresco(Integer idArchivoAlfresco) {
+		this.idArchivoAlfresco = idArchivoAlfresco;
 	}
 
 }

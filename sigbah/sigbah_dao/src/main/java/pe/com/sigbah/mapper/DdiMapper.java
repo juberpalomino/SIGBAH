@@ -21,8 +21,8 @@ public class DdiMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public DdiMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public DdiMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}

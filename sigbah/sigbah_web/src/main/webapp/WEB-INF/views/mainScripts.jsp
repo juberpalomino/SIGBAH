@@ -13,7 +13,7 @@
 <![endif]-->
 
 <!-- MAIN APP JS FILE -->
-<script src="${pageContext.request.contextPath}/resources/js/app.seed.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/app.min.js"></script>
 
 <!-- BOOSTRAP VALIDATE -->
 <script src="${pageContext.request.contextPath}/resources/js/plugin/bootstrapvalidator/bootstrapValidator.min.js"></script>
@@ -36,6 +36,7 @@
 
 <!-- JQUERY CALENDAR INPUT -->
 <script src="${pageContext.request.contextPath}/resources/js/date-time/bootstrap-datepicker.js"></script>
+
 
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';

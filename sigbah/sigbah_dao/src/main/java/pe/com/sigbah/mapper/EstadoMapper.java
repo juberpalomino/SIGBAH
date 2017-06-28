@@ -21,8 +21,8 @@ public class EstadoMapper implements RowMapper<ItemBean> {
 	/**
 	 * @param parametro
 	 */
-	public EstadoMapper(String parametro) {
-		if (parametro.equals(Constantes.PORCENTAJE)) {
+	public EstadoMapper(Integer parametro) {
+		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
 	}
@@ -35,7 +35,7 @@ public class EstadoMapper implements RowMapper<ItemBean> {
 		ItemBean itemBean = new ItemBean();
 		if (all_records) {
 			itemBean.setVcodigo(rs.getString("IDE_ESTADO"));
-			itemBean.setDescripcion(rs.getString("NOMBRE"));
+			itemBean.setDescripcion(rs.getString("NOM_ESTADO"));
 		} else {	
 			itemBean.setVcodigo(rs.getString("IDE_ESTADO"));
 			itemBean.setDescripcion(rs.getString("NOM_ESTADO"));

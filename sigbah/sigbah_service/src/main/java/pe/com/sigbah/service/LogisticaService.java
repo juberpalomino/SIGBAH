@@ -89,20 +89,20 @@ public interface LogisticaService {
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
-	public abstract List<DocumentoControlCalidadBean> listarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
+	public abstract List<DocumentoControlCalidadBean> listarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
 
 	/**
 	 * @param documentoControlCalidadBean
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
-	public abstract DocumentoControlCalidadBean grabarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
+	public abstract DocumentoControlCalidadBean grabarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
 	
 	/**
 	 * @param documentoControlCalidadBean
 	 * @return Objeto.
 	 * @throws Exception
 	 */
-	public abstract DocumentoControlCalidadBean eliminarDocumentoControlCalidadBean(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
+	public abstract DocumentoControlCalidadBean eliminarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
 	
 }

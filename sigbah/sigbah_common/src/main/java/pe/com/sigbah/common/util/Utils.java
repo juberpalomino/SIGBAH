@@ -29,6 +29,18 @@ public class Utils implements Serializable {
 	}
 	
 	/**
+	 * Verifica si el valo.
+	 * @param campo - valor del parámetro a evaluar, tipo Object
+	 * @return si la cadena esta vacía enviar valor porcentaje sino el parametro actual.
+	 */
+	public static Integer getParamInt(Integer campo) {
+		if (Utils.isNullInteger(campo)) {
+			return Constantes.ZERO_INT;
+		}		
+		return campo;
+	}
+	
+	/**
 	 * Verifica si la cadena esta vacía
 	 * @param campo - valor del parámetro a evaluar, tipo String
 	 * @return true si es vacío o nulo y false lo contrario
