@@ -29,7 +29,7 @@
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
 						<h2>Búsqueda de Controles de Calidad</h2>
 					</header>
-		
+		   
 					<!-- widget div-->
 					<div id="div_wid_bod_bus_con_calidad">
 		
