@@ -105,6 +105,17 @@ $(document).ready(function() {
 	
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();
+		
+		var row = $('#tbl_mnt_con_calidad > tbody > tr').length;
+		var empty = null;
+		$('tr.odd').each(function() {		
+			empty = $(this).find('.dataTables_empty').text();
+			return false;
+		});					
+		if (!esnulo(empty) || row < 1) {
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			return;
+		}
 
 		loadding(true);
 		
@@ -142,8 +153,7 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 
-
-		
+		listarControlCalidad(new Object());		
 		
 	}
 }
