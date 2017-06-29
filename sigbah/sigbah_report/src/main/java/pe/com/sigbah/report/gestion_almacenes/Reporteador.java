@@ -38,6 +38,15 @@ public class Reporteador implements Serializable {
 		try {				
 	        HSSFSheet sheet = wb.createSheet("REGISTRO DE CONTROL DE CALIDAD");
 	        
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 2000);
+	        sheet.setColumnWidth(3, 5000);
+	        sheet.setColumnWidth(4, 5000);
+	        sheet.setColumnWidth(5, 8000);
+	        sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 6000);
+			sheet.setColumnWidth(8, 4000);
+	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
 	        HSSFFont font_bold = wb.createFont();
