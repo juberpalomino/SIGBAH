@@ -107,7 +107,7 @@
 														<div class="col-sm-2 smart-form form-group">
 															<label class="input"> 
 																<i class="icon-append fa fa-calendar"></i>
-																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker btn-readonly" readonly>
+																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker" readonly>
 															</label>
 														</div>
 														
@@ -643,7 +643,7 @@
 								<div class="col-sm-3 smart-form form-group">
 									<label class="input"> 
 										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_fec_vencimiento" id="txt_fec_vencimiento" class="datepicker btn-readonly" readonly>
+										<input type="text" name="txt_fec_vencimiento" id="txt_fec_vencimiento" class="datepicker" readonly>
 									</label>
 								</div>
 							</div>
@@ -785,7 +785,7 @@
 								<div class="col-sm-3 smart-form form-group">
 									<label class="input"> 
 										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_no_fec_vencimiento" id="txt_no_fec_vencimiento" class="datepicker btn-readonly" readonly>
+										<input type="text" name="txt_no_fec_vencimiento" id="txt_no_fec_vencimiento" class="datepicker" readonly>
 									</label>
 								</div>
 							</div>
@@ -912,7 +912,7 @@
 								<div class="col-sm-4 smart-form">
 									<label class="input"> 
 										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_doc_fecha" id="txt_doc_fecha" class="datepicker btn-readonly" readonly>
+										<input type="text" name="txt_doc_fecha" id="txt_doc_fecha" class="datepicker" readonly>
 									</label>
 								</div>
 							</div>

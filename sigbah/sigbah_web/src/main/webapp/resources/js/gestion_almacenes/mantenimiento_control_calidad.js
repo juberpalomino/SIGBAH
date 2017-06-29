@@ -324,7 +324,7 @@ $(document).ready(function() {
 				idProducto = arr[0];
 			}			
 			var params = { 
-				cod_producto : $('#hid_cod_producto').val(),
+				idDetalleControlCalidad : $('#hid_cod_producto').val(),
 				idControlCalidad : $('#hid_cod_con_calidad').val(),
 				idProducto : idProducto,
 				fechaVencimiento : $('#txt_fec_vencimiento').val(),
@@ -639,11 +639,12 @@ $(document).ready(function() {
 			
 					consultarAjaxSincrono('POST', '/gestion-almacenes/control-calidad/eliminarDocumentoControlCalidad', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
-						} else {							
+						} else {
+							listarDocumentoControlCalidad(true);
 							addSuccessMessage(null, respuesta.mensajeRespuesta);							
 						}
-						loadding(false);
 					});
 					
 				}	
