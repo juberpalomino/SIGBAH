@@ -31,7 +31,7 @@ public class DateUtil implements Serializable {
 				SimpleDateFormat sdf = new SimpleDateFormat(formato);
 				return sdf.parse(fecha);
 			}
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			LOGGER.error(ex);
 		}
 		return null;
@@ -60,7 +60,7 @@ public class DateUtil implements Serializable {
 	 * @param fecha - Fecha a buscar, tipo Date.
 	 * @return Última fecha, tipo Date
 	 */
-	public static Date obtenerFechaFinalDia(Date fecha){
+	public static Date obtenerFechaFinalDia(Date fecha) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(fecha);
 		cal.set(cal.get(Calendar.YEAR),
@@ -76,8 +76,8 @@ public class DateUtil implements Serializable {
 	 * @param date - Fecha a quitar la hora, minuto y segundo, tipo Date.
 	 * @return Fecha sin hora, minuto y segundo, tipo Date.
 	 */
-	 public static Date obtenerFechaSinHora(Date date){
-	    	if(null != date){
+	 public static Date obtenerFechaSinHora(Date date) {
+		 if (null != date) {
 	    		Date dateWithOutTime = null; 
 	        	Calendar calendar = Calendar.getInstance();
 	        	calendar.setTime(date);
@@ -86,10 +86,10 @@ public class DateUtil implements Serializable {
 	        	calendar.set(Calendar.SECOND,0);
 	        	dateWithOutTime = new Date(calendar.getTimeInMillis());
 	        	return dateWithOutTime;
-	    	}else{
+		 } else {
 	    		return null;
-	    	}
-	    }
+		 }
+	 }
 
 	 /**
 	  * Obtiene la fecha final a partir de una fecha final y el número de días hábiles.

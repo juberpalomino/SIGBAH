@@ -1,5 +1,6 @@
 package pe.com.sigbah.web.controller.gestion_almacenes;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.Utils;
+import pe.com.sigbah.report.gestion_almacenes.Reporteador;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
@@ -84,7 +87,7 @@ public class ControlCalidadController extends BaseController {
 	public Object listarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
 		List<ControlCalidadBean> lista = null;
 		try {			
-			ControlCalidadBean controlCalidadBean = new ControlCalidadBean();			
+			ControlCalidadBean controlCalidadBean = new ControlCalidadBean();	
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(controlCalidadBean, request.getParameterMap());			
 			lista = logisticaService.listarControlCalidad(controlCalidadBean);
@@ -409,6 +412,52 @@ public class ControlCalidadController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return documento;
+	}
+	
+	/**
+	 * @param codigoAnio 
+	 * @param codigoDdi 
+	 * @param codigoAlmacen
+	 * @param response
+	 * @return Objeto.
+	 */
+	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoDdi}/{codigoAlmacen}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarExcel(@PathVariable("codigoAnio") String codigoAnio, @PathVariable("codigoDdi") String codigoDdi, 
+								@PathVariable("codigoAlmacen") String codigoAlmacen, HttpServletResponse response) {
+	    try {
+	    	ControlCalidadBean controlCalidadBean = new ControlCalidadBean();
+			controlCalidadBean.setCodigoAnio(codigoAnio);
+			controlCalidadBean.setCodigoDdi(codigoDdi);
+			controlCalidadBean.setCodigoAlmacen(codigoAlmacen);
+			List<ControlCalidadBean> lista = logisticaService.listarControlCalidad(controlCalidadBean);
+	    	
+			String file_name = "Reporte_Control_Calidad";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
+			
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_XLS);
+            response.setHeader("Content-Disposition", "attachment; filename=" + file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+            
+		    Reporteador rep = new Reporteador();
+		    HSSFWorkbook wb = rep.generaReporteExcelControlCalidad(lista);
+	    	
+		    // Captured backflow
+	    	OutputStream out = response.getOutputStream();
+	    	wb.write(out); // We write in that flow
+	    	out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	return Constantes.ACCION_CORRECTA_JSON;	    	
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.ACCION_FALLIDA_JSON;
+	    } 
 	}
 	
 }

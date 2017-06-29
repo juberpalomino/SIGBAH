@@ -32,6 +32,12 @@
 			<artifactId>sigbah_common</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>pe.com.sigbah</groupId>
+			<artifactId>sigbah_report</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
 
 		<!-- Spring 3 dependencies -->
 		<dependency>

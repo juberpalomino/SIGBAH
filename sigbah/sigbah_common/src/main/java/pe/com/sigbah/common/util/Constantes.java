@@ -99,8 +99,8 @@ public final class Constantes implements Serializable {
 	/* RESPUESTAS */
 	public static final String RESPUESTA_SI = "Si";
 	public static final String RESPUESTA_NO = "No";
-	public static final String ACCION_CORRECTA = "Ok";
-	public static final String ACCION_CORRECTA_JSON = "{\"success\":1}";
+	public static final String ACCION_CORRECTA_JSON = "{\"codigoRespuesta\":\"01\"}";
+	public static final String ACCION_FALLIDA_JSON = "{\"codigoRespuesta\":\"00\"}";
 
 	
 	/* UNIDADES DE MEDIDA */

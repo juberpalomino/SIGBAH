@@ -103,6 +103,38 @@ $(document).ready(function() {
 		
 	});
 	
+	$('#href_exp_excel').click(function(e) {
+		e.preventDefault();
+
+		loadding(true);
+		
+		var codigoAnio = $('#sel_anio').val();
+		var codigoDdi = $('#sel_ddi').val();
+		var codigoAlmacen = $('#sel_almacen').val();
+		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/exportarExcel/';
+		url = url + codigoAnio + '/'+ codigoDdi + '/' + codigoAlmacen;
+		
+		$.fileDownload(url).done(function (respuesta) {
+			loadding(false);	
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else {
+				addInfoMessage(null, mensajeReporteExito);
+			}
+		}).fail(function (respuesta) {
+			loadding(false);
+			addErrorMessage(null, mensajeReporteError);
+		});
+
+	});
+	
+	$('#href_imprimir').click(function(e) {
+		e.preventDefault();
+
+		 
+		
+	});
+	
 });
 
 function inicializarDatos() {

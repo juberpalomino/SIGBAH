@@ -37,11 +37,15 @@
 <!-- JQUERY CALENDAR INPUT -->
 <script src="${pageContext.request.contextPath}/resources/js/date-time/bootstrap-datepicker.js"></script>
 
+<script src="${pageContext.request.contextPath}/resources/js/jquery.fileDownload-1.4.0.js"></script>
+
 
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';
 	var codigoRespuesta = '${base.codigoRespuesta}';
 	var mensajeRespuesta = '${base.mensajeRespuesta}';
+	var mensajeReporteExito = 'El archivo se descarg&oacute; exitosamente.';
+	var mensajeReporteError = 'No se pudo completar la descarga del archivo, por favor intentar nuevamente.';
 </script>
 
 <!-- BASE APP JS FILE -->
