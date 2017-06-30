@@ -35,6 +35,7 @@ import pe.com.sigbah.mapper.CatologoProductosMapper;
 import pe.com.sigbah.mapper.ChoferMapper;
 import pe.com.sigbah.mapper.DdiMapper;
 import pe.com.sigbah.mapper.EmpresaTransporteMapper;
+import pe.com.sigbah.mapper.EstadoDonacionMapper;
 import pe.com.sigbah.mapper.EstadoMapper;
 import pe.com.sigbah.mapper.PersonalMapper;
 import pe.com.sigbah.mapper.ProveedorMapper;
@@ -717,6 +718,38 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 		}		
 		LOGGER.info("[obtenerAnioActual] Fin ");
 		return anio;
+	}
+
+	@Override
+	public List<ItemBean> listarEstadoDonacion(ItemBean itemBean) throws Exception {
+		LOGGER.info("[listarEstado] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_ESTADO", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_ESTADO_DONACION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_ESTADO", new SqlParameter("PI_IDE_ESTADO", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new EstadoDonacionMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarEstado] Fin ");
+		return lista;
 	}
 
 }

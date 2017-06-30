@@ -116,11 +116,11 @@
 					<li id="li_reg_donaciones" class="li_men_opcion">
 						<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/inicio">Registro de Donaciones</a>
 					</li>
-					<li>
+					<li id="li_reg_donaciones_ingresos" >
 						<a href="#">Ingresos</a>
-						<ul>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Ingreso - Donaciones</a>
+						<ul id="ul_reg_donaciones_ingresos">
+							<li id="li_reg_orden_ingresos" class="li_men_opcion">							
+								<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/ingreso"><i class="fa fa-caret-right"></i>Orden de Ingreso - Donaciones</a>
 							</li>
 						</ul>
 					</li>

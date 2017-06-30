@@ -41,10 +41,11 @@ $(document).ready(function() {
 
 function inicializarDatos() {
 	
-  	$('#li_donaciones').addClass('active');
-	$('#ul_donaciones').css('display', 'block');
-	$('#li_reg_donaciones').attr('class', 'active');
-	$('#li_reg_donaciones').closest('li').children('a').attr('href', '#');
+	$('#li_donaciones').addClass('active');
+	$('#ul_donaciones').css('display', 'block');	
+	$('#ul_reg_donaciones_ingresos').css('display', 'block');	
+	$('#li_reg_orden_ingresos').attr('class', 'active');
+	$('#li_reg_orden_ingresos').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);

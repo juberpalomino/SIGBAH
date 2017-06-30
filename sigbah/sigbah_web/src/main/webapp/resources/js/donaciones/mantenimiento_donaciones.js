@@ -4,10 +4,6 @@ var listaDocumentosCache = new Object();
 
 $(document).ready(function() {
 	
-	$('#li_donaciones').addClass('active');
-    $('#ul_donaciones').css('display', 'block');
-   	$('#li_reg_donaciones').addClass('active');
-	
 	$('.datepicker').datepicker({
 		autoclose: true,
 		todayHighlight: true,
@@ -718,6 +714,12 @@ $(document).ready(function() {
 });
 
 function inicializarDatos() {
+	
+  	$('#li_donaciones').addClass('active');
+	$('#ul_donaciones').css('display', 'block');
+	$('#li_reg_donaciones').attr('class', 'active');
+	$('#li_reg_donaciones').closest('li').children('a').attr('href', '#');
+	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {

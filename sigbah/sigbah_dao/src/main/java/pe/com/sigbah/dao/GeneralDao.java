@@ -255,5 +255,12 @@ public interface GeneralDao {
 	 * @throws Exception
 	 */
 	public abstract String obtenerAnioActual() throws Exception;
+	
+	/**
+	 * @param itemBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarEstadoDonacion(ItemBean itemBean) throws Exception;
 
 }

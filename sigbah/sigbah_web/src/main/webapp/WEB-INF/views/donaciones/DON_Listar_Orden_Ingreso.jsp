@@ -59,16 +59,26 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-2 control-label">Estado:</label>
-									<div class="col-sm-2">
+									<label class="col-sm-1 control-label">Almacén:</label>
+									<div class="col-sm-2 form-group">
+										<select id="sel_almacen" name="sel_almacen" class="form-control">
+											<c:forEach items="${lista_almacen}" var="item">
+											    <option value="${item.vcodigo}">${item.descripcion}</option>
+											</c:forEach>
+										</select>
+									</div>
+
+
+									<label class="col-sm-1 control-label">Tipo de Movimiento:</label>
+									<div class="col-sm-1">
 										<select id="sel_estado" name="sel_estado" class="form-control">
-											<c:forEach items="${lista_estado}" var="item">
+											<c:forEach items="${lista_movimiento}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
 									
-									<div class="col-sm-2">
+									<div class="col-sm-1">
 										<button class="btn btn-primary" type="button" id="btn_buscar">
 											<i class="fa fa-search"></i>
 											Buscar
@@ -97,7 +107,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Lista de Donantes</h2>
+						<h2>Ordenes de Ingreso por Donaciones</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
@@ -131,10 +141,11 @@
 										<th></th>
 										<th>Año</th>
 										<th>DDI</th>
-										<th>Codigo de Donacion</th>
+										<th>Almacen</th>
+										<th>Donante</th>
+										<th>N° Orden de Ingreso</th>
 										<th>Fecha</th>
-										<th>Pais de Origen</th>
-										<th>Dontante</th>
+										<th>Tipo de Movimiento</th>
 										<th>Estado</th>
 									</tr>
 								</thead>
@@ -162,4 +173,4 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/donaciones/listar_donaciones.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/donaciones/listar_ingreso_donaciones.js"></script>
