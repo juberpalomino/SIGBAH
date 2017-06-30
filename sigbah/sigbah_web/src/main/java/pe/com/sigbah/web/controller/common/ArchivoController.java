@@ -95,7 +95,10 @@ public class ArchivoController extends BaseController {
 			
 			alfrescoId = StringUtils.trimToEmpty(alfrescoId);
 			
-			if (alfrescoId.equals(Constantes.CODIGO_ERROR_404) || alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
+			if (alfrescoId.equals(Constantes.CODIGO_ERROR_401) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_403) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_404) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
 				throw new Exception();
 			}
 				
@@ -103,7 +106,7 @@ public class ArchivoController extends BaseController {
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-	    	return Constantes.ACCION_FALLIDA_JSON;
+	    	return Constantes.COD_ERROR_GENERAL;
 		}
 		return alfrescoId;
 	}
@@ -151,7 +154,10 @@ public class ArchivoController extends BaseController {
 			
 			alfrescoId = StringUtils.trimToEmpty(alfrescoId);
 			
-			if (alfrescoId.equals(Constantes.CODIGO_ERROR_404) || alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
+			if (alfrescoId.equals(Constantes.CODIGO_ERROR_401) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_403) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_404) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
 				throw new Exception();
 			}
 				
@@ -159,7 +165,7 @@ public class ArchivoController extends BaseController {
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-	    	return Constantes.ACCION_FALLIDA_JSON;
+	    	return Constantes.COD_ERROR_GENERAL;
 		}
 		return alfrescoId;
 	}
@@ -207,7 +213,10 @@ public class ArchivoController extends BaseController {
 			
 			alfrescoId = StringUtils.trimToEmpty(alfrescoId);
 			
-			if (alfrescoId.equals(Constantes.CODIGO_ERROR_404) || alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
+			if (alfrescoId.equals(Constantes.CODIGO_ERROR_401) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_403) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_404) ||
+				alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
 				throw new Exception();
 			}
 				
@@ -215,7 +224,7 @@ public class ArchivoController extends BaseController {
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
-	    	return Constantes.ACCION_FALLIDA_JSON;
+	    	return Constantes.COD_ERROR_GENERAL;
 		}
 		return alfrescoId;
 	}
@@ -258,10 +267,10 @@ public class ArchivoController extends BaseController {
 	    	}
 	    	output.close();
 
-	    	return Constantes.ACCION_CORRECTA_JSON;	    	
+	    	return Constantes.COD_EXITO_GENERAL;   	
 	    } catch (Exception e) {
 	    	LOGGER.error(e.getMessage(), e);
-	    	return Constantes.ACCION_FALLIDA_JSON;
+	    	return Constantes.COD_ERROR_GENERAL;
 	    } 
 	}
 	

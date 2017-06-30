@@ -453,10 +453,10 @@ public class ControlCalidadController extends BaseController {
 	    	out.flush(); // We emptied the flow
 	    	out.close(); // We close the flow
 	    	
-	    	return Constantes.ACCION_CORRECTA_JSON;	    	
+	    	return Constantes.COD_EXITO_GENERAL;   	
 	    } catch (Exception e) {
 	    	LOGGER.error(e.getMessage(), e);
-	    	return Constantes.ACCION_FALLIDA_JSON;
+	    	return Constantes.COD_ERROR_GENERAL;
 	    } 
 	}
 	

@@ -104,7 +104,9 @@ public final class Constantes implements Serializable {
 	
 	/* PARAMETROS CONFIGURACION ALFRESCO  */
 	public static final String FICHERO_CONFIGURACION = "/WEB-INF/i18n/config.properties";
-	public static final String CODIGO_ERROR_404 = "400";
+	public static final String CODIGO_ERROR_401 = "401";
+	public static final String CODIGO_ERROR_403 = "403";
+	public static final String CODIGO_ERROR_404 = "404";
 	public static final String CODIGO_ERROR_500 = "500";
 	public static final Integer TICKET_SIZE = 47;
 	public static final Integer ID_ALFRESCO_SIZE = 36;

@@ -127,7 +127,7 @@ $(document).ready(function() {
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
-			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			if (respuesta == NOTIFICACION_ERROR) {
 				addErrorMessage(null, mensajeReporteError);
 			} else {
 				addInfoMessage(null, mensajeReporteExito);

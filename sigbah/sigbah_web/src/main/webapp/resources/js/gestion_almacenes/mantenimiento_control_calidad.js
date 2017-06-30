@@ -705,19 +705,23 @@ $(document).ready(function() {
 			file_data = $('#txt_sub_archivo').prop('files')[0];
 		}
 	    
-	    if (!esnulo(file_name)) {	    	
+	    if (!esnulo(file_name)) {
 	    	$('#txt_sub_archivo').prop('disabled', true);
-	    	$('#sp_sub_archivo').addClass('state-disabled');		
+	    	$('#sp_sub_archivo').addClass('state-disabled');
+	    	$('#btn_gra_documento').prop('disabled', true);
+	    	frm_det_documentos.bootstrapValidator('revalidateField', 'txt_lee_sub_archivo');	
 			consultarAjaxFile('POST', '/common/archivo/almacen/cargarArchivo', file_data, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeCargaArchivoError);
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeCargaArchivoError);
 					$('#hid_cod_arc_alfresco').val('');
+					$('#txt_lee_sub_archivo').val('');
 				} else {
 					$('#hid_cod_arc_alfresco').val(respuesta);
 				}
 				$('#txt_sub_archivo').prop('disabled', false);
 				$('#txt_sub_archivo').val(null);
-				$('#sp_sub_archivo').attr('class', 'button');				
+				$('#sp_sub_archivo').attr('class', 'button');
+				$('#btn_gra_documento').prop('disabled', false);
 			});		    
 	    }
 	    
@@ -1015,7 +1019,7 @@ function descargarDocumento(codigo, nombre) {
 	var url = VAR_CONTEXT + '/common/archivo/exportarArchivo/'+codigo+'/'+nombre+'/';	
 	$.fileDownload(url).done(function(respuesta) {
 		loadding(false);	
-		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+		if (respuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, mensajeReporteError);
 		} else {
 			addInfoMessage(null, mensajeReporteExito);

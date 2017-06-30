@@ -182,13 +182,18 @@ public class ManageAlfresco implements Serializable {
 	 * @param att
 	 * @param size
 	 * @return Obtiene información necesaria de las respuestas Http hechas al webservices.
+	 * @throws Exception 
 	 */
-	public String parseXML(String out, String att, int size) {
+	public String parseXML(String out, String att, int size) throws Exception {
 		LOGGER.info("[parseXML] out >>> "+out);
 		if (out.indexOf(att) > 0) {
 			return out.substring(out.indexOf(att) + att.length() + 1, out.indexOf(att) + att.length() + 1 + size);
 		} else {
-			return null;
+			if (out.indexOf("Exception") > 0) {
+				throw new Exception();
+			} else {
+				return null;
+			}
 		}
 	}
 
