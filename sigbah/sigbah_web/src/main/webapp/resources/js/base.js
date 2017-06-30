@@ -175,6 +175,49 @@ function consultarAjaxSincrono(metodoEnv, direccionUrl, jsonString, callback) {
 	});
 }
 
+/**
+ * Componente que permite realizar peticiones sincronas de tipo Ajax al servidor.
+ * 
+ * @param metodoEnv - Metodo de envio. Puede ser POST o GET.
+ * @param direccionUrl - Url del controlador que gestionara la peticion.
+ * @param jsonString - Objeto en formato Json que contiene los datos de la
+ *            		   peticion.
+ * @param idBoton - Identificador del boton que dispara la peticion. Si no
+ *            		es disparado por un boton, sera null.
+ * @param callback - Nombre de la funcion que se ejecutara al finalizar el
+ *            		 proceso. De indicarse null, se omite su uso.
+ */
+function consultarAjaxFile(metodoEnv, direccionUrl, file_data, callback) {
+	var formData = new FormData();					
+	formData.append('file_doc', file_data);
+	$.ajax({
+		type: metodoEnv,
+		url: VAR_CONTEXT + direccionUrl,				
+		dataType: 'text',
+		cache: false,
+		contentType: false,
+		processData: false,
+		data: formData,
+		success: function(respuesta) {						
+			callback(respuesta);	
+		},
+		error: function(respuesta) {
+			var resp = null;
+			if (respuesta.status == '404') {
+				resp = {
+					'mensajeRespuesta' : 'El recurso solicitado no existe (HTTP: 404).',
+					'codigoRespuesta' : '99'
+				};
+			} else {
+				resp = {
+					'mensajeRespuesta' : 'Error no identificado. ' + respuesta.status,
+					'codigoRespuesta' : '99'
+				};
+			}
+			callback(resp);
+		}
+	});
+}
 
 function padDigits(number, digits) {
     return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;

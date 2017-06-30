@@ -888,6 +888,7 @@
 						<form id="frm_det_documentos" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
+							<input type="hidden" id="hid_cod_arc_alfresco" name="hid_cod_arc_alfresco">
 						
 							<div class="form-group">																				
 								<label class="col-sm-3 control-label">Tipo Documento:</label>
@@ -921,11 +922,11 @@
 								<label class="col-sm-3 control-label">Subir Archivo:</label>
 								<div class="col-sm-8 smart-form">
 									<div class="input input-file">
-										<span class="button">
+										<span id="sp_sub_archivo" class="button">
 											<input type="file" id="txt_sub_archivo" name="txt_sub_archivo">
 											Cargar
 										</span>
-										<input id="txt_lee_sub_archivo" type="text" readonly>
+										<input type="text" id="txt_lee_sub_archivo" name="txt_lee_sub_archivo" readonly>
 									</div>
 								</div>								
 							</div>

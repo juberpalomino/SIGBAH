@@ -48,7 +48,7 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -125,7 +125,7 @@ $(document).ready(function() {
 		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/exportarExcel/';
 		url = url + codigoAnio + '/'+ codigoDdi + '/' + codigoAlmacen;
 		
-		$.fileDownload(url).done(function (respuesta) {
+		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
 			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 				addErrorMessage(null, mensajeReporteError);

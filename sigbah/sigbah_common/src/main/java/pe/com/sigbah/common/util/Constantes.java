@@ -101,6 +101,13 @@ public final class Constantes implements Serializable {
 	public static final String RESPUESTA_NO = "No";
 	public static final String ACCION_CORRECTA_JSON = "{\"codigoRespuesta\":\"01\"}";
 	public static final String ACCION_FALLIDA_JSON = "{\"codigoRespuesta\":\"00\"}";
+	
+	/* PARAMETROS CONFIGURACION ALFRESCO  */
+	public static final String FICHERO_CONFIGURACION = "/WEB-INF/i18n/config.properties";
+	public static final String CODIGO_ERROR_404 = "400";
+	public static final String CODIGO_ERROR_500 = "500";
+	public static final Integer TICKET_SIZE = 47;
+	public static final Integer ID_ALFRESCO_SIZE = 36;
 
 	
 	/* UNIDADES DE MEDIDA */
@@ -165,6 +172,8 @@ public final class Constantes implements Serializable {
 	
 	/* CODIGOS PARA MANEJO DE CADENAS */
 	public static final String COD_CADENA_CORTADA = "...(*)";
+	public static final String PUNTO = ".";
+	public static final String DOS_PUNTOS = ":";
 	public static final String SEPARADOR = "-";
 	public static final String DIVISOR = "/";
 	public static final String PORCENTAJE = "%";

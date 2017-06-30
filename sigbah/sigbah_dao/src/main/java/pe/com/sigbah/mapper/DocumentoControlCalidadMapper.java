@@ -27,6 +27,8 @@ public class DocumentoControlCalidadMapper implements RowMapper<DocumentoControl
 		documento.setNombreDocumento(rs.getString("NOM_DOCUMENTO"));
 		documento.setNroDocumento(rs.getString("NRO_DOCUMENTO"));
 		documento.setFechaDocumento(rs.getString("FEC_DOCUMENTO"));
+		documento.setIdArchivoAlfresco(rs.getString("IDE_ALFRESCO"));
+		documento.setNombreArchivo(rs.getString("NOM_ARCHIVO"));
 		return documento;
 	}
 

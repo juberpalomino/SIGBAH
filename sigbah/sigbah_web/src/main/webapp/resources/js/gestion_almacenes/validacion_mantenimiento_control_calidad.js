@@ -311,7 +311,7 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_sub_archivo : {
+			txt_lee_sub_archivo : {
 				validators : {
 					notEmpty : {
 						message : 'Debe cargar el Archivo.'
