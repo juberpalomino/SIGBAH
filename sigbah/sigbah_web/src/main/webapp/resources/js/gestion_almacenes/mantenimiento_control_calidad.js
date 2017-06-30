@@ -15,11 +15,6 @@ var frm_det_documentos = $('#frm_det_documentos');
 
 $(document).ready(function() {
 	
-	$('#li_ges_almacenes').addClass('active');
-	$('#ul_ges_almacenes').css('display', 'block');
-	$('#li_con_calidad').attr('class', 'active');
-	$('#li_con_calidad').closest('li').children('a').attr('href', '#');
-	
 	$('.datepicker').datepicker({
 		autoclose: true,
 		todayHighlight: true,
@@ -743,6 +738,12 @@ $(document).ready(function() {
 });
 
 function inicializarDatos() {
+	
+	$('#li_ges_almacenes').addClass('active');
+	$('#ul_ges_almacenes').css('display', 'block');
+	$('#li_con_calidad').attr('class', 'active');
+	$('#li_con_calidad').closest('li').children('a').attr('href', '#');
+	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
