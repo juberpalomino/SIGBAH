@@ -4,7 +4,7 @@ var NOTIFICACION_ERROR = '00';
 
 $(function() {
 
-    $(".onlyNumbers").bind('paste', function() {
+    $('.onlyNumbers').bind('paste', function() {
         event.preventDefault();
     });
 
@@ -187,9 +187,7 @@ function consultarAjaxSincrono(metodoEnv, direccionUrl, jsonString, callback) {
  * @param callback - Nombre de la funcion que se ejecutara al finalizar el
  *            		 proceso. De indicarse null, se omite su uso.
  */
-function consultarAjaxFile(metodoEnv, direccionUrl, file_data, callback) {
-	var formData = new FormData();					
-	formData.append('file_doc', file_data);
+function consultarAjaxFile(metodoEnv, direccionUrl, formData, callback) {	
 	$.ajax({
 		type: metodoEnv,
 		url: VAR_CONTEXT + direccionUrl,				

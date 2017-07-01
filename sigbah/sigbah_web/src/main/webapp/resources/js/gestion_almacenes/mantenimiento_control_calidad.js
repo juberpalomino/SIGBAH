@@ -336,14 +336,15 @@ $(document).ready(function() {
 			loadding(true);
 			
 			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
+				$('#div_det_alimentarios').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					listarProductoControlCalidad(true);
-					$('#div_det_alimentarios').modal('hide');
+					listarProductoControlCalidad(true);					
 					addSuccessMessage(null, respuesta.mensajeRespuesta);					
 				}
+				frm_det_alimentarios.data('bootstrapValidator').resetForm();
 			});
 			
 		}
@@ -515,14 +516,15 @@ $(document).ready(function() {
 			loadding(true);
 			
 			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
+				$('#div_det_no_alimentarios').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					listarProductoControlCalidad(true);
-					$('#div_det_no_alimentarios').modal('hide');
 					addSuccessMessage(null, respuesta.mensajeRespuesta);	
 				}
+				frm_det_no_alimentarios.data('bootstrapValidator').resetForm();
 			});
 			
 		}
@@ -556,6 +558,9 @@ $(document).ready(function() {
 		
 		$('#txt_doc_fecha').datepicker('setDate', new Date());
 		$('#hid_cod_documento').val('');
+		$('#hid_cod_act_alfresco').val('');
+		$('#hid_cod_ind_alfresco').val('');
+		$('#txt_sub_archivo').val(null);
 		$('#div_det_documentos').modal('show');
 		
 	});
@@ -585,8 +590,10 @@ $(document).ready(function() {
 			$('#sel_tip_producto').val(obj.idTipoDocumento);
 			$('#txt_nro_documento').val(obj.nroDocumento);
 			$('#txt_doc_fecha').val(obj.fechaDocumento);
-			$('#hid_cod_arc_alfresco').val(obj.idArchivoAlfresco);
+			$('#hid_cod_act_alfresco').val(obj.codigoArchivoAlfresco);
+			$('#hid_cod_ind_alfresco').val('');
 			$('#txt_lee_sub_archivo').val(obj.nombreArchivo);
+			$('#txt_sub_archivo').val(null);
 			
 			$('#div_det_documentos').modal('show');
 		}
@@ -655,7 +662,8 @@ $(document).ready(function() {
 		
 		var bootstrapValidator = frm_det_documentos.data('bootstrapValidator');
 		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
+		if (bootstrapValidator.isValid()) {			
+			loadding(true);
 			
 			var params = { 
 				idDocumentoControlCalidad : $('#hid_cod_documento').val(),
@@ -663,23 +671,42 @@ $(document).ready(function() {
 				idTipoDocumento : $('#sel_tip_producto').val(),
 				nroDocumento : $('#txt_nro_documento').val(),
 				fechaDocumento : $('#txt_doc_fecha').val(),
-				idArchivoAlfresco : $('#hid_cod_arc_alfresco').val(),
-				nombreArchivo : $('#txt_lee_sub_archivo').val().replace(/ /g, '_')
+				nombreArchivo : $('#txt_lee_sub_archivo').val()
 			};
 			
-			loadding(true);
-			
-			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarDocumentoControlCalidad', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					loadding(false);
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarDocumentoControlCalidad(true);
-					$('#div_det_documentos').modal('hide');
-					addSuccessMessage(null, respuesta.mensajeRespuesta);	
+			var cod_ind_alfresco = $('#hid_cod_ind_alfresco').val();
+			if (cod_ind_alfresco == '1' || cod_ind_alfresco == '2') { // Archivo cargado
+				var file_name = $('#txt_sub_archivo').val();
+				var file_data = null;
+				if (!esnulo(file_name) && typeof file_name !== 'undefined') {
+					file_data = $('#txt_sub_archivo').prop('files')[0];
 				}
-			});
-			
+				
+				var formData = new FormData();
+				formData.append('file_doc', file_data);
+				// Carpeta contenedor, ubicado en config.properties
+		    	formData.append('uploadDirectory', 'params.alfresco.uploadDirectory.almacen');
+		    	
+				consultarAjaxFile('POST', '/common/archivo/cargarArchivo', formData, function(resArchivo) {
+					if (resArchivo == NOTIFICACION_ERROR) {
+						$('#div_det_documentos').modal('hide');
+						frm_det_documentos.data('bootstrapValidator').resetForm();
+						loadding(false);
+						addErrorMessage(null, mensajeCargaArchivoError);						
+					} else {
+						
+						params.codigoArchivoAlfresco = resArchivo;
+
+						grabarDetalleDocumento(params);					
+					}
+				});
+				
+			} else { // Archivo no cargado
+				
+				params.codigoArchivoAlfresco = $('#hid_cod_act_alfresco').val();
+
+				grabarDetalleDocumento(params);				
+			}
 		}
 		
 	});
@@ -693,33 +720,13 @@ $(document).ready(function() {
 		e.preventDefault();
 	    var file_name = $(this).val();
 	    var file_read = file_name.split('\\').pop();
-	    $('#txt_lee_sub_archivo').val($.trim(file_read));
-	    
-		var file_data = null;
-		if (!esnulo(file_name) && typeof file_name !== 'undefined') {
-			file_data = $('#txt_sub_archivo').prop('files')[0];
-		}
-	    
-	    if (!esnulo(file_name)) {
-	    	$('#txt_sub_archivo').prop('disabled', true);
-	    	$('#sp_sub_archivo').addClass('state-disabled');
-	    	$('#btn_gra_documento').prop('disabled', true);
-	    	frm_det_documentos.bootstrapValidator('revalidateField', 'txt_lee_sub_archivo');	
-			consultarAjaxFile('POST', '/common/archivo/almacen/cargarArchivo', file_data, function(respuesta) {
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeCargaArchivoError);
-					$('#hid_cod_arc_alfresco').val('');
-					$('#txt_lee_sub_archivo').val('');
-				} else {
-					$('#hid_cod_arc_alfresco').val(respuesta);
-				}
-				$('#txt_sub_archivo').prop('disabled', false);
-				$('#txt_sub_archivo').val(null);
-				$('#sp_sub_archivo').attr('class', 'button');
-				$('#btn_gra_documento').prop('disabled', false);
-			});		    
+	    $('#txt_lee_sub_archivo').val($.trim(file_read).replace(/ /g, '_'));
+	    if (esnulo($('#hid_cod_documento').val())) {
+	    	$('#hid_cod_ind_alfresco').val('1'); // Nuevo registro
+	    } else {
+	    	$('#hid_cod_ind_alfresco').val('2'); // Registro modificado
 	    }
-	    
+	    frm_det_documentos.bootstrapValidator('revalidateField', 'txt_lee_sub_archivo');	    
 	});
 	
 	tbl_det_documentos.on('click', '.btn_exp_doc', function(e) {
@@ -993,7 +1000,7 @@ function listarDetalleDocumentos(respuesta) {
 			data : 'nroDocumento',
 			render: function(data, type, row) {
 				if (data != null) {
-					return '<button type="button" id="'+row.idArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
+					return '<button type="button" id="'+row.codigoArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
 						   'class="btn btn-link input-sm btn_exp_doc">'+data+'</button>';
 				} else {
 					return '';	
@@ -1013,6 +1020,20 @@ function listarDetalleDocumentos(respuesta) {
 	
 	listaDocumentosCache = respuesta;
 
+}
+
+function grabarDetalleDocumento(params) {
+	consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarDocumentoControlCalidad', params, function(respuesta) {
+		$('#div_det_documentos').modal('hide');
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			loadding(false);			
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDocumentoControlCalidad(true);
+			addSuccessMessage(null, respuesta.mensajeRespuesta);	
+		}
+		frm_det_documentos.data('bootstrapValidator').resetForm();
+	});
 }
 
 function descargarDocumento(codigo, nombre) {	

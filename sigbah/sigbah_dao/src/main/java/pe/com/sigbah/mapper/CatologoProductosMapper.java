@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.util.Constantes;
 
 /**
@@ -14,7 +14,7 @@ import pe.com.sigbah.common.util.Constantes;
  * @date: 22 de jun. de 2017
  * @author: SUMERIO.
  */
-public class CatologoProductosMapper implements RowMapper<ItemBean> {
+public class CatologoProductosMapper implements RowMapper<ProductoBean> {
 	
 	private boolean all_records = false; // Obtener todos los registros
 
@@ -31,18 +31,26 @@ public class CatologoProductosMapper implements RowMapper<ItemBean> {
 	 * @see org.springframework.jdbc.core.RowMapper#mapRow(java.sql.ResultSet, int)
 	 */
 	@Override
-	public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
-		ItemBean itemBean = new ItemBean();
+	public ProductoBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+		ProductoBean productoBean = new ProductoBean();
 		if (all_records) {
-			itemBean.setVcodigo(rs.getString("IDE_CAT_PRODUCTO"));
-			itemBean.setDescripcion(rs.getString("NOM_PRODUCTO"));
-			itemBean.setDescripcionCorta(rs.getString("NOMBRE_UNIDAD"));
+			productoBean.setIdProducto(rs.getInt("IDE_PRODUCTO"));
+			productoBean.setNombreProducto(rs.getString("NOM_PRODUCTO"));
+			productoBean.setCodigoProducto(rs.getString("COD_PRODUCTO"));
+			productoBean.setIdUnidadMedida(rs.getInt("IDE_UNID_MEDIDA"));
+			productoBean.setNombreUnidadMedida(rs.getString("NOMBRE_UNIDAD"));
+			productoBean.setIdEnvase(rs.getInt("IDE_ENVASE"));
+			productoBean.setNombreEnvase(rs.getString("NOMBRE_ENVASE"));
 		} else {	
-			itemBean.setVcodigo(rs.getString("IDE_CAT_PRODUCTO"));
-			itemBean.setDescripcion(rs.getString("NOM_PRODUCTO"));
-			itemBean.setDescripcionCorta(rs.getString("NOMBRE_UNIDAD"));
+			productoBean.setIdProducto(rs.getInt("IDE_PRODUCTO"));
+			productoBean.setNombreProducto(rs.getString("NOM_PRODUCTO"));
+			productoBean.setCodigoProducto(rs.getString("COD_PRODUCTO"));
+			productoBean.setIdUnidadMedida(rs.getInt("IDE_UNID_MEDIDA"));
+			productoBean.setNombreUnidadMedida(rs.getString("NOMBRE_UNIDAD"));
+			productoBean.setIdEnvase(rs.getInt("IDE_ENVASE"));
+			productoBean.setNombreEnvase(rs.getString("NOMBRE_ENVASE"));
 		}
-		return itemBean;
+		return productoBean;
 	}
 
 }

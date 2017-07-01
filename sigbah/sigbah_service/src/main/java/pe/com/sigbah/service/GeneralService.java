@@ -3,6 +3,7 @@ package pe.com.sigbah.service;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 
 /**
@@ -209,11 +210,11 @@ public interface GeneralService {
 	public abstract List<ItemBean> listarDee(ItemBean itemBean) throws Exception;
 	
 	/**
-	 * @param itemBean
+	 * @param productoBean
 	 * @return Lista de registros.
 	 * @throws Exception
 	 */
-	public abstract List<ItemBean> listarCatologoProductos(ItemBean itemBean) throws Exception;
+	public abstract List<ProductoBean> listarCatologoProductos(ProductoBean productoBean) throws Exception;
 	
 	/**
 	 * @param itemBean

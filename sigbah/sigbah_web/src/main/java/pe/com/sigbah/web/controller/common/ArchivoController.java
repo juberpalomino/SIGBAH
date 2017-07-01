@@ -28,7 +28,7 @@ import pe.com.sigbah.common.util.Constantes;
 
 /**
  * @className: ArchivoController.java
- * @description: 
+ * @description: Clase generica para la carga y descarga de ficheros en Alfresco.
  * @date: 29 de jun. de 2017
  * @author: SUMERIO.
  */
@@ -49,17 +49,16 @@ public class ArchivoController extends BaseController {
 	 */
 	public void setServletContext(ServletContext servletContext) {
 	    this.context = servletContext;
-	}
-	
+	}	
 	
 	/**
 	 * @param request
 	 * @param response
-	 * @return - Retorna a la vista JSP.
+	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/almacen/cargarArchivo", method = RequestMethod.POST)
+	@RequestMapping(value = "/cargarArchivo", method = RequestMethod.POST)
 	@ResponseBody
-	public String almacenCargarArchivo(MultipartHttpServletRequest request, HttpServletResponse response) {
+	public String cargarArchivo(MultipartHttpServletRequest request, HttpServletResponse response) {
 		String alfrescoId = null;
 		try {			
 			StringBuilder path = new StringBuilder();
@@ -89,7 +88,7 @@ public class ArchivoController extends BaseController {
 
 			String contentType = request.getContentType();
 			
-			String uploadDirectory = getPropertyValue("params.alfresco.uploadDirectory.almacen");
+			String uploadDirectory = getPropertyValue(request.getParameter("uploadDirectory"));
 			
 			alfrescoId = manageAlfresco.uploadFile(file_doc.toString(), uploadDirectory, contentType);
 			
@@ -103,124 +102,6 @@ public class ArchivoController extends BaseController {
 			}
 				
 			LOGGER.info("[almacenCargarArchivo] Se guardo en Alfresco.");
-
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-	    	return Constantes.COD_ERROR_GENERAL;
-		}
-		return alfrescoId;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return - Retorna a la vista JSP.
-	 */
-	@RequestMapping(value = "/donaciones/cargarArchivo", method = RequestMethod.POST)
-	@ResponseBody
-	public String donacionesCargarArchivo(MultipartHttpServletRequest request, HttpServletResponse response) {
-		String alfrescoId = null;
-		try {			
-			StringBuilder path = new StringBuilder();
-			path.append(getPath(request));
-			path.append(File.separator);
-			path.append(getPropertyValue("params.file.resources"));
-			path.append(File.separator);
-			path.append(getPropertyValue("params.file.upload"));
-			
-			Iterator<String> itr = request.getFileNames();
-			MultipartFile mpf = request.getFile(itr.next());
-
-			StringBuilder file_name = new StringBuilder();
-			int pos_file_name = mpf.getOriginalFilename().lastIndexOf(Constantes.PUNTO);
-			file_name.append(mpf.getOriginalFilename().substring(0, pos_file_name));
-			file_name.append(Constantes.UNDERLINE);
-			file_name.append(Calendar.getInstance().getTime().getTime());
-			file_name.append(mpf.getOriginalFilename().substring(pos_file_name));
-			
-			
-			StringBuilder file_doc = new StringBuilder();
-			file_doc.append(path.toString());
-			file_doc.append(File.separator);
-			file_doc.append(file_name.toString());
-			
-			mpf.transferTo(new File(file_doc.toString()));
-
-			String contentType = request.getContentType();
-			
-			String uploadDirectory = getPropertyValue("params.alfresco.uploadDirectory.donaciones");
-			
-			alfrescoId = manageAlfresco.uploadFile(file_doc.toString(), uploadDirectory, contentType);
-			
-			alfrescoId = StringUtils.trimToEmpty(alfrescoId);
-			
-			if (alfrescoId.equals(Constantes.CODIGO_ERROR_401) ||
-				alfrescoId.equals(Constantes.CODIGO_ERROR_403) ||
-				alfrescoId.equals(Constantes.CODIGO_ERROR_404) ||
-				alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
-				throw new Exception();
-			}
-				
-			LOGGER.info("[donacionesCargarArchivo] Se guardo en Alfresco.");
-
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-	    	return Constantes.COD_ERROR_GENERAL;
-		}
-		return alfrescoId;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return - Retorna a la vista JSP.
-	 */
-	@RequestMapping(value = "/programacion/cargarArchivo", method = RequestMethod.POST)
-	@ResponseBody
-	public String programacionCargarArchivo(MultipartHttpServletRequest request, HttpServletResponse response) {
-		String alfrescoId = null;
-		try {			
-			StringBuilder path = new StringBuilder();
-			path.append(getPath(request));
-			path.append(File.separator);
-			path.append(getPropertyValue("params.file.resources"));
-			path.append(File.separator);
-			path.append(getPropertyValue("params.file.upload"));
-			
-			Iterator<String> itr = request.getFileNames();
-			MultipartFile mpf = request.getFile(itr.next());
-
-			StringBuilder file_name = new StringBuilder();
-			int pos_file_name = mpf.getOriginalFilename().lastIndexOf(Constantes.PUNTO);
-			file_name.append(mpf.getOriginalFilename().substring(0, pos_file_name));
-			file_name.append(Constantes.UNDERLINE);
-			file_name.append(Calendar.getInstance().getTime().getTime());
-			file_name.append(mpf.getOriginalFilename().substring(pos_file_name));
-			
-			
-			StringBuilder file_doc = new StringBuilder();
-			file_doc.append(path.toString());
-			file_doc.append(File.separator);
-			file_doc.append(file_name.toString());
-			
-			mpf.transferTo(new File(file_doc.toString()));
-
-			String contentType = request.getContentType();
-			
-			String uploadDirectory = getPropertyValue("params.alfresco.uploadDirectory.programacion");
-			
-			alfrescoId = manageAlfresco.uploadFile(file_doc.toString(), uploadDirectory, contentType);
-			
-			alfrescoId = StringUtils.trimToEmpty(alfrescoId);
-			
-			if (alfrescoId.equals(Constantes.CODIGO_ERROR_401) ||
-				alfrescoId.equals(Constantes.CODIGO_ERROR_403) ||
-				alfrescoId.equals(Constantes.CODIGO_ERROR_404) ||
-				alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
-				throw new Exception();
-			}
-				
-			LOGGER.info("[programacionCargarArchivo] Se guardo en Alfresco.");
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

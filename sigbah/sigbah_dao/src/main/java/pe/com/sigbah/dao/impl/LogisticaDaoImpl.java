@@ -655,7 +655,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("pi_FK_IDE_TIP_DOCUMENTO", documentoControlCalidadBean.getIdTipoDocumento(), Types.NUMERIC);
 			input_objParametros.addValue("pi_NRO_DOCUMENTO", documentoControlCalidadBean.getNroDocumento(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FEC_DOCUMENTO", DateUtil.obtenerFechaHoraParseada(documentoControlCalidadBean.getFechaDocumento()), Types.DATE);
-	        input_objParametros.addValue("pi_IDE_ALFRESCO", documentoControlCalidadBean.getIdArchivoAlfresco(), Types.VARCHAR);
+	        input_objParametros.addValue("pi_COD_ALFRESCO", documentoControlCalidadBean.getCodigoArchivoAlfresco(), Types.VARCHAR);
 			input_objParametros.addValue("pi_NOM_ARCHIVO", documentoControlCalidadBean.getNombreArchivo(), Types.VARCHAR);			
 			input_objParametros.addValue("pi_USU_REGISTRO", documentoControlCalidadBean.getUsuarioRegistro(), Types.VARCHAR);			
 
@@ -671,7 +671,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_FK_IDE_TIP_DOCUMENTO", new SqlParameter("pi_FK_IDE_TIP_DOCUMENTO", Types.NUMERIC));
 			output_objParametros.put("pi_NRO_DOCUMENTO", new SqlParameter("pi_NRO_DOCUMENTO", Types.VARCHAR));
 			output_objParametros.put("pi_FEC_DOCUMENTO", new SqlParameter("pi_FEC_DOCUMENTO", Types.DATE));
-			output_objParametros.put("pi_IDE_ALFRESCO", new SqlParameter("pi_IDE_ALFRESCO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ALFRESCO", new SqlParameter("pi_COD_ALFRESCO", Types.VARCHAR));
 			output_objParametros.put("pi_NOM_ARCHIVO", new SqlParameter("pi_NOM_ARCHIVO", Types.VARCHAR));
 			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
 			output_objParametros.put("po_PK_IDE_DOCUMENTO_CAL", new SqlOutParameter("po_PK_IDE_DOCUMENTO_CAL", Types.NUMERIC));

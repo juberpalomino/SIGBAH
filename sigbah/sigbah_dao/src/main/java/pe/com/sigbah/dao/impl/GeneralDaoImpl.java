@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -553,16 +554,16 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.general.GeneralDao#listarCatologoProductos(pe.com.sigbah.common.bean.ItemBean)
+	 * @see pe.com.sigbah.dao.general.GeneralDao#listarCatologoProductos(pe.com.sigbah.common.bean.ProductoBean)
 	 */
 	@Override
-	public List<ItemBean> listarCatologoProductos(ItemBean itemBean) throws Exception {
+	public List<ProductoBean> listarCatologoProductos(ProductoBean productoBean) throws Exception {
 		LOGGER.info("[listarCatologoProductos] Inicio ");
-		List<ItemBean> lista = new ArrayList<ItemBean>();
+		List<ProductoBean> lista = new ArrayList<ProductoBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
-			Integer parametro = Utils.getParamInt(itemBean.getIcodigoParam2());
-			input_objParametros.addValue("PI_IDE_CATEGORIA_BAH", itemBean.getIcodigo(), Types.NUMERIC);
+			Integer parametro = Utils.getParamInt(productoBean.getIdProducto());
+			input_objParametros.addValue("PI_IDE_CATEGORIA_BAH", productoBean.getIdCategoria(), Types.NUMERIC);
 			input_objParametros.addValue("PI_IDE_CAT_PRODUCTO", parametro, Types.NUMERIC);			
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -580,7 +581,7 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 			
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 
-			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+			lista = (List<ProductoBean>) out.get("PO_LR_RECORDSET");
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();

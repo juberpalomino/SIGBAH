@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.dao.GeneralDao;
 import pe.com.sigbah.service.GeneralService;
@@ -250,11 +251,11 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.general.GeneralService#listarCatologoProductos(pe.com.sigbah.common.bean.ItemBean)
+	 * @see pe.com.sigbah.service.general.GeneralService#listarCatologoProductos(pe.com.sigbah.common.bean.ProductoBean)
 	 */
 	@Override
-	public List<ItemBean> listarCatologoProductos(ItemBean itemBean) throws Exception {
-		return generalDao.listarCatologoProductos(itemBean);
+	public List<ProductoBean> listarCatologoProductos(ProductoBean productoBean) throws Exception {
+		return generalDao.listarCatologoProductos(productoBean);
 	}
 
 	/* (non-Javadoc)

@@ -1,6 +1,7 @@
 package pe.com.sigbah.web.controller.gestion_almacenes;
 
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
+import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,6 +26,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
@@ -179,7 +184,7 @@ public class ControlCalidadController extends BaseController {
         	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
         	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
         	
-        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ItemBean(Constantes.FIVE_INT)));
+        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
      
@@ -226,9 +231,13 @@ public class ControlCalidadController extends BaseController {
 		try {			
 			ControlCalidadBean controlCalidadBean = new ControlCalidadBean();
 			
+			// Convierte los vacios en nulos en los enteros
+			IntegerConverter con_integer = new IntegerConverter(null);
+			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
+			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(controlCalidadBean, request.getParameterMap());
-			
+			beanUtilsBean.populate(controlCalidadBean, request.getParameterMap());
+
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
@@ -280,9 +289,16 @@ public class ControlCalidadController extends BaseController {
 		ProductoControlCalidadBean producto = null;
 		try {			
 			ProductoControlCalidadBean productoControlCalidadBean = new ProductoControlCalidadBean();
-			
+
+			// Convierte los vacios en nulos en los enteros
+			IntegerConverter con_integer = new IntegerConverter(null);			
+			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
+			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			// Convierte los vacios en nulos en los decimales
+			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
+			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(productoControlCalidadBean, request.getParameterMap());
+			beanUtilsBean.populate(productoControlCalidadBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);

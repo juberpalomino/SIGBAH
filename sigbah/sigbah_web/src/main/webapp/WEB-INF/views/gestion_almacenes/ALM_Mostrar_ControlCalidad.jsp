@@ -625,7 +625,7 @@
 								<div class="col-sm-5 smart-form form-group">
 									<select id="sel_producto" name="sel_producto" class="select2 form-control ">
 										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
+											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -769,7 +769,7 @@
 								<div class="col-sm-6 smart-form form-group">
 									<select id="sel_no_producto" name="sel_no_producto" class="select2 form-control">
 										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
+											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -888,7 +888,8 @@
 						<form id="frm_det_documentos" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
-							<input type="hidden" id="hid_cod_arc_alfresco" name="hid_cod_arc_alfresco">
+							<input type="hidden" id="hid_cod_act_alfresco" name="hid_cod_act_alfresco">
+							<input type="hidden" id="hid_cod_ind_alfresco" name="hid_cod_ind_alfresco">
 						
 							<div class="form-group">																				
 								<label class="col-sm-3 control-label">Tipo Documento:</label>
