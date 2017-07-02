@@ -10,7 +10,6 @@
 		<module>sigbah_dao</module>
 		<module>sigbah_service</module>
 		<module>sigbah_web</module>
-		<module>sigbah_report</module>
 		<module>sigbah_common</module>
   	</modules>
 	
