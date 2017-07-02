@@ -773,7 +773,9 @@
 										</c:forEach>
 									</select>
 								</div>
-							</div>										
+							</div>
+							
+							<div class="row">&nbsp;</div>									
 
 							<div class="row">
 								<label class="col-sm-3 control-label">Unidad Medida:</label>
@@ -843,8 +845,9 @@
 								<div class="col-sm-2 form-group">
 									<select id="sel_no_conformidad" name="sel_no_conformidad" class="form-control">
 										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
+										<option value="1">Cumple</option>
+										<option value="2">No Cumple</option>
+										<option value="3">No Aplica</option>
 									</select>
 								</div>
 							</div>
