@@ -22,6 +22,7 @@ public final class Constantes implements Serializable {
     public static final int TI_IDENTIFICACION = 0;
 
 	/* MANEJO DE ERRORES */
+    public static final String COD_VALIDACION_GENERAL = "02";
 	public static final String COD_EXITO_GENERAL = "01";
 	public static final String COD_ERROR_GENERAL = "00";
 

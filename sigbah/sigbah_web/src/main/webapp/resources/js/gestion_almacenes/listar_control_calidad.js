@@ -173,7 +173,11 @@ $(document).ready(function() {
 				}
 			}).fail(function (respuesta) {
 				loadding(false);
-				addErrorMessage(null, mensajeReporteError);
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else if (respuesta == NOTIFICACION_VALIDACION) {
+					addWarnMessage(null, mensajeReporteValidacion);
+				}
 			});
 		}
 	});

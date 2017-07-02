@@ -495,7 +495,10 @@ public class ControlCalidadController extends BaseController {
 	@ResponseBody
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
-			List<DetalleProductoControlCalidadBean> lista = logisticaService.listarDetalleProductoControlCalidad(codigo);			
+			List<DetalleProductoControlCalidadBean> lista = logisticaService.listarDetalleProductoControlCalidad(codigo);
+			if (isEmpty(lista)) {
+				return Constantes.COD_VALIDACION_GENERAL;
+			}			
 			DetalleProductoControlCalidadBean producto = lista.get(0);
 
 			ExportarArchivo printer = new ExportarArchivo();
@@ -553,7 +556,7 @@ public class ControlCalidadController extends BaseController {
 	    	}
 	    	output.close();
 
-	    	return Constantes.COD_EXITO_GENERAL;   	
+	    	return Constantes.COD_EXITO_GENERAL;
 	    } catch (Exception e) {
 	    	LOGGER.error(e.getMessage(), e);
 	    	return Constantes.COD_ERROR_GENERAL;
