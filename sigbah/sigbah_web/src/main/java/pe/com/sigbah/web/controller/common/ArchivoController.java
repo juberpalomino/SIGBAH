@@ -100,6 +100,13 @@ public class ArchivoController extends BaseController {
 				alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
 				throw new Exception();
 			}
+			
+			File file_temp = new File(file_doc.toString());
+    		if (file_temp.delete()){
+    			LOGGER.info("[almacenCargarArchivo] "+file_temp.getName()+" se borra el archivo temporal.");
+    		} else {
+    			LOGGER.info("[almacenCargarArchivo] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+    		}
 				
 			LOGGER.info("[almacenCargarArchivo] Se guardo en Alfresco.");
 
