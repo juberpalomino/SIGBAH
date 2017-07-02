@@ -3,6 +3,7 @@ package pe.com.sigbah.service;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
@@ -104,5 +105,12 @@ public interface LogisticaService {
 	 * @throws Exception
 	 */
 	public abstract DocumentoControlCalidadBean eliminarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
+	
+	/**
+	 * @param idControlCalidad
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<DetalleProductoControlCalidadBean> listarDetalleProductoControlCalidad(Integer idControlCalidad) throws Exception;
 	
 }

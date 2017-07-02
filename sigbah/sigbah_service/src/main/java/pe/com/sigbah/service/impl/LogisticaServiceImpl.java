@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
@@ -129,6 +130,14 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public DocumentoControlCalidadBean eliminarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception {
 		return logisticaDao.eliminarDocumentoControlCalidad(documentoControlCalidadBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDetalleProductoControlCalidad(java.lang.Integer)
+	 */
+	@Override
+	public List<DetalleProductoControlCalidadBean> listarDetalleProductoControlCalidad(Integer idControlCalidad) throws Exception {
+		return logisticaDao.listarDetalleProductoControlCalidad(idControlCalidad);
 	}
 
 }

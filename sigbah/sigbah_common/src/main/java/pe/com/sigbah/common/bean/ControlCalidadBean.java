@@ -41,6 +41,21 @@ public class ControlCalidadBean extends BaseOutputBean {
 	
 	
 	/**
+	 * 
+	 */
+	public ControlCalidadBean() {
+		super();
+	}
+	
+	/**
+	 * @param idControlCalidad
+	 */
+	public ControlCalidadBean(Integer idControlCalidad) {
+		super();
+		this.idControlCalidad = idControlCalidad;
+	}
+	
+	/**
 	 * @return the idControlCalidad
 	 */
 	public Integer getIdControlCalidad() {

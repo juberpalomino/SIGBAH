@@ -1008,3 +1008,10 @@ function formatMonto(numero) {
 	}
 	return numero;
 }
+
+function verificaParametro(campo) {
+	if (esnulo(campo)) {
+		return '_';
+	}
+	return campo;
+}

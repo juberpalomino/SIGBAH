@@ -109,6 +109,18 @@ public class BaseController implements Serializable {
 	}
 	
 	/**
+	 * Verifica si la cadena tiene valor.
+	 * @param campo - valor del parámetro a evaluar, tipo String
+	 * @return la cadena con el parametro.
+	 */
+	public static String verificaParametro(String campo) { 
+		if (campo.equals(Constantes.UNDERLINE)) {
+			return null;
+		}
+		return campo;
+	}
+	
+	/**
 	 * Convierte PDF a ByteArrayOutputStream primero tienes que crear el objeto InputStream.
 	 * @param fileName - Nombre de reporte, tipo String.
 	 * @return retorna el objeto tipo ByteArrayOutputStream.

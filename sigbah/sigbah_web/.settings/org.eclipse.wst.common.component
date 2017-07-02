@@ -12,9 +12,6 @@
         <dependent-module archiveName="sigbah_common-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sigbah_common/sigbah_common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="sigbah_report-0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/sigbah_report/sigbah_report">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="sigbah_web"/>
         <property name="java-output-path" value="/sigbah_web/target/classes"/>
     </wb-module>

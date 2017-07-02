@@ -103,7 +103,10 @@ public final class Constantes implements Serializable {
 	public static final String ACCION_FALLIDA_JSON = "{\"codigoRespuesta\":\"00\"}";
 	
 	/* PARAMETROS CONFIGURACION ALFRESCO  */
-	public static final String FICHERO_CONFIGURACION = "/WEB-INF/i18n/config.properties";
+	public static final String FICHERO_CONFIGURACION = new StringBuilder("WEB-INF")
+			.append(File.separator).append("i18n").append(File.separator)
+			.append("config.properties").toString();
+	
 	public static final String CODIGO_ERROR_401 = "401";
 	public static final String CODIGO_ERROR_403 = "403";
 	public static final String CODIGO_ERROR_404 = "404";
@@ -128,22 +131,55 @@ public final class Constantes implements Serializable {
 	public static final BigDecimal AVANCE_CERO_POR_CIENTO = BigDecimal.valueOf(0);
 	public static final BigDecimal AVANCE_CIEN_POR_CIENTO = BigDecimal.valueOf(100);
 
-	/* REPORTES */
-	public static final String REPORT_PATH = new StringBuilder("page")
-			.append(File.separator).append("modulos").append(File.separator)
-			.append("reporte").append(File.separator).append("jrxml")
+	/* REPORTES */	
+	public static final String REPORT_PATH_ADMINISTRACION = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("administracion").append(File.separator).append("jrxml")
 			.append(File.separator).toString();
-	public static final String REPORT_JASPER_PATH = new StringBuilder("page")
-			.append(File.separator).append("modulos").append(File.separator)
-			.append("reporte").append(File.separator).append("jasper")
-			.append(File.separator).toString();
-	public static final String IMAGE_REPORT_PATH = new StringBuilder("util")
-			.append(File.separator).append("images").append(File.separator)
-			.append("principal").append(File.separator).append("logo.jpg")
-			.toString();
 	
-	public static final String NOMBRE_REPORTE_ESPPROMAT_DET = "reporteEspMatProDetallado";
-	public static final String NOMBRE_REPORTE_ESPPROMAT_EST = "reporteEspMatProEstadistico";
+	public static final String REPORT_PATH_ALMACENES = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("gestion_almacenes").append(File.separator).append("jrxml")
+			.append(File.separator).toString();
+	
+	public static final String REPORT_PATH_DONACIONES = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("donaciones").append(File.separator).append("jrxml")
+			.append(File.separator).toString();
+	
+	public static final String REPORT_PATH_PROGRAMACION = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("programacion_bah").append(File.separator).append("jrxml")
+			.append(File.separator).toString();
+	
+	public static final String REPORT_JASPER_PATH_ADMINISTRACION = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("administracion").append(File.separator).append("jasper")
+			.append(File.separator).toString();
+	
+	public static final String REPORT_JASPER_PATH_ALMACENES = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("gestion_almacenes").append(File.separator).append("jasper")
+			.append(File.separator).toString();
+	
+	public static final String REPORT_JASPER_PATH_DONACIONES = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("donaciones").append(File.separator).append("jasper")
+			.append(File.separator).toString();
+	
+	public static final String REPORT_JASPER_PATH_PROGRAMACION = new StringBuilder("resources")
+			.append(File.separator).append("report").append(File.separator)
+			.append("programacion_bah").append(File.separator).append("jasper")
+			.append(File.separator).toString();
+	
+	public static final String IMAGE_INDECI_REPORT_PATH = new StringBuilder("resources")
+			.append(File.separator).append("img").append(File.separator)
+			.append("logo-indeci.png").toString();
+	
+	public static final String IMAGE_WFP_REPORT_PATH = new StringBuilder("resources")
+			.append(File.separator).append("img").append(File.separator)
+			.append("logo-wfp.png").toString();
+
 	public static final short TIPO_REPORTE_DETALLADO = 1;
 	public static final short TIPO_REPORTE_ESTADISTICO = 2;
 	public static final short CODIGO_FORMATO_REPORTE_PDF = 1;

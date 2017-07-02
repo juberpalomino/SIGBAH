@@ -118,7 +118,9 @@ $(document).ready(function() {
 		var codigoDdi = $('#sel_ddi').val();
 		var codigoAlmacen = $('#sel_almacen').val();
 		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/exportarExcel/';
-		url = url + codigoAnio + '/'+ codigoDdi + '/' + codigoAlmacen;
+		url += verificaParametro(codigoAnio) + '/';
+		url += verificaParametro(codigoDdi) + '/';
+		url += verificaParametro(codigoAlmacen);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
@@ -137,8 +139,43 @@ $(document).ready(function() {
 	$('#href_imprimir').click(function(e) {
 		e.preventDefault();
 
-		 
+		var indices = [];
+		var codigo = ''
+		tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idControlCalidad = listaControlCalidadCache[index].idControlCalidad;
+				codigo = codigo + idControlCalidad + '_';
+			}
+		});
 		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			loadding(true);
+			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/exportarPdf/'+codigo;
+			$.fileDownload(url).done(function(respuesta) {
+				loadding(false);	
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+			}).fail(function (respuesta) {
+				loadding(false);
+				addErrorMessage(null, mensajeReporteError);
+			});
+		}
 	});
 	
 });
