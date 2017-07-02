@@ -1,10 +1,13 @@
-var listaControlCalidadCache = new Object();
+var listaDonacionesCache = new Object();
+
+var tbl_mnt_con_donaciones = $('#tbl_mnt_con_donaciones');
+var frm_con_donaciones = $('#frm_con_donaciones');
 
 $(document).ready(function() {
 	
 	inicializarDatos();
 	 
-	$('#frm_con_calidad').bootstrapValidator({
+	frm_con_donaciones.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -37,6 +40,37 @@ $(document).ready(function() {
 		
 	});
 	
+	$('#btn_buscar').click(function(e) {
+		e.preventDefault();
+	
+		var bootstrapValidator = frm_con_donaciones.data('bootstrapValidator');
+	
+		bootstrapValidator.validate();
+		if (bootstrapValidator.isValid()) {
+
+			var params = { 
+				codigoAnio : $('#sel_anio').val(),
+				codigoDdi : $('#sel_ddi').val(),
+				codigoEstado : $('#sel_estado').val()
+			};
+			
+			loadding(true);
+		
+			consultarAjax('GET', '/donaciones/registro-donaciones/listarDonaciones', params, function(respuesta) {
+			
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarControlCalidad(respuesta);
+				}
+				loadding(false);
+			});
+			
+		}
+		
+	});
+	
+	
 });
 
 function inicializarDatos() {
@@ -58,38 +92,36 @@ function inicializarDatos() {
 
 function listarControlCalidad(respuesta) {
 
-	var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad');
-
-	tbl_mnt_con_calidad.dataTable().fnDestroy();
+	tbl_mnt_con_donaciones.dataTable().fnDestroy();
 	
-	tbl_mnt_con_calidad.dataTable({
+	tbl_mnt_con_donaciones.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idubigeo',
-//			sClass : 'opc-center',
+			data : 'idDonacion',
+			sClass : 'opc-center',
 			render: function(data, type, row) {
-				if (row.idubigeo != null) {
+				if (data != null) {
 					return '<label class="checkbox">'+
-								'<input type="checkbox" id="chk_ubigeo_'+data+'" name="chk_ubigeo"><i></i>'+
+								'<input type="checkbox"><i></i>'+
 							'</label>';	
 				} else {
 					return '';	
 				}											
-			}	
+			}
 		}, {
-			data : 'coddpto'
+			data : 'codigoAnio'
 		}, {
-			data : 'nombre'
+			data : 'nombreDdi'
 		}, {
-			data : 'codprov'
+			data : 'codigoDonacion'
 		}, {
-			data : 'codprov'
+			data : 'fechaEmision'
 		}, {
-			data : 'codprov'
+			data : 'nombrePais'
 		}, {
-			data : 'codprov'
+			data : 'nombreDonante'
 		}, {
-			data : 'codprov'
+			data : 'nombreEstado'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -105,7 +137,7 @@ function listarControlCalidad(respuesta) {
 		]
 	});
 	
-	listaControlCalidadCache = respuesta;
+	listaDonacionesCache = respuesta;
 
 }
 

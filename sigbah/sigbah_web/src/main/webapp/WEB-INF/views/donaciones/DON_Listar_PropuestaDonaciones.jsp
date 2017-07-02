@@ -36,7 +36,7 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_con_calidad" class="form-horizontal">
+							<form id="frm_con_donaciones" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -125,7 +125,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_con_donaciones" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>

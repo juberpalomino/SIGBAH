@@ -1,10 +1,12 @@
 package pe.com.sigbah.service.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.DonacionesBean;
 import pe.com.sigbah.dao.DonacionDao;
 import pe.com.sigbah.service.DonacionService;
 
@@ -21,5 +23,13 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	
 	@Autowired
 	private DonacionDao donacionDao;
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public List<DonacionesBean> listarDonaciones(DonacionesBean donacionesBean) throws Exception {
+		return donacionDao.listarDonaciones(donacionesBean);
+	}
 
 }

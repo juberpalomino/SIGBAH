@@ -2,20 +2,30 @@ package pe.com.sigbah.web.controller.donaciones;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
+import pe.com.sigbah.service.DonacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
+
+import pe.com.sigbah.common.bean.DonacionesBean;
 
 
 /**
@@ -29,6 +39,9 @@ import pe.com.sigbah.web.controller.common.BaseController;
 public class DonacionesController extends BaseController {
 
 	private static final long serialVersionUID = 1L;
+	@Autowired 
+	private DonacionService donacionService;
+	
 	@Autowired 
 	private GeneralService generalService;
 	/**
@@ -58,6 +71,26 @@ public class DonacionesController extends BaseController {
         return "listar-donaciones";
     }
 	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarDonaciones", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+		List<DonacionesBean> lista = null;
+		try {			
+			DonacionesBean donacionesBean = new DonacionesBean();	
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(donacionesBean, request.getParameterMap());			
+			lista = donacionService.listarDonaciones(donacionesBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
 	
 	/**
 	 * @param codigo 
@@ -104,5 +137,10 @@ public class DonacionesController extends BaseController {
         }
         return "listar-donaciones-ingreso";
     }
+	
+	
+	
+	
+	
 
 }
