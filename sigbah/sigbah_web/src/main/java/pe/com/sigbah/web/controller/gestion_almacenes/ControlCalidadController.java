@@ -525,12 +525,24 @@ public class ControlCalidadController extends BaseController {
 			logo_wfp_path.append(File.separator);
 			logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
 			parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
+			StringBuilder logo_check_path = new StringBuilder();
+			logo_check_path.append(getPath(request));
+			logo_check_path.append(File.separator);
+			logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+			parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
+			StringBuilder logo_check_min_path = new StringBuilder();
+			logo_check_min_path.append(getPath(request));
+			logo_check_min_path.append(File.separator);
+			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
 			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroControlCalidad());
 			parameters.put("P_DDI", producto.getNombreDdi());			
 			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
 			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
 			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
 			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
+			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
+			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
 
 			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
 			InputStream input = new ByteArrayInputStream(array);

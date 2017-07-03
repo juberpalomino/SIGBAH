@@ -180,6 +180,14 @@ public final class Constantes implements Serializable {
 	public static final String IMAGE_WFP_REPORT_PATH = new StringBuilder("resources")
 			.append(File.separator).append("img").append(File.separator)
 			.append("logo-wfp.png").toString();
+	
+	public static final String IMAGE_CHECK_REPORT_PATH = new StringBuilder("resources")
+			.append(File.separator).append("img").append(File.separator)
+			.append("check.png").toString();
+	
+	public static final String IMAGE_CHECK_MIN_REPORT_PATH = new StringBuilder("resources")
+			.append(File.separator).append("img").append(File.separator)
+			.append("check-min.png").toString();
 
 	public static final short TIPO_REPORTE_DETALLADO = 1;
 	public static final short TIPO_REPORTE_ESTADISTICO = 2;
