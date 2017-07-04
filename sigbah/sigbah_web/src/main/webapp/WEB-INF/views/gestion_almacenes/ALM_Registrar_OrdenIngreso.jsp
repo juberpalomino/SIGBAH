@@ -141,7 +141,7 @@
 													
 													<div class="row">
 														<label class="col-sm-2 control-label">Nº orden Compra:</label>
-														<div class="col-sm-5 smart-form form-group">
+														<div class="col-sm-3 smart-form form-group">
 															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="select2 form-control">
 																<c:forEach items="${lista_orden_compra}" var="item">
 																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
@@ -149,11 +149,21 @@
 															</select>
 														</div>
 													
-														<label class="col-sm-2 control-label">Tipo de Control:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_tip_control" name="sel_tip_control" class="form-control">
-																<c:forEach items="${lista_tipo_control}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
+														<div class="col-sm-7 smart-form">
+															<section>														
+																<label class="textarea textarea-resizable"> 										
+																	<textarea rows="3" id="txt_conclusiones" class="custom-scroll" disabled></textarea> 
+																</label>
+															</section>
+														</div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-2 control-label">Compra Por:</label>
+														<div class="col-sm-3 smart-form form-group">
+															<select id="sel_com_por" name="sel_com_por" class="select2 form-control">
+																<c:forEach items="${lista_orden_compra}" var="item">
+																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -171,7 +181,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos del Origen / Destino - Reponsables</h2>
+												<h2>Datos Control de Calidad</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -181,38 +191,31 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Almacén:</label>
+														<label class="col-sm-3 control-label">Tiene N° Rep. Control Calidad:</label>
+														
+														<div class="col-sm-1"></div>
+														
 														<div class="col-sm-3 form-group">
-															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control">
-																<c:forEach items="${lista_almacen}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_tie_nro_rep_con_calidad" value="1">
+																Si
+															</label>
+															
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_tie_nro_rep_con_calidad" value="2">
+																No
+															</label>																		
 														</div>
 														
-														<label class="col-sm-3 control-label">Encargado de Almacén:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
-																<c:forEach items="${lista_personal}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
+														<label class="col-sm-2 control-label">N° Control de Calidad:</label>
+														<div class="col-sm-3 smart-form form-group">
+															<select id="sel_nro_con_calidad" name="sel_nro_con_calidad" class="form-control">
+																<c:forEach items="${lista_orden_compra}" var="item">
+																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
 																</c:forEach>
 															</select>
 														</div>
 													</div>
-													
-													<div class="row">
-														<div class="col-sm-6 form-group"></div>
-														
-														<label class="col-sm-3 control-label">Inspector:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_inspector" name="sel_inspector" class="form-control">
-																<c:forEach items="${lista_personal}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
-														</div>
-													</div>
-								
 												</div>
 												<!-- end widget content -->
 								
@@ -262,6 +265,39 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
+												<h2>Datos de la Procedencia</h2>
+											</header>
+								
+											<!-- widget div-->
+											<div>
+								
+												<!-- widget content -->
+												<div class="widget-body">
+								
+													<div class="row">
+														<label class="col-sm-3 control-label">Almacen:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_almacen" name="sel_almacen" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_empresa_transporte}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+								
+												</div>
+												<!-- end widget content -->
+								
+											</div>
+											<!-- end widget div -->
+								
+										</div>
+										<!-- end widget -->
+										
+										<div class="jarviswidget">
+											<header>
+												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
 												<h2>Datos del Transporte</h2>
 											</header>
 								
@@ -272,6 +308,16 @@
 												<div class="widget-body">
 								
 													<div class="row">
+														<label class="col-sm-3 control-label">Medio de Transporte:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_med_transporte" name="sel_med_transporte" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_empresa_transporte}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
+													
 														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
@@ -280,6 +326,16 @@
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
+														</div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-3 control-label">Fecha de Llegada:</label>
+														<div class="col-sm-3 smart-form form-group">
+															<label class="input"> 
+																<i class="icon-append fa fa-calendar"></i>
+																<input type="text" name="txt_fec_llegada" id="txt_fec_llegada" class="datepicker" readonly>
+															</label>
 														</div>
 														
 														<label class="col-sm-3 control-label">Chofer:</label>
@@ -293,8 +349,10 @@
 													</div>
 													
 													<div class="row">
+														<div class="col-sm-6"></div>
+													
 														<label class="col-sm-3 control-label">N° de Placa:</label>
-														<div class="col-sm-2 form-group">
+														<div class="col-sm-3 form-group">
 															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control" maxlength="10">
 														</div>
 													</div>
@@ -311,7 +369,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Productos</h2>
+												<h2>Responsable de Recepción</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -321,39 +379,22 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-2 control-label">Tipo de Bien:</label>
-														
-														<div class="col-sm-1"></div>
-														
-														<div class="col-sm-6 form-group">
-															<label class="radio radio-inline">
-																<input type="radio" name="rb_tip_bien" value="1">
-																Alimentarios
-															</label>
-															
-															<label class="radio radio-inline">
-																<input type="radio" name="rb_tip_bien" value="2">
-																No Alimentarios
-															</label>																											
+														<label class="col-sm-3 control-label">Responsable:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_responsable" name="sel_responsable" class="form-control">
+																<c:forEach items="${lista_chofer}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
 														</div>
 													</div>
 													
 													<div class="row">
-														<div class="col-sm-6 smart-form">
+														<div class="col-sm-12 smart-form">
 															<section>														
-																<label class="control-label">Conclusiones:</label>
+																<label class="control-label">Observaciones:</label>
 																<label class="textarea textarea-resizable"> 										
 																	<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" 
-																		maxlength="500" class="custom-scroll"></textarea> 
-																</label>
-															</section>
-														</div>
-														
-														<div class="col-sm-6 smart-form">
-															<section>
-																<label class="control-label">Recomendaciones:</label>
-																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_recomendaciones" id="txt_recomendaciones" 
 																		maxlength="500" class="custom-scroll"></textarea> 
 																</label>
 															</section>
