@@ -1,13 +1,13 @@
-var listaControlCalidadCache = new Object();
+var listaOrdenIngresoCache = new Object();
 
-var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad');
-var frm_con_calidad = $('#frm_con_calidad');
+var tbl_mnt_ord_ingreso = $('#tbl_mnt_ord_ingreso');
+var frm_ord_ingreso = $('#frm_ord_ingreso');
 
 $(document).ready(function() {
 	
 	inicializarDatos();
 	
-	frm_con_calidad.bootstrapValidator({
+	frm_ord_ingreso.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -31,14 +31,15 @@ $(document).ready(function() {
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_con_calidad.data('bootstrapValidator');
+		var bootstrapValidator = frm_ord_ingreso.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 
 			var params = { 
 				codigoAnio : $('#sel_anio').val(),
 				codigoDdi : $('#sel_ddi').val(),
-				codigoAlmacen : $('#sel_almacen').val()
+				codigoAlmacen : $('#sel_almacen').val(),
+				codigoTipoMovimiento : $('#sel_tip_movimiento').val()
 			};
 			
 			loadding(true);
@@ -61,14 +62,14 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idControlCalidad = listaControlCalidadCache[index].idControlCalidad;
+				var idControlCalidad = listaOrdenIngresoCache[index].idControlCalidad;
 				codigo = codigo + idControlCalidad + '_';
 			}
 		});
@@ -101,7 +102,7 @@ $(document).ready(function() {
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();
 		
-		var row = $('#tbl_mnt_con_calidad > tbody > tr').length;
+		var row = $('#tbl_mnt_ord_ingreso > tbody > tr').length;
 		var empty = null;
 		$('tr.odd').each(function() {		
 			empty = $(this).find('.dataTables_empty').text();
@@ -141,14 +142,14 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idControlCalidad = listaControlCalidadCache[index].idControlCalidad;
+				var idControlCalidad = listaOrdenIngresoCache[index].idControlCalidad;
 				codigo = codigo + idControlCalidad + '_';
 			}
 		});
@@ -202,9 +203,9 @@ function inicializarDatos() {
 
 function listarControlCalidad(respuesta) {
 
-	tbl_mnt_con_calidad.dataTable().fnDestroy();
+	tbl_mnt_ord_ingreso.dataTable().fnDestroy();
 	
-	tbl_mnt_con_calidad.dataTable({
+	tbl_mnt_ord_ingreso.dataTable({
 		data : respuesta,
 		columns : [ {
 			data : 'idControlCalidad',
@@ -244,14 +245,10 @@ function listarControlCalidad(respuesta) {
 		aLengthMenu : [
 			[15, 50, 100],
 			[15, 50, 100]
-		],
-		columnDefs : [
-			{ width : '15%', targets : 2 },
-			{ width : '15%', targets : 3 }
-		],
+		]
 	});
 	
-	listaControlCalidadCache = respuesta;
+	listaOrdenIngresoCache = respuesta;
 
 }
 

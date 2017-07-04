@@ -1,14 +1,10 @@
-var listaAlimentariosCache = new Object();
-var listaNoAlimentariosCache = new Object();
+var listaProductosCache = new Object();
 var listaDocumentosCache = new Object();
 
 var frm_dat_generales = $('#frm_dat_generales');
 
-var tbl_det_alimentarios = $('#tbl_det_alimentarios');
-var frm_det_alimentarios = $('#frm_det_alimentarios');
-
-var tbl_det_no_alimentarios = $('#tbl_det_no_alimentarios');
-var frm_det_no_alimentarios = $('#frm_det_no_alimentarios');
+var tbl_det_productos = $('#tbl_det_productos');
+var frm_det_productos = $('#frm_det_productos');
 
 var tbl_det_documentos = $('#tbl_det_documentos');
 var frm_det_documentos = $('#frm_det_documentos');
@@ -31,7 +27,7 @@ $(document).ready(function() {
 	
 	$('#txt_fec_vencimiento').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
-		frm_det_alimentarios.bootstrapValidator('revalidateField', $(this).attr('id'));	
+		frm_det_productos.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
 	$('#txt_no_fec_vencimiento').datepicker().on('changeDate', function(e) {
@@ -190,7 +186,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		$('#h4_tit_alimentarios').html('Nuevo Producto');
-		frm_det_alimentarios.trigger('reset');
+		frm_det_productos.trigger('reset');
 		$('#txt_fec_vencimiento').datepicker('setDate', new Date());
 		
 		$('#sel_producto').select2().trigger('change');
@@ -207,8 +203,8 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		tbl_det_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
 			}
 		});
@@ -219,10 +215,10 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			
-			var obj = listaAlimentariosCache[indices[0]];
+			var obj = listaProductosCache[indices[0]];
 			
 			$('#h4_tit_alimentarios').html('Actualizar Producto');
-			frm_det_alimentarios.trigger('reset');
+			frm_det_productos.trigger('reset');
 			
 			$('#hid_cod_producto').val(obj.idDetalleControlCalidad);
 			
@@ -254,10 +250,10 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		tbl_det_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_det_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				var idDetalleControlCalidad = listaAlimentariosCache[index].idDetalleControlCalidad;
+				var idDetalleControlCalidad = listaProductosCache[index].idDetalleControlCalidad;
 				codigo = codigo + idDetalleControlCalidad + '_';
 			}
 		});
@@ -309,7 +305,7 @@ $(document).ready(function() {
 	$('#btn_gra_alimentario').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_det_alimentarios.data('bootstrapValidator');
+		var bootstrapValidator = frm_det_productos.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			var idProducto = null;
@@ -344,7 +340,7 @@ $(document).ready(function() {
 					listarProductoControlCalidad(true);					
 					addSuccessMessage(null, respuesta.mensajeRespuesta);					
 				}
-				frm_det_alimentarios.data('bootstrapValidator').resetForm();
+				frm_det_productos.data('bootstrapValidator').resetForm();
 			});
 			
 		}
@@ -353,7 +349,7 @@ $(document).ready(function() {
 	
 	$('#btn_can_alimentario').click(function(e) {
 		e.preventDefault();
-		frm_det_alimentarios.data('bootstrapValidator').resetForm();
+		frm_det_productos.data('bootstrapValidator').resetForm();
 	});
 	
 	$('#sel_producto').change(function() {
@@ -856,9 +852,9 @@ function listarProductoControlCalidad(indicador) {
 
 function listarDetalleAlimentarios(respuesta) {
 
-	tbl_det_alimentarios.dataTable().fnDestroy();
+	tbl_det_productos.dataTable().fnDestroy();
 	
-	tbl_det_alimentarios.dataTable({
+	tbl_det_productos.dataTable({
 		data : respuesta,
 		columns : [ {
 			data : 'idDetalleControlCalidad',
@@ -871,12 +867,6 @@ function listarDetalleAlimentarios(respuesta) {
 				} else {
 					return '';	
 				}											
-			}
-		}, {	
-			data : 'idDetalleControlCalidad',
-			render : function(data, type, full, meta){
-				var row = meta.row + 1;
-				return row;											
 			}
 		}, {
 			data : 'nombreProducto'
@@ -912,7 +902,7 @@ function listarDetalleAlimentarios(respuesta) {
 		info : true
 	});
 	
-	listaAlimentariosCache = respuesta;
+	listaProductosCache = respuesta;
 
 }
 
@@ -933,12 +923,6 @@ function listarDetalleNoAlimentarios(respuesta) {
 				} else {
 					return '';	
 				}											
-			}
-		}, {	
-			data : 'idDetalleControlCalidad',
-			render : function(data, type, full, meta){
-				var row = meta.row + 1;
-				return row;											
 			}
 		}, {
 			data : 'nombreProducto'
@@ -1005,12 +989,6 @@ function listarDetalleDocumentos(respuesta) {
 				} else {
 					return '';	
 				}											
-			}
-		}, {	
-			data : 'idDocumentoControlCalidad',
-			render : function(data, type, full, meta){
-				var row = meta.row + 1;
-				return row;											
 			}
 		}, {
 			data : 'nombreDocumento'

@@ -4,8 +4,9 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Gestión de Almacenes</li>
-		<li>Control de Calidad</li>
+		<li>Gestion de Almacenes</li>
+		<li>Ingresos</li>
+		<li>NEA</li>
 		<li>Registro</li>
 	</ol>
 	<!-- end breadcrumb -->
@@ -38,13 +39,9 @@
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Datos Generales</a>
 								</li>
-								<li id="li_alimentarios">
-									<a href="#div_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
-									Alimentarios</a>
-								</li>
-								<li id="li_no_alimentarios">
-									<a href="#div_no_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
-									No Alimentarios</a>
+								<li id="li_productos">
+									<a href="#div_productos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
+									Productos</a>
 								</li>
 								<li id="li_documentos">
 									<a href="#div_documentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
@@ -374,7 +371,7 @@
 										
 								</div>
 								
-								<div class="tab-pane fade" id="div_alimentarios">
+								<div class="tab-pane fade" id="div_productos">
 									
 									<!-- Widget ID (each widget will need unique ID)-->
 									<div class="jarviswidget jarviswidget-color-blueLight">
@@ -405,11 +402,10 @@
 											<!-- widget content -->
 											<div class="widget-body">
 
-												<table id="tbl_det_alimentarios" class="table table-bordered table-hover tbl-responsive">
+												<table id="tbl_det_productos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>Nº</th>
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
 															<th>Lote</th>
@@ -422,77 +418,6 @@
 															<th>Color</th>
 															<th>Textura</th>
 															<th>Sabor</th>
-														</tr>
-													</thead>
-												</table>
-
-											</div>
-											<!-- end widget content -->
-						
-										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<div class="form-actions">
-										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-								
-								<div class="tab-pane fade" id="div_no_alimentarios">
-									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Detalle de Productos</h2>
-											
-											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_no_ali_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Nuevo">
-													<i class="fa fa-file-o"></i>
-												</a>
-												<a href="#" id="href_no_ali_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Editar">
-													<i class="fa fa-edit"></i>
-												</a>
-												<a href="#" id="href_no_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
-												</a>
-											</div>
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-
-												<table id="tbl_det_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th></th>
-															<th>Nº</th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Lote</th>
-															<th>Fecha Vencimiento</th>
-															<th>Cantidad de Lote</th>
-															<th>Cantidad para la Muestra</th>
-															<th>Envase Primario</th>
-															<th>Especif. Técnicas</th>
-															<th>Conformidad</th>
 														</tr>
 													</thead>
 												</table>
@@ -554,7 +479,6 @@
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>Nº</th>
 															<th>Tipo Documento</th>
 															<th>Nro Documento</th>
 															<th>Fecha</th>
@@ -962,5 +886,5 @@
 
 <!-- inline scripts related to this page -->
 <script> var controlCalidad = JSON.parse('${controlCalidad}'); </script>
-<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/mantenimiento_control_calidad.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/validacion_mantenimiento_control_calidad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/mantenimiento_orden_ingreso.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/validacion_mantenimiento_orden_ingreso.js"></script>
