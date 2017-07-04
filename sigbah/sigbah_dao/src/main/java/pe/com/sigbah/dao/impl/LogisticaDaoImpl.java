@@ -869,7 +869,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("PI_COD_ANIO", ordenIngresoBean.getCodigoAnio(), Types.VARCHAR);
 			input_objParametros.addValue("PI_COD_DDI", ordenIngresoBean.getCodigoDdi(), Types.VARCHAR);
 			input_objParametros.addValue("pi_IDE_ALMACEN", ordenIngresoBean.getIdAlmacen(), Types.NUMERIC);
-			input_objParametros.addValue("PI_TIPO_ORIGEN", ordenIngresoBean.getIdAlmacen(), Types.VARCHAR);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", ordenIngresoBean.getTipoOrigen(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -881,7 +881,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
 			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
-			output_objParametros.put("PI_TIPO_ORIGEN", new SqlOutParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_NRO_INGRESO", new SqlOutParameter("PO_NRO_INGRESO", Types.VARCHAR));
 			output_objParametros.put("PO_COD_INGRESO", new SqlOutParameter("PO_COD_INGRESO", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));

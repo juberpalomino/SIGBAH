@@ -34,7 +34,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 	
-							<ul id="ul_man_con_calidad" class="nav nav-tabs bordered">
+							<ul id="ul_man_ord_ingreso" class="nav nav-tabs bordered">
 								<li id="li_dat_generales" class="active">
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Datos Generales</a>
@@ -57,16 +57,16 @@
 										<input type="hidden" id="hid_cod_con_calidad" name="hid_cod_con_calidad">
 									
 										<div class="header-form opc-center">	
-											<strong>Control de Calidad</strong>
+											<strong>Orden Ingreso</strong>
 										</div>
 										
 										<div class="form-group"></div>
 										
 										<div class="form-group">
 											<div class="col-sm-3"></div>
-											<label class="col-sm-3 control-label label-bold">N° Control de Calidad:</label>
+											<label class="col-sm-3 control-label label-bold">Nº Orden Ingreso:</label>
 											<div class="col-sm-2">
-												<input type="text" id="txt_nro_con_calidad" class="form-control" disabled>
+												<input type="text" id="txt_nro_ord_ingreso" class="form-control" disabled>
 											</div>
 										</div>												
 																
@@ -117,6 +117,27 @@
 															</select>
 														</div>
 													</div>
+													
+												</div>
+												<!-- end widget content -->
+								
+											</div>
+											<!-- end widget div -->
+								
+										</div>
+										<!-- end widget -->	
+													
+										<div class="jarviswidget">
+											<header>
+												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
+												<h2>Datos Orden de Compra</h2>
+											</header>
+								
+											<!-- widget div-->
+											<div>
+								
+												<!-- widget content -->
+												<div class="widget-body">		
 													
 													<div class="row">
 														<label class="col-sm-2 control-label">Nº orden Compra:</label>
@@ -885,6 +906,6 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
-<script> var controlCalidad = JSON.parse('${controlCalidad}'); </script>
+<script> var ordenIngreso = JSON.parse('${ordenIngreso}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/mantenimiento_orden_ingreso.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/validacion_mantenimiento_orden_ingreso.js"></script>

@@ -32,6 +32,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
@@ -99,12 +100,12 @@ public class OrdenIngresoController extends BaseController {
 	@RequestMapping(value = "/listarOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		List<ControlCalidadBean> lista = null;
+		List<OrdenIngresoBean> lista = null;
 		try {			
-			ControlCalidadBean controlCalidadBean = new ControlCalidadBean();	
+			OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();	
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(controlCalidadBean, request.getParameterMap());			
-			lista = logisticaService.listarControlCalidad(controlCalidadBean);
+			BeanUtils.populate(ordenIngresoBean, request.getParameterMap());			
+			lista = logisticaService.listarOrdenIngreso(ordenIngresoBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -120,21 +121,16 @@ public class OrdenIngresoController extends BaseController {
 	@RequestMapping(value = "/mantenimientoOrdenIngreso/{codigo}", method = RequestMethod.GET)
     public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, Model model) {
         try {
-        	ControlCalidadBean controlCalidad = new ControlCalidadBean();
+        	OrdenIngresoBean ordenIngreso = new OrdenIngresoBean();
         	
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	if (!isNullInteger(codigo)) {
         		
-        		controlCalidad = logisticaService.obtenerRegistroControlCalidad(codigo);
+//        		ordenIngreso = logisticaService.obtenerRegistroControlCalidad(codigo);
         		
-        		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
-        		
-        		List<ProductoControlCalidadBean> listaAlimentarios = new ArrayList<ProductoControlCalidadBean>(); // Cambiar
-
-            	model.addAttribute("listaAlimentarios", getParserObject(listaAlimentarios));
-        		model.addAttribute("listaNoAlimentarios", getParserObject(listaAlimentarios));
+//        		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
         		
         	} else {
 
@@ -144,39 +140,40 @@ public class OrdenIngresoController extends BaseController {
         		correlativo.append(usuarioBean.getCodigoAlmacen());
         		correlativo.append(Constantes.SEPARADOR);
         		
-        		ControlCalidadBean parametros = new ControlCalidadBean();
+        		OrdenIngresoBean parametros = new OrdenIngresoBean();
         		String anioActual = generalService.obtenerAnioActual();
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
-        		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());        		
-        		ControlCalidadBean respuestaCorrelativo = logisticaService.obtenerCorrelativoControlCalidad(parametros);
+        		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
+        		parametros.setTipoOrigen("I");
+        		OrdenIngresoBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenIngreso(parametros);
       
-        		correlativo.append(respuestaCorrelativo.getNroControlCalidad());
+        		correlativo.append(respuestaCorrelativo.getNroOrdenIngreso());
         		
-        		controlCalidad.setNroControlCalidad(correlativo.toString());        		
+        		ordenIngreso.setNroOrdenIngreso(correlativo.toString());        		
         		
         		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
         		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
         		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
         		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
         		if (!isEmpty(listaAlmacenActivo)) {
-        			controlCalidad.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-        			controlCalidad.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-        			controlCalidad.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-        			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-        			controlCalidad.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+        			ordenIngreso.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+        			ordenIngreso.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+        			ordenIngreso.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+        			ordenIngreso.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+        			ordenIngreso.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
         		}
         		
-            	controlCalidad.setIdDdi(usuarioBean.getIdDdi());
-        		controlCalidad.setCodigoDdi(usuarioBean.getCodigoDdi());
-        		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
+        		ordenIngreso.setIdDdi(usuarioBean.getIdDdi());
+        		ordenIngreso.setCodigoDdi(usuarioBean.getCodigoDdi());
+        		ordenIngreso.setNombreDdi(usuarioBean.getNombreDdi());
         	}
         	
         	if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	
-        	model.addAttribute("controlCalidad", getParserObject(controlCalidad));
+        	model.addAttribute("ordenIngreso", getParserObject(ordenIngreso));
 
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	

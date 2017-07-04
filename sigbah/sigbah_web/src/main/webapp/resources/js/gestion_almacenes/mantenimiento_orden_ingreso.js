@@ -115,11 +115,11 @@ $(document).ready(function() {
 			var params = {
 				idControlCalidad : codigo,	
 				codigoAnio : $('#txt_anio').val(),
-				codigoMes : controlCalidad.codigoMes,
-				codigoDdi : controlCalidad.codigoDdi,
-				idDdi : controlCalidad.idDdi, 
-				idAlmacen : controlCalidad.idAlmacen,
-				codigoAlmacen : controlCalidad.codigoAlmacen,
+				codigoMes : ordenIngreso.codigoMes,
+				codigoDdi : ordenIngreso.codigoDdi,
+				idDdi : ordenIngreso.idDdi, 
+				idAlmacen : ordenIngreso.idAlmacen,
+				codigoAlmacen : ordenIngreso.codigoAlmacen,
 				fechaEmision : $('#txt_fecha').val(),
 				idEstado : $('#sel_estado').val(),
 				nroOrdenCompra : $('#sel_nro_ord_compra').val(),
@@ -150,7 +150,7 @@ $(document).ready(function() {
 					} else {
 						
 						$('#hid_cod_con_calidad').val(respuesta.idControlCalidad);
-						$('#txt_nro_con_calidad').val(respuesta.nroControlCalidad);
+						$('#txt_nro_ord_ingreso').val(respuesta.nroControlCalidad);
 						
 						if (tipoBien == '1') {					
 							$('#li_alimentarios').attr('class', '');
@@ -752,15 +752,15 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		
-		$('#txt_nro_con_calidad').val(controlCalidad.nroControlCalidad);
-		$('#txt_anio').val(controlCalidad.codigoAnio);
-		$('#txt_ddi').val(controlCalidad.nombreDdi);
-		$('#txt_almacen').val(controlCalidad.nombreAlmacen);
+		$('#txt_nro_ord_ingreso').val(ordenIngreso.nroOrdenIngreso);
+		$('#txt_anio').val(ordenIngreso.codigoAnio);
+		$('#txt_ddi').val(ordenIngreso.nombreDdi);
+		$('#txt_almacen').val(ordenIngreso.nombreAlmacen);
 		
-		if (!esnulo(controlCalidad.idControlCalidad)) {
+		if (!esnulo(ordenIngreso.idControlCalidad)) {
 			
-			$('#hid_cod_con_calidad').val(controlCalidad.idControlCalidad);		
-			if (controlCalidad.flagTipoBien == '1') {
+			$('#hid_cod_con_calidad').val(ordenIngreso.idControlCalidad);		
+			if (ordenIngreso.flagTipoBien == '1') {
 				$('#li_no_alimentarios').addClass('disabled');
 				$('#li_no_alimentarios').closest('li').children('a').removeAttr('data-toggle');
 			} else {
@@ -768,38 +768,36 @@ function inicializarDatos() {
 				$('#li_alimentarios').closest('li').children('a').removeAttr('data-toggle');
 			}
 			
-			$('#txt_fecha').val(controlCalidad.fechaEmision);
-			$('#sel_estado').val(controlCalidad.idEstado);
-			$('#sel_nro_ord_compra').val(controlCalidad.nroOrdenCompra);
-			$('#sel_tip_control').val(controlCalidad.idTipoControl);
-			$('#sel_ori_almacen').val(controlCalidad.idAlmacenOrigen);
-			$('#sel_ori_en_almacen').val(controlCalidad.idEncargado);
-			$('#sel_inspector').val(controlCalidad.idInspector);			
-			var val_idProveedor = controlCalidad.provRep;
+			$('#txt_fecha').val(ordenIngreso.fechaEmision);
+			$('#sel_estado').val(ordenIngreso.idEstado);
+			$('#sel_nro_ord_compra').val(ordenIngreso.nroOrdenCompra);
+			$('#sel_tip_control').val(ordenIngreso.idTipoControl);
+			$('#sel_ori_almacen').val(ordenIngreso.idAlmacenOrigen);
+			$('#sel_ori_en_almacen').val(ordenIngreso.idEncargado);
+			$('#sel_inspector').val(ordenIngreso.idInspector);			
+			var val_idProveedor = ordenIngreso.provRep;
 			$('#sel_proveedor').val(val_idProveedor);
 			var arr = val_idProveedor.split('_');
 			if (arr.length > 1) {
 				$('#txt_representante').val(arr[1]);
 			}
-			$('#sel_emp_transporte').val(controlCalidad.idEmpresaTransporte);
-			$('#sel_chofer').val(controlCalidad.idChofer);
-			$('#txt_nro_placa').val(controlCalidad.nroPlaca);
-			$('input[name=rb_tip_bien][value="'+controlCalidad.flagTipoBien+'"]').prop('checked', true);
-			$('#txt_conclusiones').val(controlCalidad.conclusiones);
-			$('#txt_recomendaciones').val(controlCalidad.recomendaciones);
+			$('#sel_emp_transporte').val(ordenIngreso.idEmpresaTransporte);
+			$('#sel_chofer').val(ordenIngreso.idChofer);
+			$('#txt_nro_placa').val(ordenIngreso.nroPlaca);
+			$('input[name=rb_tip_bien][value="'+ordenIngreso.flagTipoBien+'"]').prop('checked', true);
+			$('#txt_conclusiones').val(ordenIngreso.conclusiones);
+			$('#txt_recomendaciones').val(ordenIngreso.recomendaciones);
 			
 			$('input[name=rb_tip_bien]').prop('disabled', true);
 			
-			listarProductoControlCalidad(false);
-			
+			listarProductoControlCalidad(false);			
 			listarDocumentoControlCalidad(false);
 			
 		} else {
 			
-			$('#li_alimentarios').addClass('disabled');
-			$('#li_no_alimentarios').addClass('disabled');
+			$('#li_productos').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
-			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
+			$('#ul_man_ord_ingreso li.disabled a').removeAttr('data-toggle');
 			
 			$('#txt_fecha').datepicker('setDate', new Date());
 			
@@ -813,8 +811,7 @@ function inicializarDatos() {
 				}			
 			}
 			
-			listarDetalleAlimentarios(new Object());
-			listarDetalleNoAlimentarios(new Object());
+			listarDetalleProductos(new Object());
 			listarDetalleDocumentos(new Object());
 
 		}
@@ -828,17 +825,13 @@ function inicializarDatos() {
 function listarProductoControlCalidad(indicador) {
 	var params = { 
 		idControlCalidad : $('#hid_cod_con_calidad').val(),
-		flagTipoProducto : controlCalidad.flagTipoBien
+		flagTipoProducto : ordenIngreso.flagTipoBien
 	};			
 	consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarProductoControlCalidad', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
-			if (controlCalidad.flagTipoBien == '1') {
-				listarDetalleAlimentarios(respuesta);
-			} else {
-				listarDetalleNoAlimentarios(respuesta);
-			}
+			listarDetalleProductos(respuesta);
 			if (indicador) {
 				loadding(false);
 			}
@@ -851,7 +844,7 @@ function listarProductoControlCalidad(indicador) {
 	});
 }
 
-function listarDetalleAlimentarios(respuesta) {
+function listarDetalleProductos(respuesta) {
 
 	tbl_det_productos.dataTable().fnDestroy();
 	
@@ -904,56 +897,6 @@ function listarDetalleAlimentarios(respuesta) {
 	});
 	
 	listaProductosCache = respuesta;
-
-}
-
-function listarDetalleNoAlimentarios(respuesta) {
-
-	tbl_det_no_alimentarios.dataTable().fnDestroy();
-	
-	tbl_det_no_alimentarios.dataTable({
-		data : respuesta,
-		columns : [ {
-			data : 'idDetalleControlCalidad',
-			sClass : 'opc-center',
-			render: function(data, type, row) {
-				if (data != null) {
-					return '<label class="checkbox">'+
-								'<input type="checkbox"><i></i>'+
-						   '</label>';	
-				} else {
-					return '';	
-				}											
-			}
-		}, {
-			data : 'nombreProducto'
-		}, {
-			data : 'nombreUnidad'
-		}, {
-			data : 'cantidadLote'
-		}, {
-			data : 'fechaVencimiento'
-		}, {
-			data : 'cantidadLote'
-		}, {
-			data : 'cantidadMuestra'
-		}, {
-			data : 'valorPrimario'
-		}, {
-			data : 'valorEspecTecnicas'
-		}, {
-			data : 'valorConforProducto'
-		} ],
-		language : {
-			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
-		},
-		bFilter : false,
-		paging : false,
-		ordering : false,
-		info : true
-	});
-	
-	listaNoAlimentariosCache = respuesta;
 
 }
 

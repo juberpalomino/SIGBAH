@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,11 +127,6 @@ public class ControlCalidadController extends BaseController {
         		controlCalidad = logisticaService.obtenerRegistroControlCalidad(codigo);
         		
         		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
-        		
-        		List<ProductoControlCalidadBean> listaAlimentarios = new ArrayList<ProductoControlCalidadBean>(); // Cambiar
-
-            	model.addAttribute("listaAlimentarios", getParserObject(listaAlimentarios));
-        		model.addAttribute("listaNoAlimentarios", getParserObject(listaAlimentarios));
         		
         	} else {
 

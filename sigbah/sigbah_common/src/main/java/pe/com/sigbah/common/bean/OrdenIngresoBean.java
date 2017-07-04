@@ -22,6 +22,11 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	private String codigoMovimiento;
 	private String nombreMovimiento;
 	private String nombreEstado;
+	private String tipoOrigen;
+	private String codigoMes;
+	private Integer idDdi;
+	private String codigoAlmacen;
+	private String tipo;
 	
 	
 	/**
@@ -179,6 +184,66 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	 */
 	public void setCodigoIngreso(String codigoIngreso) {
 		this.codigoIngreso = codigoIngreso;
+	}
+	/**
+	 * @return the tipoOrigen
+	 */
+	public String getTipoOrigen() {
+		return tipoOrigen;
+	}
+	/**
+	 * @param tipoOrigen the tipoOrigen to set
+	 */
+	public void setTipoOrigen(String tipoOrigen) {
+		this.tipoOrigen = tipoOrigen;
+	}
+	/**
+	 * @return the codigoMes
+	 */
+	public String getCodigoMes() {
+		return codigoMes;
+	}
+	/**
+	 * @param codigoMes the codigoMes to set
+	 */
+	public void setCodigoMes(String codigoMes) {
+		this.codigoMes = codigoMes;
+	}
+	/**
+	 * @return the idDdi
+	 */
+	public Integer getIdDdi() {
+		return idDdi;
+	}
+	/**
+	 * @param idDdi the idDdi to set
+	 */
+	public void setIdDdi(Integer idDdi) {
+		this.idDdi = idDdi;
+	}
+	/**
+	 * @return the codigoAlmacen
+	 */
+	public String getCodigoAlmacen() {
+		return codigoAlmacen;
+	}
+	/**
+	 * @param codigoAlmacen the codigoAlmacen to set
+	 */
+	public void setCodigoAlmacen(String codigoAlmacen) {
+		this.codigoAlmacen = codigoAlmacen;
+	}
+	/**
+	 * @return the tipo
+	 */
+	public String getTipo() {
+		return tipo;
+	}
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 }
