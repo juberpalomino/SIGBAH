@@ -145,7 +145,7 @@ $(document).ready(function() {
 			
 		}
 	});
-	 
+	
 	frm_det_productos.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
