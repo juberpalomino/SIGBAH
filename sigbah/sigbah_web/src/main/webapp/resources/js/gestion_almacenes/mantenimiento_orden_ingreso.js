@@ -30,11 +30,6 @@ $(document).ready(function() {
 		frm_det_productos.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
-	$('#txt_no_fec_vencimiento').datepicker().on('changeDate', function(e) {
-		e.preventDefault();
-		frm_det_no_alimentarios.bootstrapValidator('revalidateField', $(this).attr('id'));	
-	});
-	
 	$('#txt_doc_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
 		frm_det_documentos.bootstrapValidator('revalidateField', $(this).attr('id'));	
