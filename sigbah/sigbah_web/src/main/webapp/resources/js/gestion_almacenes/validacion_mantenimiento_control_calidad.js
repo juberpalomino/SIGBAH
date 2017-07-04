@@ -227,6 +227,13 @@ $(document).ready(function() {
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
+			sel_no_cat_producto : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Categoria de Producto.'
+					}
+				}
+			},
 			sel_no_producto : {
 				validators : {
 					notEmpty : {

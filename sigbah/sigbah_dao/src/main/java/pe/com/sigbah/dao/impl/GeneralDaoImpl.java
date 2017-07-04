@@ -32,6 +32,7 @@ import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.GeneralDao;
 import pe.com.sigbah.mapper.AlmacenMapper;
+import pe.com.sigbah.mapper.CategoriaMapper;
 import pe.com.sigbah.mapper.CatologoProductosMapper;
 import pe.com.sigbah.mapper.ChoferMapper;
 import pe.com.sigbah.mapper.DdiMapper;
@@ -540,8 +541,33 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarCategoria(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarCategoria] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_TIPO", itemBean.getIcodigo(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_CATEGORIA_PRODUC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_TIPO", new SqlParameter("PI_TIPO", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new CategoriaMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarCategoria] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)

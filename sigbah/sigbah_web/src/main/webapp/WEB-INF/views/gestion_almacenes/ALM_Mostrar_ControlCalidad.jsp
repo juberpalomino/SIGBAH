@@ -766,14 +766,23 @@
 						<form id="frm_det_no_alimentarios" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_no_producto" name="hid_cod_no_producto">
+							
+							<div class="row">																				
+								<label class="col-sm-3 control-label">Categoría de Producto:</label>
+								<div class="col-sm-3 form-group">
+									<select id="sel_no_cat_producto" name="sel_no_cat_producto" class="form-control">
+										<option value="">Seleccione</option>
+										<c:forEach items="${lista_categoria}" var="item">
+										    <option value="${item.icodigo}">${item.descripcion}</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
 						
 							<div id="div_pro_det_no_alimentarios" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
 								<div class="col-sm-6 smart-form form-group">
 									<select id="sel_no_producto" name="sel_no_producto" class="select2 form-control">
-										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
-										</c:forEach>
 									</select>
 								</div>
 							</div>

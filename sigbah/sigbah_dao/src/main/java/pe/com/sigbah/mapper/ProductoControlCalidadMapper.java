@@ -45,6 +45,7 @@ public class ProductoControlCalidadMapper implements RowMapper<ProductoControlCa
 		producto.setFlagEspecTecnicas(rs.getString("FLAG_ESPEC_TECNICAS"));
 		producto.setValorEspecTecnicas(rs.getString("VALOR_ESPEC_TECNICAS"));
 		producto.setFechaVencimiento(rs.getString("FECHA_VENCIMIENTO"));
+		producto.setIdCategoria(rs.getInt("FK_IDE_CATEGORIA_BAH"));
 		return producto;
 	}
 

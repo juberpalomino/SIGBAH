@@ -98,6 +98,17 @@ $(document).ready(function() {
 			});
 		} else {
 			$('#sel_chofer').html('');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+		}
+	});
+	
+	$('#sel_no_cat_producto').change(function() {
+		var idCategoria = $(this).val();		
+		if (!esnulo(idCategoria)) {					
+			cargarProductoNoAlimentario(idCategoria, null);
+		} else {
+			$('#sel_no_producto').html('');
+			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
 		}
 	});
 	
@@ -377,6 +388,7 @@ $(document).ready(function() {
 		frm_det_no_alimentarios.trigger('reset');
 		$('#txt_no_fec_vencimiento').datepicker('setDate', new Date());
 		
+		$('#sel_no_producto').html('');
 		$('#sel_no_producto').select2().trigger('change');
 		$('#sel_no_producto').select2({
 			  dropdownParent: $('#div_pro_det_no_alimentarios')
@@ -410,13 +422,8 @@ $(document).ready(function() {
 			
 			$('#hid_cod_no_producto').val(obj.idDetalleControlCalidad);
 			
-			$('#sel_no_producto').val(obj.idProducto+'_'+obj.nombreUnidad);
-			
-			$('#sel_no_producto').select2().trigger('change');
-			$('#sel_no_producto').select2({
-				  dropdownParent: $('#div_pro_det_no_alimentarios')
-			});
-			
+			$('#sel_no_cat_producto').val(obj.idCategoria);
+			cargarProductoNoAlimentario(obj.idCategoria, obj.idProducto+'_'+obj.nombreUnidad);			
 			$('#sel_no_uni_medida').val(obj.nombreUnidad);
 			$('#txt_no_fec_vencimiento').val(obj.fechaVencimiento);
 			$('#txt_no_can_lote').val(obj.cantidadLote);
@@ -1068,4 +1075,32 @@ function descargarDocumento(codigo, nombre) {
 		loadding(false);
 		addErrorMessage(null, mensajeReporteError);
 	});	
+}
+
+function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
+	var params = { 
+		idCategoria : idCategoria
+	};			
+	loadding(true);
+	consultarAjax('GET', '/gestion-almacenes/control-calidad/listarProductoXCategoria', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '';
+	        $.each(respuesta, function(i, item) {
+	            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
+	        });
+	        $('#sel_no_producto').html(options);
+	        if (codigoProducto != null) {
+	        	$('#sel_no_producto').val(codigoProducto);
+				$('#sel_no_producto').select2().trigger('change');
+				$('#sel_no_producto').select2({
+					  dropdownParent: $('#div_pro_det_no_alimentarios')
+				});	        	
+	        } else {
+	        	frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
+	        }
+		}
+		loadding(false);		
+	});
 }

@@ -13,6 +13,7 @@ public class ProductoControlCalidadBean extends BaseOutputBean {
 	private static final long serialVersionUID = 1L;
 	private Integer idDetalleControlCalidad;
 	private Integer idControlCalidad;
+	private Integer idCategoria;
 	private Integer idProducto;
 	private String nombreProducto;
 	private String nombreUnidad;
@@ -365,6 +366,18 @@ public class ProductoControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setArrIdDetalleControlCalidad(String arrIdDetalleControlCalidad) {
 		this.arrIdDetalleControlCalidad = arrIdDetalleControlCalidad;
+	}
+	/**
+	 * @return the idCategoria
+	 */
+	public Integer getIdCategoria() {
+		return idCategoria;
+	}
+	/**
+	 * @param idCategoria the idCategoria to set
+	 */
+	public void setIdCategoria(Integer idCategoria) {
+		this.idCategoria = idCategoria;
 	}
 
 }

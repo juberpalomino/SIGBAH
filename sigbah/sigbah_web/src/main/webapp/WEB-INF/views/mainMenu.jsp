@@ -46,7 +46,9 @@
 						<a href="#">Ingresos</a>
 						<ul>
 							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Ingreso</a>
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/orden-ingreso/inicio">
+									<i class="fa fa-caret-right"></i>Orden de Ingreso
+								</a>
 							</li>
 						</ul>
 					</li>

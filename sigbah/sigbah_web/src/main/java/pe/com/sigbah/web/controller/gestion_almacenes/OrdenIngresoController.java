@@ -44,14 +44,14 @@ import pe.com.sigbah.web.controller.common.BaseController;
 import pe.com.sigbah.web.report.gestion_almacenes.Reporteador;
 
 /**
- * @className: ControlCalidadController.java
+ * @className: OrdenIngresoController.java
  * @description: 
  * @date: 17 de jun. de 2017
  * @author: SUMERIO.
  */
 @Controller
-@RequestMapping("/gestion-almacenes/control-calidad")
-public class ControlCalidadController extends BaseController {
+@RequestMapping("/gestion-almacenes/orden-ingreso")
+public class OrdenIngresoController extends BaseController {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -195,7 +195,7 @@ public class ControlCalidadController extends BaseController {
         	
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
      
-        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.TWO_INT)));
+        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(usuarioBean.getIdDdi())));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
