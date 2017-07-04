@@ -147,7 +147,7 @@ public class ControlCalidadController extends BaseController {
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());        		
-        		ControlCalidadBean respuestaCorrelativo = logisticaService.obtenerCorrelativo(parametros);
+        		ControlCalidadBean respuestaCorrelativo = logisticaService.obtenerCorrelativoControlCalidad(parametros);
       
         		correlativo.append(respuestaCorrelativo.getNroControlCalidad());
         		

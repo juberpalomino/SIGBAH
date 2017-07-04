@@ -28,6 +28,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
+import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
@@ -108,9 +109,12 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		return lista;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerCorrelativoControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
 	@Override
-	public ControlCalidadBean obtenerCorrelativo(ControlCalidadBean controlCalidadBean) throws Exception {
-		LOGGER.info("[obtenerCorrelativo] Inicio ");
+	public ControlCalidadBean obtenerCorrelativoControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
+		LOGGER.info("[obtenerCorrelativoControlCalidad] Inicio ");
 		ControlCalidadBean detalleUsuarioBean = new ControlCalidadBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
@@ -139,7 +143,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[obtenerCorrelativo] Ocurrio un error en la operacion del USP_SEL_GENERA_CORREL_CALIDAD");
+				LOGGER.info("[obtenerCorrelativoControlCalidad] Ocurrio un error en la operacion del USP_SEL_GENERA_CORREL_CALIDAD");
     			throw new Exception();
     		}
 
@@ -151,10 +155,13 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[obtenerCorrelativo] Fin ");
+		LOGGER.info("[obtenerCorrelativoControlCalidad] Fin ");
 		return detalleUsuarioBean;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarAlmacenActivo(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
 	@Override
 	public List<ControlCalidadBean> listarAlmacenActivo(ControlCalidadBean controlCalidadBean) throws Exception {
 		LOGGER.info("[listarAlmacenActivo] Inicio ");
@@ -187,6 +194,9 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		return lista;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarOrdenCompra()
+	 */
 	@Override
 	public List<OrdenCompraBean> listarOrdenCompra() throws Exception {
 		LOGGER.info("[listarOrdenCompra] Inicio ");
@@ -217,6 +227,9 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		return lista;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#insertarRegistroControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
 	@Override
 	public ControlCalidadBean insertarRegistroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
 		LOGGER.info("[insertarRegistroControlCalidad] Inicio ");
@@ -304,6 +317,9 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		return registroControlCalidad;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#actualizarRegistroControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
 	@Override
 	public ControlCalidadBean actualizarRegistroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
 		LOGGER.info("[actualizarRegistroControlCalidad] Inicio ");
@@ -387,6 +403,9 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		return registroControlCalidad;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroControlCalidad(java.lang.Integer)
+	 */
 	@Override
 	public ControlCalidadBean obtenerRegistroControlCalidad(Integer idControlCalidad) throws Exception {
 		LOGGER.info("[obtenerRegistroControlCalidad] Inicio ");
@@ -790,6 +809,105 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[listarDetalleProductoControlCalidad] Fin ");
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarOrdenIngreso(pe.com.sigbah.common.bean.OrdenIngresoBean)
+	 */
+	@Override
+	public List<OrdenIngresoBean> listarOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
+		LOGGER.info("[listarOrdenIngreso] Inicio ");
+		List<OrdenIngresoBean> lista = new ArrayList<OrdenIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_COD_ANIO", ordenIngresoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_DDI", ordenIngresoBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", Utils.getParam(ordenIngresoBean.getIdAlmacen()), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_TIP_MOVIMIENTO", Utils.getParam(ordenIngresoBean.getCodigoMovimiento()), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_ORDEN_INGRESO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_DDI", new SqlParameter("pi_IDE_DDI", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_IDE_TIP_MOVIMIENTO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ControlCalidadMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				throw new Exception();
+			} else {
+				lista = (List<OrdenIngresoBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarOrdenIngreso] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerCorrelativoOrdenIngreso(pe.com.sigbah.common.bean.OrdenIngresoBean)
+	 */
+	@Override
+	public OrdenIngresoBean obtenerCorrelativoOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
+		LOGGER.info("[obtenerCorrelativoOrdenIngreso] Inicio ");
+		OrdenIngresoBean detalleUsuarioBean = new OrdenIngresoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", ordenIngresoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DDI", ordenIngresoBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", ordenIngresoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", ordenIngresoBean.getIdAlmacen(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_GENERA_NRO_INGRESO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlOutParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_COD_INGRESO", new SqlOutParameter("PO_COD_INGRESO", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[obtenerCorrelativoOrdenIngreso] Ocurrio un error en la operacion del USP_SEL_GENERA_NRO_INGRESO");
+    			throw new Exception();
+    		}
+
+			detalleUsuarioBean.setNroOrdenIngreso((String) out.get("PO_NRO_INGRESO"));
+			detalleUsuarioBean.setCodigoIngreso((String) out.get("PO_COD_INGRESO"));
+			detalleUsuarioBean.setCodigoRespuesta(codigoRespuesta);
+			detalleUsuarioBean.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerCorrelativoOrdenIngreso] Fin ");
+		return detalleUsuarioBean;
 	}
 
 }

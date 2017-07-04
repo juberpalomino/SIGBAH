@@ -6,6 +6,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
+import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 
 /**
@@ -28,7 +29,7 @@ public interface LogisticaDao {
 	 * @return Objeto.
 	 * @throws Exception
 	 */
-	public abstract ControlCalidadBean obtenerCorrelativo(ControlCalidadBean controlCalidadBean) throws Exception;
+	public abstract ControlCalidadBean obtenerCorrelativoControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception;
 	
 	/**
 	 * @param controlCalidadBean
@@ -112,5 +113,19 @@ public interface LogisticaDao {
 	 * @throws Exception
 	 */
 	public abstract List<DetalleProductoControlCalidadBean> listarDetalleProductoControlCalidad(Integer idControlCalidad) throws Exception;
+	
+	/**
+	 * @param ordenIngresoBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<OrdenIngresoBean> listarOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception;
+	
+	/**
+	 * @param ordenIngresoBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract OrdenIngresoBean obtenerCorrelativoOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception;
 	
 }

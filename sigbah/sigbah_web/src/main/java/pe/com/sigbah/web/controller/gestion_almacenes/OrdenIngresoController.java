@@ -79,6 +79,8 @@ public class OrdenIngresoController extends BaseController {
         	if (!Utils.isEmpty(listaDdi) && listaDdi.size() == Constantes.ONE_INT) {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
+        	        	
+        	model.addAttribute("lista_tip_movimiento", generalService.listarAlmacen(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
@@ -86,7 +88,7 @@ public class OrdenIngresoController extends BaseController {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "listar_control_calidad";
+        return "listar_orden_ingreso";
     }
 	
 	/**
@@ -94,7 +96,7 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
 		List<ControlCalidadBean> lista = null;
@@ -115,7 +117,7 @@ public class OrdenIngresoController extends BaseController {
 	 * @param model
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/mantenimientoControlCalidad/{codigo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/mantenimientoOrdenIngreso/{codigo}", method = RequestMethod.GET)
     public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, Model model) {
         try {
         	ControlCalidadBean controlCalidad = new ControlCalidadBean();
@@ -147,7 +149,7 @@ public class OrdenIngresoController extends BaseController {
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());        		
-        		ControlCalidadBean respuestaCorrelativo = logisticaService.obtenerCorrelativo(parametros);
+        		ControlCalidadBean respuestaCorrelativo = logisticaService.obtenerCorrelativoControlCalidad(parametros);
       
         		correlativo.append(respuestaCorrelativo.getNroControlCalidad());
         		
@@ -203,7 +205,7 @@ public class OrdenIngresoController extends BaseController {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "mantenimiento_control_calidad";
+        return "mantenimiento_orden_ingreso";
     }
 	
 	/**

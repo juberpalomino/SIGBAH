@@ -44,7 +44,7 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjax('GET', '/gestion-almacenes/control-calidad/listarControlCalidad', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarOrdenIngreso', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -84,7 +84,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/mantenimientoControlCalidad/';
+			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/';
 			$(location).attr('href', url + codigo);
 		}
 		
@@ -94,7 +94,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/mantenimientoControlCalidad/0';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/0';
 		$(location).attr('href', url);
 		
 	});
@@ -118,7 +118,7 @@ $(document).ready(function() {
 		var codigoAnio = $('#sel_anio').val();
 		var codigoDdi = $('#sel_ddi').val();
 		var codigoAlmacen = $('#sel_almacen').val();
-		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/exportarExcel/';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
 		url += verificaParametro(codigoDdi) + '/';
 		url += verificaParametro(codigoAlmacen);
@@ -164,7 +164,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/exportarPdf/'+codigo;
+			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarPdf/'+codigo;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {
@@ -189,8 +189,9 @@ function inicializarDatos() {
 	
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
-	$('#li_con_calidad').attr('class', 'active');
-	$('#li_con_calidad').closest('li').children('a').attr('href', '#');
+	$('#ul_ord_ingreso').css('display', 'block');	
+	$('#li_ord_ingreso').attr('class', 'active');
+	$('#li_ord_ingreso').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);

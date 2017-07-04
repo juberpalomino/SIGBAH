@@ -5,7 +5,7 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
 		<li>Gestión de Almacenes</li>
-		<li>Lista de Orden de Ingreso</li>
+		<li>Lista Orden de Ingreso</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -74,7 +74,7 @@
 									<div class="col-sm-2 form-group">
 										<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
 											<c:forEach items="${lista_tip_movimiento}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
+											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>

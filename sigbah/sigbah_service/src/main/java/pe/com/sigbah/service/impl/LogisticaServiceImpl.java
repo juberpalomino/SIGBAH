@@ -10,6 +10,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
+import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
@@ -37,11 +38,11 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativo(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativoControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
 	 */
 	@Override
-	public ControlCalidadBean obtenerCorrelativo(ControlCalidadBean controlCalidadBean) throws Exception {
-		return logisticaDao.obtenerCorrelativo(controlCalidadBean);
+	public ControlCalidadBean obtenerCorrelativoControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
+		return logisticaDao.obtenerCorrelativoControlCalidad(controlCalidadBean);
 	}
 
 	/* (non-Javadoc)
@@ -138,6 +139,22 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public List<DetalleProductoControlCalidadBean> listarDetalleProductoControlCalidad(Integer idControlCalidad) throws Exception {
 		return logisticaDao.listarDetalleProductoControlCalidad(idControlCalidad);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarOrdenIngreso(pe.com.sigbah.common.bean.OrdenIngresoBean)
+	 */
+	@Override
+	public List<OrdenIngresoBean> listarOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
+		return logisticaDao.listarOrdenIngreso(ordenIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativoOrdenIngreso(pe.com.sigbah.common.bean.OrdenIngresoBean)
+	 */
+	@Override
+	public OrdenIngresoBean obtenerCorrelativoOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
+		return logisticaDao.obtenerCorrelativoOrdenIngreso(ordenIngresoBean);
 	}
 
 }

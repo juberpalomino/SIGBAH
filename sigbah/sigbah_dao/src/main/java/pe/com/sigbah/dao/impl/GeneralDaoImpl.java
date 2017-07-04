@@ -43,6 +43,7 @@ import pe.com.sigbah.mapper.PersonalMapper;
 import pe.com.sigbah.mapper.ProveedorMapper;
 import pe.com.sigbah.mapper.TipoControlCalidadMapper;
 import pe.com.sigbah.mapper.TipoDocumentoMapper;
+import pe.com.sigbah.mapper.TipoMovimientoMapper;
 import pe.com.sigbah.mapper.UnidadMedidaMapper;
 
 /**
@@ -320,8 +321,38 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarTipoMovimiento(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarTipoMovimiento] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigoParam3());
+			input_objParametros.addValue("PI_IDE_TIP_MOVIMIENTO", parametro, Types.NUMERIC);
+			input_objParametros.addValue("PI_FLG_TIPO", itemBean.getIcodigo(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FLG_DONACION", itemBean.getIcodigoParam2(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_TIP_MOVIMIENTO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_TIP_MOVIMIENTO", new SqlParameter("PI_IDE_TIP_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_FLG_TIPO", new SqlParameter("PI_FLG_TIPO", Types.NUMERIC));
+			output_objParametros.put("PI_FLG_DONACION", new SqlParameter("PI_FLG_DONACION", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new TipoMovimientoMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarTipoMovimiento] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)

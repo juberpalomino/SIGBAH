@@ -177,7 +177,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio';
 		$(location).attr('href', url);
 		
 	});
@@ -744,8 +744,9 @@ function inicializarDatos() {
 	
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
-	$('#li_con_calidad').attr('class', 'active');
-	$('#li_con_calidad').closest('li').children('a').attr('href', '#');
+	$('#ul_ord_ingreso').css('display', 'block');	
+	$('#li_ord_ingreso').attr('class', 'active');
+	$('#li_ord_ingreso').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);

@@ -44,8 +44,8 @@
 					</li>
 					<li>
 						<a href="#">Ingresos</a>
-						<ul>
-							<li class="li_men_opcion">
+						<ul id="ul_ord_ingreso">
+							<li id="li_ord_ingreso" class="li_men_opcion">
 								<a href="${pageContext.request.contextPath}/gestion-almacenes/orden-ingreso/inicio">
 									<i class="fa fa-caret-right"></i>Orden de Ingreso
 								</a>
