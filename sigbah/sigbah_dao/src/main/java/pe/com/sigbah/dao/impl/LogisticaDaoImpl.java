@@ -962,33 +962,32 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		OrdenIngresoBean registroOrdenIngreso = new OrdenIngresoBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-			input_objParametros.addValue("pi_IDE_INGRESO", ordenIngresoBean.getCodigoAnio(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_INGRESO", ordenIngresoBean.getIdIngreso(), Types.NUMERIC);
 			input_objParametros.addValue("pi_COD_ANIO", ordenIngresoBean.getCodigoAnio(), Types.VARCHAR);
 			input_objParametros.addValue("pi_COD_MES", ordenIngresoBean.getCodigoMes(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FEC_EMISION", DateUtil.obtenerFechaHoraParseada(ordenIngresoBean.getFechaEmision()), Types.DATE);			
-			input_objParametros.addValue("pi_FK_IDE_MED_TRANSPORTE", ordenIngresoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_MED_TRANSPORTE", ordenIngresoBean.getIdMedioTransporte(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FK_IDE_TIP_MOVIMIENTO", ordenIngresoBean.getIdMovimiento(), Types.NUMERIC);
-			input_objParametros.addValue("pi_COD_ALMACEN", ordenIngresoBean.getCodigoAlmacen(), Types.VARCHAR);
-			
-			input_objParametros.addValue("pi_FK_IDE_ALMACEN", ordenIngresoBean.getIdAlmacen(), Types.NUMERIC);
-			
-			
-//			input_objParametros.addValue("pi_COD_DDI", ordenIngresoBean.getCodigoDdi(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_IDE_DDI", ordenIngresoBean.getIdDdi(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FK_IDE_TIP_CONTROL", ordenIngresoBean.getIdTipoControl(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FK_IDE_ENCARGADO", ordenIngresoBean.getIdEncargado(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FK_IDE_INSPECTOR", ordenIngresoBean.getIdInspector(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FK_IDE_PROVEEDOR", ordenIngresoBean.getIdProveedor(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FK_IDE_EMP_TRANS", ordenIngresoBean.getIdEmpresaTransporte(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FK_IDE_CHOFER", ordenIngresoBean.getIdChofer(), Types.NUMERIC);			
-//			input_objParametros.addValue("pi_CONCLUSIONES", ordenIngresoBean.getConclusiones(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_RECOMENDACIONES", ordenIngresoBean.getRecomendaciones(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_FK_IDE_ALMACEN_OD", ordenIngresoBean.getIdAlmacenOrigen(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_NRO_PLACA", ordenIngresoBean.getNroPlaca(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_NRO_ORDEN_COMPRA", ordenIngresoBean.getNroOrdenCompra(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_FK_IDE_ESTADO", ordenIngresoBean.getIdEstado(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FLG_TIPO_BIEN", ordenIngresoBean.getFlagTipoBien(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_USU_REGISTRO", ordenIngresoBean.getUsuarioRegistro(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_COD_ALMACEN", ordenIngresoBean.getCodigoAlmacen(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN", ordenIngresoBean.getIdAlmacen(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_ID_ALM_PROCEDENCIA", ordenIngresoBean.getIdAlmacenProcedencia(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_PROVEEDOR", ordenIngresoBean.getIdProveedor(), Types.NUMERIC);
+			input_objParametros.addValue("pi_COD_DDI", ordenIngresoBean.getCodigoDdi(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_NRO_ORDEN_INGRESO", ordenIngresoBean.getNroOrdenIngreso(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_CONTROL_CALIDAD", ordenIngresoBean.getIdControlCalidad(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_CHOFER", ordenIngresoBean.getIdChofer(), Types.NUMERIC);
+			input_objParametros.addValue("pi_NRO_PLACA", ordenIngresoBean.getNroPlaca(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_FLG_TIP_COMPRA", ordenIngresoBean.getFlagTipoCompra(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_FEC_LLEGADA", DateUtil.obtenerFechaHoraParseada(ordenIngresoBean.getFechaLlegada()), Types.DATE);
+			input_objParametros.addValue("pi_OBSERVACION", ordenIngresoBean.getObservacion(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_ESTADO", ordenIngresoBean.getIdEstado(), Types.NUMERIC);
+			input_objParametros.addValue("pi_NRO_ORDEN_COMPRA", ordenIngresoBean.getNroOrdenCompra(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FLG_CONTROL_CALIDAD", ordenIngresoBean.getFlagControlCalidad(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_EMP_TRANS", ordenIngresoBean.getIdEmpresaTransporte(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_RESPONSABLE", ordenIngresoBean.getIdResponsable(), Types.NUMERIC);
+			input_objParametros.addValue("pi_TIPO_INGRESO", ordenIngresoBean.getTipoIngreso(), Types.VARCHAR);
+			input_objParametros.addValue("pi_USU_REGISTRO", ordenIngresoBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("pi_USU_MODIFICA", ordenIngresoBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -1003,30 +1002,29 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_FEC_EMISION", new SqlParameter("pi_FEC_EMISION", Types.DATE));			
 			output_objParametros.put("pi_FK_IDE_MED_TRANSPORTE", new SqlParameter("pi_FK_IDE_MED_TRANSPORTE", Types.NUMERIC));
 			output_objParametros.put("pi_FK_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_FK_IDE_TIP_MOVIMIENTO", Types.NUMERIC));
-			output_objParametros.put("pi_COD_ALMACEN", new SqlParameter("pi_COD_ALMACEN", Types.VARCHAR));
-			
-			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
-			
-			
-			
+			output_objParametros.put("pi_COD_ALMACEN", new SqlParameter("pi_COD_ALMACEN", Types.VARCHAR));			
+			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.VARCHAR));
+			output_objParametros.put("pi_FK_ID_ALM_PROCEDENCIA", new SqlParameter("pi_FK_ID_ALM_PROCEDENCIA", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_PROVEEDOR", new SqlParameter("pi_FK_IDE_PROVEEDOR", Types.NUMERIC));			
 			output_objParametros.put("pi_COD_DDI", new SqlParameter("pi_COD_DDI", Types.VARCHAR));
-			output_objParametros.put("pi_IDE_DDI", new SqlParameter("pi_IDE_DDI", Types.NUMERIC));			
-			output_objParametros.put("pi_FK_IDE_TIP_CONTROL", new SqlParameter("pi_FK_IDE_TIP_CONTROL", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_ENCARGADO", new SqlParameter("pi_FK_IDE_ENCARGADO", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_INSPECTOR", new SqlParameter("pi_FK_IDE_INSPECTOR", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_PROVEEDOR", new SqlParameter("pi_FK_IDE_PROVEEDOR", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_EMP_TRANS", new SqlParameter("pi_FK_IDE_EMP_TRANS", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_CHOFER", new SqlParameter("pi_FK_IDE_CHOFER", Types.NUMERIC));			
-			output_objParametros.put("pi_CONCLUSIONES", new SqlParameter("pi_CONCLUSIONES", Types.VARCHAR));
-			output_objParametros.put("pi_RECOMENDACIONES", new SqlParameter("pi_RECOMENDACIONES", Types.VARCHAR));
-			output_objParametros.put("pi_FK_IDE_ALMACEN_OD", new SqlParameter("pi_FK_IDE_ALMACEN_OD", Types.NUMERIC));
+			output_objParametros.put("pi_NRO_ORDEN_INGRESO", new SqlParameter("pi_NRO_ORDEN_INGRESO", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_CONTROL_CALIDAD", new SqlParameter("pi_FK_IDE_CONTROL_CALIDAD", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_CHOFER", new SqlParameter("pi_FK_IDE_CHOFER", Types.NUMERIC));
 			output_objParametros.put("pi_NRO_PLACA", new SqlParameter("pi_NRO_PLACA", Types.VARCHAR));
-			output_objParametros.put("pi_NRO_ORDEN_COMPRA", new SqlParameter("pi_NRO_ORDEN_COMPRA", Types.VARCHAR));
+			output_objParametros.put("pi_FLG_TIP_COMPRA", new SqlParameter("pi_FLG_TIP_COMPRA", Types.VARCHAR));			
+			output_objParametros.put("pi_FEC_LLEGADA", new SqlParameter("pi_FEC_LLEGADA", Types.DATE));
+			output_objParametros.put("pi_OBSERVACION", new SqlParameter("pi_OBSERVACION", Types.VARCHAR));			
 			output_objParametros.put("pi_FK_IDE_ESTADO", new SqlParameter("pi_FK_IDE_ESTADO", Types.NUMERIC));
-			output_objParametros.put("pi_FLG_TIPO_BIEN", new SqlParameter("pi_FLG_TIPO_BIEN", Types.VARCHAR));
-			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));			
-			output_objParametros.put("po_PK_IDE_CONTROL_CALIDAD", new SqlOutParameter("po_PK_IDE_CONTROL_CALIDAD", Types.NUMERIC));
-			output_objParametros.put("po_NRO_CONTROL_CALIDAD", new SqlOutParameter("po_NRO_CONTROL_CALIDAD", Types.VARCHAR));
+			output_objParametros.put("pi_NRO_ORDEN_COMPRA", new SqlParameter("pi_NRO_ORDEN_COMPRA", Types.VARCHAR));
+			output_objParametros.put("pi_FLG_CONTROL_CALIDAD", new SqlParameter("pi_FLG_CONTROL_CALIDAD", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_EMP_TRANS", new SqlParameter("pi_FK_IDE_EMP_TRANS", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_RESPONSABLE", new SqlParameter("pi_FK_IDE_RESPONSABLE", Types.NUMERIC));
+			output_objParametros.put("pi_TIPO_INGRESO", new SqlParameter("pi_TIPO_INGRESO", Types.VARCHAR));
+			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
+			output_objParametros.put("pi_USU_MODIFICA", new SqlParameter("pi_USU_MODIFICA", Types.VARCHAR));
+			output_objParametros.put("pi_SEQ_BAH_M_INGRESO", new SqlOutParameter("pi_SEQ_BAH_M_INGRESO", Types.NUMERIC));
+			output_objParametros.put("po_NRO_ORDEN_INGRESO", new SqlOutParameter("po_NRO_ORDEN_INGRESO", Types.VARCHAR));
+			output_objParametros.put("po_COD_ORDEN_INGRESO", new SqlOutParameter("po_COD_ORDEN_INGRESO", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -1041,8 +1039,9 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
     			throw new Exception();
     		}
 		
-//			registroOrdenIngreso.setIdControlCalidad(((BigDecimal) out.get("po_PK_IDE_CONTROL_CALIDAD")).intValue());
-//			registroOrdenIngreso.setNroControlCalidad((String) out.get("po_NRO_CONTROL_CALIDAD"));
+			registroOrdenIngreso.setIdIngreso(((BigDecimal) out.get("pi_SEQ_BAH_M_INGRESO")).intValue());
+			registroOrdenIngreso.setNroOrdenIngreso((String) out.get("po_NRO_ORDEN_INGRESO"));
+			registroOrdenIngreso.setCodigoOrdenIngreso((String) out.get("po_COD_ORDEN_INGRESO"));
 			registroOrdenIngreso.setCodigoRespuesta(codigoRespuesta);
 			registroOrdenIngreso.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
 	

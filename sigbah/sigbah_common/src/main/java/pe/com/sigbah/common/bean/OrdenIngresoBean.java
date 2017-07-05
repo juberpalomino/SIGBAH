@@ -27,7 +27,24 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	private String codigoMes;
 	private Integer idDdi;
 	private String codigoAlmacen;
-	private String tipo;
+	private String tipo;	
+	private Integer idMedioTransporte;
+	private Integer idAlmacenProcedencia;
+	private Integer idProveedor;
+	private Integer idControlCalidad;
+	private Integer idChofer;
+	private String nroPlaca;
+	private String flagTipoCompra;
+	private String fechaLlegada;
+	private String observacion;
+	private Integer idEstado;
+	private String nroOrdenCompra;
+	private String flagControlCalidad;
+	private Integer idEmpresaTransporte;
+	private Integer idResponsable;
+	private String tipoIngreso;
+	private String codigoOrdenIngreso;
+
 	
 	
 	/**
@@ -257,6 +274,198 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	 */
 	public void setIdMovimiento(Integer idMovimiento) {
 		this.idMovimiento = idMovimiento;
+	}
+	/**
+	 * @return the idMedioTransporte
+	 */
+	public Integer getIdMedioTransporte() {
+		return idMedioTransporte;
+	}
+	/**
+	 * @param idMedioTransporte the idMedioTransporte to set
+	 */
+	public void setIdMedioTransporte(Integer idMedioTransporte) {
+		this.idMedioTransporte = idMedioTransporte;
+	}
+	/**
+	 * @return the idAlmacenProcedencia
+	 */
+	public Integer getIdAlmacenProcedencia() {
+		return idAlmacenProcedencia;
+	}
+	/**
+	 * @param idAlmacenProcedencia the idAlmacenProcedencia to set
+	 */
+	public void setIdAlmacenProcedencia(Integer idAlmacenProcedencia) {
+		this.idAlmacenProcedencia = idAlmacenProcedencia;
+	}
+	/**
+	 * @return the idProveedor
+	 */
+	public Integer getIdProveedor() {
+		return idProveedor;
+	}
+	/**
+	 * @param idProveedor the idProveedor to set
+	 */
+	public void setIdProveedor(Integer idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+	/**
+	 * @return the idControlCalidad
+	 */
+	public Integer getIdControlCalidad() {
+		return idControlCalidad;
+	}
+	/**
+	 * @param idControlCalidad the idControlCalidad to set
+	 */
+	public void setIdControlCalidad(Integer idControlCalidad) {
+		this.idControlCalidad = idControlCalidad;
+	}
+	/**
+	 * @return the idChofer
+	 */
+	public Integer getIdChofer() {
+		return idChofer;
+	}
+	/**
+	 * @param idChofer the idChofer to set
+	 */
+	public void setIdChofer(Integer idChofer) {
+		this.idChofer = idChofer;
+	}
+	/**
+	 * @return the nroPlaca
+	 */
+	public String getNroPlaca() {
+		return nroPlaca;
+	}
+	/**
+	 * @param nroPlaca the nroPlaca to set
+	 */
+	public void setNroPlaca(String nroPlaca) {
+		this.nroPlaca = nroPlaca;
+	}
+	/**
+	 * @return the flagTipoCompra
+	 */
+	public String getFlagTipoCompra() {
+		return flagTipoCompra;
+	}
+	/**
+	 * @param flagTipoCompra the flagTipoCompra to set
+	 */
+	public void setFlagTipoCompra(String flagTipoCompra) {
+		this.flagTipoCompra = flagTipoCompra;
+	}
+	/**
+	 * @return the fechaLlegada
+	 */
+	public String getFechaLlegada() {
+		return fechaLlegada;
+	}
+	/**
+	 * @param fechaLlegada the fechaLlegada to set
+	 */
+	public void setFechaLlegada(String fechaLlegada) {
+		this.fechaLlegada = fechaLlegada;
+	}
+	/**
+	 * @return the observacion
+	 */
+	public String getObservacion() {
+		return observacion;
+	}
+	/**
+	 * @param observacion the observacion to set
+	 */
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+	/**
+	 * @return the idEstado
+	 */
+	public Integer getIdEstado() {
+		return idEstado;
+	}
+	/**
+	 * @param idEstado the idEstado to set
+	 */
+	public void setIdEstado(Integer idEstado) {
+		this.idEstado = idEstado;
+	}
+	/**
+	 * @return the nroOrdenCompra
+	 */
+	public String getNroOrdenCompra() {
+		return nroOrdenCompra;
+	}
+	/**
+	 * @param nroOrdenCompra the nroOrdenCompra to set
+	 */
+	public void setNroOrdenCompra(String nroOrdenCompra) {
+		this.nroOrdenCompra = nroOrdenCompra;
+	}
+	/**
+	 * @return the flagControlCalidad
+	 */
+	public String getFlagControlCalidad() {
+		return flagControlCalidad;
+	}
+	/**
+	 * @param flagControlCalidad the flagControlCalidad to set
+	 */
+	public void setFlagControlCalidad(String flagControlCalidad) {
+		this.flagControlCalidad = flagControlCalidad;
+	}
+	/**
+	 * @return the idEmpresaTransporte
+	 */
+	public Integer getIdEmpresaTransporte() {
+		return idEmpresaTransporte;
+	}
+	/**
+	 * @param idEmpresaTransporte the idEmpresaTransporte to set
+	 */
+	public void setIdEmpresaTransporte(Integer idEmpresaTransporte) {
+		this.idEmpresaTransporte = idEmpresaTransporte;
+	}
+	/**
+	 * @return the idResponsable
+	 */
+	public Integer getIdResponsable() {
+		return idResponsable;
+	}
+	/**
+	 * @param idResponsable the idResponsable to set
+	 */
+	public void setIdResponsable(Integer idResponsable) {
+		this.idResponsable = idResponsable;
+	}
+	/**
+	 * @return the tipoIngreso
+	 */
+	public String getTipoIngreso() {
+		return tipoIngreso;
+	}
+	/**
+	 * @param tipoIngreso the tipoIngreso to set
+	 */
+	public void setTipoIngreso(String tipoIngreso) {
+		this.tipoIngreso = tipoIngreso;
+	}
+	/**
+	 * @return the codigoOrdenIngreso
+	 */
+	public String getCodigoOrdenIngreso() {
+		return codigoOrdenIngreso;
+	}
+	/**
+	 * @param codigoOrdenIngreso the codigoOrdenIngreso to set
+	 */
+	public void setCodigoOrdenIngreso(String codigoOrdenIngreso) {
+		this.codigoOrdenIngreso = codigoOrdenIngreso;
 	}
 
 }

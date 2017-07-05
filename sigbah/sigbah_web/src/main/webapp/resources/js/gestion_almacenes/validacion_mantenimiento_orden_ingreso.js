@@ -8,7 +8,7 @@ $(document).ready(function() {
 			txt_fecha : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Fecha.'
+						message : 'Debe ingresar Fecha.'
 					}
 				}
 			},
@@ -19,6 +19,15 @@ $(document).ready(function() {
 					}
 				}
 			},
+			sel_tip_movimiento : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Tipo Movimiento.'
+					}
+				}
+			},
+			
+			// Datos Orden de Compra
 			sel_nro_ord_compra : {
 				validators : {
 					notEmpty : {
@@ -26,42 +35,26 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_tip_control : {
+			sel_com_por : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Tipo de Control.'
+						message : 'Debe seleccionar Compra Por.'
 					}
 				}
 			},
 			
-			// Datos del Origen / Destino - Reponsables
-			sel_ori_almacen : {
-				validators : {
-					callback: {
-				        callback: function(value, validator, field) {
-				        	var val_tip_control = $('#sel_tip_control').val();                 		
-				    		if (val_tip_control == '3' || // Ingreso por Transferencias de Almacén
-				    				val_tip_control == '6') { // Salidas por Transferencias a Almacén
-				    			if (esnulo(value)) {
-				    				return { valid: false, message: 'Debe seleccionar Tipo de Control.'}
-				    			}
-				    		}
-				    		return true;
-				        }
-				    }
-				}
-			},
-			sel_ori_en_almacen : {
+			// Datos Control de Calidad
+			rb_tie_nro_rep_con_calidad : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Encargado de Almacén.'
+						message : 'Debe seleccionar Tiene N° Rep. Control Calidad.'
 					}
 				}
 			},
-			sel_inspector : {
+			sel_nro_con_calidad : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Inspector.'
+						message : 'Debe seleccionar N° Control de Calidad.'
 					}
 				}
 			},
@@ -69,76 +62,63 @@ $(document).ready(function() {
 			// Datos de Proveedor
 			sel_proveedor : {
 				validators : {
-					callback: {
-				        callback: function(value, validator, field) {
-				        	var val_tip_control = $('#sel_tip_control').val();                 		
-				    		if (val_tip_control == '1' || // Ingreso por Compra de productos
-				    				val_tip_control == '5') { // Ingreso por Donación
-				    			if (esnulo(value)) {
-				    				return { valid: false, message: 'Debe seleccionar Proveedor.'}
-				    			}   
-				    		}
-				            return true;
-				        }
-				    }
+					notEmpty : {
+						message : 'Debe seleccionar Proveedor.'
+					}
+				}
+			},
+			
+			// Datos de la Procedencia
+			sel_almacen : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Almacen.'
+					}
 				}
 			},
 			
 			// Datos del Transporte
+			sel_med_transporte : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Medio de Transporte.'
+					}
+				}
+			},
 			sel_emp_transporte : {
 				validators : {
-					callback: {
-				        callback: function(value, validator, field) {
-				        	var val_tip_control = $('#sel_tip_control').val();                 		
-				    		if (val_tip_control == '1' || // Ingreso por Compra de productos
-				    				val_tip_control == '5') { // Ingreso por Donación
-				    			if (esnulo(value)) {
-				    				return { valid: false, message: 'Debe seleccionar Empresa de Transporte.'}
-				    			}
-				    		}
-				            return true;
-				        }
-				    }
+					notEmpty : {
+						message : 'Debe seleccionar Empresa de Transporte.'
+					}
+				}
+			},
+			txt_fec_llegada : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Fecha de Llegada.'
+					}
 				}
 			},
 			sel_chofer : {
 				validators : {
-					callback: {
-				        callback: function(value, validator, field) {
-				        	var val_tip_control = $('#sel_tip_control').val();                 		
-				    		if (val_tip_control == '1' || // Ingreso por Compra de productos
-				    				val_tip_control == '5') { // Ingreso por Donación
-				    			if (esnulo(value)) {
-				    				return { valid: false, message: 'Debe seleccionar Chofer.'}
-				    			}
-				    		}
-				            return true;
-				        }
-				    }
+					notEmpty : {
+						message : 'Debe seleccionar Chofer.'
+					}
 				}
 			},
 			txt_nro_placa : {
 				validators : {
-					callback: {
-				        callback: function(value, validator, field) {
-				        	var val_tip_control = $('#sel_tip_control').val();                 		
-				    		if (val_tip_control == '1' || // Ingreso por Compra de productos
-				    				val_tip_control == '5') { // Ingreso por Donación
-				    			if (esnulo(value)) {
-				    				return { valid: false, message: 'Debe seleccionar N° de Placa.'}
-				    			}
-				    		}
-				            return true;
-				        }
-				    }
+					notEmpty : {
+						message : 'Debe ingresar N° de Placa.'
+					}
 				}
 			},
 			
-			// Productos
-			rb_tip_bien : {
+			// Responsable de Recepción
+			sel_responsable : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Tipo de Bien.'
+						message : 'Debe seleccionar Responsable.'
 					}
 				}
 			}

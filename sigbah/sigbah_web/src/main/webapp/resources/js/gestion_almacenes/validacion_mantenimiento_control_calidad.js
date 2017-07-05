@@ -8,7 +8,7 @@ $(document).ready(function() {
 			txt_fecha : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Fecha.'
+						message : 'Debe ingresar Fecha.'
 					}
 				}
 			},
