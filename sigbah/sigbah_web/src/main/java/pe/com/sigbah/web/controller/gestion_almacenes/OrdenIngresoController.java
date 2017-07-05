@@ -98,7 +98,7 @@ public class OrdenIngresoController extends BaseController {
 	 */
 	@RequestMapping(value = "/listarOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+	public Object listarOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
 		List<OrdenIngresoBean> lista = null;
 		try {			
 			OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();	
@@ -210,15 +210,18 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarChofer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarEmpresaTransporte", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarChofer(HttpServletRequest request, HttpServletResponse response) {
+	public Object listarEmpresaTransporte(HttpServletRequest request, HttpServletResponse response) {
 		List<ItemBean> lista = null;
 		try {			
 			ItemBean item = new ItemBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());			
-			lista = generalService.listarChofer(item);
+			BeanUtils.populate(item, request.getParameterMap());
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	item.setIcodigo(usuarioBean.getIdDdi());
+			lista = generalService.listarEmpresaTransporte(item);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -231,58 +234,32 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarProductoXCategoria", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarProductoXCategoria(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoBean> lista = null;
+	public Object grabarOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
+		OrdenIngresoBean ordenIngreso = null;
 		try {			
-			ProductoBean producto = new ProductoBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(producto, request.getParameterMap());			
-			lista = generalService.listarCatologoProductos(new ProductoBean(null, producto.getIdCategoria()));
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/grabarControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object grabarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		ControlCalidadBean controlCalidad = null;
-		try {			
-			ControlCalidadBean controlCalidadBean = new ControlCalidadBean();
+			OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();
 			
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);
 			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
 			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(controlCalidadBean, request.getParameterMap());
+			beanUtilsBean.populate(ordenIngresoBean, request.getParameterMap());
 
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	controlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	ordenIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-			if (!isNullInteger(controlCalidadBean.getIdControlCalidad())) {				
-				controlCalidad = logisticaService.actualizarRegistroControlCalidad(controlCalidadBean);
-				controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
-			} else {			
-				controlCalidad = logisticaService.insertarRegistroControlCalidad(controlCalidadBean);			
-			}
+        	ordenIngreso = logisticaService.grabarOrdenIngreso(ordenIngresoBean);
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return controlCalidad;
+		return ordenIngreso;
 	}
 	
 	/**
@@ -290,9 +267,9 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarProductoControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarProductoOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarProductoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+	public Object listarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
 		List<ProductoControlCalidadBean> lista = null;
 		try {			
 			ProductoControlCalidadBean producto = new ProductoControlCalidadBean();			

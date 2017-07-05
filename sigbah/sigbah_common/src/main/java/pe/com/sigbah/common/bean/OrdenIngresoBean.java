@@ -19,6 +19,7 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	private String codigoIngreso;
 	private String nroOrdenIngreso;
 	private String fechaEmision;
+	private Integer idMovimiento;
 	private String codigoMovimiento;
 	private String nombreMovimiento;
 	private String nombreEstado;
@@ -244,6 +245,18 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	 */
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	/**
+	 * @return the idMovimiento
+	 */
+	public Integer getIdMovimiento() {
+		return idMovimiento;
+	}
+	/**
+	 * @param idMovimiento the idMovimiento to set
+	 */
+	public void setIdMovimiento(Integer idMovimiento) {
+		this.idMovimiento = idMovimiento;
 	}
 
 }

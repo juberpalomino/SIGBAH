@@ -36,12 +36,35 @@ $(document).ready(function() {
 	});
 	
 	$('#sel_nro_ord_compra').change(function() {
-		var val_tip_control = $(this).val();
+		var codigo = $(this).val();
 		var arr = codigo.split('_');
 		if (arr.length > 1) {
 			$('#txt_det_ord_compra').val(arr[1]);
 		} else {
 			$('#txt_det_ord_compra').val('');
+		}
+	});
+	
+	$('#sel_tip_movimiento').change(function() {
+		var val_tip_movimiento = $(this).val();		
+		if (!esnulo(val_tip_movimiento)) {
+			
+			cargarTipoMovimiento(val_tip_movimiento);
+			
+
+			
+//			if (val_tip_control == '3' || // Ingreso por Transferencias de Almacén
+//					val_tip_control == '6') { // Salidas por Transferencias a Almacén
+//				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_almacen');
+//			} else if (val_tip_control == '1' || // Ingreso por Compra de productos
+//						val_tip_control == '5') { // Ingreso por Donación
+//				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
+//				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_representante');
+//				
+//				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
+//				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+//				frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
+//			}
 		}
 	});
 	
@@ -59,6 +82,31 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('#sel_med_transporte').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				icodigoParam2 : codigo
+			};			
+			loadding(true);
+			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarEmpresaTransporte', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			        });
+			        $('#sel_emp_transporte').html(options);
+				}
+				loadding(false);
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+			});
+		} else {
+			$('#sel_emp_transporte').html('');
+		}
+	});
+	
 	$('#sel_emp_transporte').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {						
@@ -66,7 +114,7 @@ $(document).ready(function() {
 				icodigo : codigo
 			};			
 			loadding(true);
-			consultarAjax('GET', '/gestion-almacenes/control-calidad/listarChofer', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarChofer', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -125,7 +173,7 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarControlCalidad', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/orden-ingreso/grabarControlCalidad', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -272,7 +320,7 @@ $(document).ready(function() {
 						arrIdDetalleControlCalidad : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/control-calidad/eliminarProductoControlCalidad', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/orden-ingreso/eliminarProductoControlCalidad', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -318,7 +366,7 @@ $(document).ready(function() {
 
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/orden-ingreso/grabarProductoControlCalidad', params, function(respuesta) {
 				$('#div_det_alimentarios').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
@@ -454,7 +502,7 @@ $(document).ready(function() {
 						arrIdDetalleControlCalidad : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/control-calidad/eliminarProductoControlCalidad', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/orden-ingreso/eliminarProductoControlCalidad', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -498,7 +546,7 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/orden-ingreso/grabarProductoControlCalidad', params, function(respuesta) {
 				$('#div_det_no_alimentarios').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
@@ -623,7 +671,7 @@ $(document).ready(function() {
 						arrIdDocumentoControlCalidad : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/control-calidad/eliminarDocumentoControlCalidad', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/orden-ingreso/eliminarDocumentoControlCalidad', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -814,7 +862,7 @@ function listarProductoControlCalidad(indicador) {
 		idControlCalidad : $('#hid_cod_con_calidad').val(),
 		flagTipoProducto : ordenIngreso.flagTipoBien
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarProductoControlCalidad', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-ingreso/listarProductoControlCalidad', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -891,7 +939,7 @@ function listarDocumentoControlCalidad(indicador) {
 	var params = { 
 		idControlCalidad : $('#hid_cod_con_calidad').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/control-calidad/listarDocumentoControlCalidad', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-ingreso/listarDocumentoControlCalidad', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -950,7 +998,7 @@ function listarDetalleDocumentos(respuesta) {
 }
 
 function grabarDetalleDocumento(params) {
-	consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarDocumentoControlCalidad', params, function(respuesta) {
+	consultarAjax('POST', '/gestion-almacenes/orden-ingreso/grabarDocumentoControlCalidad', params, function(respuesta) {
 		$('#div_det_documentos').modal('hide');
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			loadding(false);			
@@ -977,4 +1025,56 @@ function descargarDocumento(codigo, nombre) {
 		loadding(false);
 		addErrorMessage(null, mensajeReporteError);
 	});	
+}
+
+function cargarTipoMovimiento(val_tip_movimiento) {
+	if (val_tip_control == '1') { // Ajuste por Importe
+		$('#sel_ori_almacen').prop('disabled', true);
+		$('#sel_ori_en_almacen').prop('disabled', false);
+		$('#sel_inspector').prop('disabled', false);
+		$('#sel_proveedor').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#sel_chofer').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+	} else if (val_tip_control == '2') { // Ajustes por inventario
+		$('#sel_ori_almacen').prop('disabled', true);
+		$('#sel_ori_en_almacen').prop('disabled', false);
+		$('#sel_inspector').prop('disabled', false);
+		$('#sel_proveedor').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#sel_chofer').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+	} else if (val_tip_control == '3') { // Compra
+		$('#sel_ori_almacen').prop('disabled', false);
+		$('#sel_ori_en_almacen').prop('disabled', false);
+		$('#sel_inspector').prop('disabled', false);
+		$('#sel_proveedor').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#sel_chofer').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+	} else if (val_tip_control == '4') { // Inventario Inicial
+		$('#sel_ori_almacen').prop('disabled', true);
+		$('#sel_ori_en_almacen').prop('disabled', false);
+		$('#sel_inspector').prop('disabled', false);
+		$('#sel_proveedor').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#sel_chofer').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+	} else if (val_tip_control == '5') { // Transferencia Interna
+		$('#sel_ori_almacen').prop('disabled', true);
+		$('#sel_ori_en_almacen').prop('disabled', false);
+		$('#sel_inspector').prop('disabled', false);
+		$('#sel_proveedor').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#sel_chofer').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+	} else if (val_tip_control == '6') { // Transferencia entre Almacenes
+		$('#sel_ori_almacen').prop('disabled', false);
+		$('#sel_ori_en_almacen').prop('disabled', false);
+		$('#sel_inspector').prop('disabled', false);
+		$('#sel_proveedor').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#sel_chofer').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+	}
 }
