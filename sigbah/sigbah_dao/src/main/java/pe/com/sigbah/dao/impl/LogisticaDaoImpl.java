@@ -1,6 +1,7 @@
 package pe.com.sigbah.dao.impl;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -39,6 +40,7 @@ import pe.com.sigbah.mapper.AlmacenActivoMapper;
 import pe.com.sigbah.mapper.ControlCalidadMapper;
 import pe.com.sigbah.mapper.DetalleProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoControlCalidadMapper;
+import pe.com.sigbah.mapper.NroControlCalidadMapper;
 import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 
@@ -304,7 +306,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
     			throw new Exception();
     		}
 		
-			registroControlCalidad.setIdControlCalidad((Integer) out.get("po_PK_IDE_CONTROL_CALIDAD"));
+			registroControlCalidad.setIdControlCalidad(((BigDecimal) out.get("po_PK_IDE_CONTROL_CALIDAD")).intValue());
 			registroControlCalidad.setNroControlCalidad((String) out.get("po_NRO_CONTROL_CALIDAD"));
 			registroControlCalidad.setCodigoRespuesta(codigoRespuesta);
 			registroControlCalidad.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
@@ -909,6 +911,46 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[obtenerCorrelativoOrdenIngreso] Fin ");
 		return detalleUsuarioBean;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarNroControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public List<ControlCalidadBean> listarNroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
+		LOGGER.info("[listarNroControlCalidad] Inicio ");
+		List<ControlCalidadBean> lista = new ArrayList<ControlCalidadBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_COD_DDI", controlCalidadBean.getCodigoDdi(), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_CONTROL_CALIDAD");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_DDI", new SqlParameter("pi_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new NroControlCalidadMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				throw new Exception();
+			} else {
+				lista = (List<ControlCalidadBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarNroControlCalidad] Fin ");
+		return lista;
 	}
 
 }

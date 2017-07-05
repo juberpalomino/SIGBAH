@@ -38,6 +38,7 @@ public class ControlCalidadBean extends BaseOutputBean {
 	private Integer idEstado;
 	private String flagTipoBien;
 	private String provRep;
+	private String concepto;
 	
 	
 	/**
@@ -55,6 +56,14 @@ public class ControlCalidadBean extends BaseOutputBean {
 		this.idControlCalidad = idControlCalidad;
 	}
 	
+	/**
+	 * @param codigoDdi
+	 */
+	public ControlCalidadBean(String codigoDdi) {
+		super();
+		this.codigoDdi = codigoDdi;
+	}
+
 	/**
 	 * @return the idControlCalidad
 	 */
@@ -402,6 +411,20 @@ public class ControlCalidadBean extends BaseOutputBean {
 	 */
 	public void setProvRep(String provRep) {
 		this.provRep = provRep;
+	}
+
+	/**
+	 * @return the concepto
+	 */
+	public String getConcepto() {
+		return concepto;
+	}
+
+	/**
+	 * @param concepto the concepto to set
+	 */
+	public void setConcepto(String concepto) {
+		this.concepto = concepto;
 	}
 
 }

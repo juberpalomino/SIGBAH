@@ -80,7 +80,7 @@ public class OrdenIngresoController extends BaseController {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	        	
-        	model.addAttribute("lista_tip_movimiento", generalService.listarAlmacen(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
+        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
@@ -173,21 +173,22 @@ public class OrdenIngresoController extends BaseController {
         	}
         	
         	model.addAttribute("ordenIngreso", getParserObject(ordenIngreso));
+        	
+        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
 
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	
         	model.addAttribute("lista_orden_compra", logisticaService.listarOrdenCompra());
         	
-        	model.addAttribute("lista_tipo_control", generalService.listarTipoControlCalidad(new ItemBean()));
-        	
-        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
+        	model.addAttribute("lista_nro_control_calidad", logisticaService.listarNroControlCalidad(new ControlCalidadBean(usuarioBean.getCodigoDdi())));
         	
         	model.addAttribute("lista_proveedor", generalService.listarProveedor(new ItemBean()));
         	
-        	ItemBean parametroEmpresaTransporte = new ItemBean();
-        	parametroEmpresaTransporte.setIcodigo(usuarioBean.getIdDdi());
-        	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
-        	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
+        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean()));
+        	
+        	model.addAttribute("lista_medio_transporte", generalService.listarMedioTransporte(new ItemBean()));
+        	
+        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
         	
         	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	

@@ -48,6 +48,7 @@ public class RegistroControlCalidadMapper implements RowMapper<ControlCalidadBea
 		controlCalidad.setFlagTipoBien(rs.getString("FLG_TIPO_BIEN"));
 		controlCalidad.setConclusiones(rs.getString("CONCLUSIONES"));
 		controlCalidad.setRecomendaciones(rs.getString("RECOMENDACIONES"));
+		controlCalidad.setConcepto(rs.getString("CONCEPTO"));
 		return controlCalidad;
 	}
 

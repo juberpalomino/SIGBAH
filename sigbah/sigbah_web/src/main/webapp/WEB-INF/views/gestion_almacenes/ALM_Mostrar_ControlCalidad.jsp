@@ -122,15 +122,25 @@
 													</div>
 													
 													<div class="row">
-														<label class="col-sm-2 control-label">Nº orden Compra:</label>
-														<div class="col-sm-5 smart-form form-group">
+														<label class="col-sm-2 control-label">Nº Orden Compra:</label>
+														<div class="col-sm-3 smart-form form-group">
 															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="select2 form-control">
 																<c:forEach items="${lista_orden_compra}" var="item">
-																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
+																    <option value="${item.nroOrdenCompra}_${item.concepto}">${item.nroOrdenCompra}</option>
 																</c:forEach>
 															</select>
 														</div>
 													
+														<div class="col-sm-7 smart-form">
+															<section>														
+																<label class="textarea textarea-resizable"> 										
+																	<textarea rows="2" id="txt_det_ord_compra" class="form-control custom-scroll" disabled></textarea> 
+																</label>
+															</section>
+														</div>
+													</div>
+													
+													<div class="row">
 														<label class="col-sm-2 control-label">Tipo de Control:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_tip_control" name="sel_tip_control" class="form-control">

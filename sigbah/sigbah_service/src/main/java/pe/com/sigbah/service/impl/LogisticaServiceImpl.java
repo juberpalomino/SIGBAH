@@ -157,4 +157,12 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 		return logisticaDao.obtenerCorrelativoOrdenIngreso(ordenIngresoBean);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarNroControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public List<ControlCalidadBean> listarNroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception {
+		return logisticaDao.listarNroControlCalidad(controlCalidadBean);
+	}
+
 }

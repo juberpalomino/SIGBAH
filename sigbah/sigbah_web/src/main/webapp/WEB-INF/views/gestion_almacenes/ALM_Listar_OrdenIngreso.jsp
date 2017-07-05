@@ -73,7 +73,7 @@
 									<label class="col-sm-2 control-label">Tipo Movimiento:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
-											<c:forEach items="${lista_tip_movimiento}" var="item">
+											<c:forEach items="${lista_tipo_movimiento}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>

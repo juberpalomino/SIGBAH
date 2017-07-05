@@ -128,4 +128,11 @@ public interface LogisticaDao {
 	 */
 	public abstract OrdenIngresoBean obtenerCorrelativoOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception;
 	
+	/**
+	 * @param controlCalidadBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ControlCalidadBean> listarNroControlCalidad(ControlCalidadBean controlCalidadBean) throws Exception;
+	
 }

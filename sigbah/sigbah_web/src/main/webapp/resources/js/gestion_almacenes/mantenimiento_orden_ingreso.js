@@ -35,21 +35,13 @@ $(document).ready(function() {
 		frm_det_documentos.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
-	$('#sel_tip_control').change(function() {
-		var val_tip_control = $(this).val();		
-		if (!esnulo(val_tip_control)) {
-			if (val_tip_control == '3' || // Ingreso por Transferencias de Almacén
-					val_tip_control == '6') { // Salidas por Transferencias a Almacén
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_almacen');
-			} else if (val_tip_control == '1' || // Ingreso por Compra de productos
-						val_tip_control == '5') { // Ingreso por Donación
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_representante');
-				
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-				frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
-			}
+	$('#sel_nro_ord_compra').change(function() {
+		var val_tip_control = $(this).val();
+		var arr = codigo.split('_');
+		if (arr.length > 1) {
+			$('#txt_det_ord_compra').val(arr[1]);
+		} else {
+			$('#txt_det_ord_compra').val('');
 		}
 	});
 	
@@ -811,9 +803,9 @@ function inicializarDatos() {
 
 		}
 		
-		$('#sel_nro_ord_compra').select2().trigger('change');
-
 	}
+	
+	$('#sel_nro_ord_compra').select2().trigger('change');
 	
 }
 

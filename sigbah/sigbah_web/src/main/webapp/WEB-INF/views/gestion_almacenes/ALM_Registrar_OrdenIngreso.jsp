@@ -116,6 +116,15 @@
 																</c:forEach>
 															</select>
 														</div>
+														
+														<label class="col-sm-2 control-label">Tipo Movimiento:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
+																<c:forEach items="${lista_tipo_movimiento}" var="item">
+																    <option value="${item.icodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
 													</div>
 													
 												</div>
@@ -144,7 +153,7 @@
 														<div class="col-sm-3 smart-form form-group">
 															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="select2 form-control">
 																<c:forEach items="${lista_orden_compra}" var="item">
-																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
+																    <option value="${item.nroOrdenCompra}_${item.concepto}">${item.nroOrdenCompra}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -152,7 +161,7 @@
 														<div class="col-sm-7 smart-form">
 															<section>														
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" id="txt_conclusiones" class="custom-scroll" disabled></textarea> 
+																	<textarea rows="2" id="txt_det_ord_compra" class="custom-scroll" disabled></textarea> 
 																</label>
 															</section>
 														</div>
@@ -161,10 +170,10 @@
 													<div class="row">
 														<label class="col-sm-2 control-label">Compra Por:</label>
 														<div class="col-sm-3 smart-form form-group">
-															<select id="sel_com_por" name="sel_com_por" class="select2 form-control">
-																<c:forEach items="${lista_orden_compra}" var="item">
-																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
-																</c:forEach>
+															<select id="sel_com_por" name="sel_com_por" class="form-control">
+																<option value="">Seleccione</option>
+																<option value="1">Emergencia</option>
+																<option value="2">Reabastecimiento</option>
 															</select>
 														</div>
 													</div>
@@ -202,7 +211,7 @@
 															</label>
 															
 															<label class="radio radio-inline">
-																<input type="radio" name="rb_tie_nro_rep_con_calidad" value="2">
+																<input type="radio" name="rb_tie_nro_rep_con_calidad" value="0">
 																No
 															</label>																		
 														</div>
@@ -210,8 +219,8 @@
 														<label class="col-sm-2 control-label">N° Control de Calidad:</label>
 														<div class="col-sm-3 smart-form form-group">
 															<select id="sel_nro_con_calidad" name="sel_nro_con_calidad" class="form-control">
-																<c:forEach items="${lista_orden_compra}" var="item">
-																    <option value="${item.nroOrdenCompra}">${item.concepto}</option>
+																<c:forEach items="${lista_nro_control_calidad}" var="item">
+																    <option value="${item.idControlCalidad}">${item.nroControlCalidad}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -241,6 +250,7 @@
 														<label class="col-sm-3 control-label">Proveedor:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_proveedor" name="sel_proveedor" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_proveedor}" var="item">
 																	<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
 																</c:forEach>
@@ -279,7 +289,7 @@
 														<div class="col-sm-3 form-group">
 															<select id="sel_almacen" name="sel_almacen" class="form-control">
 																<option value="">Seleccione</option>
-																<c:forEach items="${lista_empresa_transporte}" var="item">
+																<c:forEach items="${lista_almacen}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
@@ -312,8 +322,8 @@
 														<div class="col-sm-3 form-group">
 															<select id="sel_med_transporte" name="sel_med_transporte" class="form-control">
 																<option value="">Seleccione</option>
-																<c:forEach items="${lista_empresa_transporte}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																<c:forEach items="${lista_medio_transporte}" var="item">
+																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -321,10 +331,6 @@
 														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_empresa_transporte}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
 															</select>
 														</div>
 													</div>
@@ -341,9 +347,6 @@
 														<label class="col-sm-3 control-label">Chofer:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_chofer" name="sel_chofer" class="form-control">
-																<c:forEach items="${lista_chofer}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
 															</select>
 														</div>
 													</div>
@@ -382,7 +385,7 @@
 														<label class="col-sm-3 control-label">Responsable:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_responsable" name="sel_responsable" class="form-control">
-																<c:forEach items="${lista_chofer}" var="item">
+																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
@@ -394,7 +397,7 @@
 															<section>														
 																<label class="control-label">Observaciones:</label>
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" 
+																	<textarea rows="3" name="txt_observaciones" id="txt_observaciones" 
 																		maxlength="500" class="custom-scroll"></textarea> 
 																</label>
 															</section>
