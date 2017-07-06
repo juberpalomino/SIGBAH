@@ -44,7 +44,14 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	private Integer idResponsable;
 	private String tipoIngreso;
 	private String codigoOrdenIngreso;
-
+	private Integer idDonacion;
+	private String provRep;
+	private String concepto;
+	private String representante;
+	private String nombreAlmacenProcedencia;
+	private String empresaTransporte;
+	private String nombreChofer;
+	private String responsable;
 	
 	
 	/**
@@ -466,6 +473,102 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	 */
 	public void setCodigoOrdenIngreso(String codigoOrdenIngreso) {
 		this.codigoOrdenIngreso = codigoOrdenIngreso;
+	}
+	/**
+	 * @return the idDonacion
+	 */
+	public Integer getIdDonacion() {
+		return idDonacion;
+	}
+	/**
+	 * @param idDonacion the idDonacion to set
+	 */
+	public void setIdDonacion(Integer idDonacion) {
+		this.idDonacion = idDonacion;
+	}
+	/**
+	 * @return the provRep
+	 */
+	public String getProvRep() {
+		return provRep;
+	}
+	/**
+	 * @param provRep the provRep to set
+	 */
+	public void setProvRep(String provRep) {
+		this.provRep = provRep;
+	}
+	/**
+	 * @return the concepto
+	 */
+	public String getConcepto() {
+		return concepto;
+	}
+	/**
+	 * @param concepto the concepto to set
+	 */
+	public void setConcepto(String concepto) {
+		this.concepto = concepto;
+	}
+	/**
+	 * @return the representante
+	 */
+	public String getRepresentante() {
+		return representante;
+	}
+	/**
+	 * @param representante the representante to set
+	 */
+	public void setRepresentante(String representante) {
+		this.representante = representante;
+	}
+	/**
+	 * @return the nombreAlmacenProcedencia
+	 */
+	public String getNombreAlmacenProcedencia() {
+		return nombreAlmacenProcedencia;
+	}
+	/**
+	 * @param nombreAlmacenProcedencia the nombreAlmacenProcedencia to set
+	 */
+	public void setNombreAlmacenProcedencia(String nombreAlmacenProcedencia) {
+		this.nombreAlmacenProcedencia = nombreAlmacenProcedencia;
+	}
+	/**
+	 * @return the empresaTransporte
+	 */
+	public String getEmpresaTransporte() {
+		return empresaTransporte;
+	}
+	/**
+	 * @param empresaTransporte the empresaTransporte to set
+	 */
+	public void setEmpresaTransporte(String empresaTransporte) {
+		this.empresaTransporte = empresaTransporte;
+	}
+	/**
+	 * @return the nombreChofer
+	 */
+	public String getNombreChofer() {
+		return nombreChofer;
+	}
+	/**
+	 * @param nombreChofer the nombreChofer to set
+	 */
+	public void setNombreChofer(String nombreChofer) {
+		this.nombreChofer = nombreChofer;
+	}
+	/**
+	 * @return the responsable
+	 */
+	public String getResponsable() {
+		return responsable;
+	}
+	/**
+	 * @param responsable the responsable to set
+	 */
+	public void setResponsable(String responsable) {
+		this.responsable = responsable;
 	}
 
 }

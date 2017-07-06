@@ -150,8 +150,8 @@
 													
 													<div class="row">
 														<label class="col-sm-2 control-label">Nº orden Compra:</label>
-														<div class="col-sm-3 smart-form form-group">
-															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="select2 form-control">
+														<div class="col-sm-3 form-group">
+															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control">
 																<c:forEach items="${lista_orden_compra}" var="item">
 																    <option value="${item.nroOrdenCompra}_${item.concepto}">${item.nroOrdenCompra}</option>
 																</c:forEach>
@@ -161,7 +161,7 @@
 														<div class="col-sm-7 smart-form">
 															<section>														
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="2" id="txt_det_ord_compra" class="form-control custom-scroll" disabled></textarea> 
+																	<textarea rows="2" id="txt_det_ord_compra" class="form-control custom-scroll mod-readonly" disabled></textarea> 
 																</label>
 															</section>
 														</div>
@@ -331,6 +331,9 @@
 														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
+																<c:forEach items="${lista_empresa_transporte}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
 															</select>
 														</div>
 													</div>
@@ -347,6 +350,9 @@
 														<label class="col-sm-3 control-label">Chofer:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_chofer" name="sel_chofer" class="form-control">
+																<c:forEach items="${lista_chofer}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
 															</select>
 														</div>
 													</div>
@@ -595,30 +601,46 @@
 <!-- END MAIN CONTENT -->
 
 <!-- Modal -->
-<div id="div_det_alimentarios" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div id="div_det_productos" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Nuevo Producto</h4>
+				<h4 class="modal-title label-bold" id="h4_tit_productos">Nuevo Producto</h4>
 			</div>
 			
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12">
-						<form id="frm_det_alimentarios" class="form-horizontal" role="form">
+						<form id="frm_det_productos" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
+							
+							<div class="row" id="div_det_nro_ord_compra">																				
+								<label class="col-sm-3 control-label">N° Orden Compra:</label>
+								<div class="col-sm-3 form-group">
+									<input type="text" id="txt_det_nro_ord_compra" class="form-control" disabled>
+								</div>
+							</div>
+							
+							<div class="row">																				
+								<label class="col-sm-3 control-label">Categoría de Producto:</label>
+								<div class="col-sm-3 form-group">
+									<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
+										<option value="">Seleccione</option>
+										<c:forEach items="${lista_categoria}" var="item">
+										    <option value="${item.icodigo}">${item.descripcion}</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
 						
-							<div id="div_pro_det_alimentarios" class="row">																				
+							<div id="div_pro_det_productos" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
 								<div class="col-sm-5 smart-form form-group">
-									<select id="sel_producto" name="sel_producto" class="select2 form-control ">
-										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
-										</c:forEach>
+									<select id="sel_producto" name="sel_producto" class="select2 form-control">
 									</select>
 								</div>
 							</div>
@@ -730,134 +752,6 @@
 				&nbsp; &nbsp;
 				
 				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_alimentario">
-					<i class="fa fa-mail-forward"></i>
-					Cancelar
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<!-- Modal -->
-<div id="div_det_no_alimentarios" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" id="btn_clo_no_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_no_alimentarios">Nuevo Producto</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12">
-						<form id="frm_det_no_alimentarios" class="form-horizontal" role="form">
-							
-							<input type="hidden" id="hid_cod_no_producto" name="hid_cod_no_producto">
-						
-							<div id="div_pro_det_no_alimentarios" class="row">																				
-								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-6 smart-form form-group">
-									<select id="sel_no_producto" name="sel_no_producto" class="select2 form-control">
-										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-							
-							<div class="row">&nbsp;</div>									
-
-							<div class="row">
-								<label class="col-sm-3 control-label">Unidad Medida:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" id="txt_no_uni_medida" class="form-control" disabled>
-								</div>
-
-								<label class="col-sm-3 control-label">Fecha Vencimiento:</label>
-								<div class="col-sm-3 smart-form form-group">
-									<label class="input"> 
-										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_no_fec_vencimiento" id="txt_no_fec_vencimiento" class="datepicker" readonly>
-									</label>
-								</div>
-							</div>
-							
-							<div class="row">
-								<label class="col-sm-3 control-label">Cantidad de Lote:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_no_can_lote" id="txt_no_can_lote" class="form-control monto-format" maxlength="10">
-								</div>
-
-								<label class="col-sm-3 control-label">Cantidad de Muestra:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_no_can_muestra" id="txt_no_can_muestra" class="form-control monto-format" maxlength="10">
-								</div>
-							</div>
-							
-							<div class="header-form opc-center">	
-								<strong>Verificacion Fisica del Envase</strong>
-							</div>
-							
-							<div class="form-group"></div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Primario:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_primario" name="sel_no_primario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Técnicas:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_tecnicas" name="sel_no_tecnicas" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Cumple</option>
-										<option value="2">No Cumple</option>
-										<option value="3">No Aplica</option>
-									</select>
-								</div>
-							</div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Secundario:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_secundario" name="sel_no_secundario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Conformidad:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_conformidad" name="sel_no_conformidad" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Cumple</option>
-										<option value="2">No Cumple</option>
-										<option value="3">No Aplica</option>
-									</select>
-								</div>
-							</div>
-							
-						</form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_gra_no_alimentario">
-					<i class="fa fa-floppy-o"></i>
-					Grabar
-				</button>
-				
-				&nbsp; &nbsp;
-				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_no_alimentario">
 					<i class="fa fa-mail-forward"></i>
 					Cancelar
 				</button>

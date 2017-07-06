@@ -8,6 +8,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoIngresoBean;
 
 /**
  * @className: LogisticaDao.java
@@ -141,5 +142,33 @@ public interface LogisticaDao {
 	 * @throws Exception 
 	 */
 	public abstract OrdenIngresoBean grabarOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception;
+	
+	/**
+	 * @param idIngreso
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract OrdenIngresoBean obtenerRegistroOrdenIngreso(Integer idIngreso) throws Exception;
+	
+	/**
+	 * @param productoIngresoBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoIngresoBean> listarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception;
+
+	/**
+	 * @param productoIngresoBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ProductoIngresoBean grabarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception;
+	
+	/**
+	 * @param productoIngresoBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoIngresoBean eliminarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception;
 	
 }

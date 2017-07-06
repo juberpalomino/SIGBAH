@@ -151,7 +151,7 @@ public class DateUtil implements Serializable {
 	 */
 	public static Date obtenerFechaHoraParseada(String fecha) {
 		try {
-			if (fecha != null) {			
+			if (!Utils.isNullOrEmpty(fecha)) {			
 				SimpleDateFormat formatDate = new SimpleDateFormat(Constantes.FORMATO_FECHA);
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(formatDate.parse(fecha));

@@ -12,6 +12,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -171,6 +172,38 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public OrdenIngresoBean grabarOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
 		return logisticaDao.grabarOrdenIngreso(ordenIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroOrdenIngreso(java.lang.Integer)
+	 */
+	@Override
+	public OrdenIngresoBean obtenerRegistroOrdenIngreso(Integer idIngreso) throws Exception {
+		return logisticaDao.obtenerRegistroOrdenIngreso(idIngreso);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProductoIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public List<ProductoIngresoBean> listarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		return logisticaDao.listarProductoIngreso(productoIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarProductoIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public ProductoIngresoBean grabarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		return logisticaDao.grabarProductoIngreso(productoIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarProductoIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public ProductoIngresoBean eliminarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		return logisticaDao.eliminarProductoIngreso(productoIngresoBean);
 	}
 
 }

@@ -39,7 +39,7 @@ $(document).ready(function() {
 				codigoAnio : $('#sel_anio').val(),
 				codigoDdi : $('#sel_ddi').val(),
 				codigoAlmacen : $('#sel_almacen').val(),
-				codigoTipoMovimiento : $('#sel_tip_movimiento').val()
+				codigoMovimiento : $('#sel_tip_movimiento').val()
 			};
 			
 			loadding(true);
@@ -48,7 +48,7 @@ $(document).ready(function() {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					listarControlCalidad(respuesta);
+					listarOrdenIngreso(respuesta);
 				}
 				loadding(false);
 			});
@@ -69,8 +69,8 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idControlCalidad = listaOrdenIngresoCache[index].idControlCalidad;
-				codigo = codigo + idControlCalidad + '_';
+				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
+				codigo = codigo + idIngreso + '_';
 			}
 		});
 		
@@ -197,19 +197,19 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 
-		listarControlCalidad(new Object());		
+		listarOrdenIngreso(new Object());		
 		
 	}
 }
 
-function listarControlCalidad(respuesta) {
+function listarOrdenIngreso(respuesta) {
 
 	tbl_mnt_ord_ingreso.dataTable().fnDestroy();
 	
 	tbl_mnt_ord_ingreso.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idControlCalidad',
+			data : 'idIngreso',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -227,11 +227,11 @@ function listarControlCalidad(respuesta) {
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroControlCalidad'
+			data : 'nroOrdenIngreso'
 		}, {
 			data : 'fechaEmision'
 		}, {
-			data : 'tipoControlCalidad'
+			data : 'nombreMovimiento'
 		}, {
 			data : 'nombreEstado'
 		} ],
@@ -246,7 +246,11 @@ function listarControlCalidad(respuesta) {
 		aLengthMenu : [
 			[15, 50, 100],
 			[15, 50, 100]
-		]
+		],
+		columnDefs : [
+  			{ width : '15%', targets : 2 },
+  			{ width : '15%', targets : 3 }
+  		]
 	});
 	
 	listaOrdenIngresoCache = respuesta;

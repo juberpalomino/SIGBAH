@@ -248,7 +248,7 @@ function listarControlCalidad(respuesta) {
 		columnDefs : [
 			{ width : '15%', targets : 2 },
 			{ width : '15%', targets : 3 }
-		],
+		]
 	});
 	
 	listaControlCalidadCache = respuesta;

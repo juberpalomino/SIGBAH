@@ -62,6 +62,7 @@
 									<label class="col-sm-2 control-label">Almacén:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_almacen" name="sel_almacen" class="form-control">
+											<option value="">Todos</option>
 											<c:forEach items="${lista_almacen}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -73,6 +74,7 @@
 									<label class="col-sm-2 control-label">Tipo Movimiento:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
+											<option value="">Todos</option>
 											<c:forEach items="${lista_tipo_movimiento}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>

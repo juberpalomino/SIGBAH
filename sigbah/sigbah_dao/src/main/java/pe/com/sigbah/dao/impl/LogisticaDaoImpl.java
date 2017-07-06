@@ -31,6 +31,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -41,8 +42,10 @@ import pe.com.sigbah.mapper.ControlCalidadMapper;
 import pe.com.sigbah.mapper.DetalleProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoControlCalidadMapper;
 import pe.com.sigbah.mapper.NroControlCalidadMapper;
+import pe.com.sigbah.mapper.OrdenIngresoMapper;
 import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
+import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
 
 /**
  * @className: LogisticaDaoImpl.java
@@ -824,7 +827,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
 			input_objParametros.addValue("pi_COD_ANIO", ordenIngresoBean.getCodigoAnio(), Types.VARCHAR);
 			input_objParametros.addValue("pi_IDE_DDI", ordenIngresoBean.getCodigoDdi(), Types.VARCHAR);
-			input_objParametros.addValue("pi_IDE_ALMACEN", Utils.getParam(ordenIngresoBean.getIdAlmacen()), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", Utils.getParam(ordenIngresoBean.getCodigoAlmacen()), Types.VARCHAR);
 			input_objParametros.addValue("pi_IDE_TIP_MOVIMIENTO", Utils.getParam(ordenIngresoBean.getCodigoMovimiento()), Types.VARCHAR);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -840,7 +843,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_IDE_TIP_MOVIMIENTO", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
-			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ControlCalidadMapper()));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new OrdenIngresoMapper()));
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
@@ -1022,7 +1025,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_TIPO_INGRESO", new SqlParameter("pi_TIPO_INGRESO", Types.VARCHAR));
 			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
 			output_objParametros.put("pi_USU_MODIFICA", new SqlParameter("pi_USU_MODIFICA", Types.VARCHAR));
-			output_objParametros.put("pi_SEQ_BAH_M_INGRESO", new SqlOutParameter("pi_SEQ_BAH_M_INGRESO", Types.NUMERIC));
+			output_objParametros.put("po_SEQ_BAH_M_INGRESO", new SqlOutParameter("po_SEQ_BAH_M_INGRESO", Types.NUMERIC));
 			output_objParametros.put("po_NRO_ORDEN_INGRESO", new SqlOutParameter("po_NRO_ORDEN_INGRESO", Types.VARCHAR));
 			output_objParametros.put("po_COD_ORDEN_INGRESO", new SqlOutParameter("po_COD_ORDEN_INGRESO", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
@@ -1039,7 +1042,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
     			throw new Exception();
     		}
 		
-			registroOrdenIngreso.setIdIngreso(((BigDecimal) out.get("pi_SEQ_BAH_M_INGRESO")).intValue());
+			registroOrdenIngreso.setIdIngreso(((BigDecimal) out.get("po_SEQ_BAH_M_INGRESO")).intValue());
 			registroOrdenIngreso.setNroOrdenIngreso((String) out.get("po_NRO_ORDEN_INGRESO"));
 			registroOrdenIngreso.setCodigoOrdenIngreso((String) out.get("po_COD_ORDEN_INGRESO"));
 			registroOrdenIngreso.setCodigoRespuesta(codigoRespuesta);
@@ -1051,6 +1054,83 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[grabarOrdenIngreso] Fin ");
 		return registroOrdenIngreso;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroOrdenIngreso(java.lang.Integer)
+	 */
+	@Override
+	public OrdenIngresoBean obtenerRegistroOrdenIngreso(Integer idIngreso) throws Exception {
+		LOGGER.info("[obtenerRegistroOrdenIngreso] Inicio ");
+		OrdenIngresoBean ordenIngreso = new OrdenIngresoBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_ORDEN_INGRESO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_INGRESO", new SqlParameter("pi_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new RegistroOrdenIngresoMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[obtenerRegistroOrdenIngreso] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_ORDEN_INGRESO");
+    			throw new Exception();
+    		}
+			
+			List<OrdenIngresoBean> lista = (List<OrdenIngresoBean>) out.get("po_Lr_Recordset");
+			if (!Utils.isEmpty(lista)) {
+				ordenIngreso = lista.get(0);
+			}
+			
+			ordenIngreso.setCodigoRespuesta(codigoRespuesta);
+			ordenIngreso.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerRegistroOrdenIngreso] Fin ");
+		return ordenIngreso;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductoIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public List<ProductoIngresoBean> listarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProductoIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public ProductoIngresoBean grabarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarProductoIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public ProductoIngresoBean eliminarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

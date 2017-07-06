@@ -80,7 +80,7 @@ public class OrdenIngresoController extends BaseController {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	        	
-        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
+        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.ONE_INT)));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
@@ -127,10 +127,18 @@ public class OrdenIngresoController extends BaseController {
         	
         	if (!isNullInteger(codigo)) {
         		
-//        		ordenIngreso = logisticaService.obtenerRegistroControlCalidad(codigo);
+        		ordenIngreso = logisticaService.obtenerRegistroOrdenIngreso(codigo);
         		
-//        		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
-        		
+        		if (!isNullInteger(ordenIngreso.getIdMedioTransporte())) {
+        			ItemBean item = new ItemBean();
+        			item.setIcodigo(usuarioBean.getIdDdi());
+        			item.setIcodigoParam2(ordenIngreso.getIdMedioTransporte());
+        			model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(item));
+        		}        		
+        		if (!isNullInteger(ordenIngreso.getIdEmpresaTransporte())) {
+        			model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(ordenIngreso.getIdEmpresaTransporte())));
+        		}
+
         	} else {
 
         		StringBuilder correlativo = new StringBuilder();
@@ -174,7 +182,7 @@ public class OrdenIngresoController extends BaseController {
         	
         	model.addAttribute("ordenIngreso", getParserObject(ordenIngreso));
         	
-        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
+        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.ONE_INT)));
 
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	
@@ -194,7 +202,7 @@ public class OrdenIngresoController extends BaseController {
         	
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
      
-        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(usuarioBean.getIdDdi())));
+        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.THREE_INT)));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             

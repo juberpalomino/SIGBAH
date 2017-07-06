@@ -134,7 +134,7 @@
 														<div class="col-sm-7 smart-form">
 															<section>														
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="2" id="txt_det_ord_compra" class="form-control custom-scroll" disabled></textarea> 
+																	<textarea rows="2" id="txt_det_ord_compra" class="form-control custom-scroll mod-readonly" disabled></textarea> 
 																</label>
 															</section>
 														</div>
