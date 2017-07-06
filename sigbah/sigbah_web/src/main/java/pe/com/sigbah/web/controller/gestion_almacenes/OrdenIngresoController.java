@@ -31,9 +31,10 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoBean;
-import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.ExportarArchivo;
@@ -275,15 +276,19 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarProductoOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarLoteProducto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoControlCalidadBean> lista = null;
+	public Object listarLoteProducto(HttpServletRequest request, HttpServletResponse response) {
+		List<LoteProductoBean> lista = null;
 		try {			
-			ProductoControlCalidadBean producto = new ProductoControlCalidadBean();			
+			LoteProductoBean lote = new LoteProductoBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(producto, request.getParameterMap());			
-			lista = logisticaService.listarProductoControlCalidad(producto);
+			BeanUtils.populate(lote, request.getParameterMap());
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	lote.setIdDdi(usuarioBean.getIdDdi());
+        	lote.setIdAlmacen(usuarioBean.getIdAlmacen());
+			lista = logisticaService.listarLoteProductos(lote);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -296,12 +301,33 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarProductoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarProductoOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarProductoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		ProductoControlCalidadBean producto = null;
+	public Object listarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoIngresoBean> lista = null;
 		try {			
-			ProductoControlCalidadBean productoControlCalidadBean = new ProductoControlCalidadBean();
+			ProductoIngresoBean producto = new ProductoIngresoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(producto, request.getParameterMap());			
+			lista = logisticaService.listarProductoIngreso(producto);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarProductoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
+		ProductoIngresoBean producto = null;
+		try {			
+			ProductoIngresoBean productoIngresoBean = new ProductoIngresoBean();
 
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);			
@@ -311,14 +337,14 @@ public class OrdenIngresoController extends BaseController {
 			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
 			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(productoControlCalidadBean, request.getParameterMap());
+			beanUtilsBean.populate(productoIngresoBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	productoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	productoIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-			producto = logisticaService.grabarProductoControlCalidad(productoControlCalidadBean);
+			producto = logisticaService.grabarProductoIngreso(productoIngresoBean);
 			
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -334,21 +360,21 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarProductoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarProductoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object eliminarProductoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		ProductoControlCalidadBean producto = null;
+	public Object eliminarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
+		ProductoIngresoBean producto = null;
 		try {			
 			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleControlCalidad").split(Constantes.UNDERLINE);
 			for (String codigo : arrIdDetalleControlCalidad) {				
-				ProductoControlCalidadBean productoControlCalidadBean = new ProductoControlCalidadBean(getInteger(codigo));
+				ProductoIngresoBean productoControlCalidadBean = new ProductoIngresoBean(getInteger(codigo));
 
 				// Retorno los datos de session
 	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 	        	
 	        	productoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-				producto = logisticaService.eliminarProductoControlCalidad(productoControlCalidadBean);				
+				producto = logisticaService.eliminarProductoIngreso(productoControlCalidadBean);				
 			}
 
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -457,13 +483,13 @@ public class OrdenIngresoController extends BaseController {
 								@PathVariable("codigoAlmacen") String codigoAlmacen, 
 								HttpServletResponse response) {
 	    try {
-	    	ControlCalidadBean controlCalidadBean = new ControlCalidadBean();
-			controlCalidadBean.setCodigoAnio(verificaParametro(codigoAnio));
-			controlCalidadBean.setCodigoDdi(verificaParametro(codigoDdi));
-			controlCalidadBean.setCodigoAlmacen(verificaParametro(codigoAlmacen));
-			List<ControlCalidadBean> lista = logisticaService.listarControlCalidad(controlCalidadBean);
+	    	OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();
+	    	ordenIngresoBean.setCodigoAnio(verificaParametro(codigoAnio));
+	    	ordenIngresoBean.setCodigoDdi(verificaParametro(codigoDdi));
+	    	ordenIngresoBean.setCodigoAlmacen(verificaParametro(codigoAlmacen));
+			List<OrdenIngresoBean> lista = logisticaService.listarOrdenIngreso(ordenIngresoBean);
 	    	
-			String file_name = "Reporte_Control_Calidad";
+			String file_name = "OrdenIngreso";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
 			
 			response.resetBuffer();
@@ -476,7 +502,7 @@ public class OrdenIngresoController extends BaseController {
 			response.setDateHeader("Expires", 1);
             
 		    Reporteador rep = new Reporteador();
-		    HSSFWorkbook wb = rep.generaReporteExcelControlCalidad(lista);
+		    HSSFWorkbook wb = rep.generaReporteExcelOrdenIngreso(lista);
 	    	
 		    // Captured backflow
 	    	OutputStream out = response.getOutputStream();

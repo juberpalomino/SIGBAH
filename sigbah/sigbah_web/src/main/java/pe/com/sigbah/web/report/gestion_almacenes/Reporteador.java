@@ -15,6 +15,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.util.DateUtil;
 
 /**
@@ -153,6 +154,15 @@ public class Reporteador implements Serializable {
 			 LOGGER.error(e);
 		 }
 		 return hssfColor;
+	}
+
+	/**
+	 * @param lista
+	 * @return
+	 */
+	public HSSFWorkbook generaReporteExcelOrdenIngreso(List<OrdenIngresoBean> lista) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
     

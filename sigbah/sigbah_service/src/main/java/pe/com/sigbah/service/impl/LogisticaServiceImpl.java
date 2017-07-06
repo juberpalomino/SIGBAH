@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
+import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
@@ -204,6 +205,14 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public ProductoIngresoBean eliminarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
 		return logisticaDao.eliminarProductoIngreso(productoIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarLoteProductos(pe.com.sigbah.common.bean.LoteProductoBean)
+	 */
+	@Override
+	public List<LoteProductoBean> listarLoteProductos(LoteProductoBean loteProductoBean) throws Exception {
+		return logisticaDao.listarLoteProductos(loteProductoBean);
 	}
 
 }

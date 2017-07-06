@@ -452,15 +452,15 @@
 											<h2>Detalle de Productos</h2>
 											
 											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_ali_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_pro_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Nuevo">
 													<i class="fa fa-file-o"></i>
 												</a>
-												<a href="#" id="href_ali_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_pro_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Editar">
 													<i class="fa fa-edit"></i>
 												</a>
-												<a href="#" id="href_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_pro_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Eliminar">
 													<i class="fa fa-trash-o"></i>
 												</a>
@@ -639,8 +639,14 @@
 						
 							<div id="div_pro_det_productos" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 smart-form form-group">
-									<select id="sel_producto" name="sel_producto" class="select2 form-control">
+								<div class="col-sm-5 form-group">
+									<select id="sel_producto" name="sel_producto" class="form-control">
+									</select>
+								</div>
+								
+								<label class="col-sm-2 control-label">Lote:</label>
+								<div class="col-sm-2 form-group">
+									<select id="sel_lote" name="sel_lote" class="form-control">
 									</select>
 								</div>
 							</div>
@@ -648,13 +654,18 @@
 							<div class="row">&nbsp;</div>
 
 							<div class="row">
-								<label class="col-sm-3 control-label">Unidad Medida:</label>
-								<div class="col-sm-3 form-group">
+								<label class="col-sm-2 control-label">Unidad Medida:</label>
+								<div class="col-sm-2 form-group">
 									<input type="text" id="txt_uni_medida" class="form-control" disabled>
 								</div>
+								
+								<label class="col-sm-2 control-label">Envase:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" id="txt_envase" class="form-control" disabled>
+								</div>
 
-								<label class="col-sm-3 control-label">Fecha Vencimiento:</label>
-								<div class="col-sm-3 smart-form form-group">
+								<label class="col-sm-2 control-label">Fecha Vencimiento:</label>
+								<div class="col-sm-2 smart-form form-group">
 									<label class="input"> 
 										<i class="icon-append fa fa-calendar"></i>
 										<input type="text" name="txt_fec_vencimiento" id="txt_fec_vencimiento" class="datepicker" readonly>
@@ -663,95 +674,35 @@
 							</div>
 							
 							<div class="row">
-								<label class="col-sm-3 control-label">Cantidad de Lote:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_can_lote" id="txt_can_lote" class="form-control monto-format" maxlength="10">
+								<label class="col-sm-2 control-label">Cantidad:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_cantidad" id="txt_cantidad" class="form-control monto-format" maxlength="10">
 								</div>
 
-								<label class="col-sm-3 control-label">Cantidad de Muestra:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_can_muestra" id="txt_can_muestra" class="form-control monto-format" maxlength="10">
-								</div>
-							</div>
-							
-							<div class="header-form opc-center">	
-								<strong>Verificacion Fisica del Envase</strong>
-							</div>
-							
-							<div class="form-group"></div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Primario:</label>
+								<label class="col-sm-2 control-label">Precio Unitario (S/.):</label>
 								<div class="col-sm-2 form-group">
-									<select id="sel_primario" name="sel_primario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
+									<input type="text" name="txt_pre_unitario" id="txt_pre_unitario" class="form-control monto-format" maxlength="10">
 								</div>
 								
-								<label class="col-sm-2 control-label">Olor:</label>
+								<label class="col-sm-2 control-label">Importe Total (S/.):</label>
 								<div class="col-sm-2 form-group">
-									<select id="sel_olor" name="sel_olor" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Textura:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_textura" name="sel_textura" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
+									<input type="text" name="txt_imp_total" id="txt_imp_total" class="form-control" disabled>
 								</div>
 							</div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Secundario:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_secundario" name="sel_secundario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Color:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_color" name="sel_color" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Sabor:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_sabor" name="sel_sabor" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-							</div>
-							
 						</form>
 					</div>
 				</div>
 			</div>
 			
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_gra_alimentario">
+				<button type="button" class="btn btn-primary" id="btn_gra_producto">
 					<i class="fa fa-floppy-o"></i>
 					Grabar
 				</button>
 				
 				&nbsp; &nbsp;
 				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_alimentario">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_producto">
 					<i class="fa fa-mail-forward"></i>
 					Cancelar
 				</button>

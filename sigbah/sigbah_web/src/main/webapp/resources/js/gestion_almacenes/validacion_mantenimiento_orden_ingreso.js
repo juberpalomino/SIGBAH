@@ -150,55 +150,6 @@ $(document).ready(function() {
 						message : 'Debe ingresar Cantidad de Lote.'
 					}
 				}
-			},
-			txt_can_muestra : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Muestra.'
-					}
-				}
-			},
-			sel_primario : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Primario.'
-					}
-				}
-			},
-			sel_olor : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Olor.'
-					}
-				}
-			},
-			sel_textura : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Textura.'
-					}
-				}
-			},
-			sel_secundario : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Secundario.'
-					}
-				}
-			},
-			sel_color : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Color.'
-					}
-				}
-			},
-			sel_sabor : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Sabor.'
-					}
-				}
 			}
 		}
 	});
