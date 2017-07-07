@@ -362,7 +362,7 @@
 													
 														<label class="col-sm-3 control-label">N° de Placa:</label>
 														<div class="col-sm-3 form-group">
-															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control" maxlength="10">
+															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control upperValue" maxlength="10">
 														</div>
 													</div>
 								
@@ -477,18 +477,14 @@
 													<thead>			                
 														<tr>
 															<th></th>
+															<th>Nº</th>
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
 															<th>Lote</th>
+															<th>Cantidad</th>
+															<th>Precio Unitario</th>
+															<th>Valor Total</th>
 															<th>Fecha Vencimiento</th>
-															<th>Cantidad de Lote</th>
-															<th>Cantidad para la Muestra</th>
-															<th>Envase Primario</th>
-															<th>Envase Secundario</th>
-															<th>Olor</th>
-															<th>Color</th>
-															<th>Textura</th>
-															<th>Sabor</th>
 														</tr>
 													</thead>
 												</table>
@@ -550,6 +546,7 @@
 													<thead>			                
 														<tr>
 															<th></th>
+															<th>Nº</th>
 															<th>Tipo Documento</th>
 															<th>Nro Documento</th>
 															<th>Fecha</th>
@@ -735,6 +732,7 @@
 								<label class="col-sm-3 control-label">Tipo Documento:</label>
 								<div class="col-sm-8">
 									<select id="sel_tip_producto" name="sel_tip_producto" class="form-control">
+										<option value="">Seleccione</option>
 										<c:forEach items="${lista_tipo_documento}" var="item">
 											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
@@ -745,7 +743,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">N° Documento:</label>
 								<div class="col-sm-4">
-									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control" maxlength="18">
+									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control upperValue" maxlength="18">
 								</div>								
 							</div>										
 

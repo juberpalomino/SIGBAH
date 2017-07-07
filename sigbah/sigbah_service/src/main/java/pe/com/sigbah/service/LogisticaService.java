@@ -5,6 +5,7 @@ import java.util.List;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
+import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
@@ -178,5 +179,26 @@ public interface LogisticaService {
 	 * @throws Exception
 	 */
 	public abstract List<LoteProductoBean> listarLoteProductos(LoteProductoBean loteProductoBean) throws Exception;
+
+	/**
+	 * @param documentoIngresoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<DocumentoIngresoBean> listarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception;
+
+	/**
+	 * @param documentoIngresoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract DocumentoIngresoBean grabarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception;
+
+	/**
+	 * @param documentoIngresoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract DocumentoIngresoBean eliminarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception;
 	
 }

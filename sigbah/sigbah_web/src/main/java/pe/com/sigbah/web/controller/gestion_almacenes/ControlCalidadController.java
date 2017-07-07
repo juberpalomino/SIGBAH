@@ -433,12 +433,13 @@ public class ControlCalidadController extends BaseController {
 		DocumentoControlCalidadBean documento = null;
 		try {			
 			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDocumentoControlCalidad").split(Constantes.UNDERLINE);
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
 			for (String codigo : arrIdDetalleControlCalidad) {				
 				DocumentoControlCalidadBean documentoControlCalidadBean = new DocumentoControlCalidadBean(getInteger(codigo));
 
-				// Retorno los datos de session
-	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-	        	
 	        	documentoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
 	        	documento = logisticaService.eliminarDocumentoControlCalidad(documentoControlCalidadBean);				

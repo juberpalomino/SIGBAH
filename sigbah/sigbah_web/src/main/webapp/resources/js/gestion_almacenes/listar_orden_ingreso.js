@@ -118,10 +118,12 @@ $(document).ready(function() {
 		var codigoAnio = $('#sel_anio').val();
 		var codigoDdi = $('#sel_ddi').val();
 		var codigoAlmacen = $('#sel_almacen').val();
+		var codigoMovimiento = $('#sel_tip_movimiento').val();
 		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
 		url += verificaParametro(codigoDdi) + '/';
-		url += verificaParametro(codigoAlmacen);
+		url += verificaParametro(codigoAlmacen) + '/';
+		url += verificaParametro(codigoMovimiento);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	

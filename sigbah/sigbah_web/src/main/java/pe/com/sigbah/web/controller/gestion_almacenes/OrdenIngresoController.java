@@ -29,7 +29,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
-import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
+import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
@@ -365,7 +365,7 @@ public class OrdenIngresoController extends BaseController {
 	public Object eliminarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
 		ProductoIngresoBean producto = null;
 		try {			
-			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleControlCalidad").split(Constantes.UNDERLINE);
+			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleIngreso").split(Constantes.UNDERLINE);
 			for (String codigo : arrIdDetalleControlCalidad) {				
 				ProductoIngresoBean productoControlCalidadBean = new ProductoIngresoBean(getInteger(codigo));
 
@@ -391,15 +391,15 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarDocumentoControlCalidad", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarDocumentoOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarDocumentoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		List<DocumentoControlCalidadBean> lista = null;
+	public Object listarDocumentoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
+		List<DocumentoIngresoBean> lista = null;
 		try {			
-			DocumentoControlCalidadBean documento = new DocumentoControlCalidadBean();			
+			DocumentoIngresoBean documento = new DocumentoIngresoBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documento, request.getParameterMap());			
-			lista = logisticaService.listarDocumentoControlCalidad(documento);
+			lista = logisticaService.listarDocumentoIngreso(documento);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -412,22 +412,22 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarDocumentoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarDocumentoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarDocumentoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoControlCalidadBean documento = null;
+	public Object grabarDocumentoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoIngresoBean documento = null;
 		try {			
-			DocumentoControlCalidadBean documentoControlCalidadBean = new DocumentoControlCalidadBean();
+			DocumentoIngresoBean documentoIngresoBean = new DocumentoIngresoBean();
 			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(documentoControlCalidadBean, request.getParameterMap());
+			BeanUtils.populate(documentoIngresoBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	documentoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	documentoIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-        	documento = logisticaService.grabarDocumentoControlCalidad(documentoControlCalidadBean);
+        	documento = logisticaService.grabarDocumentoIngreso(documentoIngresoBean);
 			
         	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -443,21 +443,22 @@ public class OrdenIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarDocumentoControlCalidad", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarDocumentoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object eliminarDocumentoControlCalidad(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoControlCalidadBean documento = null;
+	public Object eliminarDocumentoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoIngresoBean documento = null;
 		try {			
-			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDocumentoControlCalidad").split(Constantes.UNDERLINE);
-			for (String codigo : arrIdDetalleControlCalidad) {				
-				DocumentoControlCalidadBean documentoControlCalidadBean = new DocumentoControlCalidadBean(getInteger(codigo));
+			String[] arrIdDocumentoIngreso = request.getParameter("arrIdDocumentoIngreso").split(Constantes.UNDERLINE);
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+			for (String codigo : arrIdDocumentoIngreso) {				
+				DocumentoIngresoBean documentoIngresoBean = new DocumentoIngresoBean(getInteger(codigo));
 
-				// Retorno los datos de session
-	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-	        	
-	        	documentoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
+	        	documentoIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-	        	documento = logisticaService.eliminarDocumentoControlCalidad(documentoControlCalidadBean);				
+	        	documento = logisticaService.eliminarDocumentoIngreso(documentoIngresoBean);				
 			}
 
 			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -473,20 +474,23 @@ public class OrdenIngresoController extends BaseController {
 	 * @param codigoAnio 
 	 * @param codigoDdi 
 	 * @param codigoAlmacen
+	 * @param codigoMovimiento 
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoDdi}/{codigoAlmacen}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoDdi}/{codigoAlmacen}/{codigoMovimiento}", method = RequestMethod.GET)
 	@ResponseBody
 	public String exportarExcel(@PathVariable("codigoAnio") String codigoAnio, 
 								@PathVariable("codigoDdi") String codigoDdi, 
-								@PathVariable("codigoAlmacen") String codigoAlmacen, 
+								@PathVariable("codigoAlmacen") String codigoAlmacen,
+								@PathVariable("codigoMovimiento") String codigoMovimiento, 
 								HttpServletResponse response) {
 	    try {
 	    	OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();
 	    	ordenIngresoBean.setCodigoAnio(verificaParametro(codigoAnio));
 	    	ordenIngresoBean.setCodigoDdi(verificaParametro(codigoDdi));
 	    	ordenIngresoBean.setCodigoAlmacen(verificaParametro(codigoAlmacen));
+	    	ordenIngresoBean.setCodigoMovimiento(verificaParametro(codigoMovimiento));
 			List<OrdenIngresoBean> lista = logisticaService.listarOrdenIngreso(ordenIngresoBean);
 	    	
 			String file_name = "OrdenIngreso";

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
+import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
@@ -213,6 +214,30 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public List<LoteProductoBean> listarLoteProductos(LoteProductoBean loteProductoBean) throws Exception {
 		return logisticaDao.listarLoteProductos(loteProductoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDocumentoIngreso(pe.com.sigbah.common.bean.DocumentoIngresoBean)
+	 */
+	@Override
+	public List<DocumentoIngresoBean> listarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception {
+		return logisticaDao.listarDocumentoIngreso(documentoIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarDocumentoIngreso(pe.com.sigbah.common.bean.DocumentoIngresoBean)
+	 */
+	@Override
+	public DocumentoIngresoBean grabarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception {
+		return logisticaDao.grabarDocumentoIngreso(documentoIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarDocumentoIngreso(pe.com.sigbah.common.bean.DocumentoIngresoBean)
+	 */
+	@Override
+	public DocumentoIngresoBean eliminarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception {
+		return logisticaDao.eliminarDocumentoIngreso(documentoIngresoBean);
 	}
 
 }

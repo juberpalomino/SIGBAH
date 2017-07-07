@@ -918,7 +918,7 @@ function listarDetalleAlimentarios(respuesta) {
 			}
 		}, {	
 			data : 'idDetalleControlCalidad',
-			render : function(data, type, full, meta){
+			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
 			}
@@ -980,7 +980,7 @@ function listarDetalleNoAlimentarios(respuesta) {
 			}
 		}, {	
 			data : 'idDetalleControlCalidad',
-			render : function(data, type, full, meta){
+			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
 			}
