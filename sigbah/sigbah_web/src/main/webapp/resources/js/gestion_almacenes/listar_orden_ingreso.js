@@ -151,8 +151,8 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idControlCalidad = listaOrdenIngresoCache[index].idControlCalidad;
-				codigo = codigo + idControlCalidad + '_';
+				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
+				codigo = codigo + idIngreso + '_';
 			}
 		});
 		

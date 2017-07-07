@@ -542,11 +542,7 @@ public class OrdenIngresoController extends BaseController {
 			jasperFile.append(getPath(request));
 			jasperFile.append(File.separator);
 			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-			} else {
-				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-			}
+			jasperFile.append("Orden_Ingreso.jrxml");
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
@@ -555,22 +551,8 @@ public class OrdenIngresoController extends BaseController {
 			logo_indeci_path.append(getPath(request));
 			logo_indeci_path.append(File.separator);
 			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-			StringBuilder logo_wfp_path = new StringBuilder();
-			logo_wfp_path.append(getPath(request));
-			logo_wfp_path.append(File.separator);
-			logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-			parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-			StringBuilder logo_check_path = new StringBuilder();
-			logo_check_path.append(getPath(request));
-			logo_check_path.append(File.separator);
-			logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-			parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-			StringBuilder logo_check_min_path = new StringBuilder();
-			logo_check_min_path.append(getPath(request));
-			logo_check_min_path.append(File.separator);
-			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
+			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());
+		
 			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroControlCalidad());
 			parameters.put("P_DDI", producto.getNombreDdi());			
 			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
