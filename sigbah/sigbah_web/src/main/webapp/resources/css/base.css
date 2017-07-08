@@ -44,6 +44,21 @@
 	line-height: 34px;
 	letter-spacing: 0;
 }
+.header-modal-form {
+	webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 40px;	
+	color: #333;
+	border: 1px solid #C2C2C2;
+	background: #fafafa;
+	height: 34px;
+	display: inline-block;
+	font-size: 14px;
+	position: relative;
+	line-height: 34px;
+	letter-spacing: 0;
+}
 .label-bold {
 	font-weight: bold;
 }

@@ -250,7 +250,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio/1';
 		$(location).attr('href', url);
 		
 	});

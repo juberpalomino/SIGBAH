@@ -58,6 +58,8 @@ $(document).ready(function() {
 		var val_tip_control = $(this).val();		
 		if (!esnulo(val_tip_control)) {
 			
+			frm_dat_generales.data('bootstrapValidator').resetForm();
+			
 			cargarTipoControl(val_tip_control);
 			
 			$('#sel_ori_almacen').val('');
@@ -69,18 +71,12 @@ $(document).ready(function() {
 			$('#sel_chofer').val('');
 			$('#txt_nro_placa').val('');
 			
-			if (val_tip_control == '3' || // Ingreso por Transferencias de Almacén
-					val_tip_control == '6') { // Salidas por Transferencias a Almacén
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_almacen');
-			} else if (val_tip_control == '1' || // Ingreso por Compra de productos
-						val_tip_control == '5') { // Ingreso por Donación
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_representante');
-				
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-				frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
-			}
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_almacen');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
+			
 		}
 	});
 	
@@ -109,7 +105,7 @@ $(document).ready(function() {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					var options = '';
+					var options = '<option value="">Seleccione</option>';
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
 			        });
@@ -217,7 +213,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio';
+		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio/1';
 		$(location).attr('href', url);
 		
 	});
@@ -227,7 +223,6 @@ $(document).ready(function() {
 
 		$('#h4_tit_alimentarios').html('Nuevo Producto');
 		frm_det_alimentarios.trigger('reset');
-		$('#txt_fec_vencimiento').datepicker('setDate', new Date());
 		
 		$('#sel_producto').select2().trigger('change');
 		$('#sel_producto').select2({
@@ -411,7 +406,6 @@ $(document).ready(function() {
 
 		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
 		frm_det_no_alimentarios.trigger('reset');
-		$('#txt_no_fec_vencimiento').datepicker('setDate', new Date());
 		
 		$('#sel_no_producto').html('');
 		$('#sel_no_producto').select2().trigger('change');
@@ -588,7 +582,6 @@ $(document).ready(function() {
 		$('#h4_tit_no_alimentarios').html('Nuevo Documento');
 		$('#frm_det_documentos').trigger('reset');
 		
-		$('#txt_doc_fecha').datepicker('setDate', new Date());
 		$('#hid_cod_documento').val('');
 		$('#hid_cod_act_alfresco').val('');
 		$('#hid_cod_ind_alfresco').val('');
@@ -1145,48 +1138,36 @@ function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
 function cargarTipoControl(val_tip_control) {
 	if (val_tip_control == '1') { // Ingreso por Compra de productos
 		$('#sel_ori_almacen').prop('disabled', true);
-		$('#sel_ori_en_almacen').prop('disabled', false);
-		$('#sel_inspector').prop('disabled', false);
 		$('#sel_proveedor').prop('disabled', false);
 		$('#sel_emp_transporte').prop('disabled', false);
 		$('#sel_chofer').prop('disabled', false);
 		$('#txt_nro_placa').prop('disabled', false);
 	} else if (val_tip_control == '2') { // Control Interno
 		$('#sel_ori_almacen').prop('disabled', true);
-		$('#sel_ori_en_almacen').prop('disabled', false);
-		$('#sel_inspector').prop('disabled', false);
 		$('#sel_proveedor').prop('disabled', true);
 		$('#sel_emp_transporte').prop('disabled', true);
 		$('#sel_chofer').prop('disabled', true);
 		$('#txt_nro_placa').prop('disabled', true);
 	} else if (val_tip_control == '3') { // Ingreso por Transferencias de Almacén
 		$('#sel_ori_almacen').prop('disabled', false);
-		$('#sel_ori_en_almacen').prop('disabled', false);
-		$('#sel_inspector').prop('disabled', false);
 		$('#sel_proveedor').prop('disabled', true);
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#sel_chofer').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#sel_chofer').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
 	} else if (val_tip_control == '4') { // Salida de Productos por Emergencia
 		$('#sel_ori_almacen').prop('disabled', true);
-		$('#sel_ori_en_almacen').prop('disabled', false);
-		$('#sel_inspector').prop('disabled', false);
 		$('#sel_proveedor').prop('disabled', true);
 		$('#sel_emp_transporte').prop('disabled', true);
 		$('#sel_chofer').prop('disabled', true);
 		$('#txt_nro_placa').prop('disabled', true);
 	} else if (val_tip_control == '5') { // Ingreso por Donación
 		$('#sel_ori_almacen').prop('disabled', true);
-		$('#sel_ori_en_almacen').prop('disabled', false);
-		$('#sel_inspector').prop('disabled', false);
 		$('#sel_proveedor').prop('disabled', false);
 		$('#sel_emp_transporte').prop('disabled', false);
 		$('#sel_chofer').prop('disabled', false);
 		$('#txt_nro_placa').prop('disabled', false);
 	} else if (val_tip_control == '6') { // Salidas por Transferencias a Almacén
 		$('#sel_ori_almacen').prop('disabled', false);
-		$('#sel_ori_en_almacen').prop('disabled', false);
-		$('#sel_inspector').prop('disabled', false);
 		$('#sel_proveedor').prop('disabled', true);
 		$('#sel_emp_transporte').prop('disabled', true);
 		$('#sel_chofer').prop('disabled', true);

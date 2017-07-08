@@ -5,8 +5,6 @@ var frm_ord_ingreso = $('#frm_ord_ingreso');
 
 $(document).ready(function() {
 	
-	inicializarDatos();
-	
 	frm_ord_ingreso.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
@@ -56,6 +54,8 @@ $(document).ready(function() {
 		}
 		
 	});
+	
+	inicializarDatos();
 	
 	$('#href_editar').click(function(e) {
 		e.preventDefault();
@@ -198,9 +198,11 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-
-		listarOrdenIngreso(new Object());		
-		
+		if (indicador == '1') { // Retorno
+			$('#btn_buscar').click();
+		} else {
+			listarOrdenIngreso(new Object());		
+		}
 	}
 }
 
@@ -222,6 +224,12 @@ function listarOrdenIngreso(respuesta) {
 					return '';	
 				}											
 			}	
+		}, {	
+			data : 'idIngreso',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
 		}, {
 			data : 'codigoAnio'
 		}, {
@@ -250,8 +258,9 @@ function listarOrdenIngreso(respuesta) {
 			[15, 50, 100]
 		],
 		columnDefs : [
-  			{ width : '15%', targets : 2 },
-  			{ width : '15%', targets : 3 }
+  			{ width : '15%', targets : 3 },
+			{ width : '15%', targets : 4 },
+			{ width : '15%', targets : 7 }
   		]
 	});
 	

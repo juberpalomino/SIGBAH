@@ -4,9 +4,7 @@ var tbl_mnt_con_calidad = $('#tbl_mnt_con_calidad');
 var frm_con_calidad = $('#frm_con_calidad');
 
 $(document).ready(function() {
-	
-	inicializarDatos();
-	
+
 	frm_con_calidad.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
@@ -55,6 +53,8 @@ $(document).ready(function() {
 		}
 		
 	});
+	
+	inicializarDatos();
 	
 	$('#href_editar').click(function(e) {
 		e.preventDefault();
@@ -193,10 +193,12 @@ function inicializarDatos() {
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
-	} else {
-
-		listarControlCalidad(new Object());		
-		
+	} else {		
+		if (indicador == '1') { // Retorno
+			$('#btn_buscar').click();
+		} else {
+			listarControlCalidad(new Object());
+		}
 	}
 }
 
@@ -218,6 +220,12 @@ function listarControlCalidad(respuesta) {
 					return '';	
 				}											
 			}	
+		}, {	
+			data : 'idControlCalidad',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
 		}, {
 			data : 'codigoAnio'
 		}, {
@@ -246,12 +254,13 @@ function listarControlCalidad(respuesta) {
 			[15, 50, 100]
 		],
 		columnDefs : [
-			{ width : '15%', targets : 2 },
-			{ width : '15%', targets : 3 }
+			{ width : '15%', targets : 3 },
+			{ width : '15%', targets : 4 },
+			{ width : '15%', targets : 5 },
+			{ width : '18%', targets : 7 }
 		]
 	});
 	
 	listaControlCalidadCache = respuesta;
 
 }
-

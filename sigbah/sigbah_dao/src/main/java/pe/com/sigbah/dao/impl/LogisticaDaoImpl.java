@@ -264,7 +264,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("pi_CONCLUSIONES", controlCalidadBean.getConclusiones(), Types.VARCHAR);
 			input_objParametros.addValue("pi_RECOMENDACIONES", controlCalidadBean.getRecomendaciones(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FK_IDE_ALMACEN_OD", controlCalidadBean.getIdAlmacenOrigen(), Types.NUMERIC);
-			input_objParametros.addValue("pi_NRO_PLACA", controlCalidadBean.getNroPlaca(), Types.VARCHAR);
+			input_objParametros.addValue("pi_NRO_PLACA", StringUtils.upperCase(controlCalidadBean.getNroPlaca()), Types.VARCHAR);
 			input_objParametros.addValue("pi_NRO_ORDEN_COMPRA", controlCalidadBean.getNroOrdenCompra(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FK_IDE_ESTADO", controlCalidadBean.getIdEstado(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FLG_TIPO_BIEN", controlCalidadBean.getFlagTipoBien(), Types.VARCHAR);
@@ -354,7 +354,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("pi_CONCLUSIONES", controlCalidadBean.getConclusiones(), Types.VARCHAR);
 			input_objParametros.addValue("pi_RECOMENDACIONES", controlCalidadBean.getRecomendaciones(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FK_IDE_ALMACEN_OD", controlCalidadBean.getIdAlmacenOrigen(), Types.NUMERIC);
-			input_objParametros.addValue("pi_NRO_PLACA", controlCalidadBean.getNroPlaca(), Types.VARCHAR);
+			input_objParametros.addValue("pi_NRO_PLACA", StringUtils.upperCase(controlCalidadBean.getNroPlaca()), Types.VARCHAR);
 			input_objParametros.addValue("pi_NRO_ORDEN_COMPRA", controlCalidadBean.getNroOrdenCompra(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FK_IDE_ESTADO", controlCalidadBean.getIdEstado(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FLG_TIPO_BIEN", controlCalidadBean.getFlagTipoBien(), Types.VARCHAR);
@@ -685,7 +685,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("pi_IDE_TIP_DOCUMENTO", documentoControlCalidadBean.getIdDocumentoControlCalidad(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FK_IDE_CONTROL_CALIDAD", documentoControlCalidadBean.getIdControlCalidad(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FK_IDE_TIP_DOCUMENTO", documentoControlCalidadBean.getIdTipoDocumento(), Types.NUMERIC);
-			input_objParametros.addValue("pi_NRO_DOCUMENTO", documentoControlCalidadBean.getNroDocumento(), Types.VARCHAR);
+			input_objParametros.addValue("pi_NRO_DOCUMENTO", StringUtils.upperCase(documentoControlCalidadBean.getNroDocumento()), Types.VARCHAR);
 			input_objParametros.addValue("pi_FEC_DOCUMENTO", DateUtil.obtenerFechaHoraParseada(documentoControlCalidadBean.getFechaDocumento()), Types.DATE);
 	        input_objParametros.addValue("pi_COD_ALFRESCO", documentoControlCalidadBean.getCodigoArchivoAlfresco(), Types.VARCHAR);
 			input_objParametros.addValue("pi_NOM_ARCHIVO", documentoControlCalidadBean.getNombreArchivo(), Types.VARCHAR);			

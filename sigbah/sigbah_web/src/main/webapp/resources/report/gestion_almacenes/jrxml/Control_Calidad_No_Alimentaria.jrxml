@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Control_Calidad_No_Alimentaria" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2c82441b-1dc7-44dd-9279-7ba0678158be">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="503"/>
-	<property name="ireport.y" value="171"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="80"/>
+	<property name="ireport.y" value="30"/>
 	<parameter name="P_LOGO_INDECI" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -22,6 +22,8 @@
 	<parameter name="P_FECHA_EMISION" class="java.lang.String"/>
 	<parameter name="P_CONCLUSIONES" class="java.lang.String"/>
 	<parameter name="P_RECOMENDACIONES" class="java.lang.String"/>
+	<parameter name="P_ALMACEN_ORIGEN_DESTINO" class="java.lang.String"/>
+	<parameter name="P_TIPO_CONTROL" class="java.lang.String"/>
 	<field name="item" class="java.math.BigDecimal"/>
 	<field name="nombreProducto" class="java.lang.String"/>
 	<field name="cantidadLote" class="java.math.BigDecimal"/>
@@ -34,105 +36,158 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="197" splitType="Stretch">
+		<band height="237" splitType="Stretch">
 			<image>
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" x="0" y="0" width="135" height="40"/>
 				<imageExpression><![CDATA[$P{P_LOGO_INDECI}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="dd8755b8-4272-4c69-9be4-1ac14d377e5f" mode="Opaque" x="159" y="51" width="523" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="dd8755b8-4272-4c69-9be4-1ac14d377e5f" mode="Opaque" x="158" y="74" width="523" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[VERIFICACION FISICA DE BIENES DE AYUDA NO ALIMENTARIA]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="122" y="115" width="35" height="14"/>
-				<textElement textAlignment="Right">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[DDI :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="b95b10d6-a867-44d2-92fc-6a60b8e0324c" x="589" y="115" width="68" height="14"/>
-				<textElement textAlignment="Right">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[FECHA :]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="159" y="115" width="104" height="14" forecolor="#000000"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{P_DDI}]]></textFieldExpression>
-			</textField>
 			<image>
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" x="135" y="0" width="135" height="40"/>
 				<imageExpression><![CDATA[$P{P_LOGO_WFP}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="dd8755b8-4272-4c69-9be4-1ac14d377e5f" mode="Opaque" x="218" y="70" width="234" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="dd8755b8-4272-4c69-9be4-1ac14d377e5f" mode="Opaque" x="217" y="93" width="234" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Right">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CONTROL DE CALIDAD N° ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="9de16b4c-cd7d-4d16-95ed-0b3eb12d54d9" x="454" y="70" width="180" height="19"/>
+				<reportElement uuid="9de16b4c-cd7d-4d16-95ed-0b3eb12d54d9" x="453" y="93" width="180" height="19"/>
 				<textElement verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{P_NRO_CONTROL_CALIDAD}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="318" y="115" width="73" height="14"/>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="517" y="12" width="285" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sistema de Gestión de Ayuda Alimentaria SIGBAH v1.00]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="634" y="36" width="73" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA : ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="58534de9-a4b5-489b-a0ef-6c22e9565f6e" x="708" y="36" width="94" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement uuid="58534de9-a4b5-489b-a0ef-6c22e9565f6e" x="707" y="50" width="94" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="633" y="50" width="73" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORA : ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="33" y="134" width="104" height="14" forecolor="#000000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_DDI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="578" y="134" width="224" height="14" forecolor="#000000"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_TIPO_CONTROL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="0" y="175" width="132" height="14"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROVEEDOR :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="0" y="200" width="129" height="14"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° ORDEN DE COMPRA :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="0" y="134" width="32" height="14"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DDI :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="182" y="134" width="73" height="14"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ALMACEN : ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="393" y="115" width="146" height="14" forecolor="#000000"/>
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="130" y="200" width="280" height="14" forecolor="#000000"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{P_ALMACEN}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{P_NRO_ORDEN_COMPRA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="18" y="141" width="139" height="14"/>
+				<reportElement uuid="b95b10d6-a867-44d2-92fc-6a60b8e0324c" x="417" y="134" width="160" height="14"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[PROVEEDOR / DESTINO :]]></text>
+				<text><![CDATA[TIPO CONTROL DE CALIDAD :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="18" y="166" width="139" height="14"/>
-				<textElement textAlignment="Right">
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="0" y="154" width="152" height="14">
+					<printWhenExpression><![CDATA[!$P{P_ALMACEN_ORIGEN_DESTINO}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[N° ORDEN DE COMPRA :]]></text>
+				<text><![CDATA[ALMACEN ORIGEN DESTINO :]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="159" y="141" width="280" height="14" forecolor="#000000"/>
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="153" y="154" width="280" height="14" forecolor="#000000">
+					<printWhenExpression><![CDATA[!$P{P_ALMACEN_ORIGEN_DESTINO}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_ALMACEN_ORIGEN_DESTINO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="133" y="175" width="280" height="14" forecolor="#000000"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{P_PROVEEDOR}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="159" y="166" width="280" height="14" forecolor="#000000"/>
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="256" y="134" width="146" height="14" forecolor="#000000"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{P_NRO_ORDEN_COMPRA}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="659" y="115" width="105" height="14" forecolor="#000000"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{P_FECHA_EMISION}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{P_ALMACEN}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -574,35 +629,41 @@
 	</detail>
 	<columnFooter>
 		<band height="104">
-			<rectangle>
-				<reportElement uuid="102ce286-3844-4a37-8f99-fcdd782dde04" mode="Transparent" x="0" y="0" width="802" height="86"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</rectangle>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="18" y="12" width="315" height="14"/>
-				<textElement textAlignment="Left">
-					<font isBold="false"/>
-				</textElement>
-				<text><![CDATA[CONCLUSIONES]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="433" y="12" width="315" height="14"/>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="487" y="17" width="315" height="14"/>
 				<textElement textAlignment="Left">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[RECOMENDACIONES]]></text>
 			</staticText>
+			<rectangle>
+				<reportElement uuid="102ce286-3844-4a37-8f99-fcdd782dde04" mode="Transparent" x="0" y="34" width="315" height="46"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="0" y="17" width="315" height="14"/>
+				<textElement textAlignment="Left">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[CONCLUSIONES]]></text>
+			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="18" y="27" width="315" height="45" forecolor="#000000"/>
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="2" y="37" width="311" height="41" forecolor="#000000"/>
 				<textElement textAlignment="Justified">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{P_CONCLUSIONES}]]></textFieldExpression>
 			</textField>
+			<rectangle>
+				<reportElement uuid="102ce286-3844-4a37-8f99-fcdd782dde04" mode="Transparent" x="487" y="34" width="315" height="46"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="433" y="27" width="315" height="45" forecolor="#000000"/>
+				<reportElement uuid="0324f602-6035-4fd9-b52d-ff6af27fa4a8" x="489" y="37" width="311" height="41" forecolor="#000000"/>
 				<textElement textAlignment="Justified">
 					<font isBold="false"/>
 				</textElement>
@@ -611,36 +672,36 @@
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="74">
+		<band height="108">
 			<line>
-				<reportElement uuid="e5b736c1-9138-4add-86fd-88929f915daf" x="81" y="17" width="237" height="1"/>
+				<reportElement uuid="e5b736c1-9138-4add-86fd-88929f915daf" x="78" y="56" width="237" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="81" y="19" width="237" height="14"/>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="78" y="58" width="237" height="14"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[ENCARGADO]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="e5b736c1-9138-4add-86fd-88929f915daf" x="501" y="17" width="237" height="1"/>
+				<reportElement uuid="e5b736c1-9138-4add-86fd-88929f915daf" x="498" y="56" width="237" height="1"/>
 			</line>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="501" y="19" width="237" height="14"/>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="498" y="58" width="237" height="14"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSABLE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="81" y="33" width="237" height="14"/>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="78" y="72" width="237" height="14"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[ALMACEN NACIONAL GENERAL INDECI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="501" y="33" width="237" height="14"/>
+				<reportElement uuid="f254e6b1-0fb4-4f89-8154-2f139d06a141" x="498" y="72" width="237" height="14"/>
 				<textElement textAlignment="Center">
 					<font isBold="false"/>
 				</textElement>

@@ -63,11 +63,12 @@ public class OrdenIngresoController extends BaseController {
 	private GeneralService generalService;
 	
 	/**
+	 * @param indicador 
 	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
-    public String inicio(Model model) {
+	@RequestMapping(value = "/inicio/{indicador}", method = RequestMethod.GET)
+    public String inicio(@PathVariable("indicador") String indicador, Model model) {
         try {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
@@ -83,6 +84,7 @@ public class OrdenIngresoController extends BaseController {
         	        	
         	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.ONE_INT)));
         	
+        	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {

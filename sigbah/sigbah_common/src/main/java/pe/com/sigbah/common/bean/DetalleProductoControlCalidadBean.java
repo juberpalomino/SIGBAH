@@ -34,6 +34,7 @@ public class DetalleProductoControlCalidadBean implements Serializable {
 	private String flagConforProducto;
 	private String flagEspecTecnicas;
 	private String flagTipoProducto;
+	private String tipoControlCalidad;
 	
 	
 	/**
@@ -299,6 +300,18 @@ public class DetalleProductoControlCalidadBean implements Serializable {
 	 */
 	public void setFlagTipoProducto(String flagTipoProducto) {
 		this.flagTipoProducto = flagTipoProducto;
+	}
+	/**
+	 * @return the tipoControlCalidad
+	 */
+	public String getTipoControlCalidad() {
+		return tipoControlCalidad;
+	}
+	/**
+	 * @param tipoControlCalidad the tipoControlCalidad to set
+	 */
+	public void setTipoControlCalidad(String tipoControlCalidad) {
+		this.tipoControlCalidad = tipoControlCalidad;
 	}	
 	
 }

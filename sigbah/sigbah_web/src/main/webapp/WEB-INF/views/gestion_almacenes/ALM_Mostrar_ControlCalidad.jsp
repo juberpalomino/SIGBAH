@@ -123,8 +123,8 @@
 													
 													<div class="row">
 														<label class="col-sm-2 control-label">Nº Orden Compra:</label>
-														<div class="col-sm-3 smart-form form-group">
-															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="select2 form-control">
+														<div class="col-sm-3 form-group">
+															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control">
 																<c:forEach items="${lista_orden_compra}" var="item">
 																    <option value="${item.nroOrdenCompra}_${item.concepto}">${item.nroOrdenCompra}</option>
 																</c:forEach>
@@ -144,7 +144,38 @@
 														<label class="col-sm-2 control-label">Tipo de Control:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_tip_control" name="sel_tip_control" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_tipo_control}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+													
+													<div class="row">
+														<div class="col-sm-12 header-form">	
+															<strong>Reponsables</strong>
+														</div>
+													</div>
+													
+													<div class="row"><div class="col-sm-12">&nbsp;</div></div>
+													
+													<div class="row">
+														<label class="col-sm-3 control-label">Encargado de Almacén:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_personal}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
+														
+														<label class="col-sm-3 control-label">Inspector:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_inspector" name="sel_inspector" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
@@ -163,7 +194,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos del Origen / Destino - Reponsables</h2>
+												<h2>Datos del Origen / Destino</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -177,28 +208,6 @@
 														<div class="col-sm-3 form-group">
 															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control">
 																<c:forEach items="${lista_almacen}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
-														</div>
-														
-														<label class="col-sm-3 control-label">Encargado de Almacén:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
-																<c:forEach items="${lista_personal}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
-														</div>
-													</div>
-													
-													<div class="row">
-														<div class="col-sm-6 form-group"></div>
-														
-														<label class="col-sm-3 control-label">Inspector:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_inspector" name="sel_inspector" class="form-control">
-																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
@@ -230,6 +239,7 @@
 														<label class="col-sm-3 control-label">Proveedor:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_proveedor" name="sel_proveedor" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_proveedor}" var="item">
 																	<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
 																</c:forEach>
@@ -277,6 +287,7 @@
 														<label class="col-sm-3 control-label">Chofer:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_chofer" name="sel_chofer" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_chofer}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -287,7 +298,7 @@
 													<div class="row">
 														<label class="col-sm-3 control-label">N° de Placa:</label>
 														<div class="col-sm-2 form-group">
-															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control" maxlength="10">
+															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control upperValue" maxlength="10">
 														</div>
 													</div>
 								
@@ -635,8 +646,8 @@
 						
 							<div id="div_pro_det_alimentarios" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 smart-form form-group">
-									<select id="sel_producto" name="sel_producto" class="select2 form-control ">
+								<div class="col-sm-5 form-group">
+									<select id="sel_producto" name="sel_producto" class="form-control ">
 										<c:forEach items="${lista_producto}" var="item">
 											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
 										</c:forEach>
@@ -673,8 +684,13 @@
 								</div>
 							</div>
 							
-							<div class="header-form opc-center">	
-								<strong>Verificacion Fisica del Envase</strong>
+							<div class="row">
+								<div class="col-sm-4 header-modal-form opc-center">
+									<strong>Verificacion Fisica del Envase</strong>
+								</div>
+								<div class="col-sm-8 header-modal-form opc-center">
+									<strong>Verificación Física del Producto</strong>
+								</div>
 							</div>
 							
 							<div class="form-group"></div>
@@ -686,6 +702,7 @@
 										<option value="">Seleccione</option>
 										<option value="1">Bueno</option>
 										<option value="2">Malo</option>
+										<option value="3">No Aplica</option>
 									</select>
 								</div>
 								
@@ -715,6 +732,7 @@
 										<option value="">Seleccione</option>
 										<option value="1">Bueno</option>
 										<option value="2">Malo</option>
+										<option value="3">No Aplica</option>
 									</select>
 								</div>
 								
@@ -791,8 +809,8 @@
 						
 							<div id="div_pro_det_no_alimentarios" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-6 smart-form form-group">
-									<select id="sel_no_producto" name="sel_no_producto" class="select2 form-control">
+								<div class="col-sm-6 form-group">
+									<select id="sel_no_producto" name="sel_no_producto" class="form-control">
 									</select>
 								</div>
 							</div>
@@ -826,8 +844,13 @@
 								</div>
 							</div>
 							
-							<div class="header-form opc-center">	
-								<strong>Verificacion Fisica del Envase</strong>
+							<div class="row">
+								<div class="col-sm-4 header-modal-form opc-center">
+									<strong>Verificacion Fisica del Envase</strong>
+								</div>
+								<div class="col-sm-8 header-modal-form opc-center">
+									<strong>Verificación Física del Producto</strong>
+								</div>
 							</div>
 							
 							<div class="form-group"></div>
@@ -839,6 +862,7 @@
 										<option value="">Seleccione</option>
 										<option value="1">Bueno</option>
 										<option value="2">Malo</option>
+										<option value="3">No Aplica</option>
 									</select>
 								</div>
 								
@@ -860,6 +884,7 @@
 										<option value="">Seleccione</option>
 										<option value="1">Bueno</option>
 										<option value="2">Malo</option>
+										<option value="3">No Aplica</option>
 									</select>
 								</div>
 								
@@ -920,6 +945,7 @@
 								<label class="col-sm-3 control-label">Tipo Documento:</label>
 								<div class="col-sm-8">
 									<select id="sel_tip_producto" name="sel_tip_producto" class="form-control">
+										<option value="">Seleccione</option>
 										<c:forEach items="${lista_tipo_documento}" var="item">
 											<option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
@@ -930,7 +956,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">N° Documento:</label>
 								<div class="col-sm-4">
-									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control" maxlength="18">
+									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control upperValue" maxlength="18">
 								</div>								
 							</div>										
 

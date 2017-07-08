@@ -61,11 +61,12 @@ public class ControlCalidadController extends BaseController {
 	private GeneralService generalService;
 	
 	/**
+	 * @param indicador 
 	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
-    public String inicio(Model model) {
+	@RequestMapping(value = "/inicio/{indicador}", method = RequestMethod.GET)
+    public String inicio(@PathVariable("indicador") String indicador, Model model) {
         try {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
@@ -79,6 +80,7 @@ public class ControlCalidadController extends BaseController {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	
+        	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {
@@ -164,9 +166,7 @@ public class ControlCalidadController extends BaseController {
         		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
         	}
         	
-        	if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
-        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
-        	}
+        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean()));
         	
         	model.addAttribute("controlCalidad", getParserObject(controlCalidad));
 
@@ -556,6 +556,8 @@ public class ControlCalidadController extends BaseController {
 			parameters.put("P_DDI", producto.getNombreDdi());			
 			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
 			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
+			parameters.put("P_TIPO_CONTROL", producto.getTipoControlCalidad());
+			parameters.put("P_ALMACEN_ORIGEN_DESTINO", producto.getNombreAlmacen());
 			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
 			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
 			parameters.put("P_CONCLUSIONES", producto.getConclusiones());

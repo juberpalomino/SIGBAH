@@ -43,6 +43,7 @@ public class DetalleProductoControlCalidadMapper implements RowMapper<DetallePro
 		producto.setFlagTipoProducto(rs.getString("FLG_TIPO_BIEN"));
 		producto.setNombreDdi(rs.getString("NOM_DDI"));
 		producto.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
+		producto.setTipoControlCalidad(rs.getString("TIPO_CONTROL_CALIDAD"));
 		return producto;
 	}
 

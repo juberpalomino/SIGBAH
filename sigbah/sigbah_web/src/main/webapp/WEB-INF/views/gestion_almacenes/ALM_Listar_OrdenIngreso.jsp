@@ -143,6 +143,7 @@
 								<thead>			                
 									<tr>
 										<th></th>
+										<th>Nº</th>
 										<th>Año</th>
 										<th>DDI</th>
 										<th>Almacén</th>

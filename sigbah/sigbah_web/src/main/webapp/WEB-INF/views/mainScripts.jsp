@@ -42,6 +42,7 @@
 
 <script type="text/javascript">
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';
+	var indicador = '${indicador}';
 	var codigoRespuesta = '${base.codigoRespuesta}';
 	var mensajeRespuesta = '${base.mensajeRespuesta}';
 	var mensajeReporteExito = 'El archivo se descarg&oacute; exitosamente.';
