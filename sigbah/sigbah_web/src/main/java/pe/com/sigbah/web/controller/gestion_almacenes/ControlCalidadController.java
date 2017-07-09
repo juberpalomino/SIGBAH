@@ -40,7 +40,7 @@ import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
-import pe.com.sigbah.web.report.gestion_almacenes.Reporteador;
+import pe.com.sigbah.web.report.gestion_almacenes.ReporteControlCalidad;
 
 /**
  * @className: ControlCalidadController.java
@@ -477,6 +477,9 @@ public class ControlCalidadController extends BaseController {
 			String file_name = "Reporte_Control_Calidad";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
 			
+			ReporteControlCalidad reporte = new ReporteControlCalidad();
+		    HSSFWorkbook wb = reporte.generaReporteExcelControlCalidad(lista);
+			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_XLS);
             response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
@@ -485,9 +488,6 @@ public class ControlCalidadController extends BaseController {
 			response.setHeader("Pragma", "private");
 			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 			response.setDateHeader("Expires", 1);
-            
-		    Reporteador rep = new Reporteador();
-		    HSSFWorkbook wb = rep.generaReporteExcelControlCalidad(lista);
 	    	
 		    // Captured backflow
 	    	OutputStream out = response.getOutputStream();

@@ -1,13 +1,11 @@
 package pe.com.sigbah.web.controller.gestion_almacenes;
 
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
-import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
@@ -37,12 +34,11 @@ import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.common.util.ExportarArchivo;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
-import pe.com.sigbah.web.report.gestion_almacenes.Reporteador;
+import pe.com.sigbah.web.report.gestion_almacenes.ReporteOrdenIngreso;
 
 /**
  * @className: OrdenIngresoController.java
@@ -498,6 +494,9 @@ public class OrdenIngresoController extends BaseController {
 			String file_name = "OrdenIngreso";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
 			
+			ReporteOrdenIngreso reporte = new ReporteOrdenIngreso();
+		    HSSFWorkbook wb = reporte.generaReporteExcelOrdenIngreso(lista);
+			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_XLS);
             response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
@@ -507,9 +506,6 @@ public class OrdenIngresoController extends BaseController {
 			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 			response.setDateHeader("Expires", 1);
             
-		    Reporteador rep = new Reporteador();
-		    HSSFWorkbook wb = rep.generaReporteExcelOrdenIngreso(lista);
-	    	
 		    // Captured backflow
 	    	OutputStream out = response.getOutputStream();
 	    	wb.write(out); // We write in that flow
@@ -533,44 +529,31 @@ public class OrdenIngresoController extends BaseController {
 	@ResponseBody
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
-			List<DetalleProductoControlCalidadBean> lista = logisticaService.listarDetalleProductoControlCalidad(codigo);
-			if (isEmpty(lista)) {
-				return Constantes.COD_VALIDACION_GENERAL;
-			}			
-			DetalleProductoControlCalidadBean producto = lista.get(0);
-
-			ExportarArchivo printer = new ExportarArchivo();
-			StringBuilder jasperFile = new StringBuilder();
-			jasperFile.append(getPath(request));
-			jasperFile.append(File.separator);
-			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-			jasperFile.append("Orden_Ingreso.jrxml");
-			
-			Map<String, Object> parameters = new HashMap<String, Object>();
-
-			// Agregando los parámetros del reporte
-			StringBuilder logo_indeci_path = new StringBuilder();
-			logo_indeci_path.append(getPath(request));
-			logo_indeci_path.append(File.separator);
-			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());
-		
-			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroControlCalidad());
-			parameters.put("P_DDI", producto.getNombreDdi());			
-			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
-			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
-			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
-			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
-			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
-			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
-
-			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
-			InputStream input = new ByteArrayInputStream(array);
-	        
-	        String file_name = "Reporte_Control_Calidad";
-			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 	    	
-	        response.resetBuffer();
+	    	OrdenIngresoBean ordenIngreso = logisticaService.obtenerRegistroOrdenIngreso(codigo);
+	    	ProductoIngresoBean producto = new ProductoIngresoBean();
+	    	producto.setIdIngreso(codigo);
+	    	List<ProductoIngresoBean> listaProducto = logisticaService.listarProductoIngreso(producto);
+	    	
+	    	DocumentoIngresoBean documento = new DocumentoIngresoBean();
+	    	documento.setIdIngreso(codigo);
+	    	List<DocumentoIngresoBean> listaDocumento = logisticaService.listarDocumentoIngreso(documento);	    	
+
+	    	StringBuilder file_path = new StringBuilder();
+	    	file_path.append(getPath(request));
+	    	file_path.append(File.separator);
+	    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
+	    	file_path.append(File.separator);
+	    	file_path.append(Calendar.getInstance().getTime().getTime());
+	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
+	    	
+	    	String file_name = "Orden_Ingreso";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+			
+			ReporteOrdenIngreso reporte = new ReporteOrdenIngreso();
+			reporte.generaPDFReporteIngresos(file_path.toString(), ordenIngreso, listaProducto, listaDocumento);
+			
+			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);
             response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
 			response.setHeader("Pragma", "no-cache");
@@ -578,16 +561,23 @@ public class OrdenIngresoController extends BaseController {
 			response.setHeader("Pragma", "private");
 			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
 			response.setDateHeader("Expires", 1);
+	    	
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			baos = convertPDFToByteArrayOutputStream(file_path.toString());
 			
-			byte[] buffer = new byte[4096];
-	    	int n = 0;
-
-	    	OutputStream output = response.getOutputStream();
-	    	while ((n = input.read(buffer)) != -1) {
-	    	    output.write(buffer, 0, n);
-	    	}
-	    	output.close();
-
+			// Captured backflow
+	        OutputStream out = response.getOutputStream();
+	        baos.writeTo(out); // We write in that flow
+	        out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	File file_temp = new File(file_path.toString());
+    		if (file_temp.delete()) {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" se borra el archivo temporal.");
+    		} else {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+    		}
+    		
 	    	return Constantes.COD_EXITO_GENERAL;
 	    } catch (Exception e) {
 	    	LOGGER.error(e.getMessage(), e);
