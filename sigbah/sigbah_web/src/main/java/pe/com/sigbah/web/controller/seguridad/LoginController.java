@@ -71,6 +71,8 @@ public class LoginController extends BaseController {
             	
             	if (detalleUsuarioBean != null && !isEmpty(detalleUsuarioBean.getDatosUsuario())) {
             		usuario = detalleUsuarioBean.getDatosUsuario().get(0);
+            	} else {
+            		usuario = null;
             	}
                
             } catch (Exception e) {
