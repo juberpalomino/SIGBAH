@@ -54,7 +54,7 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public String doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, 
-    		HttpServletRequest request, HttpServletResponse response, Model model) {
+    							HttpServletRequest request, HttpServletResponse response, Model model) {
     	String destino = "login";
         boolean isAccessOk = true;
         

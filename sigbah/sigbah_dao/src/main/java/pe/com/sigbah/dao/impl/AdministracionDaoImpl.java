@@ -25,6 +25,7 @@ import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.SpringUtil;
+import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.AdministracionDao;
 import pe.com.sigbah.mapper.UsuarioMapper;
 
@@ -86,11 +87,14 @@ public class AdministracionDaoImpl extends JdbcDaoSupport implements Administrac
 			colDetalleUsuarioBean = (List<UsuarioBean>) out.get("PO_CURSOR");			
 			detalleUsuarioBean.setIndicadorUsuario((String) out.get("PO_USER_EXISTE"));
 			detalleUsuarioBean.setCodigoRespuesta((String) out.get("PO_CODIGO_RESPUESTA"));
-			detalleUsuarioBean.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
-			detalleUsuarioBean.setDatosUsuario(new ArrayList<UsuarioBean>(colDetalleUsuarioBean));
+			detalleUsuarioBean.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));	
+			
+			if (!Utils.isEmpty(colDetalleUsuarioBean)) {
+				detalleUsuarioBean.setDatosUsuario(new ArrayList<UsuarioBean>(colDetalleUsuarioBean));
+			}
 			
 			if (detalleUsuarioBean.getCodigoRespuesta().equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[obtenerCorrelativo] Ocurrio un error en la operacion del USP_SEL_USUARIO");
+				LOGGER.info("[obtenerDatosUsuario] Ocurrio un error en la operacion del USP_SEL_USUARIO");
     			throw new Exception();
     		}
 			
