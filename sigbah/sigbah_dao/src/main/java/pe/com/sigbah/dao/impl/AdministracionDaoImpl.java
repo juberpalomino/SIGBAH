@@ -21,12 +21,15 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
+import pe.com.sigbah.common.bean.AlmacenBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
+import pe.com.sigbah.common.bean.ModuloBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.AdministracionDao;
+import pe.com.sigbah.mapper.AlmacenUsuarioMapper;
 import pe.com.sigbah.mapper.UsuarioMapper;
 
 /**
@@ -104,6 +107,57 @@ public class AdministracionDaoImpl extends JdbcDaoSupport implements Administrac
 		}		
 		LOGGER.info("[obtenerDatosUsuario] Fin ");
 		return detalleUsuarioBean;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.AdministracionDao#listarModuloUsuario(java.lang.Integer)
+	 */
+	@Override
+	public List<ModuloBean> listarModuloUsuario(Integer idUsuario) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.AdministracionDao#listarAlmacenUsuario(java.lang.Integer)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AlmacenBean> listarAlmacenUsuario(Integer idUsuario) throws Exception {
+		LOGGER.info("[listarAlmacenUsuario] Inicio ");
+		List<AlmacenBean> lista = new ArrayList<AlmacenBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_USER", idUsuario, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_ADMINISTRACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_ALMACEN_POR_USUARIO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_USER", new SqlParameter("PI_ID_USER", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR", new SqlOutParameter("PO_CURSOR", OracleTypes.CURSOR, new AlmacenUsuarioMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[listarAlmacenUsuario] Ocurrio un error en la operacion del USP_SEL_ALMACEN_POR_USUARIO");
+				throw new Exception();
+			} else {
+				lista = (List<AlmacenBean>) out.get("PO_CURSOR");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarAlmacenUsuario] Fin ");
+		return lista;
 	}
 	
 }

@@ -1,6 +1,10 @@
 package pe.com.sigbah.dao;
 
+import java.util.List;
+
+import pe.com.sigbah.common.bean.AlmacenBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
+import pe.com.sigbah.common.bean.ModuloBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 
 /**
@@ -17,5 +21,19 @@ public interface AdministracionDao {
 	 * @throws Exception
 	 */
 	public abstract DetalleUsuarioBean obtenerDatosUsuario(UsuarioBean usuarioBean) throws Exception;
+	
+	/**
+	 * @param idUsuario
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ModuloBean> listarModuloUsuario(Integer idUsuario) throws Exception;
+	
+	/**
+	 * @param idUsuario
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<AlmacenBean> listarAlmacenUsuario(Integer idUsuario) throws Exception;
 
 }

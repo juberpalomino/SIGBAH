@@ -54,12 +54,16 @@
 					</li>
 					<li>
 						<a href="#">Salidas</a>
-						<ul>
+						<ul id="ul_alm_salidas">
 							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Manifiesto de Carga</a>
+								<a href="glyph.html">
+									<i class="fa fa-caret-right"></i>Manifiesto de Carga
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="glyph.html"><i class="fa fa-caret-right"></i>Orden de Salida</a>
+							<li id="li_ord_salida" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/orden-salida/inicio/0">
+									<i class="fa fa-caret-right"></i>Orden de Salida
+								</a>
 							</li>
 							<li class="li_men_opcion">
 								<a href="glyph.html"><i class="fa fa-caret-right"></i>Guia de Remision</a>

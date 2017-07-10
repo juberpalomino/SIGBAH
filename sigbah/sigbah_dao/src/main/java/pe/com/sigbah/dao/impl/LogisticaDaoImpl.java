@@ -108,6 +108,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[listarControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_CONTROL_CALIDAD");
 				throw new Exception();
 			} else {
 				lista = (List<ControlCalidadBean>) out.get("po_Lr_Recordset");
