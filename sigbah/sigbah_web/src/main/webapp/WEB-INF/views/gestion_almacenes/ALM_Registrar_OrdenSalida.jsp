@@ -32,7 +32,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 	
-							<ul id="ul_man_ord_ingreso" class="nav nav-tabs bordered">
+							<ul id="ul_man_ord_salida" class="nav nav-tabs bordered">
 								<li id="li_dat_generales" class="active">
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Datos Generales</a>
@@ -52,7 +52,7 @@
 								
 									<form id="frm_dat_generales" class="form-horizontal">
 									
-										<input type="hidden" id="hid_cod_ord_ingreso" name="hid_cod_ord_ingreso">
+										<input type="hidden" id="hid_cod_ord_salida" name="hid_cod_ord_salida">
 									
 										<div class="header-form opc-center">	
 											<strong>Orden Ingreso</strong>
@@ -64,7 +64,7 @@
 											<div class="col-sm-3"></div>
 											<label class="col-sm-3 control-label label-bold">Nº Orden Ingreso:</label>
 											<div class="col-sm-2">
-												<input type="text" id="txt_nro_ord_ingreso" class="form-control" disabled>
+												<input type="text" id="txt_nro_ord_salida" class="form-control" disabled>
 											</div>
 										</div>												
 																

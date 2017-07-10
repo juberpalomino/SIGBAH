@@ -36,7 +36,7 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_ord_ingreso" class="form-horizontal">
+							<form id="frm_ord_salida" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -50,10 +50,10 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-2 control-label">DDI:</label>
+									<label class="col-sm-2 control-label">Mes:</label>
 									<div class="col-sm-2 form-group">
-										<select id="sel_ddi" name="sel_ddi" class="form-control">
-											<c:forEach items="${lista_ddi}" var="item">
+										<select id="sel_mes" name="sel_mes" class="form-control">
+											<c:forEach items="${lista_mes}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
@@ -139,7 +139,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_ord_ingreso" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_ord_salida" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>

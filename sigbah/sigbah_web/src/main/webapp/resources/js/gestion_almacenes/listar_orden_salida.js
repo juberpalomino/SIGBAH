@@ -1,11 +1,11 @@
-var listaOrdenIngresoCache = new Object();
+var listaOrdenSalidaCache = new Object();
 
-var tbl_mnt_ord_ingreso = $('#tbl_mnt_ord_ingreso');
-var frm_ord_ingreso = $('#frm_ord_ingreso');
+var tbl_mnt_ord_salida = $('#tbl_mnt_ord_salida');
+var frm_ord_salida = $('#frm_ord_salida');
 
 $(document).ready(function() {
 	
-	frm_ord_ingreso.bootstrapValidator({
+	frm_ord_salida.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -16,10 +16,10 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_ddi : {
+			sel_mes : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar DDI.'
+						message : 'Debe seleccionar Mes.'
 					}
 				}
 			}
@@ -29,7 +29,7 @@ $(document).ready(function() {
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_ord_ingreso.data('bootstrapValidator');
+		var bootstrapValidator = frm_ord_salida.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 
@@ -42,11 +42,11 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarOrdenIngreso', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarOrdenSalida', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					listarOrdenIngreso(respuesta);
+					listarOrdenSalida(respuesta);
 				}
 				loadding(false);
 			});
@@ -62,15 +62,15 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
-				codigo = codigo + idIngreso + '_';
+				var idSalida = listaOrdenSalidaCache[index].idSalida;
+				codigo = codigo + idSalida + '_';
 			}
 		});
 		
@@ -84,7 +84,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/';
+			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/';
 			$(location).attr('href', url + codigo);
 		}
 		
@@ -94,7 +94,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/0';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/0';
 		$(location).attr('href', url);
 		
 	});
@@ -102,7 +102,7 @@ $(document).ready(function() {
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();
 		
-		var row = $('#tbl_mnt_ord_ingreso > tbody > tr').length;
+		var row = $('#tbl_mnt_ord_salida > tbody > tr').length;
 		var empty = null;
 		$('tr.odd').each(function() {		
 			empty = $(this).find('.dataTables_empty').text();
@@ -119,7 +119,7 @@ $(document).ready(function() {
 		var codigoDdi = $('#sel_ddi').val();
 		var codigoAlmacen = $('#sel_almacen').val();
 		var codigoMovimiento = $('#sel_tip_movimiento').val();
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarExcel/';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
 		url += verificaParametro(codigoDdi) + '/';
 		url += verificaParametro(codigoAlmacen) + '/';
@@ -144,15 +144,15 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
-				codigo = codigo + idIngreso + '_';
+				var idSalida = listaOrdenSalidaCache[index].idSalida;
+				codigo = codigo + idSalida + '_';
 			}
 		});
 		
@@ -166,7 +166,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarPdf/'+codigo;
+			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/exportarPdf/'+codigo;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {
@@ -201,19 +201,19 @@ function inicializarDatos() {
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {
-			listarOrdenIngreso(new Object());		
+			listarOrdenSalida(new Object());		
 		}
 	}
 }
 
-function listarOrdenIngreso(respuesta) {
+function listarOrdenSalida(respuesta) {
 
-	tbl_mnt_ord_ingreso.dataTable().fnDestroy();
+	tbl_mnt_ord_salida.dataTable().fnDestroy();
 	
-	tbl_mnt_ord_ingreso.dataTable({
+	tbl_mnt_ord_salida.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idIngreso',
+			data : 'idSalida',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -225,7 +225,7 @@ function listarOrdenIngreso(respuesta) {
 				}											
 			}	
 		}, {	
-			data : 'idIngreso',
+			data : 'idSalida',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -237,7 +237,7 @@ function listarOrdenIngreso(respuesta) {
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroOrdenIngreso'
+			data : 'nroOrdenSalida'
 		}, {
 			data : 'fechaEmision'
 		}, {
@@ -266,7 +266,7 @@ function listarOrdenIngreso(respuesta) {
   		]
 	});
 	
-	listaOrdenIngresoCache = respuesta;
+	listaOrdenSalidaCache = respuesta;
 
 }
 

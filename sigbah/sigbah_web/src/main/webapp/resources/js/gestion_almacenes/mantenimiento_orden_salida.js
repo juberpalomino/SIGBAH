@@ -106,7 +106,7 @@ $(document).ready(function() {
 				icodigoParam2 : codigo
 			};			
 			loadding(true);
-			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarEmpresaTransporte', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarEmpresaTransporte', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -213,7 +213,7 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/orden-ingreso/grabarOrdenIngreso', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/orden-salida/grabarOrdenIngreso', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -250,7 +250,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio/1';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/inicio/1';
 		$(location).attr('href', url);
 		
 	});
@@ -350,7 +350,7 @@ $(document).ready(function() {
 						arrIdDetalleIngreso : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/orden-ingreso/eliminarProductoOrdenIngreso', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/orden-salida/eliminarProductoOrdenIngreso', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -392,7 +392,7 @@ $(document).ready(function() {
 
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/orden-ingreso/grabarProductoOrdenIngreso', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/orden-salida/grabarProductoOrdenIngreso', params, function(respuesta) {
 				$('#div_det_productos').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
@@ -556,7 +556,7 @@ $(document).ready(function() {
 						arrIdDocumentoIngreso : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/orden-ingreso/eliminarDocumentoOrdenIngreso', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/orden-salida/eliminarDocumentoOrdenIngreso', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -743,7 +743,7 @@ function listarProductoOrdenIngreso(indicador) {
 	var params = { 
 		idIngreso : $('#hid_cod_ord_ingreso').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-ingreso/listarProductoOrdenIngreso', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarProductoOrdenIngreso', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -816,7 +816,7 @@ function listarDocumentoOrdenIngreso(indicador) {
 	var params = { 
 		idIngreso : $('#hid_cod_ord_ingreso').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-ingreso/listarDocumentoOrdenIngreso', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarDocumentoOrdenIngreso', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -881,7 +881,7 @@ function listarDetalleDocumentos(respuesta) {
 }
 
 function grabarDetalleDocumento(params) {
-	consultarAjax('POST', '/gestion-almacenes/orden-ingreso/grabarDocumentoOrdenIngreso', params, function(respuesta) {
+	consultarAjax('POST', '/gestion-almacenes/orden-salida/grabarDocumentoOrdenIngreso', params, function(respuesta) {
 		$('#div_det_documentos').modal('hide');
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			loadding(false);			
@@ -1086,7 +1086,7 @@ function cargarLote(idProducto, codigoLote) {
 		idProducto : idProducto
 	};			
 	loadding(true);
-	consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarLoteProducto', params, function(respuesta) {
+	consultarAjax('GET', '/gestion-almacenes/orden-salida/listarLoteProducto', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
