@@ -16,10 +16,10 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_mes : {
+			sel_almacen : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Mes.'
+						message : 'Debe seleccionar Almacen.'
 					}
 				}
 			}
@@ -35,9 +35,10 @@ $(document).ready(function() {
 
 			var params = { 
 				codigoAnio : $('#sel_anio').val(),
-				codigoDdi : $('#sel_ddi').val(),
-				codigoAlmacen : $('#sel_almacen').val(),
-				codigoMovimiento : $('#sel_tip_movimiento').val()
+				codigoMes : $('#sel_mes').val(),
+				idAlmacen : $('#sel_almacen').val(),
+				idMovimiento : $('#sel_tip_movimiento').val(),
+				tipoOrigen : 'I'
 			};
 			
 			loadding(true);
@@ -233,7 +234,7 @@ function listarOrdenSalida(respuesta) {
 		}, {
 			data : 'codigoAnio'
 		}, {
-			data : 'nombreDdi'
+			data : 'nombreMes'
 		}, {
 			data : 'nombreAlmacen'
 		}, {
@@ -243,7 +244,7 @@ function listarOrdenSalida(respuesta) {
 		}, {
 			data : 'nombreMovimiento'
 		}, {
-			data : 'nombreEstado'
+			data : 'nroGuiaRemision'
 		}, {
 			data : 'nombreEstado'
 		} ],

@@ -26,22 +26,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
-import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
-import pe.com.sigbah.common.bean.OrdenIngresoBean;
+import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoBean;
-import pe.com.sigbah.common.bean.ProductoIngresoBean;
+import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
-import pe.com.sigbah.web.report.gestion_almacenes.ReporteOrdenIngreso;
+import pe.com.sigbah.web.report.gestion_almacenes.ReporteOrdenSalida;
 
 /**
- * @className: OrdenIngresoController.java
+ * @className: OrdenSalidaController.java
  * @description: 
  * @date: 17 de jun. de 2017
  * @author: SUMERIO.
@@ -68,15 +68,12 @@ public class OrdenSalidaController extends BaseController {
         try {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-
+        	
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	
-        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
-        	model.addAttribute("lista_ddi", listaDdi);
+        	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
         	
-        	if (!Utils.isEmpty(listaDdi) && listaDdi.size() == Constantes.ONE_INT) {
-        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
-        	}
+        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	        	
         	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
         	
@@ -95,15 +92,23 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarOrdenSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		List<OrdenIngresoBean> lista = null;
+	public Object listarOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		List<OrdenSalidaBean> lista = null;
 		try {			
-			OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();	
+			OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
+			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(ordenIngresoBean, request.getParameterMap());			
-			lista = logisticaService.listarOrdenIngreso(ordenIngresoBean);
+			BeanUtils.populate(ordenSalidaBean, request.getParameterMap());
+			
+        	// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			
+        	ordenSalidaBean.setIdDdi(usuarioBean.getIdDdi());
+        	ordenSalidaBean.setCodigoDdi(usuarioBean.getCodigoDdi());
+			
+			lista = logisticaService.listarOrdenSalida(ordenSalidaBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -116,26 +121,26 @@ public class OrdenSalidaController extends BaseController {
 	 * @param model
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/mantenimientoOrdenIngreso/{codigo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/mantenimientoOrdenSalida/{codigo}", method = RequestMethod.GET)
     public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, Model model) {
         try {
-        	OrdenIngresoBean ordenIngreso = new OrdenIngresoBean();
+        	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
         	
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	if (!isNullInteger(codigo)) {
         		
-        		ordenIngreso = logisticaService.obtenerRegistroOrdenIngreso(codigo);
+        		ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo);
         		
-        		if (!isNullInteger(ordenIngreso.getIdMedioTransporte())) {
+        		if (!isNullInteger(ordenSalida.getIdMedioTransporte())) {
         			ItemBean item = new ItemBean();
         			item.setIcodigo(usuarioBean.getIdDdi());
-        			item.setIcodigoParam2(ordenIngreso.getIdMedioTransporte());
+        			item.setIcodigoParam2(ordenSalida.getIdMedioTransporte());
         			model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(item));
         		}        		
-        		if (!isNullInteger(ordenIngreso.getIdEmpresaTransporte())) {
-        			model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(ordenIngreso.getIdEmpresaTransporte())));
+        		if (!isNullInteger(ordenSalida.getIdEmpresaTransporte())) {
+        			model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(ordenSalida.getIdEmpresaTransporte())));
         		}
 
         	} else {
@@ -146,40 +151,40 @@ public class OrdenSalidaController extends BaseController {
         		correlativo.append(usuarioBean.getCodigoAlmacen());
         		correlativo.append(Constantes.SEPARADOR);
         		
-        		OrdenIngresoBean parametros = new OrdenIngresoBean();
+        		OrdenSalidaBean parametros = new OrdenSalidaBean();
         		String anioActual = generalService.obtenerAnioActual();
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
         		parametros.setTipoOrigen("I");
-        		OrdenIngresoBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenIngreso(parametros);
+        		OrdenSalidaBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenSalida(parametros);
       
-        		correlativo.append(respuestaCorrelativo.getNroOrdenIngreso());
+        		correlativo.append(respuestaCorrelativo.getNroOrdenSalida());
         		
-        		ordenIngreso.setNroOrdenIngreso(correlativo.toString());        		
+        		ordenSalida.setNroOrdenSalida(correlativo.toString());        		
         		
         		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
         		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
         		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
         		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
         		if (!isEmpty(listaAlmacenActivo)) {
-        			ordenIngreso.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-        			ordenIngreso.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-        			ordenIngreso.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-        			ordenIngreso.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-        			ordenIngreso.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+        			ordenSalida.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+        			ordenSalida.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+        			ordenSalida.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+        			ordenSalida.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+        			ordenSalida.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
         		}
         		
-        		ordenIngreso.setIdDdi(usuarioBean.getIdDdi());
-        		ordenIngreso.setCodigoDdi(usuarioBean.getCodigoDdi());
-        		ordenIngreso.setNombreDdi(usuarioBean.getNombreDdi());
+        		ordenSalida.setIdDdi(usuarioBean.getIdDdi());
+        		ordenSalida.setCodigoDdi(usuarioBean.getCodigoDdi());
+        		ordenSalida.setNombreDdi(usuarioBean.getNombreDdi());
         	}
         	
         	if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	
-        	model.addAttribute("ordenIngreso", getParserObject(ordenIngreso));
+        	model.addAttribute("ordenSalida", getParserObject(ordenSalida));
         	
         	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
 
@@ -241,32 +246,32 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		OrdenIngresoBean ordenIngreso = null;
+	public Object grabarOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		OrdenSalidaBean ordenSalida = null;
 		try {			
-			OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();
+			OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
 			
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);
 			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
 			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(ordenIngresoBean, request.getParameterMap());
+			beanUtilsBean.populate(ordenSalidaBean, request.getParameterMap());
 
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	ordenIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	ordenSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-        	ordenIngreso = logisticaService.grabarOrdenIngreso(ordenIngresoBean);
+        	ordenSalida = logisticaService.grabarOrdenSalida(ordenSalidaBean);
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return ordenIngreso;
+		return ordenSalida;
 	}
 	
 	/**
@@ -299,15 +304,15 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarProductoOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarProductoOrdenSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoIngresoBean> lista = null;
+	public Object listarProductoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoSalidaBean> lista = null;
 		try {			
-			ProductoIngresoBean producto = new ProductoIngresoBean();			
+			ProductoSalidaBean producto = new ProductoSalidaBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(producto, request.getParameterMap());			
-			lista = logisticaService.listarProductoIngreso(producto);
+			lista = logisticaService.listarProductoSalida(producto);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -320,12 +325,12 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarProductoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarProductoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		ProductoIngresoBean producto = null;
+	public Object grabarProductoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		ProductoSalidaBean producto = null;
 		try {			
-			ProductoIngresoBean productoIngresoBean = new ProductoIngresoBean();
+			ProductoSalidaBean productoSalidaBean = new ProductoSalidaBean();
 
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);			
@@ -335,14 +340,14 @@ public class OrdenSalidaController extends BaseController {
 			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
 			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(productoIngresoBean, request.getParameterMap());
+			beanUtilsBean.populate(productoSalidaBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	productoIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	productoSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-			producto = logisticaService.grabarProductoIngreso(productoIngresoBean);
+			producto = logisticaService.grabarProductoSalida(productoSalidaBean);
 			
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -358,21 +363,21 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarProductoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarProductoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object eliminarProductoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		ProductoIngresoBean producto = null;
+	public Object eliminarProductoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		ProductoSalidaBean producto = null;
 		try {			
-			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleIngreso").split(Constantes.UNDERLINE);
+			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleSalida").split(Constantes.UNDERLINE);
 			for (String codigo : arrIdDetalleControlCalidad) {				
-				ProductoIngresoBean productoControlCalidadBean = new ProductoIngresoBean(getInteger(codigo));
+				ProductoSalidaBean productoControlCalidadBean = new ProductoSalidaBean(getInteger(codigo));
 
 				// Retorno los datos de session
 	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 	        	
 	        	productoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-				producto = logisticaService.eliminarProductoIngreso(productoControlCalidadBean);				
+				producto = logisticaService.eliminarProductoSalida(productoControlCalidadBean);				
 			}
 
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -389,15 +394,15 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarDocumentoOrdenIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarDocumentoOrdenSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarDocumentoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		List<DocumentoIngresoBean> lista = null;
+	public Object listarDocumentoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		List<DocumentoSalidaBean> lista = null;
 		try {			
-			DocumentoIngresoBean documento = new DocumentoIngresoBean();			
+			DocumentoSalidaBean documento = new DocumentoSalidaBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documento, request.getParameterMap());			
-			lista = logisticaService.listarDocumentoIngreso(documento);
+			lista = logisticaService.listarDocumentoSalida(documento);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -410,22 +415,22 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarDocumentoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarDocumentoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarDocumentoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoIngresoBean documento = null;
+	public Object grabarDocumentoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoSalidaBean documento = null;
 		try {			
-			DocumentoIngresoBean documentoIngresoBean = new DocumentoIngresoBean();
+			DocumentoSalidaBean documentoSalidaBean = new DocumentoSalidaBean();
 			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(documentoIngresoBean, request.getParameterMap());
+			BeanUtils.populate(documentoSalidaBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	documentoIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	documentoSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-        	documento = logisticaService.grabarDocumentoIngreso(documentoIngresoBean);
+        	documento = logisticaService.grabarDocumentoSalida(documentoSalidaBean);
 			
         	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -441,22 +446,22 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarDocumentoOrdenIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarDocumentoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object eliminarDocumentoOrdenIngreso(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoIngresoBean documento = null;
+	public Object eliminarDocumentoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoSalidaBean documento = null;
 		try {			
-			String[] arrIdDocumentoIngreso = request.getParameter("arrIdDocumentoIngreso").split(Constantes.UNDERLINE);
+			String[] arrIdDocumentoSalida = request.getParameter("arrIdDocumentoSalida").split(Constantes.UNDERLINE);
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-			for (String codigo : arrIdDocumentoIngreso) {				
-				DocumentoIngresoBean documentoIngresoBean = new DocumentoIngresoBean(getInteger(codigo));
+			for (String codigo : arrIdDocumentoSalida) {				
+				DocumentoSalidaBean documentoSalidaBean = new DocumentoSalidaBean(getInteger(codigo));
 
-	        	documentoIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
+	        	documentoSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-	        	documento = logisticaService.eliminarDocumentoIngreso(documentoIngresoBean);				
+	        	documento = logisticaService.eliminarDocumentoSalida(documentoSalidaBean);				
 			}
 
 			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -484,18 +489,18 @@ public class OrdenSalidaController extends BaseController {
 								@PathVariable("codigoMovimiento") String codigoMovimiento, 
 								HttpServletResponse response) {
 	    try {
-	    	OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();
-	    	ordenIngresoBean.setCodigoAnio(verificaParametro(codigoAnio));
-	    	ordenIngresoBean.setCodigoDdi(verificaParametro(codigoDdi));
-	    	ordenIngresoBean.setCodigoAlmacen(verificaParametro(codigoAlmacen));
-	    	ordenIngresoBean.setCodigoMovimiento(verificaParametro(codigoMovimiento));
-			List<OrdenIngresoBean> lista = logisticaService.listarOrdenIngreso(ordenIngresoBean);
+	    	OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
+	    	ordenSalidaBean.setCodigoAnio(verificaParametro(codigoAnio));
+	    	ordenSalidaBean.setCodigoDdi(verificaParametro(codigoDdi));
+	    	ordenSalidaBean.setCodigoAlmacen(verificaParametro(codigoAlmacen));
+	    	ordenSalidaBean.setCodigoMovimiento(verificaParametro(codigoMovimiento));
+			List<OrdenSalidaBean> lista = logisticaService.listarOrdenSalida(ordenSalidaBean);
 	    	
-			String file_name = "OrdenIngreso";
+			String file_name = "OrdenSalida";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
 			
-			ReporteOrdenIngreso reporte = new ReporteOrdenIngreso();
-		    HSSFWorkbook wb = reporte.generaReporteExcelOrdenIngreso(lista);
+			ReporteOrdenSalida reporte = new ReporteOrdenSalida();
+		    HSSFWorkbook wb = reporte.generaReporteExcelOrdenSalida(lista);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_XLS);
@@ -530,14 +535,14 @@ public class OrdenSalidaController extends BaseController {
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
 	    	
-	    	OrdenIngresoBean ordenIngreso = logisticaService.obtenerRegistroOrdenIngreso(codigo);
-	    	ProductoIngresoBean producto = new ProductoIngresoBean();
-	    	producto.setIdIngreso(codigo);
-	    	List<ProductoIngresoBean> listaProducto = logisticaService.listarProductoIngreso(producto);
+	    	OrdenSalidaBean ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo);
+	    	ProductoSalidaBean producto = new ProductoSalidaBean();
+	    	producto.setIdSalida(codigo);
+	    	List<ProductoSalidaBean> listaProducto = logisticaService.listarProductoSalida(producto);
 	    	
-	    	DocumentoIngresoBean documento = new DocumentoIngresoBean();
-	    	documento.setIdIngreso(codigo);
-	    	List<DocumentoIngresoBean> listaDocumento = logisticaService.listarDocumentoIngreso(documento);	    	
+	    	DocumentoSalidaBean documento = new DocumentoSalidaBean();
+	    	documento.setIdSalida(codigo);
+	    	List<DocumentoSalidaBean> listaDocumento = logisticaService.listarDocumentoSalida(documento);	    	
 
 	    	StringBuilder file_path = new StringBuilder();
 	    	file_path.append(getPath(request));
@@ -547,11 +552,11 @@ public class OrdenSalidaController extends BaseController {
 	    	file_path.append(Calendar.getInstance().getTime().getTime());
 	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
 	    	
-	    	String file_name = "Orden_Ingreso";
+	    	String file_name = "Orden_Salida";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
-			ReporteOrdenIngreso reporte = new ReporteOrdenIngreso();
-			reporte.generaPDFReporteIngresos(file_path.toString(), ordenIngreso, listaProducto, listaDocumento);
+			ReporteOrdenSalida reporte = new ReporteOrdenSalida();
+			reporte.generaPDFReporteSalidas(file_path.toString(), ordenSalida, listaProducto, listaDocumento);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);

@@ -40,6 +40,7 @@ import pe.com.sigbah.mapper.EmpresaTransporteMapper;
 import pe.com.sigbah.mapper.EstadoDonacionMapper;
 import pe.com.sigbah.mapper.EstadoMapper;
 import pe.com.sigbah.mapper.MedioTransporteMapper;
+import pe.com.sigbah.mapper.MesMapper;
 import pe.com.sigbah.mapper.PersonalMapper;
 import pe.com.sigbah.mapper.ProveedorMapper;
 import pe.com.sigbah.mapper.TipoControlCalidadMapper;
@@ -144,8 +145,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarMeses(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarMeses] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			String parametro = Utils.getParam(itemBean.getVcodigo());
+			input_objParametros.addValue("PI_COD_MES", parametro, Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_MESES");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new MesMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarMeses] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)

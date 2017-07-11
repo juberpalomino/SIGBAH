@@ -6,11 +6,14 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
+import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
+import pe.com.sigbah.common.bean.ProductoSalidaBean;
 
 /**
  * @className: LogisticaDao.java
@@ -200,5 +203,75 @@ public interface LogisticaDao {
 	 * @throws Exception 
 	 */
 	public abstract DocumentoIngresoBean eliminarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception;
+	
+	/**
+	 * @param ordenSalidaBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<OrdenSalidaBean> listarOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception;
+	
+	/**
+	 * @param ordenSalidaBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract OrdenSalidaBean obtenerCorrelativoOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception;
+	
+	/**
+	 * @param ordenSalidaBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract OrdenSalidaBean grabarOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception;
+	
+	/**
+	 * @param idSalida
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract OrdenSalidaBean obtenerRegistroOrdenSalida(Integer idSalida) throws Exception;
+	
+	/**
+	 * @param productoSalidaBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoSalidaBean> listarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception;
+
+	/**
+	 * @param productoSalidaBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ProductoSalidaBean grabarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception;
+	
+	/**
+	 * @param productoSalidaBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoSalidaBean eliminarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception;
+
+	/**
+	 * @param documentoSalidaBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<DocumentoSalidaBean> listarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
+
+	/**
+	 * @param documentoSalidaBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract DocumentoSalidaBean grabarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
+
+	/**
+	 * @param documentoSalidaBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract DocumentoSalidaBean eliminarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
 	
 }

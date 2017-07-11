@@ -55,14 +55,14 @@
 										<input type="hidden" id="hid_cod_ord_salida" name="hid_cod_ord_salida">
 									
 										<div class="header-form opc-center">	
-											<strong>Orden Ingreso</strong>
+											<strong>Orden Salida</strong>
 										</div>
 										
 										<div class="form-group"></div>
 										
 										<div class="form-group">
 											<div class="col-sm-3"></div>
-											<label class="col-sm-3 control-label label-bold">Nº Orden Ingreso:</label>
+											<label class="col-sm-3 control-label label-bold">Nº Orden Salida:</label>
 											<div class="col-sm-2">
 												<input type="text" id="txt_nro_ord_salida" class="form-control" disabled>
 											</div>

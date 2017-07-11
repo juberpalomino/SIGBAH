@@ -10,11 +10,14 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
+import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
+import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -238,6 +241,86 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public DocumentoIngresoBean eliminarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception {
 		return logisticaDao.eliminarDocumentoIngreso(documentoIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public List<OrdenSalidaBean> listarOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		return logisticaDao.listarOrdenSalida(ordenSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativoOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public OrdenSalidaBean obtenerCorrelativoOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		return logisticaDao.obtenerCorrelativoOrdenSalida(ordenSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public OrdenSalidaBean grabarOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		return logisticaDao.grabarOrdenSalida(ordenSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroOrdenSalida(java.lang.Integer)
+	 */
+	@Override
+	public OrdenSalidaBean obtenerRegistroOrdenSalida(Integer idSalida) throws Exception {
+		return logisticaDao.obtenerRegistroOrdenSalida(idSalida);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProductoSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public List<ProductoSalidaBean> listarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		return logisticaDao.listarProductoSalida(productoSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarProductoSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public ProductoSalidaBean grabarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		return logisticaDao.grabarProductoSalida(productoSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarProductoSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public ProductoSalidaBean eliminarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		return logisticaDao.eliminarProductoSalida(productoSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDocumentoSalida(pe.com.sigbah.common.bean.DocumentoSalidaBean)
+	 */
+	@Override
+	public List<DocumentoSalidaBean> listarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception {
+		return logisticaDao.listarDocumentoSalida(documentoSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarDocumentoSalida(pe.com.sigbah.common.bean.DocumentoSalidaBean)
+	 */
+	@Override
+	public DocumentoSalidaBean grabarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception {
+		return logisticaDao.grabarDocumentoSalida(documentoSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarDocumentoSalida(pe.com.sigbah.common.bean.DocumentoSalidaBean)
+	 */
+	@Override
+	public DocumentoSalidaBean eliminarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception {
+		return logisticaDao.eliminarDocumentoSalida(documentoSalidaBean);
 	}
 
 }
