@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
 import pe.com.sigbah.dao.DonacionDao;
 import pe.com.sigbah.service.DonacionService;
@@ -31,5 +32,21 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	public List<DonacionesBean> listarDonaciones(DonacionesBean donacionesBean) throws Exception {
 		return donacionDao.listarDonaciones(donacionesBean);
 	}
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#actualizarRegistroControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public DonacionesBean actualizarDonaciones(DonacionesBean donacionesBean) throws Exception {
+		return donacionDao.actualizarDonaciones(donacionesBean);
+	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#actualizarRegistroControlCalidad(pe.com.sigbah.common.bean.DonacionesBean)
+	 */
+	@Override
+	public DonacionesBean insertarDonaciones(DonacionesBean donacionesBean) throws Exception {
+		return donacionDao.insertarDonaciones(donacionesBean);
+	}
+
 
 }

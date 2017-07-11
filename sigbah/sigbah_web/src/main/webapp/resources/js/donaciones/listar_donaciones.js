@@ -111,7 +111,7 @@ function listarControlCalidad(respuesta) {
 		}, {
 			data : 'codigoAnio'
 		}, {
-			data : 'nombreDdi'
+			data : 'codigoDdi'
 		}, {
 			data : 'codigoDonacion'
 		}, {

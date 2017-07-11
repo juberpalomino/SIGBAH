@@ -5,7 +5,7 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
 		<li>Donaciones</li>
-		<li>Control de Calidad</li>
+		<li>Inscripción</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -27,7 +27,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Controles de Calidad</h2>
+						<h2>Búsqueda de Donantes</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -131,7 +131,7 @@
 										<th></th>
 										<th>Año</th>
 										<th>DDI</th>
-										<th>Codigo de Donacion</th>
+										<th>Nro Donacion</th>
 										<th>Fecha</th>
 										<th>Pais de Origen</th>
 										<th>Dontante</th>

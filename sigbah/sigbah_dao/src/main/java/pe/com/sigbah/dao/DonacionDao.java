@@ -2,6 +2,7 @@ package pe.com.sigbah.dao;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
 
 /**
@@ -19,6 +20,20 @@ public interface DonacionDao {
 	 */
 	public abstract List<DonacionesBean> listarDonaciones(DonacionesBean donacionesBean) throws Exception;
 	
+	
+	/**
+	 * @param donacionesBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract DonacionesBean insertarDonaciones(DonacionesBean donacionesBean) throws Exception;
+	/**
+	 * @param donacionesBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract DonacionesBean actualizarDonaciones(DonacionesBean donacionesBean) throws Exception;
+
 	
 	
 }

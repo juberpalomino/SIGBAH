@@ -23,15 +23,10 @@ public class DonacionesMapper implements RowMapper<DonacionesBean> {
 		DonacionesBean donaciones = new DonacionesBean();
 		donaciones.setIdDonacion(rs.getInt("IDE_DONACION"));
 		donaciones.setCodigoDonacion(rs.getString("COD_DONACION"));
-		donaciones.setCodigoAnio(rs.getString("ANIO"));
-	//	controlCalidad.setCodigoMes(rs.getString("COD_MES"));
-	//	controlCalidad.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));		
-//		donaciones.setIdDdi(rs.getInt("DDI"));
+		donaciones.setCodigoAnio(rs.getString("ANIO"));	
 		donaciones.setCodigoDdi(rs.getString("DDI"));
-//		donaciones.setNombreDdi(rs.getString("NOM_DDI"));		
-	//	controlCalidad.setNroControlCalidad(rs.getString("NRO_REP_CONTROL_CALIDAD"));
 		donaciones.setFechaEmision(rs.getString("FECHA"));
-    //	controlCalidad.setTipoControlCalidad(rs.getString("TIPO_CONTROL_CALIDAD"));
+		donaciones.setNombrePais(rs.getString("PAIS"));
 		donaciones.setNombreEstado(rs.getString("ESTADO"));
 		return donaciones;
 	}
