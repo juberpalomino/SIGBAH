@@ -21,12 +21,12 @@ public class DocumentoSalidaMapper implements RowMapper<DocumentoSalidaBean> {
 	@Override
 	public DocumentoSalidaBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		DocumentoSalidaBean documento = new DocumentoSalidaBean();
-		documento.setIdDocumentoSalida(rs.getInt("IDE_DOCUMENTO_ING"));
-		documento.setIdSalida(rs.getInt("FK_IDE_INGRESO"));
+		documento.setIdDocumentoSalida(rs.getInt("IDE_DOCUMENTO"));
+		documento.setIdSalida(rs.getInt("FK_IDE_SALIDA"));
 		documento.setIdTipoDocumento(rs.getInt("FK_IDE_TIP_DOCUMENTO"));
-		documento.setNombreDocumento(rs.getString("NOM_DOCUMENTO"));
+		documento.setNombreDocumento(rs.getString("NOMBRE_TIPO_DOCUMENTO"));
 		documento.setNroDocumento(rs.getString("NRO_DOCUMENTO"));
-		documento.setFechaDocumento(rs.getString("FEC_DOCUMENTO"));
+		documento.setFechaDocumento(rs.getString("FECHA_DOCUMENTO"));
 		documento.setCodigoArchivoAlfresco(rs.getString("COD_ALFRESCO"));
 		documento.setNombreArchivo(rs.getString("NOM_ARCHIVO"));
 		return documento;

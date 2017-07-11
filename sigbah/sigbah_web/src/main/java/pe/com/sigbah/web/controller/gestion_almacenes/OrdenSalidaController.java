@@ -118,11 +118,12 @@ public class OrdenSalidaController extends BaseController {
 	
 	/**
 	 * @param codigo 
+	 * @param anio 
 	 * @param model
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/mantenimientoOrdenSalida/{codigo}", method = RequestMethod.GET)
-    public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, Model model) {
+	@RequestMapping(value = "/mantenimientoOrdenSalida/{codigo}/{anio}", method = RequestMethod.GET)
+    public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, @PathVariable("anio") String anio, Model model) {
         try {
         	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
         	
@@ -131,7 +132,7 @@ public class OrdenSalidaController extends BaseController {
         	
         	if (!isNullInteger(codigo)) {
         		
-        		ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo);
+        		ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo, anio);
         		
         		if (!isNullInteger(ordenSalida.getIdMedioTransporte())) {
         			ItemBean item = new ItemBean();
@@ -535,7 +536,8 @@ public class OrdenSalidaController extends BaseController {
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
 	    	
-	    	OrdenSalidaBean ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo);
+//	    	OrdenSalidaBean ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo);
+	    	OrdenSalidaBean ordenSalida = null;
 	    	ProductoSalidaBean producto = new ProductoSalidaBean();
 	    	producto.setIdSalida(codigo);
 	    	List<ProductoSalidaBean> listaProducto = logisticaService.listarProductoSalida(producto);
@@ -556,7 +558,7 @@ public class OrdenSalidaController extends BaseController {
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
 			ReporteOrdenSalida reporte = new ReporteOrdenSalida();
-			reporte.generaPDFReporteSalidas(file_path.toString(), ordenSalida, listaProducto, listaDocumento);
+//			reporte.generaPDFReporteSalidas(file_path.toString(), ordenSalida, listaProducto, listaDocumento);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);

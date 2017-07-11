@@ -227,10 +227,11 @@ public interface LogisticaDao {
 	
 	/**
 	 * @param idSalida
+	 * @param anio 
 	 * @return Objeto.
 	 * @throws Exception
 	 */
-	public abstract OrdenSalidaBean obtenerRegistroOrdenSalida(Integer idSalida) throws Exception;
+	public abstract OrdenSalidaBean obtenerRegistroOrdenSalida(Integer idSalida, String anio) throws Exception;
 	
 	/**
 	 * @param productoSalidaBean

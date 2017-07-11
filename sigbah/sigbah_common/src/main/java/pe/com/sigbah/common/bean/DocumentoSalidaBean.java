@@ -18,6 +18,8 @@ public class DocumentoSalidaBean extends BaseOutputBean {
 	private String observacion;
 	private String codigoArchivoAlfresco;
 	private String nombreArchivo;
+	private String tipoOrigen;
+	private String indControl;
 
 	
 	/**
@@ -160,5 +162,32 @@ public class DocumentoSalidaBean extends BaseOutputBean {
 	public void setIdSalida(Integer idSalida) {
 		this.idSalida = idSalida;
 	}
+	
+	/**
+	 * @return the indControl
+	 */
+	public String getIndControl() {
+		return indControl;
+	}
+	
+	/**
+	 * @param indControl the indControl to set
+	 */
+	public void setIndControl(String indControl) {
+		this.indControl = indControl;
+	}
 
+	/**
+	 * @return the tipoOrigen
+	 */
+	public String getTipoOrigen() {
+		return tipoOrigen;
+	}
+
+	/**
+	 * @param tipoOrigen the tipoOrigen to set
+	 */
+	public void setTipoOrigen(String tipoOrigen) {
+		this.tipoOrigen = tipoOrigen;
+	}
 }

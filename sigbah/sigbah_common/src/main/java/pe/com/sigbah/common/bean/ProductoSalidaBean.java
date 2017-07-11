@@ -17,16 +17,16 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	private Integer idProducto;
 	private String nombreProducto;
 	private String nombreUnidad;
-	private String nombreEnvase;
 	private BigDecimal cantidad;
 	private BigDecimal precioUnitario;
 	private BigDecimal importeTotal;
-	private String fechaVencimiento;
-	private String fechaIngreso;
-	private Integer idProgramacion;
-	private Integer idDonacion;
-	private Integer nroLote;
-	private String arrIdDetalleIngreso;
+	private BigDecimal pesoNetoTotal;
+	private BigDecimal pesoBrutoTotal;
+	private BigDecimal pesoUnitarioNeto;
+	private BigDecimal pesoUnitarioBruto;
+	private String nroLote;
+	private String indControl;
+	private String arrIdDetalleSalida;
 	
 	
 	/**
@@ -42,19 +42,6 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	public ProductoSalidaBean(Integer idDetalleSalida) {
 		super();
 		this.idDetalleSalida = idDetalleSalida;
-	}
-
-	/**
-	 * @return the idCategoria
-	 */
-	public Integer getIdCategoria() {
-		return idCategoria;
-	}
-	/**
-	 * @param idCategoria the idCategoria to set
-	 */
-	public void setIdCategoria(Integer idCategoria) {
-		this.idCategoria = idCategoria;
 	}
 
 	/**
@@ -86,6 +73,20 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	}
 
 	/**
+	 * @return the idCategoria
+	 */
+	public Integer getIdCategoria() {
+		return idCategoria;
+	}
+
+	/**
+	 * @param idCategoria the idCategoria to set
+	 */
+	public void setIdCategoria(Integer idCategoria) {
+		this.idCategoria = idCategoria;
+	}
+
+	/**
 	 * @return the idProducto
 	 */
 	public Integer getIdProducto() {
@@ -97,104 +98,6 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	 */
 	public void setIdProducto(Integer idProducto) {
 		this.idProducto = idProducto;
-	}
-
-	/**
-	 * @return the cantidad
-	 */
-	public BigDecimal getCantidad() {
-		return cantidad;
-	}
-
-	/**
-	 * @param cantidad the cantidad to set
-	 */
-	public void setCantidad(BigDecimal cantidad) {
-		this.cantidad = cantidad;
-	}
-
-	/**
-	 * @return the precioUnitario
-	 */
-	public BigDecimal getPrecioUnitario() {
-		return precioUnitario;
-	}
-
-	/**
-	 * @param precioUnitario the precioUnitario to set
-	 */
-	public void setPrecioUnitario(BigDecimal precioUnitario) {
-		this.precioUnitario = precioUnitario;
-	}
-
-	/**
-	 * @return the fechaVencimiento
-	 */
-	public String getFechaVencimiento() {
-		return fechaVencimiento;
-	}
-
-	/**
-	 * @param fechaVencimiento the fechaVencimiento to set
-	 */
-	public void setFechaVencimiento(String fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
-	}
-
-	/**
-	 * @return the fechaIngreso
-	 */
-	public String getFechaIngreso() {
-		return fechaIngreso;
-	}
-
-	/**
-	 * @param fechaIngreso the fechaIngreso to set
-	 */
-	public void setFechaIngreso(String fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
-	}
-
-	/**
-	 * @return the idDonacion
-	 */
-	public Integer getIdDonacion() {
-		return idDonacion;
-	}
-
-	/**
-	 * @param idDonacion the idDonacion to set
-	 */
-	public void setIdDonacion(Integer idDonacion) {
-		this.idDonacion = idDonacion;
-	}
-
-	/**
-	 * @return the nroLote
-	 */
-	public Integer getNroLote() {
-		return nroLote;
-	}
-
-	/**
-	 * @param nroLote the nroLote to set
-	 */
-	public void setNroLote(Integer nroLote) {
-		this.nroLote = nroLote;
-	}
-
-	/**
-	 * @return the arrIdDetalleIngreso
-	 */
-	public String getArrIdDetalleIngreso() {
-		return arrIdDetalleIngreso;
-	}
-
-	/**
-	 * @param arrIdDetalleIngreso the arrIdDetalleIngreso to set
-	 */
-	public void setArrIdDetalleIngreso(String arrIdDetalleIngreso) {
-		this.arrIdDetalleIngreso = arrIdDetalleIngreso;
 	}
 
 	/**
@@ -226,31 +129,31 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the idProgramacion
+	 * @return the cantidad
 	 */
-	public Integer getIdProgramacion() {
-		return idProgramacion;
+	public BigDecimal getCantidad() {
+		return cantidad;
 	}
 
 	/**
-	 * @param idProgramacion the idProgramacion to set
+	 * @param cantidad the cantidad to set
 	 */
-	public void setIdProgramacion(Integer idProgramacion) {
-		this.idProgramacion = idProgramacion;
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
 	}
 
 	/**
-	 * @return the nombreEnvase
+	 * @return the precioUnitario
 	 */
-	public String getNombreEnvase() {
-		return nombreEnvase;
+	public BigDecimal getPrecioUnitario() {
+		return precioUnitario;
 	}
 
 	/**
-	 * @param nombreEnvase the nombreEnvase to set
+	 * @param precioUnitario the precioUnitario to set
 	 */
-	public void setNombreEnvase(String nombreEnvase) {
-		this.nombreEnvase = nombreEnvase;
+	public void setPrecioUnitario(BigDecimal precioUnitario) {
+		this.precioUnitario = precioUnitario;
 	}
 
 	/**
@@ -267,4 +170,102 @@ public class ProductoSalidaBean extends BaseOutputBean {
 		this.importeTotal = importeTotal;
 	}
 
+	/**
+	 * @return the pesoNetoTotal
+	 */
+	public BigDecimal getPesoNetoTotal() {
+		return pesoNetoTotal;
+	}
+
+	/**
+	 * @param pesoNetoTotal the pesoNetoTotal to set
+	 */
+	public void setPesoNetoTotal(BigDecimal pesoNetoTotal) {
+		this.pesoNetoTotal = pesoNetoTotal;
+	}
+
+	/**
+	 * @return the pesoBrutoTotal
+	 */
+	public BigDecimal getPesoBrutoTotal() {
+		return pesoBrutoTotal;
+	}
+
+	/**
+	 * @param pesoBrutoTotal the pesoBrutoTotal to set
+	 */
+	public void setPesoBrutoTotal(BigDecimal pesoBrutoTotal) {
+		this.pesoBrutoTotal = pesoBrutoTotal;
+	}
+	
+	/**
+	 * @return the pesoUnitarioNeto
+	 */
+	public BigDecimal getPesoUnitarioNeto() {
+		return pesoUnitarioNeto;
+	}
+
+	/**
+	 * @param pesoUnitarioNeto the pesoUnitarioNeto to set
+	 */
+	public void setPesoUnitarioNeto(BigDecimal pesoUnitarioNeto) {
+		this.pesoUnitarioNeto = pesoUnitarioNeto;
+	}
+	
+	/**
+	 * @return the pesoUnitarioBruto
+	 */
+	public BigDecimal getPesoUnitarioBruto() {
+		return pesoUnitarioBruto;
+	}
+
+	/**
+	 * @param pesoUnitarioBruto the pesoUnitarioBruto to set
+	 */
+	public void setPesoUnitarioBruto(BigDecimal pesoUnitarioBruto) {
+		this.pesoUnitarioBruto = pesoUnitarioBruto;
+	}
+
+	/**
+	 * @return the nroLote
+	 */
+	public String getNroLote() {
+		return nroLote;
+	}
+
+	/**
+	 * @param nroLote the nroLote to set
+	 */
+	public void setNroLote(String nroLote) {
+		this.nroLote = nroLote;
+	}
+	
+	/**
+	 * @return the indControl
+	 */
+	public String getIndControl() {
+		return indControl;
+	}
+	
+	/**
+	 * @param indControl the indControl to set
+	 */
+	public void setIndControl(String indControl) {
+		this.indControl = indControl;
+	}
+
+	/**
+	 * @return the arrIdDetalleSalida
+	 */
+	public String getArrIdDetalleSalida() {
+		return arrIdDetalleSalida;
+	}
+
+	/**
+	 * @param arrIdDetalleSalida the arrIdDetalleSalida to set
+	 */
+	public void setArrIdDetalleSalida(String arrIdDetalleSalida) {
+		this.arrIdDetalleSalida = arrIdDetalleSalida;
+	}
+	
 }

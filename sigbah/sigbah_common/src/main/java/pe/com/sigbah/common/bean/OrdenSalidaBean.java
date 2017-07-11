@@ -16,53 +16,61 @@ public class OrdenSalidaBean extends BaseOutputBean {
 	private String codigoDdi;
 	private String nombreDdi;
 	private Integer idAlmacen;
+	private String codigoAlmacen;
 	private String nombreAlmacen;
-	
 	private String codigoMes;
 	private String nombreMes;
-	
-	private String codigoIngreso;
+	private String codigoSalida;
 	private String nroOrdenSalida;
 	private String fechaEmision;
 	private Integer idMovimiento;
 	private String codigoMovimiento;
 	private String nombreMovimiento;
-	private String nombreEstado;
-	
+	private String nombreEstado;	
 	private String nroGuiaRemision;
-	private String nombreEmpresa;
-	
+	private String nombreEmpresa;	
 	private String tipoOrigen;
-	
-	private String codigoAlmacen;
-	private String tipo;	
+	private String codigoUbigeo;
+	private String codigoRegion;
+	private String codigoDepartamento;
+	private String codigoProvincia;
+	private String codigoDistrito;	
+	private Integer idProgramacion;
+	private Integer idResponsable;
+	private Integer idResponsableExt;
+	private Integer idSolicitante;
+	private Integer idResponsableRecepcion;
+	private Integer idProyectoManifiesto;
+	private Integer idDdiDestino;
+	private Integer idAlmacenDestino;
+	private Integer idAlmacenDestinoExt;
 	private Integer idMedioTransporte;
-	private Integer idAlmacenProcedencia;
-	private Integer idProveedor;
-	private Integer idControlCalidad;
+	private Integer idEmpresaTransporte;
 	private Integer idChofer;
 	private String nroPlaca;
-	private String flagTipoCompra;
-	private String fechaLlegada;
+	private String fechaEntrega;
+	private String flagTipoDestino;	
 	private String observacion;
 	private Integer idEstado;
-	private String nroOrdenCompra;
-	private String flagControlCalidad;
-	private Integer idEmpresaTransporte;
-	private Integer idResponsable;
-	private String tipoIngreso;
-	private String codigoOrdenIngreso;
-	private Integer idDonacion;
-	private String provRep;
-	private String concepto;
-	private String representante;
-	private String nombreAlmacenProcedencia;
-	private String empresaTransporte;
-	private String nombreChofer;
-	private String responsable;
+	private String indControl;
+	private String nroRequerimiento;
 	
 	
+	/**
+	 * 
+	 */
+	public OrdenSalidaBean() {
+		super();
+	}
 	
+	/**
+	 * @param idSalida
+	 */
+	public OrdenSalidaBean(Integer idSalida) {
+		super();
+		this.idSalida = idSalida;
+	}
+
 	/**
 	 * @return the idSalida
 	 */
@@ -100,6 +108,30 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.codigoAnio = codigoAnio;
 	}
 	/**
+	 * @return the idDdi
+	 */
+	public Integer getIdDdi() {
+		return idDdi;
+	}
+	/**
+	 * @param idDdi the idDdi to set
+	 */
+	public void setIdDdi(Integer idDdi) {
+		this.idDdi = idDdi;
+	}
+	/**
+	 * @return the codigoDdi
+	 */
+	public String getCodigoDdi() {
+		return codigoDdi;
+	}
+	/**
+	 * @param codigoDdi the codigoDdi to set
+	 */
+	public void setCodigoDdi(String codigoDdi) {
+		this.codigoDdi = codigoDdi;
+	}
+	/**
 	 * @return the nombreDdi
 	 */
 	public String getNombreDdi() {
@@ -124,6 +156,18 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.idAlmacen = idAlmacen;
 	}
 	/**
+	 * @return the codigoAlmacen
+	 */
+	public String getCodigoAlmacen() {
+		return codigoAlmacen;
+	}
+	/**
+	 * @param codigoAlmacen the codigoAlmacen to set
+	 */
+	public void setCodigoAlmacen(String codigoAlmacen) {
+		this.codigoAlmacen = codigoAlmacen;
+	}
+	/**
 	 * @return the nombreAlmacen
 	 */
 	public String getNombreAlmacen() {
@@ -134,6 +178,42 @@ public class OrdenSalidaBean extends BaseOutputBean {
 	 */
 	public void setNombreAlmacen(String nombreAlmacen) {
 		this.nombreAlmacen = nombreAlmacen;
+	}
+	/**
+	 * @return the codigoMes
+	 */
+	public String getCodigoMes() {
+		return codigoMes;
+	}
+	/**
+	 * @param codigoMes the codigoMes to set
+	 */
+	public void setCodigoMes(String codigoMes) {
+		this.codigoMes = codigoMes;
+	}
+	/**
+	 * @return the nombreMes
+	 */
+	public String getNombreMes() {
+		return nombreMes;
+	}
+	/**
+	 * @param nombreMes the nombreMes to set
+	 */
+	public void setNombreMes(String nombreMes) {
+		this.nombreMes = nombreMes;
+	}
+	/**
+	 * @return the codigoSalida
+	 */
+	public String getCodigoSalida() {
+		return codigoSalida;
+	}
+	/**
+	 * @param codigoSalida the codigoSalida to set
+	 */
+	public void setCodigoSalida(String codigoSalida) {
+		this.codigoSalida = codigoSalida;
 	}
 	/**
 	 * @return the nroOrdenSalida
@@ -160,6 +240,30 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.fechaEmision = fechaEmision;
 	}
 	/**
+	 * @return the idMovimiento
+	 */
+	public Integer getIdMovimiento() {
+		return idMovimiento;
+	}
+	/**
+	 * @param idMovimiento the idMovimiento to set
+	 */
+	public void setIdMovimiento(Integer idMovimiento) {
+		this.idMovimiento = idMovimiento;
+	}
+	/**
+	 * @return the codigoMovimiento
+	 */
+	public String getCodigoMovimiento() {
+		return codigoMovimiento;
+	}
+	/**
+	 * @param codigoMovimiento the codigoMovimiento to set
+	 */
+	public void setCodigoMovimiento(String codigoMovimiento) {
+		this.codigoMovimiento = codigoMovimiento;
+	}
+	/**
 	 * @return the nombreMovimiento
 	 */
 	public String getNombreMovimiento() {
@@ -184,40 +288,28 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.nombreEstado = nombreEstado;
 	}
 	/**
-	 * @return the codigoDdi
+	 * @return the nroGuiaRemision
 	 */
-	public String getCodigoDdi() {
-		return codigoDdi;
+	public String getNroGuiaRemision() {
+		return nroGuiaRemision;
 	}
 	/**
-	 * @param codigoDdi the codigoDdi to set
+	 * @param nroGuiaRemision the nroGuiaRemision to set
 	 */
-	public void setCodigoDdi(String codigoDdi) {
-		this.codigoDdi = codigoDdi;
+	public void setNroGuiaRemision(String nroGuiaRemision) {
+		this.nroGuiaRemision = nroGuiaRemision;
 	}
 	/**
-	 * @return the codigoMovimiento
+	 * @return the nombreEmpresa
 	 */
-	public String getCodigoMovimiento() {
-		return codigoMovimiento;
+	public String getNombreEmpresa() {
+		return nombreEmpresa;
 	}
 	/**
-	 * @param codigoMovimiento the codigoMovimiento to set
+	 * @param nombreEmpresa the nombreEmpresa to set
 	 */
-	public void setCodigoMovimiento(String codigoMovimiento) {
-		this.codigoMovimiento = codigoMovimiento;
-	}
-	/**
-	 * @return the codigoIngreso
-	 */
-	public String getCodigoIngreso() {
-		return codigoIngreso;
-	}
-	/**
-	 * @param codigoIngreso the codigoIngreso to set
-	 */
-	public void setCodigoIngreso(String codigoIngreso) {
-		this.codigoIngreso = codigoIngreso;
+	public void setNombreEmpresa(String nombreEmpresa) {
+		this.nombreEmpresa = nombreEmpresa;
 	}
 	/**
 	 * @return the tipoOrigen
@@ -232,64 +324,172 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.tipoOrigen = tipoOrigen;
 	}
 	/**
-	 * @return the codigoMes
+	 * @return the codigoUbigeo
 	 */
-	public String getCodigoMes() {
-		return codigoMes;
+	public String getCodigoUbigeo() {
+		return codigoUbigeo;
 	}
 	/**
-	 * @param codigoMes the codigoMes to set
+	 * @param codigoUbigeo the codigoUbigeo to set
 	 */
-	public void setCodigoMes(String codigoMes) {
-		this.codigoMes = codigoMes;
+	public void setCodigoUbigeo(String codigoUbigeo) {
+		this.codigoUbigeo = codigoUbigeo;
 	}
 	/**
-	 * @return the idDdi
+	 * @return the codigoRegion
 	 */
-	public Integer getIdDdi() {
-		return idDdi;
+	public String getCodigoRegion() {
+		return codigoRegion;
 	}
 	/**
-	 * @param idDdi the idDdi to set
+	 * @param codigoRegion the codigoRegion to set
 	 */
-	public void setIdDdi(Integer idDdi) {
-		this.idDdi = idDdi;
+	public void setCodigoRegion(String codigoRegion) {
+		this.codigoRegion = codigoRegion;
 	}
 	/**
-	 * @return the codigoAlmacen
+	 * @return the codigoDepartamento
 	 */
-	public String getCodigoAlmacen() {
-		return codigoAlmacen;
+	public String getCodigoDepartamento() {
+		return codigoDepartamento;
 	}
 	/**
-	 * @param codigoAlmacen the codigoAlmacen to set
+	 * @param codigoDepartamento the codigoDepartamento to set
 	 */
-	public void setCodigoAlmacen(String codigoAlmacen) {
-		this.codigoAlmacen = codigoAlmacen;
+	public void setCodigoDepartamento(String codigoDepartamento) {
+		this.codigoDepartamento = codigoDepartamento;
 	}
 	/**
-	 * @return the tipo
+	 * @return the codigoProvincia
 	 */
-	public String getTipo() {
-		return tipo;
+	public String getCodigoProvincia() {
+		return codigoProvincia;
 	}
 	/**
-	 * @param tipo the tipo to set
+	 * @param codigoProvincia the codigoProvincia to set
 	 */
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setCodigoProvincia(String codigoProvincia) {
+		this.codigoProvincia = codigoProvincia;
 	}
 	/**
-	 * @return the idMovimiento
+	 * @return the codigoDistrito
 	 */
-	public Integer getIdMovimiento() {
-		return idMovimiento;
+	public String getCodigoDistrito() {
+		return codigoDistrito;
 	}
 	/**
-	 * @param idMovimiento the idMovimiento to set
+	 * @param codigoDistrito the codigoDistrito to set
 	 */
-	public void setIdMovimiento(Integer idMovimiento) {
-		this.idMovimiento = idMovimiento;
+	public void setCodigoDistrito(String codigoDistrito) {
+		this.codigoDistrito = codigoDistrito;
+	}
+	/**
+	 * @return the idProgramacion
+	 */
+	public Integer getIdProgramacion() {
+		return idProgramacion;
+	}
+	/**
+	 * @param idProgramacion the idProgramacion to set
+	 */
+	public void setIdProgramacion(Integer idProgramacion) {
+		this.idProgramacion = idProgramacion;
+	}
+	/**
+	 * @return the idResponsable
+	 */
+	public Integer getIdResponsable() {
+		return idResponsable;
+	}
+	/**
+	 * @param idResponsable the idResponsable to set
+	 */
+	public void setIdResponsable(Integer idResponsable) {
+		this.idResponsable = idResponsable;
+	}
+	/**
+	 * @return the idResponsableExt
+	 */
+	public Integer getIdResponsableExt() {
+		return idResponsableExt;
+	}
+	/**
+	 * @param idResponsableExt the idResponsableExt to set
+	 */
+	public void setIdResponsableExt(Integer idResponsableExt) {
+		this.idResponsableExt = idResponsableExt;
+	}
+	/**
+	 * @return the idSolicitante
+	 */
+	public Integer getIdSolicitante() {
+		return idSolicitante;
+	}
+	/**
+	 * @param idSolicitante the idSolicitante to set
+	 */
+	public void setIdSolicitante(Integer idSolicitante) {
+		this.idSolicitante = idSolicitante;
+	}
+	/**
+	 * @return the idResponsableRecepcion
+	 */
+	public Integer getIdResponsableRecepcion() {
+		return idResponsableRecepcion;
+	}
+	/**
+	 * @param idResponsableRecepcion the idResponsableRecepcion to set
+	 */
+	public void setIdResponsableRecepcion(Integer idResponsableRecepcion) {
+		this.idResponsableRecepcion = idResponsableRecepcion;
+	}
+	/**
+	 * @return the idProyectoManifiesto
+	 */
+	public Integer getIdProyectoManifiesto() {
+		return idProyectoManifiesto;
+	}
+	/**
+	 * @param idProyectoManifiesto the idProyectoManifiesto to set
+	 */
+	public void setIdProyectoManifiesto(Integer idProyectoManifiesto) {
+		this.idProyectoManifiesto = idProyectoManifiesto;
+	}
+	/**
+	 * @return the idDdiDestino
+	 */
+	public Integer getIdDdiDestino() {
+		return idDdiDestino;
+	}
+	/**
+	 * @param idDdiDestino the idDdiDestino to set
+	 */
+	public void setIdDdiDestino(Integer idDdiDestino) {
+		this.idDdiDestino = idDdiDestino;
+	}
+	/**
+	 * @return the idAlmacenDestino
+	 */
+	public Integer getIdAlmacenDestino() {
+		return idAlmacenDestino;
+	}
+	/**
+	 * @param idAlmacenDestino the idAlmacenDestino to set
+	 */
+	public void setIdAlmacenDestino(Integer idAlmacenDestino) {
+		this.idAlmacenDestino = idAlmacenDestino;
+	}
+	/**
+	 * @return the idAlmacenDestinoExt
+	 */
+	public Integer getIdAlmacenDestinoExt() {
+		return idAlmacenDestinoExt;
+	}
+	/**
+	 * @param idAlmacenDestinoExt the idAlmacenDestinoExt to set
+	 */
+	public void setIdAlmacenDestinoExt(Integer idAlmacenDestinoExt) {
+		this.idAlmacenDestinoExt = idAlmacenDestinoExt;
 	}
 	/**
 	 * @return the idMedioTransporte
@@ -304,40 +504,16 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.idMedioTransporte = idMedioTransporte;
 	}
 	/**
-	 * @return the idAlmacenProcedencia
+	 * @return the idEmpresaTransporte
 	 */
-	public Integer getIdAlmacenProcedencia() {
-		return idAlmacenProcedencia;
+	public Integer getIdEmpresaTransporte() {
+		return idEmpresaTransporte;
 	}
 	/**
-	 * @param idAlmacenProcedencia the idAlmacenProcedencia to set
+	 * @param idEmpresaTransporte the idEmpresaTransporte to set
 	 */
-	public void setIdAlmacenProcedencia(Integer idAlmacenProcedencia) {
-		this.idAlmacenProcedencia = idAlmacenProcedencia;
-	}
-	/**
-	 * @return the idProveedor
-	 */
-	public Integer getIdProveedor() {
-		return idProveedor;
-	}
-	/**
-	 * @param idProveedor the idProveedor to set
-	 */
-	public void setIdProveedor(Integer idProveedor) {
-		this.idProveedor = idProveedor;
-	}
-	/**
-	 * @return the idControlCalidad
-	 */
-	public Integer getIdControlCalidad() {
-		return idControlCalidad;
-	}
-	/**
-	 * @param idControlCalidad the idControlCalidad to set
-	 */
-	public void setIdControlCalidad(Integer idControlCalidad) {
-		this.idControlCalidad = idControlCalidad;
+	public void setIdEmpresaTransporte(Integer idEmpresaTransporte) {
+		this.idEmpresaTransporte = idEmpresaTransporte;
 	}
 	/**
 	 * @return the idChofer
@@ -364,28 +540,28 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.nroPlaca = nroPlaca;
 	}
 	/**
-	 * @return the flagTipoCompra
+	 * @return the fechaEntrega
 	 */
-	public String getFlagTipoCompra() {
-		return flagTipoCompra;
+	public String getFechaEntrega() {
+		return fechaEntrega;
 	}
 	/**
-	 * @param flagTipoCompra the flagTipoCompra to set
+	 * @param fechaEntrega the fechaEntrega to set
 	 */
-	public void setFlagTipoCompra(String flagTipoCompra) {
-		this.flagTipoCompra = flagTipoCompra;
+	public void setFechaEntrega(String fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
 	}
 	/**
-	 * @return the fechaLlegada
+	 * @return the flagTipoDestino
 	 */
-	public String getFechaLlegada() {
-		return fechaLlegada;
+	public String getFlagTipoDestino() {
+		return flagTipoDestino;
 	}
 	/**
-	 * @param fechaLlegada the fechaLlegada to set
+	 * @param flagTipoDestino the flagTipoDestino to set
 	 */
-	public void setFechaLlegada(String fechaLlegada) {
-		this.fechaLlegada = fechaLlegada;
+	public void setFlagTipoDestino(String flagTipoDestino) {
+		this.flagTipoDestino = flagTipoDestino;
 	}
 	/**
 	 * @return the observacion
@@ -412,208 +588,28 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.idEstado = idEstado;
 	}
 	/**
-	 * @return the nroOrdenCompra
+	 * @return the indControl
 	 */
-	public String getNroOrdenCompra() {
-		return nroOrdenCompra;
+	public String getIndControl() {
+		return indControl;
 	}
 	/**
-	 * @param nroOrdenCompra the nroOrdenCompra to set
+	 * @param indControl the indControl to set
 	 */
-	public void setNroOrdenCompra(String nroOrdenCompra) {
-		this.nroOrdenCompra = nroOrdenCompra;
+	public void setIndControl(String indControl) {
+		this.indControl = indControl;
 	}
 	/**
-	 * @return the flagControlCalidad
+	 * @return the nroRequerimiento
 	 */
-	public String getFlagControlCalidad() {
-		return flagControlCalidad;
+	public String getNroRequerimiento() {
+		return nroRequerimiento;
 	}
 	/**
-	 * @param flagControlCalidad the flagControlCalidad to set
+	 * @param nroRequerimiento the nroRequerimiento to set
 	 */
-	public void setFlagControlCalidad(String flagControlCalidad) {
-		this.flagControlCalidad = flagControlCalidad;
-	}
-	/**
-	 * @return the idEmpresaTransporte
-	 */
-	public Integer getIdEmpresaTransporte() {
-		return idEmpresaTransporte;
-	}
-	/**
-	 * @param idEmpresaTransporte the idEmpresaTransporte to set
-	 */
-	public void setIdEmpresaTransporte(Integer idEmpresaTransporte) {
-		this.idEmpresaTransporte = idEmpresaTransporte;
-	}
-	/**
-	 * @return the idResponsable
-	 */
-	public Integer getIdResponsable() {
-		return idResponsable;
-	}
-	/**
-	 * @param idResponsable the idResponsable to set
-	 */
-	public void setIdResponsable(Integer idResponsable) {
-		this.idResponsable = idResponsable;
-	}
-	/**
-	 * @return the tipoIngreso
-	 */
-	public String getTipoIngreso() {
-		return tipoIngreso;
-	}
-	/**
-	 * @param tipoIngreso the tipoIngreso to set
-	 */
-	public void setTipoIngreso(String tipoIngreso) {
-		this.tipoIngreso = tipoIngreso;
-	}
-	/**
-	 * @return the codigoOrdenIngreso
-	 */
-	public String getCodigoOrdenIngreso() {
-		return codigoOrdenIngreso;
-	}
-	/**
-	 * @param codigoOrdenIngreso the codigoOrdenIngreso to set
-	 */
-	public void setCodigoOrdenIngreso(String codigoOrdenIngreso) {
-		this.codigoOrdenIngreso = codigoOrdenIngreso;
-	}
-	/**
-	 * @return the idDonacion
-	 */
-	public Integer getIdDonacion() {
-		return idDonacion;
-	}
-	/**
-	 * @param idDonacion the idDonacion to set
-	 */
-	public void setIdDonacion(Integer idDonacion) {
-		this.idDonacion = idDonacion;
-	}
-	/**
-	 * @return the provRep
-	 */
-	public String getProvRep() {
-		return provRep;
-	}
-	/**
-	 * @param provRep the provRep to set
-	 */
-	public void setProvRep(String provRep) {
-		this.provRep = provRep;
-	}
-	/**
-	 * @return the concepto
-	 */
-	public String getConcepto() {
-		return concepto;
-	}
-	/**
-	 * @param concepto the concepto to set
-	 */
-	public void setConcepto(String concepto) {
-		this.concepto = concepto;
-	}
-	/**
-	 * @return the representante
-	 */
-	public String getRepresentante() {
-		return representante;
-	}
-	/**
-	 * @param representante the representante to set
-	 */
-	public void setRepresentante(String representante) {
-		this.representante = representante;
-	}
-	/**
-	 * @return the nombreAlmacenProcedencia
-	 */
-	public String getNombreAlmacenProcedencia() {
-		return nombreAlmacenProcedencia;
-	}
-	/**
-	 * @param nombreAlmacenProcedencia the nombreAlmacenProcedencia to set
-	 */
-	public void setNombreAlmacenProcedencia(String nombreAlmacenProcedencia) {
-		this.nombreAlmacenProcedencia = nombreAlmacenProcedencia;
-	}
-	/**
-	 * @return the empresaTransporte
-	 */
-	public String getEmpresaTransporte() {
-		return empresaTransporte;
-	}
-	/**
-	 * @param empresaTransporte the empresaTransporte to set
-	 */
-	public void setEmpresaTransporte(String empresaTransporte) {
-		this.empresaTransporte = empresaTransporte;
-	}
-	/**
-	 * @return the nombreChofer
-	 */
-	public String getNombreChofer() {
-		return nombreChofer;
-	}
-	/**
-	 * @param nombreChofer the nombreChofer to set
-	 */
-	public void setNombreChofer(String nombreChofer) {
-		this.nombreChofer = nombreChofer;
-	}
-	/**
-	 * @return the responsable
-	 */
-	public String getResponsable() {
-		return responsable;
-	}
-	/**
-	 * @param responsable the responsable to set
-	 */
-	public void setResponsable(String responsable) {
-		this.responsable = responsable;
-	}
-	/**
-	 * @return the nombreMes
-	 */
-	public String getNombreMes() {
-		return nombreMes;
-	}
-	/**
-	 * @param nombreMes the nombreMes to set
-	 */
-	public void setNombreMes(String nombreMes) {
-		this.nombreMes = nombreMes;
-	}
-	/**
-	 * @return the nroGuiaRemision
-	 */
-	public String getNroGuiaRemision() {
-		return nroGuiaRemision;
-	}
-	/**
-	 * @param nroGuiaRemision the nroGuiaRemision to set
-	 */
-	public void setNroGuiaRemision(String nroGuiaRemision) {
-		this.nroGuiaRemision = nroGuiaRemision;
-	}
-	/**
-	 * @return the nombreEmpresa
-	 */
-	public String getNombreEmpresa() {
-		return nombreEmpresa;
-	}
-	/**
-	 * @param nombreEmpresa the nombreEmpresa to set
-	 */
-	public void setNombreEmpresa(String nombreEmpresa) {
-		this.nombreEmpresa = nombreEmpresa;
+	public void setNroRequerimiento(String nroRequerimiento) {
+		this.nroRequerimiento = nroRequerimiento;
 	}
 
 }

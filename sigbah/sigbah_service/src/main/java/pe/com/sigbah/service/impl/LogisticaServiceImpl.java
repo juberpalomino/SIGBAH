@@ -268,11 +268,11 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroOrdenSalida(java.lang.Integer)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroOrdenSalida(java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public OrdenSalidaBean obtenerRegistroOrdenSalida(Integer idSalida) throws Exception {
-		return logisticaDao.obtenerRegistroOrdenSalida(idSalida);
+	public OrdenSalidaBean obtenerRegistroOrdenSalida(Integer idSalida, String anio) throws Exception {
+		return logisticaDao.obtenerRegistroOrdenSalida(idSalida, anio);
 	}
 
 	/* (non-Javadoc)
