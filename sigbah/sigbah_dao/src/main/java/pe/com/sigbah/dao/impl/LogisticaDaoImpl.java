@@ -30,11 +30,14 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
+import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
+import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -48,6 +51,7 @@ import pe.com.sigbah.mapper.DocumentoIngresoMapper;
 import pe.com.sigbah.mapper.LoteProductoMapper;
 import pe.com.sigbah.mapper.NroControlCalidadMapper;
 import pe.com.sigbah.mapper.OrdenIngresoMapper;
+import pe.com.sigbah.mapper.OrdenSalidaMapper;
 import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.ProductoIngresoMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
@@ -108,6 +112,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_CONTROL_CALIDAD : "+mensajeRespuesta);
 				throw new Exception();
 			} else {
 				lista = (List<ControlCalidadBean>) out.get("po_Lr_Recordset");
@@ -154,7 +160,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[obtenerCorrelativoControlCalidad] Ocurrio un error en la operacion del USP_SEL_GENERA_CORREL_CALIDAD");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerCorrelativoControlCalidad] Ocurrio un error en la operacion del USP_SEL_GENERA_CORREL_CALIDAD : "+mensajeRespuesta);
     			throw new Exception();
     		}
 
@@ -311,7 +318,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[insertarRegistroControlCalidad] Ocurrio un error en la operacion del USP_INS_REGISTRA_CONTROL_CALID");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[insertarRegistroControlCalidad] Ocurrio un error en la operacion del USP_INS_REGISTRA_CONTROL_CALID : "+mensajeRespuesta);
     			throw new Exception();
     		}
 		
@@ -399,7 +407,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[actualizarRegistroControlCalidad] Ocurrio un error en la operacion del USP_UPD_REGISTRA_CONTROL_CALID");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[actualizarRegistroControlCalidad] Ocurrio un error en la operacion del USP_UPD_REGISTRA_CONTROL_CALID : "+mensajeRespuesta);
     			throw new Exception();
     		}
 
@@ -444,7 +453,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[obtenerRegistroControlCalidad] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_CONTROL_CALIDA");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerRegistroControlCalidad] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_CONTROL_CALIDA : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -496,7 +506,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[listarProductoControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_PROD_CONTROL_CALID");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_PROD_CONTROL_CALID : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -568,7 +579,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[grabarProductoControlCalidad] Ocurrio un error en la operacion del USP_INS_UPD_PRODUCTO_CC");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarProductoControlCalidad] Ocurrio un error en la operacion del USP_INS_UPD_PRODUCTO_CC : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -614,7 +626,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[eliminarProductoControlCalidad] Ocurrio un error en la operacion del USP_DEL_PRODUCTO_CC");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarProductoControlCalidad] Ocurrio un error en la operacion del USP_DEL_PRODUCTO_CC : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -659,7 +672,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[listarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENTO_CC");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENTO_CC : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -717,7 +731,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[grabarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_INS_DOCUMENTO_CC");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_INS_DOCUMENTO_CC : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -763,7 +778,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[eliminarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_CC");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarDocumentoControlCalidad] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_CC : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -808,7 +824,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[listarDetalleProductoControlCalidad] Ocurrio un error en la operacion del USP_SEL_REPORTE_CC");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDetalleProductoControlCalidad] Ocurrio un error en la operacion del USP_SEL_REPORTE_CC : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -856,6 +873,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarOrdenIngreso] Ocurrio un error en la operacion del USP_LISTAR_ORDEN_INGRESO : "+mensajeRespuesta);
 				throw new Exception();
 			} else {
 				lista = (List<OrdenIngresoBean>) out.get("po_Lr_Recordset");
@@ -905,7 +924,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[obtenerCorrelativoOrdenIngreso] Ocurrio un error en la operacion del USP_SEL_GENERA_NRO_INGRESO");
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerCorrelativoOrdenIngreso] Ocurrio un error en la operacion del USP_SEL_GENERA_NRO_INGRESO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 
@@ -950,6 +970,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarNroControlCalidad] Ocurrio un error en la operacion del USP_SEL_TAB_CONTROL_CALIDAD : "+mensajeRespuesta);
 				throw new Exception();
 			} else {
 				lista = (List<ControlCalidadBean>) out.get("po_Lr_Recordset");
@@ -1044,7 +1066,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[grabarOrdenIngreso] Ocurrio un error en la operacion del USP_INS_UPD_REGIST_INGRESO_ALM");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarOrdenIngreso] Ocurrio un error en la operacion del USP_INS_UPD_REGIST_INGRESO_ALM : "+mensajeRespuesta);
     			throw new Exception();
     		}
 		
@@ -1092,7 +1115,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[obtenerRegistroOrdenIngreso] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_ORDEN_INGRESO");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerRegistroOrdenIngreso] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_ORDEN_INGRESO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -1140,6 +1164,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoIngreso] Ocurrio un error en la operacion del USP_LIST_INGRESO_PRODUCTO_ALM : "+mensajeRespuesta);
 				throw new Exception();
 			} else {
 				lista = (List<ProductoIngresoBean>) out.get("po_Lr_Recordset");
@@ -1202,7 +1228,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[grabarProductoIngreso] Ocurrio un error en la operacion del USP_INS_UPD_INGRESO_PRODUC_ALM");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarProductoIngreso] Ocurrio un error en la operacion del USP_INS_UPD_INGRESO_PRODUC_ALM : "+mensajeRespuesta);
     			throw new Exception();
     		}
 		
@@ -1248,7 +1275,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[eliminarProductoIngreso] Ocurrio un error en la operacion del USP_DEL_PRODUCTO_INGRESO_ALM");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarProductoIngreso] Ocurrio un error en la operacion del USP_DEL_PRODUCTO_INGRESO_ALM : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -1295,6 +1323,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarLoteProductos] Ocurrio un error en la operacion del USP_SEL_TAB_LOTE_PRODUCTO : "+mensajeRespuesta);
 				throw new Exception();
 			} else {
 				lista = (List<LoteProductoBean>) out.get("po_Lr_Recordset");
@@ -1337,7 +1367,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[listarDocumentoIngreso] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENTO_INGRESO");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentoIngreso] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENTO_INGRESO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -1395,7 +1426,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[grabarDocumentoIngreso] Ocurrio un error en la operacion del USP_INS_UPD_DOCUMENTO_INGRESO");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarDocumentoIngreso] Ocurrio un error en la operacion del USP_INS_UPD_DOCUMENTO_INGRESO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -1441,7 +1473,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
-				LOGGER.info("[eliminarDocumentoIngreso] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_INGRESO");
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarDocumentoIngreso] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_INGRESO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -1454,6 +1487,141 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[eliminarDocumentoIngreso] Fin ");
 		return registroDocumentoIngreso;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public List<OrdenSalidaBean> listarOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		LOGGER.info("[listarOrdenSalida] Inicio ");
+		List<OrdenSalidaBean> lista = new ArrayList<OrdenSalidaBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", ordenSalidaBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", ordenSalidaBean.getCodigoMes(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_DDI", ordenSalidaBean.getIdDdi(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_DDI", ordenSalidaBean.getCodigoDdi(), Types.VARCHAR);			
+			input_objParametros.addValue("PI_IDE_ALMACEN", ordenSalidaBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", ordenSalidaBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", ordenSalidaBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_ORDENES_SALIDA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));			
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_CURSOR", new SqlOutParameter("PO_CURSOR", OracleTypes.CURSOR, new OrdenSalidaMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarOrdenSalida] Ocurrio un error en la operacion del USP_SEL_LISTAR_ORDENES_SALIDA : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<OrdenSalidaBean>) out.get("PO_CURSOR");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarOrdenSalida] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerCorrelativoOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public OrdenSalidaBean obtenerCorrelativoOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public OrdenSalidaBean grabarOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroOrdenSalida(java.lang.Integer)
+	 */
+	@Override
+	public OrdenSalidaBean obtenerRegistroOrdenSalida(Integer idSalida) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductoSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public List<ProductoSalidaBean> listarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProductoSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public ProductoSalidaBean grabarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarProductoSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public ProductoSalidaBean eliminarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarDocumentoSalida(pe.com.sigbah.common.bean.DocumentoSalidaBean)
+	 */
+	@Override
+	public List<DocumentoSalidaBean> listarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarDocumentoSalida(pe.com.sigbah.common.bean.DocumentoSalidaBean)
+	 */
+	@Override
+	public DocumentoSalidaBean grabarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarDocumentoSalida(pe.com.sigbah.common.bean.DocumentoSalidaBean)
+	 */
+	@Override
+	public DocumentoSalidaBean eliminarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

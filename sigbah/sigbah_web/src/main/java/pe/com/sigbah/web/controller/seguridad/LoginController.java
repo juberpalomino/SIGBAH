@@ -1,19 +1,25 @@
 package pe.com.sigbah.web.controller.seguridad;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.AlmacenBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
+import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.service.AdministracionService;
 import pe.com.sigbah.web.controller.common.BaseController;
 
@@ -52,20 +58,20 @@ public class LoginController extends BaseController {
      * @param model 
 	 * @return - Retorna a la vista JSP.
      */
-    @RequestMapping(method = RequestMethod.POST)
-    public String doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, 
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+    public Object doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, 
     							HttpServletRequest request, HttpServletResponse response, Model model) {
-    	String destino = "login";
+    	String indicador = Constantes.ZERO_STRING;
         boolean isAccessOk = true;
         
         if (usuario == null) {
-            destino = "login";
             isAccessOk = false;
         }
 
         if (!result.hasErrors() && isAccessOk) {
             isAccessOk = false;
-            
+            Integer idAlmacen = usuario.getIdAlmacen();
             try {
             	DetalleUsuarioBean detalleUsuarioBean = administracionService.obtenerDatosUsuario(usuario);
             	
@@ -75,18 +81,40 @@ public class LoginController extends BaseController {
             		usuario = null;
             	}
                
+	            if (usuario != null) {
+	            	List<AlmacenBean> listaAlmacenUsuario = administracionService.listarAlmacenUsuario(usuario.getIdUsuario());
+	            	if (!isEmpty(listaAlmacenUsuario) && listaAlmacenUsuario.size() > 1) {
+	            		if (!isNullInteger(idAlmacen)) {
+	            			AlmacenBean almacenBean = obtenerAlmacen(listaAlmacenUsuario, idAlmacen);
+	            			usuario.setIdAlmacen(almacenBean.getIdAlmacen());
+	            			usuario.setCodigoAlmacen(almacenBean.getCodigoAlmacen());
+	            			usuario.setNombreAlmacen(almacenBean.getNombreAlmacen());
+	            			context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
+		            		indicador = Constantes.ONE_STRING;
+	            		} else {
+	            			return listaAlmacenUsuario;
+	            		}
+	            	} else {
+	            		context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
+	            		indicador = Constantes.ONE_STRING;
+	            	}
+	            }            
             } catch (Exception e) {
             	LOGGER.error(e.getMessage(), e);
-            	model.addAttribute("base", getBaseRespuesta(null));
                 usuario = null;
-            }    
-            
-            if (usuario != null) {
-                context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
-                destino = "forward:/principal/inicio";
+                return getBaseRespuesta(null);
             }
         }
-        return destino;
+        return indicador;
+    }
+    
+    private AlmacenBean obtenerAlmacen(List<AlmacenBean> listaAlmacenUsuario, Integer idAlmacen) {
+    	for (AlmacenBean almacen : listaAlmacenUsuario) {
+    		if (almacen.getIdAlmacen().equals(idAlmacen)) {
+    			return almacen;
+    		}
+    	}
+		return null;
     }
 
 }
