@@ -147,10 +147,6 @@ public class OrdenSalidaController extends BaseController {
         		if (!isNullInteger(ordenSalida.getIdEmpresaTransporte())) {
         			model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(ordenSalida.getIdEmpresaTransporte())));
         		}
-        		if (!isNullInteger(ordenSalida.getIdDdiDestino())) {
-        			model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(ordenSalida.getIdDdiDestino())));
-        			model.addAttribute("lista_responsable_recepcion", generalService.listarPersonal(new ItemBean(ordenSalida.getIdDdiDestino())));
-        		}
         	} else {
 
         		StringBuilder correlativo = new StringBuilder();

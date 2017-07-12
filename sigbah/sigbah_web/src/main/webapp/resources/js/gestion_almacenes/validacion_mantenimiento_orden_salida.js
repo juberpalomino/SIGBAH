@@ -26,53 +26,85 @@ $(document).ready(function() {
 					}
 				}
 			},
-			
-			// Datos Orden de Compra
-			sel_nro_ord_compra : {
+			sel_nro_pro_manifiesto : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Nº orden Compra.'
-					}
-				}
-			},
-			sel_com_por : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Compra Por.'
+						message : 'Debe seleccionar N° Proyecto de Manifiesto.'
 					}
 				}
 			},
 			
-			// Datos Control de Calidad
-			rb_tie_nro_rep_con_calidad : {
+			// Solicitud de Salida
+			sel_solicitada : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Tiene N° Rep. Control Calidad.'
+						message : 'Debe seleccionar Solicitada por.'
 					}
 				}
 			},
-			sel_nro_con_calidad : {
+			sel_responsable : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar N° Control de Calidad.'
-					}
-				}
-			},
-			
-			// Datos de Proveedor
-			sel_proveedor : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Proveedor.'
+						message : 'Debe seleccionar Responsable.'
 					}
 				}
 			},
 			
-			// Datos de la Procedencia
-			sel_almacen : {
+			// Datos del Destino
+			sel_ddi : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Almacen.'
+						message : 'Debe seleccionar DDI.'
+					}
+				}
+			},
+			rb_tie_ate_gobierno : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Tipo de Atención.'
+					}
+				}
+			},
+			
+			sel_gore : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar GORE.'
+					}
+				}
+			},
+			sel_departamento : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Departamento.'
+					}
+				}
+			},
+			sel_provincia : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Provincia.'
+					}
+				}
+			},
+			sel_distrito : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Distrito.'
+					}
+				}
+			},
+			sel_alm_destino : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Almacen Destino.'
+					}
+				}
+			},
+			sel_res_recepcion : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Responsable Recepción.'
 					}
 				}
 			},
@@ -92,20 +124,6 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_fec_llegada : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha de Llegada.'
-					}
-				}
-			},
-			sel_chofer : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Chofer.'
-					}
-				}
-			},
 			txt_nro_placa : {
 				validators : {
 					notEmpty : {
@@ -113,12 +131,17 @@ $(document).ready(function() {
 					}
 				}
 			},
-			
-			// Responsable de Recepción
-			sel_responsable : {
+			txt_fec_entrega : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Responsable.'
+						message : 'Debe ingresar Fecha de Entrega.'
+					}
+				}
+			},
+			sel_chofer : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Chofer.'
 					}
 				}
 			}
@@ -137,17 +160,24 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_fec_vencimiento : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha Vencimiento.'
-					}
-				}
-			},
 			txt_can_lote : {
 				validators : {
 					notEmpty : {
 						message : 'Debe ingresar Cantidad de Lote.'
+					}
+				}
+			},
+			txt_cantidad : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Cantidad.'
+					}
+				}
+			},
+			txt_pre_unitario : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Precio Unitario.'
 					}
 				}
 			}

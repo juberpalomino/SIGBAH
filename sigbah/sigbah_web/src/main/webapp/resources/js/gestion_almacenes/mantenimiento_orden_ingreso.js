@@ -931,7 +931,9 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#sel_med_transporte').prop('disabled', true);		
 		$('#sel_emp_transporte').prop('disabled', true);
 		$('#txt_fec_llegada').prop('disabled', true);
-		$('#txt_fec_llegada').addClass('mod-readonly');
+		if (!$('#txt_fec_llegada').hasClass('mod-readonly')) {
+			$('#txt_fec_llegada').addClass('mod-readonly');
+		}		
 		$('#sel_chofer').prop('disabled', true);
 		$('#txt_nro_placa').prop('disabled', true);
 	} else if (val_tip_movimiento == '1') { // Ajustes por inventario
@@ -949,7 +951,9 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#sel_med_transporte').prop('disabled', true);		
 		$('#sel_emp_transporte').prop('disabled', true);
 		$('#txt_fec_llegada').prop('disabled', true);
-		$('#txt_fec_llegada').addClass('mod-readonly');
+		if (!$('#txt_fec_llegada').hasClass('mod-readonly')) {
+			$('#txt_fec_llegada').addClass('mod-readonly');
+		}
 		$('#sel_chofer').prop('disabled', true);
 		$('#txt_nro_placa').prop('disabled', true);
 	} else if (val_tip_movimiento == '8') { // Compra
@@ -972,7 +976,7 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#sel_emp_transporte').prop('disabled', false);
 		$('#txt_fec_llegada').prop('disabled', false);
 		if ($('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').removeClass('mod-readonly')
+			$('#txt_fec_llegada').removeClass('mod-readonly');
 		}
 		$('#sel_chofer').prop('disabled', false);
 		$('#txt_nro_placa').prop('disabled', false);
@@ -994,7 +998,9 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#sel_med_transporte').prop('disabled', true);		
 		$('#sel_emp_transporte').prop('disabled', true);
 		$('#txt_fec_llegada').prop('disabled', true);
-		$('#txt_fec_llegada').addClass('mod-readonly');
+		if (!$('#txt_fec_llegada').hasClass('mod-readonly')) {
+			$('#txt_fec_llegada').addClass('mod-readonly');
+		}
 		$('#sel_chofer').prop('disabled', true);
 		$('#txt_nro_placa').prop('disabled', true);
 	} else if (val_tip_movimiento == '4') { // Transferencia Interna
@@ -1013,7 +1019,7 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#sel_emp_transporte').prop('disabled', false);
 		$('#txt_fec_llegada').prop('disabled', false);
 		if ($('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').removeClass('mod-readonly')
+			$('#txt_fec_llegada').removeClass('mod-readonly');
 		}
 		
 		$('#sel_chofer').prop('disabled', false);
@@ -1034,7 +1040,7 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#sel_emp_transporte').prop('disabled', false);
 		$('#txt_fec_llegada').prop('disabled', false);
 		if ($('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').removeClass('mod-readonly')
+			$('#txt_fec_llegada').removeClass('mod-readonly');
 		}
 		$('#sel_chofer').prop('disabled', false);
 		$('#txt_nro_placa').prop('disabled', false);

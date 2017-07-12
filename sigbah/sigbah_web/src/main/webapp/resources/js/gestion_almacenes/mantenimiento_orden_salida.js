@@ -25,14 +25,9 @@ $(document).ready(function() {
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
-	$('#txt_fec_llegada').datepicker().on('changeDate', function(e) {
+	$('#txt_fec_entrega').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
-	});
-	
-	$('#txt_fec_vencimiento').datepicker().on('changeDate', function(e) {
-		e.preventDefault();
-		frm_det_productos.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
 	$('#txt_doc_fecha').datepicker().on('changeDate', function(e) {
@@ -56,43 +51,39 @@ $(document).ready(function() {
 			
 			frm_dat_generales.data('bootstrapValidator').resetForm();
 			
-			cargarTipoMovimiento(val_tip_movimiento, true);
+			cargarTipoMovimiento(val_tip_movimiento);
 			
-//			$('#sel_com_por').val('');
-//			$('input[name=rb_tie_nro_rep_con_calidad]').prop('checked', false);
-//			$('#sel_nro_con_calidad').val('');
-//			$('#sel_proveedor').val('');
-//			$('#txt_representante').val('');
-//			$('#sel_almacen').val('');
-//			$('#sel_med_transporte').val('');
-//			$('#sel_emp_transporte').val('');
-//			$('#txt_fec_llegada').val('');
-//			$('#sel_chofer').val('');
-//			$('#txt_nro_placa').val('');
-//			
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_nro_ord_compra');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_com_por');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'rb_tie_nro_rep_con_calidad');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_nro_con_calidad');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_almacen');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_med_transporte');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_llegada');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
+			$('#sel_ddi').val('');
+			$('input[name=rb_tie_ate_gobierno]').prop('checked', false);
+			$('#sel_gore').val('');
+			$('#sel_departamento').val('');
+			
+			$('#sel_provincia').html('');
+			$('#sel_distrito').html('');
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
+			
+			$('#sel_med_transporte').val('');
+			$('#sel_emp_transporte').html('');
+			$('#txt_nro_placa').val('');
+			$('#txt_fec_entrega').val('');
+			$('#sel_chofer').val('');
+			
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ddi');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'rb_tie_ate_gobierno');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_gore');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_departamento');
+			
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_med_transporte');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_entrega');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
 
 		}
 	});
 	
 	$('input[type=radio][name=rb_tie_ate_gobierno]').change(function() {
-        if (this.value == 'R') {
-        	$('#div_gore_destino').show();
-    		$('#div_ubi_destino').hide();
-        } else if (this.value == 'L') {
-        	$('#div_gore_destino').hide();
-    		$('#div_ubi_destino').show();
-        }
+		cargarTipoAtencion(this.value);
     });
 	
 	$('#sel_nro_pro_manifiesto').change(function() {
@@ -112,95 +103,27 @@ $(document).ready(function() {
 	$('#sel_ddi').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {						
-			var params = { 
-				icodigo : codigo
-			};			
-			loadding(true);
-			consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenDestino', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					var options = '';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-			        });
-			        $('#sel_alm_destino').html(options);
-				}
-				loadding(false);
-				
-				consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarResponsableRecepcion', {icodigo : codigo}, function(respuesta) {
-					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-						addErrorMessage(null, respuesta.mensajeRespuesta);
-					} else {
-						var options = '';
-				        $.each(respuesta, function(i, item) {
-				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-				        });
-				        $('#sel_res_recepcion').html(options);
-					}
-				});
-				
-			});
+			cargarDatosDdiDestino(codigo, null, null);
 		} else {
-			$('#sel_emp_transporte').html('');
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
 		}
 	});
 	
 	$('#sel_gore').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {						
-			var params = { 
-				icodigo : codigo
-			};			
-			loadding(true);
-			consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenExtRegion', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					var options = '';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-			        });
-			        $('#sel_alm_destino').html(options);
-				}
-				loadding(false);
-				
-				consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarPersonalExtRegion', {icodigo : codigo}, function(respuesta) {
-					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-						addErrorMessage(null, respuesta.mensajeRespuesta);
-					} else {
-						var options = '';
-				        $.each(respuesta, function(i, item) {
-				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-				        });
-				        $('#sel_res_recepcion').html(options);
-					}
-				});				
-			});
+			cargarDatosRegionalDestino(codigo, null, null);
 		} else {
-			$('#sel_emp_transporte').html('');
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
 		}
 	});
 	
 	$('#sel_departamento').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {						
-			var params = { 
-				coddpto : codigo
-			};			
-			loadding(true);
-			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarProvincia', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					var options = '';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.codprov+'">'+item.nombre+'</option>';
-			        });
-			        $('#sel_provincia').html(options);
-				}
-				loadding(false);
-			});
+			cargarProvincia(codigo, null);
 		} else {
 			$('#sel_provincia').html('');
 		}
@@ -209,23 +132,7 @@ $(document).ready(function() {
 	$('#sel_provincia').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {						
-			var params = { 
-				coddpto : $('#sel_departamento').val(),
-				codprov : codigo
-			};			
-			loadding(true);
-			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarDistrito', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					var options = '';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.coddist+'">'+item.nombre+'</option>';
-			        });
-			        $('#sel_distrito').html(options);
-				}
-				loadding(false);
-			});
+			cargarDistrito(codigo, null);
 		} else {
 			$('#sel_distrito').html('');
 		}
@@ -233,35 +140,11 @@ $(document).ready(function() {
 	
 	$('#sel_distrito').change(function() {
 		var codigo = $(this).val();		
-		if (!esnulo(codigo)) {						
-			var params = { 
-				icodigo : codigo
-			};			
-			loadding(true);
-			consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenExtLocal', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					var options = '';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-			        });
-			        $('#sel_alm_destino').html(options);
-				}
-				loadding(false);
-				
-				consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarPersonalExtLocal', {vcodigo : codigo}, function(respuesta) {
-					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-						addErrorMessage(null, respuesta.mensajeRespuesta);
-					} else {
-						var options = '';
-				        $.each(respuesta, function(i, item) {
-				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-				        });
-				        $('#sel_res_recepcion').html(options);
-					}
-				});				
-			});
+		if (!esnulo(codigo)) {
+			cargarDatosLocalDestino(codigo, null, null);
+		} else {
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
 		}
 	});
 	
@@ -272,7 +155,7 @@ $(document).ready(function() {
 				icodigoParam2 : codigo
 			};			
 			loadding(true);
-			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarEmpresaTransporte', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarEmpresaTransporte', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -335,7 +218,7 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			var codigo = $('#hid_cod_ord_ingreso').val();
+			var codigo = $('#hid_cod_ord_salida').val();
 			var flagControlCalidad = $('input[name="rb_tie_nro_rep_con_calidad"]:checked').val();
 			var idProveedor = null;
 			var val_proveedor = $('#sel_proveedor').val();
@@ -353,7 +236,9 @@ $(document).ready(function() {
 			var params = {
 				idSalida : codigo,
 				codigoAnio : $('#txt_anio').val(),
-				codigoMes : ordenSalida.codigoMes,				
+				codigoMes : ordenSalida.codigoMes,
+
+				/*
 				fechaEmision : $('#txt_fecha').val(),
 				idMedioTransporte : $('#sel_med_transporte').val(),
 				idMovimiento : $('#sel_tip_movimiento').val(),
@@ -375,6 +260,8 @@ $(document).ready(function() {
 				idEmpresaTransporte : $('#sel_emp_transporte').val(),
 				idResponsable : $('#sel_responsable').val(),
 				tipoSalida : 'I'
+				*/
+				
 			};
 			
 			loadding(true);
@@ -390,7 +277,7 @@ $(document).ready(function() {
 						
 					} else {
 						
-						$('#hid_cod_ord_ingreso').val(respuesta.idSalida);
+						$('#hid_cod_ord_salida').val(respuesta.idSalida);
 						$('#txt_nro_ord_salida').val(respuesta.nroOrdenSalida);
 				
 						$('#li_productos').attr('class', '');
@@ -547,7 +434,7 @@ $(document).ready(function() {
 			}			
 			var params = { 
 				idDetalleSalida : $('#hid_cod_producto').val(),
-				idSalida : $('#hid_cod_ord_ingreso').val(),
+				idSalida : $('#hid_cod_ord_salida').val(),
 				idProducto : idProducto,
 				cantidad : formatMonto($('#txt_cantidad').val()),
 				precioUnitario : formatMonto($('#txt_pre_unitario').val()),
@@ -749,7 +636,7 @@ $(document).ready(function() {
 			
 			var params = { 
 				idDocumentoSalida : $('#hid_cod_documento').val(),
-				idSalida : $('#hid_cod_ord_ingreso').val(),
+				idSalida : $('#hid_cod_ord_salida').val(),
 				idTipoDocumento : $('#sel_tip_producto').val(),
 				nroDocumento : $('#txt_nro_documento').val(),
 				fechaDocumento : $('#txt_doc_fecha').val(),
@@ -845,7 +732,7 @@ function inicializarDatos() {
 		
 		if (!esnulo(ordenSalida.idSalida)) {
 			
-			$('#hid_cod_ord_ingreso').val(ordenSalida.idSalida);		
+			$('#hid_cod_ord_salida').val(ordenSalida.idSalida);		
 
 			$('#txt_fecha').val(ordenSalida.fechaEmision);
 			$('#sel_estado').val(ordenSalida.idEstado);
@@ -867,7 +754,7 @@ function inicializarDatos() {
 			
 			$('#sel_nro_ord_compra').select2().trigger('change');
 
-			cargarTipoMovimiento(ordenSalida.idMovimiento, false);
+			cargarTipoMovimiento(ordenSalida.idMovimiento);
 			
 			listarProductoOrdenSalida(false);			
 			listarDocumentoOrdenSalida(false);
@@ -892,7 +779,7 @@ function inicializarDatos() {
 				}			
 			}
 			
-			cargarTipoMovimiento($('#sel_tip_movimiento').val(), true);
+			cargarTipoMovimiento($('#sel_tip_movimiento').val());
 			
 			listarDetalleProductos(new Object());
 			listarDetalleDocumentos(new Object());
@@ -905,7 +792,7 @@ function inicializarDatos() {
 
 function listarProductoOrdenSalida(indicador) {
 	var params = { 
-		idSalida : $('#hid_cod_ord_ingreso').val()
+		idSalida : $('#hid_cod_ord_salida').val()
 	};			
 	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarProductoOrdenSalida', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
@@ -978,7 +865,7 @@ function listarDetalleProductos(respuesta) {
 
 function listarDocumentoOrdenSalida(indicador) {
 	var params = { 
-		idSalida : $('#hid_cod_ord_ingreso').val()
+		idSalida : $('#hid_cod_ord_salida').val()
 	};			
 	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarDocumentoOrdenSalida', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
@@ -1074,13 +961,26 @@ function descargarDocumento(codigo, nombre) {
 	});	
 }
 
-function cargarTipoMovimiento(val_tip_movimiento, indicador) {
+function cargarTipoMovimiento(val_tip_movimiento) {
 	if (val_tip_movimiento == '3') { // Transferencia entre Almacenes 
 		$('#div_ddi_destino').show();
 		$('#div_gob_destino').hide();
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').hide();
 		
+		$('#sel_ddi').prop('disabled', false);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
+		$('#sel_alm_destino').prop('disabled', false);
+		$('#sel_res_recepcion').prop('disabled', false);
+		
+		$('#sel_med_transporte').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+		$('#txt_fec_entrega').prop('disabled', false);
+		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').removeClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', false);
 		
 	} else if (val_tip_movimiento == '4') { // Transferencia Interna
 		$('#div_ddi_destino').show();
@@ -1088,6 +988,19 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').hide();
 
+		$('#sel_ddi').prop('disabled', false);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
+		$('#sel_alm_destino').prop('disabled', false);
+		$('#sel_res_recepcion').prop('disabled', false);
+		
+		$('#sel_med_transporte').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+		$('#txt_fec_entrega').prop('disabled', false);
+		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').removeClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', false);
 		
 	} else if (val_tip_movimiento == '5') { // Atención de Emergencias 
 		$('#div_ddi_destino').hide();
@@ -1095,8 +1008,19 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').hide();
 
+		$('#sel_ddi').prop('disabled', false);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
+		$('#sel_alm_destino').prop('disabled', false);
+		$('#sel_res_recepcion').prop('disabled', false);
 		
-		
+		$('#sel_med_transporte').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+		$('#txt_fec_entrega').prop('disabled', false);
+		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').removeClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', false);		
 		
 	} else if (val_tip_movimiento == '1') { // Ajustes por inventario 
 		$('#div_ddi_destino').show();
@@ -1104,6 +1028,19 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').hide();
 
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
 		
 	} else if (val_tip_movimiento == '9') { // Ajuste por Importe 
 		$('#div_ddi_destino').show();
@@ -1111,6 +1048,19 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').hide();
 
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
 		
 	} else if (val_tip_movimiento == '2') { // Baja de Bienes 
 		$('#div_ddi_destino').show();
@@ -1118,6 +1068,19 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').hide();
 
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
 		
 	} else if (val_tip_movimiento == '10') { // Muestras
 		$('#div_ddi_destino').show();
@@ -1125,6 +1088,19 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').hide();
 
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
 	}
 }
 
@@ -1201,3 +1177,171 @@ function limpiarFormularioProducto() {
 	$('#txt_pre_unitario').val('');
 	$('#txt_imp_total').val('');
 }
+
+function cargarTipoAtencion(valor) {
+	if (valor == 'R') {
+		$('#div_gore_destino').show();
+		$('#div_ubi_destino').hide();
+	} else if (valor == 'L') {
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').show();
+	}
+}
+
+function cargarDatosDdiDestino(codigo, codigoAlmacen, codigoResponsable) {
+	var params = { 
+		icodigo : codigo
+	};			
+	loadding(true);
+	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenDestino', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			});
+			$('#sel_alm_destino').html(options);
+			if (codigoAlmacen != null) {
+	        	$('#sel_alm_destino').val(codigoAlmacen);       	
+	        }
+		}
+		loadding(false);
+		
+		consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarResponsableRecepcion', {icodigo : codigo}, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+				$.each(respuesta, function(i, item) {
+					options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				});
+				$('#sel_res_recepcion').html(options);
+				if (codigoResponsable != null) {
+					$('#sel_res_recepcion').val(codigoResponsable);       	
+				}
+			}
+		});
+		
+	});
+}
+
+function cargarDatosRegionalDestino(codigo, codigoAlmacenExtRegion, codigoPersonalExtRegion) {
+	var params = { 
+		icodigo : codigo
+	};			
+	loadding(true);
+	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenExtRegion', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			});
+			$('#sel_alm_destino').html(options);
+			if (codigoAlmacenExtRegion != null) {
+	        	$('#sel_alm_destino').val(codigoAlmacenExtRegion);       	
+	        }
+		}
+		loadding(false);
+		
+		consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarPersonalExtRegion', {icodigo : codigo}, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+				$.each(respuesta, function(i, item) {
+					options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				});
+				$('#sel_res_recepcion').html(options);
+				if (codigoPersonalExtRegion != null) {
+					$('#sel_res_recepcion').val(codigoPersonalExtRegion);       	
+				}
+			}
+		});				
+	});
+}
+
+function cargarDatosLocalDestino(codigo, codigoAlmacenExtLocal, codigoPersonalExtLocal) {
+	var params = { 
+		icodigo : codigo
+	};			
+	loadding(true);
+	consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenExtLocal', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			});
+			$('#sel_alm_destino').html(options);
+			if (codigoAlmacenExtLocal != null) {
+	        	$('#sel_alm_destino').val(codigoAlmacenExtLocal);       	
+	        }
+		}
+		loadding(false);
+		
+		consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarPersonalExtLocal', {vcodigo : codigo}, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+				$.each(respuesta, function(i, item) {
+					options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				});
+				$('#sel_res_recepcion').html(options);
+				if (codigoPersonalExtLocal != null) {
+					$('#sel_res_recepcion').val(codigoPersonalExtLocal);       	
+				}
+			}
+		});				
+	});
+}
+
+function cargarProvincia(codigo, codigoProvincia) {
+	var params = { 
+		coddpto : codigo
+	};			
+	loadding(true);
+	consultarAjax('GET', '/gestion-almacenes/orden-salida/listarProvincia', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.codprov+'">'+item.nombre+'</option>';
+			});
+			$('#sel_provincia').html(options);
+			if (codigoProvincia != null) {
+				$('#sel_provincia').val(codigoProvincia);       	
+			}
+		}
+		loadding(false);
+	});
+}
+
+function cargarDistrito(codigo, codigoDistrito) {
+	var params = { 
+		coddpto : $('#sel_departamento').val(),
+		codprov : codigo
+	};			
+	loadding(true);
+	consultarAjax('GET', '/gestion-almacenes/orden-salida/listarDistrito', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.coddist+'">'+item.nombre+'</option>';
+			});
+			$('#sel_distrito').html(options);
+			if (codigoDistrito != null) {
+				$('#sel_distrito').val(codigoDistrito);       	
+			}
+		}
+		loadding(false);
+	});
+}
+

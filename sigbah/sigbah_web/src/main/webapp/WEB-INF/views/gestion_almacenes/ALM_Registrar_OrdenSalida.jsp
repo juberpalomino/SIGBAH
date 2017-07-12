@@ -345,9 +345,7 @@
 															</select>
 														</div>
 													</div>
-													
-													
-								
+
 												</div>
 												<!-- end widget content -->
 								
@@ -453,8 +451,9 @@
 															<th>Lote</th>
 															<th>Cantidad</th>
 															<th>Precio Unitario</th>
-															<th>Valor Total</th>
-															<th>Fecha Vencimiento</th>
+															<th>Importe Total</th>
+															<th>Peso Neto Total</th>
+															<th>Peso Bruto Total</th>
 														</tr>
 													</thead>
 												</table>
@@ -585,13 +584,6 @@
 							
 							<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
 							
-							<div class="row" id="div_det_nro_ord_compra">																				
-								<label class="col-sm-3 control-label">N° Orden Compra:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" id="txt_det_nro_ord_compra" class="form-control" disabled>
-								</div>
-							</div>
-							
 							<div class="row">																				
 								<label class="col-sm-3 control-label">Categoría de Producto:</label>
 								<div class="col-sm-3 form-group">
@@ -626,17 +618,14 @@
 									<input type="text" id="txt_uni_medida" class="form-control" disabled>
 								</div>
 								
-								<label class="col-sm-2 control-label">Envase:</label>
+								<label class="col-sm-2 control-label">Peso Neto Unitario:</label>
 								<div class="col-sm-2 form-group">
-									<input type="text" id="txt_envase" class="form-control" disabled>
+									<input type="text" id="txt_pes_net_unitario" class="form-control" disabled>
 								</div>
 
-								<label class="col-sm-2 control-label">Fecha Vencimiento:</label>
+								<label class="col-sm-2 control-label">Peso Bruto Unitario:</label>
 								<div class="col-sm-2 smart-form form-group">
-									<label class="input"> 
-										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_fec_vencimiento" id="txt_fec_vencimiento" class="datepicker" readonly>
-									</label>
+									<input type="text" id="txt_pes_bru_unitario" class="form-control" disabled>
 								</div>
 							</div>
 							
