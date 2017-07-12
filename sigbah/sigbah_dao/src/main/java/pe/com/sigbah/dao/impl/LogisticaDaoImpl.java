@@ -1873,7 +1873,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
 			input_objParametros.addValue("PI_ID_SALIDA_DET", productoSalidaBean.getIdDetalleSalida(), Types.NUMERIC);
-			input_objParametros.addValue("PI_USU_MODIFICA", productoSalidaBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("PI_USERNAME", productoSalidaBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -1883,7 +1883,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_ID_SALIDA_DET", new SqlParameter("PI_ID_SALIDA_DET", Types.NUMERIC));
-			output_objParametros.put("PI_USU_MODIFICA", new SqlParameter("PI_USU_MODIFICA", Types.VARCHAR));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -2028,7 +2028,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
 			input_objParametros.addValue("PI_IDE_DOCUMENTO", documentoSalidaBean.getIdDocumentoSalida(), Types.NUMERIC);
-			input_objParametros.addValue("PI_USU_MODIFICA", documentoSalidaBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("PI_USERNAME", documentoSalidaBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -2038,7 +2038,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_IDE_DOCUMENTO", new SqlParameter("PI_IDE_DOCUMENTO", Types.NUMERIC));
-			output_objParametros.put("PI_USU_MODIFICA", new SqlParameter("PI_USU_MODIFICA", Types.VARCHAR));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
 

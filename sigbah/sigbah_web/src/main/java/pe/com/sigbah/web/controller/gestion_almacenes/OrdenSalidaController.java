@@ -157,6 +157,7 @@ public class OrdenSalidaController extends BaseController {
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
+        		parametros.setCodigoAlmacen(usuarioBean.getCodigoAlmacen());
         		parametros.setTipoOrigen("I");
         		OrdenSalidaBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenSalida(parametros);
       

@@ -63,6 +63,7 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
+		var anio = '';
 		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -72,6 +73,7 @@ $(document).ready(function() {
 				}
 				var idSalida = listaOrdenSalidaCache[index].idSalida;
 				codigo = codigo + idSalida + '_';
+				anio = listaOrdenSalidaCache[index].codigoAnio;
 			}
 		});
 		
@@ -86,7 +88,7 @@ $(document).ready(function() {
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/';
-			$(location).attr('href', url + codigo);
+			$(location).attr('href', url + codigo + '/' + anio);
 		}
 		
 	});
@@ -95,7 +97,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/0';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/0/0';
 		$(location).attr('href', url);
 		
 	});
