@@ -207,8 +207,7 @@ $(document).ready(function() {
 				nroOrdenCompra : nroOrdenCompra,		
 				flagControlCalidad : flagControlCalidad,
 				idEmpresaTransporte : $('#sel_emp_transporte').val(),
-				idResponsable : $('#sel_responsable').val(),
-				tipoIngreso : 'I'
+				idResponsable : $('#sel_responsable').val()
 			};
 			
 			loadding(true);
@@ -267,6 +266,8 @@ $(document).ready(function() {
 			$('#sel_producto').select2('destroy');
 		}
 		
+		$('#sel_lote').html('');
+		
 		$('#hid_cod_producto').val('');
 		$('#div_det_productos').modal('show');
 		
@@ -296,8 +297,8 @@ $(document).ready(function() {
 			$('#hid_cod_producto').val(obj.idDetalleIngreso);
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
-			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.nombreEnvase);
-			$('#sel_lote').val(obj.nroLote);
+			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.nombreEnvase, obj.nroLote);
+			
 			$('#txt_uni_medida').val(obj.nombreUnidad);
 			$('#txt_envase').val(obj.nombreEnvase);
 			$('#txt_fec_vencimiento').val(obj.fechaVencimiento);
@@ -416,7 +417,7 @@ $(document).ready(function() {
 	$('#sel_cat_producto').change(function() {
 		var idCategoria = $(this).val();		
 		if (!esnulo(idCategoria)) {					
-			cargarProducto(idCategoria, null);
+			cargarProducto(idCategoria, null, null);
 		} else {
 			$('#sel_producto').html('');
 			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_producto');
@@ -1047,7 +1048,7 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 	}
 }
 
-function cargarProducto(idCategoria, codigoProducto) {
+function cargarProducto(idCategoria, codigoProducto, codigoLote) {
 	var params = { 
 		idCategoria : idCategoria
 	};			
@@ -1062,7 +1063,8 @@ function cargarProducto(idCategoria, codigoProducto) {
 	        });
 	        $('#sel_producto').html(options);
 	        if (codigoProducto != null) {
-	        	$('#sel_producto').val(codigoProducto);	        	
+	        	$('#sel_producto').val(codigoProducto);
+				cargarLote(codigoProducto, codigoLote);				
 	        } else {
 	        	var arr = $('#sel_producto').val().split('_');
 				if (arr.length > 1) {

@@ -160,7 +160,7 @@ public class OrdenSalidaController extends BaseController {
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
         		parametros.setCodigoAlmacen(usuarioBean.getCodigoAlmacen());
-        		parametros.setTipoOrigen(Constantes.TIPO_ORIGEN_INDECI);
+        		parametros.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
         		OrdenSalidaBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenSalida(parametros);
       
         		correlativo.append(respuestaCorrelativo.getNroOrdenSalida());
@@ -442,6 +442,7 @@ public class OrdenSalidaController extends BaseController {
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
+			ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
         	ordenSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
         	ordenSalida = logisticaService.grabarOrdenSalida(ordenSalidaBean);

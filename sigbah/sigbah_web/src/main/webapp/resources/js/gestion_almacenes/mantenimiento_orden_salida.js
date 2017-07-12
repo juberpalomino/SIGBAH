@@ -219,49 +219,49 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			var codigo = $('#hid_cod_ord_salida').val();
-			var flagControlCalidad = $('input[name="rb_tie_nro_rep_con_calidad"]:checked').val();
-			var idProveedor = null;
-			var val_proveedor = $('#sel_proveedor').val();
-			if (!esnulo(val_proveedor)) {
-				var arr = val_proveedor.split('_');
-				idProveedor = arr[0];
-			}			
-			var val_ord_compra = $('#sel_nro_ord_compra').val();
-			var nroOrdenCompra = null;
-			if (!esnulo(val_ord_compra)) {
-				var arr_ord_compra = val_ord_compra.split('_');
-				nroOrdenCompra = arr_ord_compra[0];
+			var flagTipoDestino = $('input[name="rb_tie_ate_gobierno"]:checked').val();
+			var indControl = null;
+			if (!esnulo(codigo)) {
+				indControl = 'I'; // I= INSERT
+			} else {
+				indControl = 'U'; // U= UPDATE
+			}
+			
+			var idProyectoManifiesto = null;
+			var nro_pro_manifiesto = $('#sel_nro_pro_manifiesto').val();
+			if (!esnulo(nro_pro_manifiesto)) {
+				var arr = nro_pro_manifiesto.split('_');
+				idProyectoManifiesto = arr[0];
 			}
 			
 			var params = {
 				idSalida : codigo,
 				codigoAnio : $('#txt_anio').val(),
 				codigoMes : ordenSalida.codigoMes,
-
-				/*
-				fechaEmision : $('#txt_fecha').val(),
-				idMedioTransporte : $('#sel_med_transporte').val(),
-				idMovimiento : $('#sel_tip_movimiento').val(),
-				codigoAlmacen : ordenSalida.codigoAlmacen,
 				idAlmacen : ordenSalida.idAlmacen,
-				idAlmacenProcedencia : $('#sel_almacen').val(),
-				idProveedor : idProveedor,
 				codigoDdi : ordenSalida.codigoDdi,
+				codigoAlmacen : ordenSalida.codigoAlmacen,
 				nroOrdenSalida : $('#txt_nro_ord_salida').val(),
-				idControlCalidad : $('#sel_nro_con_calidad').val(),
+				fechaEmision : $('#txt_fecha').val(),
+				codigoUbigeo : $('#sel_distrito').val(),
+//				idProgramacion : $('#txt_anio').val(),
+				idResponsable : $('#sel_responsable').val(),
+				idResponsableExt : $('#sel_res_recepcion').val(),
+				idSolicitante : $('#sel_solicitada').val(),
+				idResponsableRecepcion : $('#sel_res_recepcion').val(),
+				idProyectoManifiesto : idProyectoManifiesto,
+				idMovimiento : $('#sel_tip_movimiento').val(),
+				idAlmacenDestino : $('#sel_alm_destino').val(),
+				idAlmacenDestinoExt : $('#sel_alm_destino').val(),
+				idMedioTransporte : $('#sel_med_transporte').val(),
+				idEmpresaTransporte : $('#sel_emp_transporte').val(),
 				idChofer : $('#sel_chofer').val(),
 				nroPlaca : $('#txt_nro_placa').val(),
-				flagTipoCompra : $('#sel_com_por').val(),
-				fechaLlegada : $('#txt_fec_llegada').val(),
+				fechaEntrega : $('#txt_fec_entrega').val(),
+				flagTipoDestino : flagTipoDestino,
 				observacion : $('#txt_observaciones').val(),
 				idEstado : $('#sel_estado').val(),
-				nroOrdenCompra : nroOrdenCompra,		
-				flagControlCalidad : flagControlCalidad,
-				idEmpresaTransporte : $('#sel_emp_transporte').val(),
-				idResponsable : $('#sel_responsable').val(),
-				tipoSalida : 'I'
-				*/
-				
+				indControl : indControl
 			};
 			
 			loadding(true);
@@ -286,8 +286,6 @@ $(document).ready(function() {
 						$('#li_documentos').attr('class', '');
 						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
 						
-						$('#txt_det_nro_ord_compra').val(nroOrdenCompra);
-
 						addSuccessMessage(null, 'Se genero el N° Orden de Salida: '+respuesta.nroOrdenSalida);
 						
 					}
@@ -320,6 +318,8 @@ $(document).ready(function() {
 			$('#sel_producto').select2('destroy');
 		}
 		
+		$('#sel_lote').html('');
+		
 		$('#hid_cod_producto').val('');
 		$('#div_det_productos').modal('show');
 		
@@ -349,11 +349,13 @@ $(document).ready(function() {
 			$('#hid_cod_producto').val(obj.idDetalleSalida);
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
-			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.nombreEnvase);
-			$('#sel_lote').val(obj.nroLote);
+			
+			var val_producto = obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.pesoUnitarioNeto+'_'+obj.pesoUnitarioBruto;
+			cargarProducto(obj.idCategoria, val_producto, obj.nroLote);
+
 			$('#txt_uni_medida').val(obj.nombreUnidad);
-			$('#txt_envase').val(obj.nombreEnvase);
-			$('#txt_fec_vencimiento').val(obj.fechaVencimiento);
+			$('#txt_pes_net_unitario').val(obj.pesoUnitarioNeto);
+			$('#txt_pes_bru_unitario').val(obj.pesoUnitarioBruto);
 			$('#txt_cantidad').val(obj.cantidad);
 			$('#txt_pre_unitario').val(obj.precioUnitario);
 			$('#txt_imp_total').val(obj.importeTotal);
@@ -439,7 +441,6 @@ $(document).ready(function() {
 				cantidad : formatMonto($('#txt_cantidad').val()),
 				precioUnitario : formatMonto($('#txt_pre_unitario').val()),
 				importeTotal : formatMonto($('#txt_imp_total').val()),
-				fechaVencimiento : $('#txt_fec_vencimiento').val(),
 				nroLote : $('#sel_lote').val()
 			};
 
@@ -469,7 +470,7 @@ $(document).ready(function() {
 	$('#sel_cat_producto').change(function() {
 		var idCategoria = $(this).val();		
 		if (!esnulo(idCategoria)) {					
-			cargarProducto(idCategoria, null);
+			cargarProducto(idCategoria, null, null);
 		} else {
 			$('#sel_producto').html('');
 			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_producto');
@@ -737,24 +738,44 @@ function inicializarDatos() {
 			$('#txt_fecha').val(ordenSalida.fechaEmision);
 			$('#sel_estado').val(ordenSalida.idEstado);
 			$('#sel_tip_movimiento').val(ordenSalida.idMovimiento);
-			$('#sel_nro_ord_compra').val(ordenSalida.nroOrdenCompra);			
-			$('#sel_com_por').val(ordenSalida.flagTipoCompra);			
-			$('input[name=rb_tie_nro_rep_con_calidad][value="'+ordenSalida.flagControlCalidad+'"]').prop('checked', true);
-			$('#sel_nro_con_calidad').val(ordenSalida.idControlCalidad);
-			$('#sel_proveedor').val(ordenSalida.provRep);
-			$('#txt_representante').val(ordenSalida.responsable);
-			$('#sel_almacen').val(ordenSalida.idAlmacenProcedencia);
+			
+			var val_nro_pro_manifiesto = ordenSalida.idProyectoManifiesto+'_'+ordenSalida.nroProgramacion;
+			$('#sel_nro_pro_manifiesto').val(val_nro_pro_manifiesto);			
+//			$('#txt_requerimiento').val(ordenSalida.idProyectoManifiesto);
+			
+			
+			$('#sel_solicitada').val(ordenSalida.idSolicitante);
+			$('#sel_responsable').val(ordenSalida.idResponsable);
+			
+//			$('#sel_ddi').val(ordenSalida.idResponsable);
+			
+			$('input[name=rb_tie_ate_gobierno][value="'+ordenSalida.flagTipoDestino+'"]').prop('checked', true);
+			
+//			$('#sel_gore').val(ordenSalida.idResponsable);
+			
 			$('#sel_med_transporte').val(ordenSalida.idMedioTransporte);
 			$('#sel_emp_transporte').val(ordenSalida.idEmpresaTransporte);
-			$('#txt_fec_llegada').val(ordenSalida.fechaLlegada);
+			$('#txt_fec_entrega').val(ordenSalida.fechaEntrega);
 			$('#sel_chofer').val(ordenSalida.idChofer);
 			$('#txt_nro_placa').val(ordenSalida.nroPlaca);
-			$('#sel_responsable').val(ordenSalida.idResponsable);
 			$('#txt_observaciones').val(ordenSalida.observacion);
 			
-			$('#sel_nro_ord_compra').select2().trigger('change');
-
 			cargarTipoMovimiento(ordenSalida.idMovimiento);
+			
+			if (!esnulo(ordenSalida.codigoUbigeo)) {
+				$('#sel_departamento').val(ordenSalida.coddpto);
+				cargarProvincia(ordenSalida.coddpto, ordenSalida.codprov);
+				cargarDistrito(ordenSalida.codprov, ordenSalida.codigoUbigeo);
+				cargarDatosLocalDestino(ordenSalida.codigoUbigeo, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
+			}
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			listarProductoOrdenSalida(false);			
 			listarDocumentoOrdenSalida(false);
@@ -848,7 +869,9 @@ function listarDetalleProductos(respuesta) {
 		}, {
 			data : 'importeTotal'
 		}, {
-			data : 'fechaVencimiento'
+			data : 'pesoNetoTotal'
+		}, {
+			data : 'pesoBrutoTotal'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1104,7 +1127,7 @@ function cargarTipoMovimiento(val_tip_movimiento) {
 	}
 }
 
-function cargarProducto(idCategoria, codigoProducto) {
+function cargarProducto(idCategoria, codigoProducto, codigoLote) {
 	var params = { 
 		idCategoria : idCategoria
 	};			
@@ -1115,23 +1138,32 @@ function cargarProducto(idCategoria, codigoProducto) {
 		} else {
 			var options = '<option value="">Seleccione</option>';
 	        $.each(respuesta, function(i, item) {
-	            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'_'+item.nombreEnvase+'">'+item.nombreProducto+'</option>';
+				var det_option = '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'_'+item.pesoUnitarioNeto+'_'+item.pesoUnitarioBruto+'">';
+				det_option = det_option + item.nombreProducto+'</option>';				
+	            options += det_option;
 	        });
 	        $('#sel_producto').html(options);
 	        if (codigoProducto != null) {
-	        	$('#sel_producto').val(codigoProducto);	        	
+	        	$('#sel_producto').val(codigoProducto);
+				cargarLote(codigoProducto, codigoLote);      	
 	        } else {
 	        	var arr = $('#sel_producto').val().split('_');
 				if (arr.length > 1) {
 					$('#txt_uni_medida').val(arr[1]);
 					if (!esnulo(arr[2])) {
-						$('#txt_envase').val(arr[2]);
+						$('#txt_pes_net_unitario').val(arr[2]);
 					} else {
-						$('#txt_envase').val('');
+						$('#txt_pes_net_unitario').val('');
+					}
+					if (!esnulo(arr[3])) {
+						$('#txt_pes_bru_unitario').val(arr[3]);
+					} else {
+						$('#txt_pes_bru_unitario').val('');
 					}
 				} else {
 					$('#txt_uni_medida').val('');
-					$('#txt_envase').val('');
+					$('#txt_pes_net_unitario').val('');
+					$('#txt_pes_bru_unitario').val('');
 				}
 //				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	        }
@@ -1171,8 +1203,8 @@ function limpiarFormularioProducto() {
 	$('#sel_producto').val('');
 	$('#sel_lote').val('');
 	$('#txt_uni_medida').val('');
-	$('#txt_envase').val('');
-	$('#txt_fec_vencimiento').val('');
+	$('#txt_pes_net_unitario').val('');
+	$('#txt_pes_bru_unitario').val('');
 	$('#txt_cantidad').val('');
 	$('#txt_pre_unitario').val('');
 	$('#txt_imp_total').val('');

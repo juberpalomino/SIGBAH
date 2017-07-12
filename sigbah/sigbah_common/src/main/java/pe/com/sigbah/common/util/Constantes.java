@@ -78,7 +78,8 @@ public final class Constantes implements Serializable {
 	public static final String CODIGO_TIPO_ALMACEN = "A";
 	public static final String CODIGO_TIPO_DONACION = "D";
 	
-	public static final String TIPO_ORIGEN_INDECI = "I";
+	public static final String TIPO_ORIGEN_ALMACENES = "I";
+	public static final String TIPO_ORIGEN_DONACIONES = "D";
 	
 
 	/* ESTADO ACTIVO */
