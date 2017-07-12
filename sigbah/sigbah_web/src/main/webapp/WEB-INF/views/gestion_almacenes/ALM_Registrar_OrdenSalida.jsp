@@ -714,6 +714,6 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
-<script> var ordenIngreso = JSON.parse('${ordenSalida}'); </script>
+<script> var ordenSalida = JSON.parse('${ordenSalida}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/mantenimiento_orden_salida.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/validacion_mantenimiento_orden_salida.js"></script>
