@@ -9,19 +9,19 @@ import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.util.Constantes;
 
 /**
- * @className: DdiMapper.java
+ * @className: RegionMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
  * @author: SUMERIO.
  */
-public class DdiMapper implements RowMapper<ItemBean> {
+public class RegionMapper implements RowMapper<ItemBean> {
 	
 	private boolean all_records = false; // Obtener todos los registros
 
 	/**
 	 * @param parametro
 	 */
-	public DdiMapper(Integer parametro) {
+	public RegionMapper(Integer parametro) {
 		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
@@ -34,12 +34,13 @@ public class DdiMapper implements RowMapper<ItemBean> {
 	public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		ItemBean itemBean = new ItemBean();
 		if (all_records) {
-			itemBean.setVcodigo(rs.getString("IDE_DDI"));
-			itemBean.setDescripcion(rs.getString("NOM_DDI"));
-			itemBean.setDescripcionCorta(rs.getString("COD_DDI"));
+			itemBean.setIcodigo(rs.getInt("IDE_REGION"));
+			itemBean.setDescripcion(rs.getString("NOM_REGION"));
+			itemBean.setDescripcionCorta(rs.getString("COD_REGION"));
 		} else {	
-			itemBean.setVcodigo(rs.getString("IDE_DDI"));
-			itemBean.setDescripcion(rs.getString("NOM_DDI"));
+			itemBean.setIcodigo(rs.getInt("IDE_REGION"));
+			itemBean.setDescripcion(rs.getString("NOM_REGION"));
+			itemBean.setDescripcionCorta(rs.getString("COD_REGION"));
 		}
 		return itemBean;
 	}

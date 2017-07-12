@@ -123,11 +123,19 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.general.GeneralService#listarAlmacenExterno(pe.com.sigbah.common.bean.ItemBean)
+	 * @see pe.com.sigbah.service.general.GeneralService#listarAlmacenExternoRegion(pe.com.sigbah.common.bean.ItemBean)
 	 */
 	@Override
-	public List<ItemBean> listarAlmacenExterno(ItemBean itemBean) throws Exception {
-		return generalDao.listarAlmacenExterno(itemBean);
+	public List<ItemBean> listarAlmacenExternoRegion(ItemBean itemBean) throws Exception {
+		return generalDao.listarAlmacenExternoRegion(itemBean);
+	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.general.GeneralService#listarAlmacenExternoLocal(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
+	public List<ItemBean> listarAlmacenExternoLocal(ItemBean itemBean) throws Exception {
+		return generalDao.listarAlmacenExternoLocal(itemBean);
 	}
 
 	/* (non-Javadoc)
@@ -179,11 +187,19 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.general.GeneralService#listarPersonalExterno(pe.com.sigbah.common.bean.ItemBean)
+	 * @see pe.com.sigbah.service.general.GeneralService#listarPersonalExternoLocal(pe.com.sigbah.common.bean.ItemBean)
 	 */
 	@Override
-	public List<ItemBean> listarPersonalExterno(ItemBean itemBean) throws Exception {
-		return generalDao.listarPersonalExterno(itemBean);
+	public List<ItemBean> listarPersonalExternoLocal(ItemBean itemBean) throws Exception {
+		return generalDao.listarPersonalExternoLocal(itemBean);
+	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.general.GeneralService#listarPersonalExternoRegion(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
+	public List<ItemBean> listarPersonalExternoRegion(ItemBean itemBean) throws Exception {
+		return generalDao.listarPersonalExternoRegion(itemBean);
 	}
 
 	/* (non-Javadoc)

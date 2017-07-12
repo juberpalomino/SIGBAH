@@ -14,6 +14,7 @@ import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 
 /**
  * @className: LogisticaService.java
@@ -274,5 +275,12 @@ public interface LogisticaService {
 	 * @throws Exception 
 	 */
 	public abstract DocumentoSalidaBean eliminarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
+	
+	/**
+	 * @param proyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
 	
 }

@@ -124,8 +124,8 @@
 														<label class="col-sm-2 control-label">N° Proyecto de Manifiesto:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_nro_pro_manifiesto" name="sel_nro_pro_manifiesto" class="form-control">
-																<c:forEach items="${lista_tipo_movimiento}" var="item">
-																    <option value="${item.icodigo}">${item.descripcion}</option>
+																<c:forEach items="${lista_proyecto_manifiesto}" var="item">
+																    <option value="${item.nroProyectoManifiesto}_${item.nroProgramacion}">${item.nroProyectoManifiesto}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -198,7 +198,7 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								
-													<div class="row">
+													<div id="div_ddi_destino" class="row">
 														<label class="col-sm-3 control-label">DDI:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_ddi" name="sel_ddi" class="form-control">
@@ -208,25 +208,70 @@
 																</c:forEach>
 															</select>
 														</div>
+													</div>
+													
+													<div id="div_gob_destino" class="row">
+														<label class="col-sm-3 control-label">Tipo de Atención:</label>
 														
-														<label class="col-sm-3 control-label">Almacen Destino:</label>
+														<div class="col-sm-4 form-group">
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_tie_ate_gobierno" value="R">
+																Gobierno Regional
+															</label>
+															
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_tie_ate_gobierno" value="L">
+																Gobierno Local
+															</label>																		
+														</div>
+													</div>
+													
+													<div id="div_gore_destino" class="row">
+														<label class="col-sm-3 control-label">GORE:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_alm_destino" name="sel_alm_destino" class="form-control">
+															<select id="sel_gore" name="sel_gore" class="form-control">
 																<option value="">Seleccione</option>
-																<c:forEach items="${lista_almacen}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																<c:forEach items="${lista_region}" var="item">
+																	<option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 													</div>
 													
+													<div id="div_ubi_destino" class="row">
+														<label class="col-sm-2 control-label">Departamento:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_departamento" name="sel_departamento" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_departamento}" var="item">
+																	<option value="${item.coddpto}">${item.nombre}</option>
+																</c:forEach>
+															</select>
+														</div>
+														
+														<label class="col-sm-2 control-label">Provincia:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_provincia" name="sel_provincia" class="form-control">
+															</select>
+														</div>
+														
+														<label class="col-sm-2 control-label">Distrito:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_distrito" name="sel_distrito" class="form-control">
+															</select>
+														</div>
+													</div>
+														
 													<div class="row">
+														<label class="col-sm-3 control-label">Almacen Destino:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_alm_destino" name="sel_alm_destino" class="form-control">
+															</select>
+														</div>
+
 														<label class="col-sm-3 control-label">Responsable Recepción:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_res_recepcion" name="sel_res_recepcion" class="form-control">
-																<c:forEach items="${lista_personal}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
 															</select>
 														</div>
 													</div>
@@ -278,7 +323,7 @@
 													
 														<label class="col-sm-3 control-label">N° de Placa:</label>
 														<div class="col-sm-3 form-group">
-															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control upperValue" maxlength="10">
+															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control upperValue" maxlength="7">
 														</div>
 													</div>
 													
@@ -313,6 +358,10 @@
 										<!-- end widget -->
 										
 										<div class="jarviswidget">
+										
+											<header>
+											</header>
+										
 											<!-- widget div-->
 											<div>
 								

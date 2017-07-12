@@ -151,7 +151,7 @@ public class OrdenIngresoController extends BaseController {
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
-        		parametros.setTipoOrigen("I");
+        		parametros.setTipoOrigen(Constantes.TIPO_ORIGEN_INDECI);
         		OrdenIngresoBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenIngreso(parametros);
       
         		correlativo.append(respuestaCorrelativo.getNroOrdenIngreso());

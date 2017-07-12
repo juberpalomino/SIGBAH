@@ -102,7 +102,14 @@ public interface GeneralDao {
 	 * @return Lista de registros.
 	 * @throws Exception
 	 */
-	public abstract List<ItemBean> listarAlmacenExterno(ItemBean itemBean) throws Exception;
+	public abstract List<ItemBean> listarAlmacenExternoRegion(ItemBean itemBean) throws Exception;
+	
+	/**
+	 * @param itemBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarAlmacenExternoLocal(ItemBean itemBean) throws Exception;
 	
 	/**
 	 * @param itemBean
@@ -151,7 +158,14 @@ public interface GeneralDao {
 	 * @return Lista de registros.
 	 * @throws Exception
 	 */
-	public abstract List<ItemBean> listarPersonalExterno(ItemBean itemBean) throws Exception;
+	public abstract List<ItemBean> listarPersonalExternoLocal(ItemBean itemBean) throws Exception;
+	
+	/**
+	 * @param itemBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarPersonalExternoRegion(ItemBean itemBean) throws Exception;
 	
 	/**
 	 * @param itemBean

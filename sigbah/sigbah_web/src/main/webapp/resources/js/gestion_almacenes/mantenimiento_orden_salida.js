@@ -58,44 +58,210 @@ $(document).ready(function() {
 			
 			cargarTipoMovimiento(val_tip_movimiento, true);
 			
-			$('#sel_com_por').val('');
-			$('input[name=rb_tie_nro_rep_con_calidad]').prop('checked', false);
-			$('#sel_nro_con_calidad').val('');
-			$('#sel_proveedor').val('');
-			$('#txt_representante').val('');
-			$('#sel_almacen').val('');
-			$('#sel_med_transporte').val('');
-			$('#sel_emp_transporte').val('');
-			$('#txt_fec_llegada').val('');
-			$('#sel_chofer').val('');
-			$('#txt_nro_placa').val('');
-			
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_nro_ord_compra');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_com_por');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'rb_tie_nro_rep_con_calidad');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_nro_con_calidad');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_almacen');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_med_transporte');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_llegada');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
+//			$('#sel_com_por').val('');
+//			$('input[name=rb_tie_nro_rep_con_calidad]').prop('checked', false);
+//			$('#sel_nro_con_calidad').val('');
+//			$('#sel_proveedor').val('');
+//			$('#txt_representante').val('');
+//			$('#sel_almacen').val('');
+//			$('#sel_med_transporte').val('');
+//			$('#sel_emp_transporte').val('');
+//			$('#txt_fec_llegada').val('');
+//			$('#sel_chofer').val('');
+//			$('#txt_nro_placa').val('');
+//			
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_nro_ord_compra');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_com_por');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'rb_tie_nro_rep_con_calidad');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_nro_con_calidad');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_almacen');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_med_transporte');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_llegada');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
 
 		}
 	});
 	
-	$('#sel_proveedor').change(function() {
+	$('input[type=radio][name=rb_tie_ate_gobierno]').change(function() {
+        if (this.value == 'R') {
+        	$('#div_gore_destino').show();
+    		$('#div_ubi_destino').hide();
+        } else if (this.value == 'L') {
+        	$('#div_gore_destino').hide();
+    		$('#div_ubi_destino').show();
+        }
+    });
+	
+	$('#sel_nro_pro_manifiesto').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {
 			var arr = codigo.split('_');
 			if (arr.length > 1) {
-				$('#txt_representante').val(arr[1]);
+				$('#txt_requerimiento').val(arr[1]);
 			} else {
-				$('#txt_representante').val('');
+				$('#txt_requerimiento').val('');
 			}			
 		} else {
-			$('#txt_representante').val('');
+			$('#txt_requerimiento').val('');
+		}
+	});
+	
+	$('#sel_ddi').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				icodigo : codigo
+			};			
+			loadding(true);
+			consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenDestino', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			        });
+			        $('#sel_alm_destino').html(options);
+				}
+				loadding(false);
+				
+				consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarResponsableRecepcion', {icodigo : codigo}, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						var options = '';
+				        $.each(respuesta, function(i, item) {
+				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				        });
+				        $('#sel_res_recepcion').html(options);
+					}
+				});
+				
+			});
+		} else {
+			$('#sel_emp_transporte').html('');
+		}
+	});
+	
+	$('#sel_gore').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				icodigo : codigo
+			};			
+			loadding(true);
+			consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenExtRegion', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			        });
+			        $('#sel_alm_destino').html(options);
+				}
+				loadding(false);
+				
+				consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarPersonalExtRegion', {icodigo : codigo}, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						var options = '';
+				        $.each(respuesta, function(i, item) {
+				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				        });
+				        $('#sel_res_recepcion').html(options);
+					}
+				});				
+			});
+		} else {
+			$('#sel_emp_transporte').html('');
+		}
+	});
+	
+	$('#sel_departamento').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				coddpto : codigo
+			};			
+			loadding(true);
+			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarProvincia', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.codprov+'">'+item.nombre+'</option>';
+			        });
+			        $('#sel_provincia').html(options);
+				}
+				loadding(false);
+			});
+		} else {
+			$('#sel_provincia').html('');
+		}
+	});
+	
+	$('#sel_provincia').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				coddpto : $('#sel_departamento').val(),
+				codprov : codigo
+			};			
+			loadding(true);
+			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarDistrito', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.coddist+'">'+item.nombre+'</option>';
+			        });
+			        $('#sel_distrito').html(options);
+				}
+				loadding(false);
+			});
+		} else {
+			$('#sel_distrito').html('');
+		}
+	});
+	
+	$('#sel_distrito').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				icodigo : codigo
+			};			
+			loadding(true);
+			consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarAlmacenExtLocal', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			        });
+			        $('#sel_alm_destino').html(options);
+				}
+				loadding(false);
+				
+				consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarPersonalExtLocal', {vcodigo : codigo}, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						var options = '';
+				        $.each(respuesta, function(i, item) {
+				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				        });
+				        $('#sel_res_recepcion').html(options);
+					}
+				});				
+			});
 		}
 	});
 	
@@ -716,17 +882,15 @@ function inicializarDatos() {
 			
 			$('#txt_fecha').datepicker('setDate', new Date());
 			
-			var val_proveedor = $('#sel_proveedor').val();		
-			if (!esnulo(val_proveedor)) {
-				var arr = val_proveedor.split('_');
+			var val_nro_pro_manifiesto = $('#sel_nro_pro_manifiesto').val();		
+			if (!esnulo(val_nro_pro_manifiesto)) {
+				var arr = val_nro_pro_manifiesto.split('_');
 				if (arr.length > 1) {
-					$('#txt_representante').val(arr[1]);
+					$('#txt_requerimiento').val(arr[1]);
 				} else {
-					$('#txt_representante').val('');
+					$('#txt_requerimiento').val('');
 				}			
 			}
-			
-			$('#sel_nro_ord_compra').select2().trigger('change');
 			
 			cargarTipoMovimiento($('#sel_tip_movimiento').val(), true);
 			
@@ -911,133 +1075,56 @@ function descargarDocumento(codigo, nombre) {
 }
 
 function cargarTipoMovimiento(val_tip_movimiento, indicador) {
-	
-	$('#div_det_nro_ord_compra').hide();
-	
-	$('#txt_det_ord_compra').val('');
-	
-	if (val_tip_movimiento == '9') { // Ajuste por Importe
-		if ($('#sel_nro_ord_compra').hasClass('select2-hidden-accessible')) {
-			$('#sel_nro_ord_compra').select2('destroy');
-		}		
-		$('#sel_nro_ord_compra').val('');
-		$('#sel_nro_ord_compra').prop('disabled', true);
+	if (val_tip_movimiento == '3') { // Transferencia entre Almacenes 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
 		
-		$('#sel_com_por').prop('disabled', true);
-		$('input[name=rb_tie_nro_rep_con_calidad]').prop('disabled', true);		
-		$('#sel_nro_con_calidad').prop('disabled', true);		
-		$('#sel_proveedor').prop('disabled', true);
-		$('#sel_almacen').prop('disabled', true);
-		$('#sel_med_transporte').prop('disabled', true);		
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_fec_llegada').prop('disabled', true);
-		$('#txt_fec_llegada').addClass('mod-readonly');
-		$('#sel_chofer').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-	} else if (val_tip_movimiento == '1') { // Ajustes por inventario
-		if ($('#sel_nro_ord_compra').hasClass('select2-hidden-accessible')) {
-			$('#sel_nro_ord_compra').select2('destroy');
-		}		
-		$('#sel_nro_ord_compra').val('');
-		$('#sel_nro_ord_compra').prop('disabled', true);
 		
-		$('#sel_com_por').prop('disabled', true);
-		$('input[name=rb_tie_nro_rep_con_calidad]').prop('disabled', true);		
-		$('#sel_nro_con_calidad').prop('disabled', true);		
-		$('#sel_proveedor').prop('disabled', true);
-		$('#sel_almacen').prop('disabled', true);
-		$('#sel_med_transporte').prop('disabled', true);		
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_fec_llegada').prop('disabled', true);
-		$('#txt_fec_llegada').addClass('mod-readonly');
-		$('#sel_chofer').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-	} else if (val_tip_movimiento == '8') { // Compra
-		$('#sel_nro_ord_compra').prop('disabled', false);
-		$('#sel_nro_ord_compra').select2().trigger('change');
-		if (indicador) {
-			$('#sel_nro_ord_compra').val($('#sel_nro_ord_compra option:first').val());
-		}
-		var arr = $('#sel_nro_ord_compra').val().split('_');
-		if (arr.length > 1) {
-			$('#txt_det_ord_compra').val(arr[1]);
-		}
-
-		$('#sel_com_por').prop('disabled', false);
-		$('input[name=rb_tie_nro_rep_con_calidad]').prop('disabled', false);		
-		$('#sel_nro_con_calidad').prop('disabled', false);		
-		$('#sel_proveedor').prop('disabled', false);
-		$('#sel_almacen').prop('disabled', true);
-		$('#sel_med_transporte').prop('disabled', false);		
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_fec_llegada').prop('disabled', false);
-		if ($('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').removeClass('mod-readonly')
-		}
-		$('#sel_chofer').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
-		
-		$('#div_det_nro_ord_compra').show();
-		
-	} else if (val_tip_movimiento == '7') { // Inventario Inicial
-		if ($('#sel_nro_ord_compra').hasClass('select2-hidden-accessible')) {
-			$('#sel_nro_ord_compra').select2('destroy');
-		}		
-		$('#sel_nro_ord_compra').val('');
-		$('#sel_nro_ord_compra').prop('disabled', true);
-		
-		$('#sel_com_por').prop('disabled', true);
-		$('input[name=rb_tie_nro_rep_con_calidad]').prop('disabled', true);		
-		$('#sel_nro_con_calidad').prop('disabled', true);		
-		$('#sel_proveedor').prop('disabled', true);
-		$('#sel_almacen').prop('disabled', true);
-		$('#sel_med_transporte').prop('disabled', true);		
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_fec_llegada').prop('disabled', true);
-		$('#txt_fec_llegada').addClass('mod-readonly');
-		$('#sel_chofer').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
 	} else if (val_tip_movimiento == '4') { // Transferencia Interna
-		if ($('#sel_nro_ord_compra').hasClass('select2-hidden-accessible')) {
-			$('#sel_nro_ord_compra').select2('destroy');
-		}		
-		$('#sel_nro_ord_compra').val('');
-		$('#sel_nro_ord_compra').prop('disabled', true);
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+
 		
-		$('#sel_com_por').prop('disabled', true);
-		$('input[name=rb_tie_nro_rep_con_calidad]').prop('disabled', false);		
-		$('#sel_nro_con_calidad').prop('disabled', false);		
-		$('#sel_proveedor').prop('disabled', true);
-		$('#sel_almacen').prop('disabled', false);
-		$('#sel_med_transporte').prop('disabled', false);		
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_fec_llegada').prop('disabled', false);
-		if ($('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').removeClass('mod-readonly')
-		}
+	} else if (val_tip_movimiento == '5') { // Atención de Emergencias 
+		$('#div_ddi_destino').hide();
+		$('#div_gob_destino').show();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+
 		
-		$('#sel_chofer').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
-	} else if (val_tip_movimiento == '3') { // Transferencia entre Almacenes
-		if ($('#sel_nro_ord_compra').hasClass('select2-hidden-accessible')) {
-			$('#sel_nro_ord_compra').select2('destroy');
-		}		
-		$('#sel_nro_ord_compra').val('');
-		$('#sel_nro_ord_compra').prop('disabled', true);
 		
-		$('#sel_com_por').prop('disabled', true);
-		$('input[name=rb_tie_nro_rep_con_calidad]').prop('disabled', false);		
-		$('#sel_nro_con_calidad').prop('disabled', false);		
-		$('#sel_proveedor').prop('disabled', true);
-		$('#sel_almacen').prop('disabled', false);
-		$('#sel_med_transporte').prop('disabled', false);		
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_fec_llegada').prop('disabled', false);
-		if ($('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').removeClass('mod-readonly')
-		}
-		$('#sel_chofer').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
+		
+	} else if (val_tip_movimiento == '1') { // Ajustes por inventario 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+
+		
+	} else if (val_tip_movimiento == '9') { // Ajuste por Importe 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+
+		
+	} else if (val_tip_movimiento == '2') { // Baja de Bienes 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+
+		
+	} else if (val_tip_movimiento == '10') { // Muestras
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+
 	}
 }
 

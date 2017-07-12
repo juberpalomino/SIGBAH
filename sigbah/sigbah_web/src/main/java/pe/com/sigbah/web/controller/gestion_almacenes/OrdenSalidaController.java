@@ -32,6 +32,8 @@ import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.Utils;
@@ -130,6 +132,8 @@ public class OrdenSalidaController extends BaseController {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
+        	String anioActual = generalService.obtenerAnioActual();
+        	
         	if (!isNullInteger(codigo)) {
         		
         		ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo, anio);
@@ -143,7 +147,10 @@ public class OrdenSalidaController extends BaseController {
         		if (!isNullInteger(ordenSalida.getIdEmpresaTransporte())) {
         			model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(ordenSalida.getIdEmpresaTransporte())));
         		}
-
+        		if (!isNullInteger(ordenSalida.getIdDdiDestino())) {
+        			model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(ordenSalida.getIdDdiDestino())));
+        			model.addAttribute("lista_responsable_recepcion", generalService.listarPersonal(new ItemBean(ordenSalida.getIdDdiDestino())));
+        		}
         	} else {
 
         		StringBuilder correlativo = new StringBuilder();
@@ -152,13 +159,12 @@ public class OrdenSalidaController extends BaseController {
         		correlativo.append(usuarioBean.getCodigoAlmacen());
         		correlativo.append(Constantes.SEPARADOR);
         		
-        		OrdenSalidaBean parametros = new OrdenSalidaBean();
-        		String anioActual = generalService.obtenerAnioActual();
+        		OrdenSalidaBean parametros = new OrdenSalidaBean();        		
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
         		parametros.setCodigoAlmacen(usuarioBean.getCodigoAlmacen());
-        		parametros.setTipoOrigen("I");
+        		parametros.setTipoOrigen(Constantes.TIPO_ORIGEN_INDECI);
         		OrdenSalidaBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenSalida(parametros);
       
         		correlativo.append(respuestaCorrelativo.getNroOrdenSalida());
@@ -192,17 +198,24 @@ public class OrdenSalidaController extends BaseController {
 
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	
-        	model.addAttribute("lista_orden_compra", logisticaService.listarOrdenCompra());
+        	ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();
+        	proyectoManifiestoBean.setCodigoAnio(anioActual);
+        	proyectoManifiestoBean.setIdDdi(usuarioBean.getIdDdi());
+        	proyectoManifiestoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+        	model.addAttribute("lista_proyecto_manifiesto", logisticaService.listarProyectoManifiesto(proyectoManifiestoBean));
         	
-        	model.addAttribute("lista_nro_control_calidad", logisticaService.listarNroControlCalidad(new ControlCalidadBean(usuarioBean.getCodigoDdi())));
+        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
         	
-        	model.addAttribute("lista_proveedor", generalService.listarProveedor(new ItemBean()));
-        	
-        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean()));
+        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean()));
         	
         	model.addAttribute("lista_medio_transporte", generalService.listarMedioTransporte(new ItemBean()));
         	
-        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
+        	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
+        	
+        	model.addAttribute("lista_departamento", generalService.listarDepartamentos(new UbigeoBean()));
+        	
+        	
+        	
         	
         	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	
@@ -218,6 +231,174 @@ public class OrdenSalidaController extends BaseController {
         }
         return "mantenimiento_orden_salida";
     }
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarAlmacenDestino", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarAlmacenDestino(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarAlmacen(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarResponsableRecepcion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarResponsableRecepcion(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarPersonal(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarAlmacenExtRegion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarAlmacenExtRegion(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarAlmacenExternoRegion(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarPersonalExtRegion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarPersonalExtRegion(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarPersonalExternoRegion(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarProvincia", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProvincia(HttpServletRequest request, HttpServletResponse response) {
+		List<UbigeoBean> lista = null;
+		try {			
+			UbigeoBean ubigeoBean = new UbigeoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(ubigeoBean, request.getParameterMap());
+			lista = generalService.listarProvincia(ubigeoBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarDistrito", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarDistrito(HttpServletRequest request, HttpServletResponse response) {
+		List<UbigeoBean> lista = null;
+		try {			
+			UbigeoBean ubigeoBean = new UbigeoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(ubigeoBean, request.getParameterMap());
+			lista = generalService.listarDistrito(ubigeoBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarAlmacenExtLocal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarAlmacenExtLocal(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarAlmacenExternoLocal(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarPersonalExtLocal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarPersonalExtLocal(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarPersonalExternoLocal(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
 	
 	/**
 	 * @param request
