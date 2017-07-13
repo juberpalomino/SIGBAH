@@ -79,6 +79,22 @@ public class OrdenSalidaController extends BaseController {
         	        	
         	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
         	
+        	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
+        	
+        	ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
+    		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
+    		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
+    		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
+    		if (!isEmpty(listaAlmacenActivo)) {
+    			ordenSalida.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+    			ordenSalida.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+    			ordenSalida.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+    			ordenSalida.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+    			ordenSalida.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+    		}
+    		
+    		model.addAttribute("ordenSalida", getParserObject(ordenSalida));
+        	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
@@ -107,6 +123,7 @@ public class OrdenSalidaController extends BaseController {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 			
+        	ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
         	ordenSalidaBean.setIdDdi(usuarioBean.getIdDdi());
         	ordenSalidaBean.setCodigoDdi(usuarioBean.getCodigoDdi());
 			
@@ -209,9 +226,6 @@ public class OrdenSalidaController extends BaseController {
         	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
         	
         	model.addAttribute("lista_departamento", generalService.listarDepartamentos(new UbigeoBean()));
-        	
-        	
-        	
         	
         	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	
@@ -581,7 +595,8 @@ public class OrdenSalidaController extends BaseController {
 		try {			
 			DocumentoSalidaBean documento = new DocumentoSalidaBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(documento, request.getParameterMap());			
+			BeanUtils.populate(documento, request.getParameterMap());
+			documento.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 			lista = logisticaService.listarDocumentoSalida(documento);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -655,25 +670,33 @@ public class OrdenSalidaController extends BaseController {
 	
 	/**
 	 * @param codigoAnio 
-	 * @param codigoDdi 
-	 * @param codigoAlmacen
-	 * @param codigoMovimiento 
+	 * @param codigoMes 
+	 * @param idAlmacen
+	 * @param idMovimiento 
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoDdi}/{codigoAlmacen}/{codigoMovimiento}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{idAlmacen}/{idMovimiento}", method = RequestMethod.GET)
 	@ResponseBody
 	public String exportarExcel(@PathVariable("codigoAnio") String codigoAnio, 
-								@PathVariable("codigoDdi") String codigoDdi, 
-								@PathVariable("codigoAlmacen") String codigoAlmacen,
-								@PathVariable("codigoMovimiento") String codigoMovimiento, 
+								@PathVariable("codigoMes") String codigoMes, 
+								@PathVariable("idAlmacen") Integer idAlmacen,
+								@PathVariable("idMovimiento") Integer idMovimiento, 
 								HttpServletResponse response) {
 	    try {
 	    	OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
 	    	ordenSalidaBean.setCodigoAnio(verificaParametro(codigoAnio));
-	    	ordenSalidaBean.setCodigoDdi(verificaParametro(codigoDdi));
-	    	ordenSalidaBean.setCodigoAlmacen(verificaParametro(codigoAlmacen));
-	    	ordenSalidaBean.setCodigoMovimiento(verificaParametro(codigoMovimiento));
+	    	ordenSalidaBean.setCodigoMes(verificaParametro(codigoMes));
+	    	ordenSalidaBean.setIdAlmacen(idAlmacen);
+	    	ordenSalidaBean.setIdMovimiento(idMovimiento);
+	    	
+	    	// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			
+        	ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+        	ordenSalidaBean.setIdDdi(usuarioBean.getIdDdi());
+        	ordenSalidaBean.setCodigoDdi(usuarioBean.getCodigoDdi());	    	
+	    	
 			List<OrdenSalidaBean> lista = logisticaService.listarOrdenSalida(ordenSalidaBean);
 	    	
 			String file_name = "OrdenSalida";
@@ -706,17 +729,17 @@ public class OrdenSalidaController extends BaseController {
 	
 	/**
 	 * @param codigo 
+	 * @param anio 
 	 * @param request 
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarPdf/{codigo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarPdf/{codigo}/{anio}", method = RequestMethod.GET)
 	@ResponseBody
-	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
+	public String exportarPdf(@PathVariable("codigo") Integer codigo, @PathVariable("anio") String anio, HttpServletRequest request, HttpServletResponse response) {
 	    try {
 	    	
-//	    	OrdenSalidaBean ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo);
-	    	OrdenSalidaBean ordenSalida = null;
+	    	OrdenSalidaBean ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo, anio);
 	    	ProductoSalidaBean producto = new ProductoSalidaBean();
 	    	producto.setIdSalida(codigo);
 	    	List<ProductoSalidaBean> listaProducto = logisticaService.listarProductoSalida(producto);
@@ -737,7 +760,7 @@ public class OrdenSalidaController extends BaseController {
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
 			ReporteOrdenSalida reporte = new ReporteOrdenSalida();
-//			reporte.generaPDFReporteSalidas(file_path.toString(), ordenSalida, listaProducto, listaDocumento);
+			reporte.generaPDFReporteSalidas(file_path.toString(), ordenSalida, listaProducto, listaDocumento);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);

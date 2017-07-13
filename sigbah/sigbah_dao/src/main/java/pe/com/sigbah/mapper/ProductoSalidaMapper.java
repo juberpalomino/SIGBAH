@@ -34,7 +34,8 @@ public class ProductoSalidaMapper implements RowMapper<ProductoSalidaBean> {
 		producto.setPesoBrutoTotal(rs.getBigDecimal("PESO_BRUTO_TOTAL"));
 		producto.setPesoUnitarioNeto(rs.getBigDecimal("PESO_UNIT_NETO"));
 		producto.setPesoUnitarioBruto(rs.getBigDecimal("PESO_UNIT_BRUTO"));
-//		producto.setIdCategoria(rs.getInt("FK_IDE_CATEGORIA_BAH"));
+		producto.setIdCategoria(rs.getInt("IDE_CATEGORIA_BAH"));
+		producto.setNombreEnvase(rs.getString("NOM_ENVASE"));
 		return producto;
 	}
 

@@ -37,7 +37,9 @@ public class RegistroOrdenSalidaMapper implements RowMapper<OrdenSalidaBean> {
 		ordenSalida.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
 		ordenSalida.setIdMovimiento(rs.getInt("FK_IDE_TIP_MOVIMIENTO"));
 		ordenSalida.setIdProyectoManifiesto(rs.getInt("FK_IDE_PROYECTO_MANIF"));
-		ordenSalida.setIdProgramacion(rs.getInt("FK_IDE_PROGRAMACION"));
+		ordenSalida.setIdProgramacion(rs.getInt("FK_IDE_PROGRAMACION"));		
+		ordenSalida.setNroProyectoManifiesto(rs.getString("NRO_PROY_MANIFIESTO"));
+		ordenSalida.setNroProgramacion(rs.getString("NRO_PROGRAMACION"));		
 		ordenSalida.setIdSolicitante(rs.getInt("FK_ID_SOLICITANTE"));
 		ordenSalida.setIdResponsable(rs.getInt("FK_ID_RESPONSABLE"));
 		ordenSalida.setIdDdiDestino(rs.getInt("IDE_DDI_DESTINO"));

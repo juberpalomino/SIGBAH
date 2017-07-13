@@ -19,6 +19,7 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	private Integer idAlmacen;
 	private String codigoAlmacen;
 	private String nombreAlmacen;
+	private Integer idProgramacion;
 	private String nroProyectoManifiesto;
 	private String nroProgramacion;
 	private String fechaEmision;
@@ -300,6 +301,20 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setNombreMes(String nombreMes) {
 		this.nombreMes = nombreMes;
+	}
+
+	/**
+	 * @return the idProgramacion
+	 */
+	public Integer getIdProgramacion() {
+		return idProgramacion;
+	}
+
+	/**
+	 * @param idProgramacion the idProgramacion to set
+	 */
+	public void setIdProgramacion(Integer idProgramacion) {
+		this.idProgramacion = idProgramacion;
 	}
 
 }

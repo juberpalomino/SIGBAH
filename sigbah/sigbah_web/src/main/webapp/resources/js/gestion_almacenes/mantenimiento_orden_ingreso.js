@@ -439,7 +439,7 @@ $(document).ready(function() {
 				$('#txt_uni_medida').val('');
 				$('#txt_envase').val('');
 			}
-			cargarLote(codigo, null);
+			cargarLote(arr[0], null);
 		} else {
 			$('#txt_uni_medida').val('');
 			$('#txt_envase').val('');

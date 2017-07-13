@@ -125,7 +125,7 @@
 														<div class="col-sm-2 form-group">
 															<select id="sel_nro_pro_manifiesto" name="sel_nro_pro_manifiesto" class="form-control">
 																<c:forEach items="${lista_proyecto_manifiesto}" var="item">
-																    <option value="${item.nroProyectoManifiesto}_${item.nroProgramacion}">${item.nroProyectoManifiesto}</option>
+																    <option value="${item.idProyectoManifiesto}_${item.nroProgramacion}_${item.idProgramacion}">${item.nroProyectoManifiesto}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -319,7 +319,7 @@
 													</div>
 													
 													<div class="row">
-														<div class="col-sm-6"></div>
+														<div class="col-sm-6 form-group"></div>
 													
 														<label class="col-sm-3 control-label">N° de Placa:</label>
 														<div class="col-sm-3 form-group">

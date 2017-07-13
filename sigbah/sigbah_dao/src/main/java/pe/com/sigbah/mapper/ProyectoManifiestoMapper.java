@@ -21,15 +21,10 @@ public class ProyectoManifiestoMapper implements RowMapper<ProyectoManifiestoBea
 	@Override
 	public ProyectoManifiestoBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		ProyectoManifiestoBean proyecto = new ProyectoManifiestoBean();
-		proyecto.setCodigoAnio(rs.getString("COD_ANIO"));
-		proyecto.setCodigoMes(rs.getString("COD_MES"));
-		proyecto.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
-		proyecto.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
+		proyecto.setIdProyectoManifiesto(rs.getInt("IDE_PROYECTO_MANIF"));
 		proyecto.setNroProyectoManifiesto(rs.getString("NRO_PROY_MANIFIESTO"));
-		proyecto.setFechaEmision(rs.getString("FECHA_EMISION"));
 		proyecto.setNroProgramacion(rs.getString("NRO_PROGRAMACION"));
-		proyecto.setNombreMovimiento(rs.getString("NOM_MOVIMIENTO"));
-		proyecto.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
+		proyecto.setIdProgramacion(rs.getInt("IDE_PROGRAMACION"));
 		return proyecto;
 	}
 

@@ -220,18 +220,23 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {
 			var codigo = $('#hid_cod_ord_salida').val();
 			var flagTipoDestino = $('input[name="rb_tie_ate_gobierno"]:checked').val();
+			if (esnulo(flagTipoDestino)) {
+				flagTipoDestino = 'I';
+			}
 			var indControl = null;
-			if (!esnulo(codigo)) {
+			if (esnulo(codigo)) {
 				indControl = 'I'; // I= INSERT
 			} else {
 				indControl = 'U'; // U= UPDATE
 			}
 			
 			var idProyectoManifiesto = null;
+			var idProgramacion = null
 			var nro_pro_manifiesto = $('#sel_nro_pro_manifiesto').val();
 			if (!esnulo(nro_pro_manifiesto)) {
 				var arr = nro_pro_manifiesto.split('_');
 				idProyectoManifiesto = arr[0];
+				idProgramacion = arr[2];
 			}
 			
 			var params = {
@@ -244,7 +249,7 @@ $(document).ready(function() {
 				nroOrdenSalida : $('#txt_nro_ord_salida').val(),
 				fechaEmision : $('#txt_fecha').val(),
 				codigoUbigeo : $('#sel_distrito').val(),
-//				idProgramacion : $('#txt_anio').val(),
+				idProgramacion : idProgramacion,
 				idResponsable : $('#sel_responsable').val(),
 				idResponsableExt : $('#sel_res_recepcion').val(),
 				idSolicitante : $('#sel_solicitada').val(),
@@ -256,7 +261,7 @@ $(document).ready(function() {
 				idMedioTransporte : $('#sel_med_transporte').val(),
 				idEmpresaTransporte : $('#sel_emp_transporte').val(),
 				idChofer : $('#sel_chofer').val(),
-				nroPlaca : $('#txt_nro_placa').val(),
+				nroPlaca : $.trim($('#txt_nro_placa').val()),
 				fechaEntrega : $('#txt_fec_entrega').val(),
 				flagTipoDestino : flagTipoDestino,
 				observacion : $('#txt_observaciones').val(),
@@ -433,15 +438,23 @@ $(document).ready(function() {
 			if (!esnulo(val_producto)) {
 				var arr = val_producto.split('_');
 				idProducto = arr[0];
-			}			
+			}
+			var indControl = null;
+			var idDetalleSalida = $('#hid_cod_producto').val();
+			if (esnulo(idDetalleSalida)) {
+				indControl = 'I'; // I= INSERT
+			} else {
+				indControl = 'U'; // U= UPDATE
+			}
 			var params = { 
-				idDetalleSalida : $('#hid_cod_producto').val(),
+				idDetalleSalida : idDetalleSalida,
 				idSalida : $('#hid_cod_ord_salida').val(),
 				idProducto : idProducto,
 				cantidad : formatMonto($('#txt_cantidad').val()),
 				precioUnitario : formatMonto($('#txt_pre_unitario').val()),
 				importeTotal : formatMonto($('#txt_imp_total').val()),
-				nroLote : $('#sel_lote').val()
+				nroLote : $('#sel_lote').val(),
+				indControl : indControl
 			};
 
 			loadding(true);
@@ -492,7 +505,7 @@ $(document).ready(function() {
 				$('#txt_uni_medida').val('');
 				$('#txt_envase').val('');
 			}
-			cargarLote(codigo, null);
+			cargarLote(arr[0], null);
 		} else {
 			$('#txt_uni_medida').val('');
 			$('#txt_envase').val('');
@@ -635,13 +648,22 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {			
 			loadding(true);
 			
+			var indControl = null;
+			var idDocumentoSalida = $('#hid_cod_documento').val();
+			if (esnulo(idDocumentoSalida)) {
+				indControl = 'I'; // I= INSERT
+			} else {
+				indControl = 'U'; // U= UPDATE
+			}
+			
 			var params = { 
-				idDocumentoSalida : $('#hid_cod_documento').val(),
+				idDocumentoSalida : idDocumentoSalida,
 				idSalida : $('#hid_cod_ord_salida').val(),
 				idTipoDocumento : $('#sel_tip_producto').val(),
 				nroDocumento : $('#txt_nro_documento').val(),
 				fechaDocumento : $('#txt_doc_fecha').val(),
-				nombreArchivo : $('#txt_lee_sub_archivo').val()
+				nombreArchivo : $('#txt_lee_sub_archivo').val(),
+				indControl : indControl
 			};
 			
 			var cod_ind_alfresco = $('#hid_cod_ind_alfresco').val();
@@ -739,19 +761,18 @@ function inicializarDatos() {
 			$('#sel_estado').val(ordenSalida.idEstado);
 			$('#sel_tip_movimiento').val(ordenSalida.idMovimiento);
 			
-			var val_nro_pro_manifiesto = ordenSalida.idProyectoManifiesto+'_'+ordenSalida.nroProgramacion;
+			var val_nro_pro_manifiesto = ordenSalida.idProyectoManifiesto+'_'+ordenSalida.nroProgramacion+'_'+ordenSalida.idProgramacion;
 			$('#sel_nro_pro_manifiesto').val(val_nro_pro_manifiesto);			
-//			$('#txt_requerimiento').val(ordenSalida.idProyectoManifiesto);
-			
+			$('#txt_requerimiento').val(ordenSalida.nroProgramacion);			
 			
 			$('#sel_solicitada').val(ordenSalida.idSolicitante);
 			$('#sel_responsable').val(ordenSalida.idResponsable);
 			
-//			$('#sel_ddi').val(ordenSalida.idResponsable);
+			if (!esnulo(ordenSalida.idDdiDestino)) {
+				$('#sel_ddi').val(ordenSalida.idDdiDestino);
+			}
 			
 			$('input[name=rb_tie_ate_gobierno][value="'+ordenSalida.flagTipoDestino+'"]').prop('checked', true);
-			
-//			$('#sel_gore').val(ordenSalida.idResponsable);
 			
 			$('#sel_med_transporte').val(ordenSalida.idMedioTransporte);
 			$('#sel_emp_transporte').val(ordenSalida.idEmpresaTransporte);
@@ -762,20 +783,17 @@ function inicializarDatos() {
 			
 			cargarTipoMovimiento(ordenSalida.idMovimiento);
 			
-			if (!esnulo(ordenSalida.codigoUbigeo)) {
-				$('#sel_departamento').val(ordenSalida.coddpto);
-				cargarProvincia(ordenSalida.coddpto, ordenSalida.codprov);
-				cargarDistrito(ordenSalida.codprov, ordenSalida.codigoUbigeo);
-				cargarDatosLocalDestino(ordenSalida.codigoUbigeo, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
+			if (!esnulo(ordenSalida.codigoRegion)) {
+				$('#sel_gore').val(ordenSalida.codigoRegion);
+				cargarDatosRegionalDestino(ordenSalida.codigoRegion, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
 			}
 			
-			
-			
-			
-			
-			
-			
-			
+			if (!esnulo(ordenSalida.codigoUbigeo)) {
+				$('#sel_departamento').val(ordenSalida.codigoDepartamento);
+				cargarProvincia(ordenSalida.codigoDepartamento, ordenSalida.codigoProvincia);
+				cargarDistrito(ordenSalida.codigoProvincia, ordenSalida.codigoUbigeo);
+				cargarDatosLocalDestino(ordenSalida.codigoUbigeo, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
+			}
 			
 			listarProductoOrdenSalida(false);			
 			listarDocumentoOrdenSalida(false);
@@ -823,11 +841,11 @@ function listarProductoOrdenSalida(indicador) {
 			if (indicador) {
 				loadding(false);
 			}
-			if (respuesta != null && respuesta.length > 0) {
-				$('#sel_tip_movimiento').prop('disabled', true);
-			} else {
-				$('#sel_tip_movimiento').prop('disabled', false);
-			}
+//			if (respuesta != null && respuesta.length > 0) {
+//				$('#sel_tip_movimiento').prop('disabled', true);
+//			} else {
+//				$('#sel_tip_movimiento').prop('disabled', false);
+//			}
 		}
 	});
 }

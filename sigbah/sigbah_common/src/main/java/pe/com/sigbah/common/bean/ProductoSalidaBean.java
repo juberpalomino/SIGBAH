@@ -17,6 +17,7 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	private Integer idProducto;
 	private String nombreProducto;
 	private String nombreUnidad;
+	private String nombreEnvase;
 	private BigDecimal cantidad;
 	private BigDecimal precioUnitario;
 	private BigDecimal importeTotal;
@@ -266,6 +267,20 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	 */
 	public void setArrIdDetalleSalida(String arrIdDetalleSalida) {
 		this.arrIdDetalleSalida = arrIdDetalleSalida;
+	}
+
+	/**
+	 * @return the nombreEnvase
+	 */
+	public String getNombreEnvase() {
+		return nombreEnvase;
+	}
+
+	/**
+	 * @param nombreEnvase the nombreEnvase to set
+	 */
+	public void setNombreEnvase(String nombreEnvase) {
+		this.nombreEnvase = nombreEnvase;
 	}
 	
 }

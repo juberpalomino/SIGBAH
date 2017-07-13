@@ -41,6 +41,8 @@ public class CatologoProductosMapper implements RowMapper<ProductoBean> {
 			productoBean.setNombreUnidadMedida(rs.getString("NOMBRE_UNIDAD"));
 			productoBean.setIdEnvase(rs.getInt("IDE_ENVASE"));
 			productoBean.setNombreEnvase(rs.getString("NOMBRE_ENVASE"));
+			productoBean.setPesoUnitarioNeto(rs.getBigDecimal("PESO_UNIT_NETO"));
+			productoBean.setPesoUnitarioBruto(rs.getBigDecimal("PESO_UNIT_BRUTO"));
 		} else {	
 			productoBean.setIdProducto(rs.getInt("IDE_PRODUCTO"));
 			productoBean.setNombreProducto(rs.getString("NOM_PRODUCTO"));
@@ -49,6 +51,8 @@ public class CatologoProductosMapper implements RowMapper<ProductoBean> {
 			productoBean.setNombreUnidadMedida(rs.getString("NOMBRE_UNIDAD"));
 			productoBean.setIdEnvase(rs.getInt("IDE_ENVASE"));
 			productoBean.setNombreEnvase(rs.getString("NOMBRE_ENVASE"));
+			productoBean.setPesoUnitarioNeto(rs.getBigDecimal("PESO_UNIT_NETO"));
+			productoBean.setPesoUnitarioBruto(rs.getBigDecimal("PESO_UNIT_BRUTO"));
 		}
 		return productoBean;
 	}

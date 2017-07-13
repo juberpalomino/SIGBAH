@@ -178,4 +178,5 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
+<script> var ordenSalida = JSON.parse('${ordenSalida}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_orden_salida.js"></script>

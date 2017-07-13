@@ -37,8 +37,7 @@ $(document).ready(function() {
 				codigoAnio : $('#sel_anio').val(),
 				codigoMes : $('#sel_mes').val(),
 				idAlmacen : $('#sel_almacen').val(),
-				idMovimiento : $('#sel_tip_movimiento').val(),
-				tipoOrigen : 'I'
+				idMovimiento : $('#sel_tip_movimiento').val()
 			};
 			
 			loadding(true);
@@ -146,7 +145,8 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
+		var anio = '';
 		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -156,6 +156,7 @@ $(document).ready(function() {
 				}
 				var idSalida = listaOrdenSalidaCache[index].idSalida;
 				codigo = codigo + idSalida + '_';
+				anio = listaOrdenSalidaCache[index].codigoAnio;
 			}
 		});
 		
@@ -169,7 +170,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/exportarPdf/'+codigo;
+			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/exportarPdf/'+codigo+'/'+anio;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {
@@ -201,6 +202,9 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
+		$('#sel_anio').val(ordenSalida.codigoAnio);
+		$('#sel_mes').val(ordenSalida.codigoMes);
+		$('#sel_almacen').val(ordenSalida.idAlmacen);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {

@@ -54,8 +54,8 @@ public class OrdenSalidaBean extends BaseOutputBean {
 	private Integer idEstado;
 	private String indControl;
 	private String nroRequerimiento;
-	private String coddpto;
-	private String codprov;
+	private String nroProyectoManifiesto;
+	private String nroProgramacion;
 	
 	
 	/**
@@ -614,28 +614,28 @@ public class OrdenSalidaBean extends BaseOutputBean {
 		this.nroRequerimiento = nroRequerimiento;
 	}
 	/**
-	 * @return the coddpto
+	 * @return the nroProyectoManifiesto
 	 */
-	public String getCoddpto() {
-		return coddpto;
+	public String getNroProyectoManifiesto() {
+		return nroProyectoManifiesto;
 	}
 	/**
-	 * @param coddpto the coddpto to set
+	 * @param nroProyectoManifiesto the nroProyectoManifiesto to set
 	 */
-	public void setCoddpto(String coddpto) {
-		this.coddpto = coddpto;
+	public void setNroProyectoManifiesto(String nroProyectoManifiesto) {
+		this.nroProyectoManifiesto = nroProyectoManifiesto;
 	}
 	/**
-	 * @return the codprov
+	 * @return the nroProgramacion
 	 */
-	public String getCodprov() {
-		return codprov;
+	public String getNroProgramacion() {
+		return nroProgramacion;
 	}
 	/**
-	 * @param codprov the codprov to set
+	 * @param nroProgramacion the nroProgramacion to set
 	 */
-	public void setCodprov(String codprov) {
-		this.codprov = codprov;
+	public void setNroProgramacion(String nroProgramacion) {
+		this.nroProgramacion = nroProgramacion;
 	}
 	
 }

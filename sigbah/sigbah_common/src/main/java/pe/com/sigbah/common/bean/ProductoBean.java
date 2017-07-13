@@ -1,5 +1,7 @@
 package pe.com.sigbah.common.bean;
 
+import java.math.BigDecimal;
+
 /**
  * @className: ProductoBean.java
  * @description: Clase ProductoBean.
@@ -18,6 +20,8 @@ public class ProductoBean extends BaseOutputBean {
 	private Integer idEnvase;
 	private String nombreEnvase;
 	private Integer idCategoria;
+	private BigDecimal pesoUnitarioNeto;
+	private BigDecimal pesoUnitarioBruto;
 	
 	/**
 	 * 
@@ -147,6 +151,34 @@ public class ProductoBean extends BaseOutputBean {
 	 */
 	public void setIdCategoria(Integer idCategoria) {
 		this.idCategoria = idCategoria;
+	}
+
+	/**
+	 * @return the pesoUnitarioNeto
+	 */
+	public BigDecimal getPesoUnitarioNeto() {
+		return pesoUnitarioNeto;
+	}
+
+	/**
+	 * @param pesoUnitarioNeto the pesoUnitarioNeto to set
+	 */
+	public void setPesoUnitarioNeto(BigDecimal pesoUnitarioNeto) {
+		this.pesoUnitarioNeto = pesoUnitarioNeto;
+	}
+
+	/**
+	 * @return the pesoUnitarioBruto
+	 */
+	public BigDecimal getPesoUnitarioBruto() {
+		return pesoUnitarioBruto;
+	}
+
+	/**
+	 * @param pesoUnitarioBruto the pesoUnitarioBruto to set
+	 */
+	public void setPesoUnitarioBruto(BigDecimal pesoUnitarioBruto) {
+		this.pesoUnitarioBruto = pesoUnitarioBruto;
 	}
 
 }

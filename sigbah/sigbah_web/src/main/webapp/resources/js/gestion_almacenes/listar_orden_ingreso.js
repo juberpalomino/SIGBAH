@@ -143,7 +143,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
