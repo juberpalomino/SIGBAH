@@ -219,9 +219,19 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			var codigo = $('#hid_cod_ord_salida').val();
+			
+			var idResponsableExt = null;
+			var idResponsableRecepcion = null;
+			var idAlmacenDestino = null;
+			var idAlmacenDestinoExt = null;
 			var flagTipoDestino = $('input[name="rb_tie_ate_gobierno"]:checked').val();
 			if (esnulo(flagTipoDestino)) {
 				flagTipoDestino = 'I';
+				idResponsableRecepcion = $('#sel_res_recepcion').val();
+				idAlmacenDestino = $('#sel_alm_destino').val();
+			} else {
+				idResponsableExt = $('#sel_res_recepcion').val();
+				idAlmacenDestinoExt = $('#sel_alm_destino').val();
 			}
 			var indControl = null;
 			if (esnulo(codigo)) {
@@ -251,13 +261,13 @@ $(document).ready(function() {
 				codigoUbigeo : $('#sel_distrito').val(),
 				idProgramacion : idProgramacion,
 				idResponsable : $('#sel_responsable').val(),
-				idResponsableExt : $('#sel_res_recepcion').val(),
+				idResponsableExt : idResponsableExt,
 				idSolicitante : $('#sel_solicitada').val(),
-				idResponsableRecepcion : $('#sel_res_recepcion').val(),
+				idResponsableRecepcion : idResponsableRecepcion,
 				idProyectoManifiesto : idProyectoManifiesto,
 				idMovimiento : $('#sel_tip_movimiento').val(),
-				idAlmacenDestino : $('#sel_alm_destino').val(),
-				idAlmacenDestinoExt : $('#sel_alm_destino').val(),
+				idAlmacenDestino : idAlmacenDestino,
+				idAlmacenDestinoExt : idAlmacenDestinoExt,
 				idMedioTransporte : $('#sel_med_transporte').val(),
 				idEmpresaTransporte : $('#sel_emp_transporte').val(),
 				idChofer : $('#sel_chofer').val(),
@@ -783,16 +793,20 @@ function inicializarDatos() {
 			
 			cargarTipoMovimiento(ordenSalida.idMovimiento);
 			
-			if (!esnulo(ordenSalida.codigoRegion)) {
-				$('#sel_gore').val(ordenSalida.codigoRegion);
-				cargarDatosRegionalDestino(ordenSalida.codigoRegion, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
-			}
-			
-			if (!esnulo(ordenSalida.codigoUbigeo)) {
-				$('#sel_departamento').val(ordenSalida.codigoDepartamento);
-				cargarProvincia(ordenSalida.codigoDepartamento, ordenSalida.codigoProvincia);
-				cargarDistrito(ordenSalida.codigoProvincia, ordenSalida.codigoUbigeo);
-				cargarDatosLocalDestino(ordenSalida.codigoUbigeo, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
+			if (ordenSalida.flagTipoDestino == 'I') {
+				cargarDatosDdiDestino(ordenSalida.idDdiDestino, ordenSalida.idAlmacenDestino, ordenSalida.idResponsableRecepcion);
+			} else if (ordenSalida.flagTipoDestino == 'R') {
+				if (!esnulo(ordenSalida.codigoRegion)) {
+					$('#sel_gore').val(ordenSalida.codigoRegion);
+					cargarDatosRegionalDestino(ordenSalida.codigoRegion, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
+				}
+			} else if (ordenSalida.flagTipoDestino == 'L') {
+				if (!esnulo(ordenSalida.codigoUbigeo)) {
+					$('#sel_departamento').val(ordenSalida.codigoDepartamento);
+					cargarProvincia(ordenSalida.codigoDepartamento, ordenSalida.codigoProvincia);
+					cargarDistrito(ordenSalida.codigoProvincia, ordenSalida.codigoUbigeo);
+					cargarDatosLocalDestino(ordenSalida.codigoUbigeo, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
+				}
 			}
 			
 			listarProductoOrdenSalida(false);			
