@@ -5,7 +5,9 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
 		<li>Gestion de Almacenes</li>
-		<li>Lista Orden de Salida</li>
+		<li>Salidas</li>
+		<li>Orden de Salida</li>
+		<li>Registro</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
