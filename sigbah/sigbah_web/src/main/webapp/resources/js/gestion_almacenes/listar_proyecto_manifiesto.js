@@ -1,11 +1,11 @@
-var listaOrdenSalidaCache = new Object();
+var listaProyectoManifiestoCache = new Object();
 
-var tbl_mnt_ord_salida = $('#tbl_mnt_ord_salida');
-var frm_ord_salida = $('#frm_ord_salida');
+var tbl_mnt_pro_manifiesto = $('#tbl_mnt_pro_manifiesto');
+var frm_pro_manifiesto = $('#frm_pro_manifiesto');
 
 $(document).ready(function() {
 	
-	frm_ord_salida.bootstrapValidator({
+	frm_pro_manifiesto.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
@@ -29,24 +29,25 @@ $(document).ready(function() {
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_ord_salida.data('bootstrapValidator');
+		var bootstrapValidator = frm_pro_manifiesto.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 
 			var params = { 
 				codigoAnio : $('#sel_anio').val(),
 				codigoMes : $('#sel_mes').val(),
+				codigoDdi : $('#sel_ddi').val(),
 				idAlmacen : $('#sel_almacen').val(),
 				idMovimiento : $('#sel_tip_movimiento').val()
 			};
 			
 			loadding(true);
 			
-			consultarAjax('GET', '/gestion-almacenes/orden-salida/listarOrdenSalida', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/proyecto-manifiesto/listarProyectoManifiesto', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					listarOrdenSalida(respuesta);
+					listarProyectoManifiesto(respuesta);
 				}
 				loadding(false);
 			});
@@ -63,16 +64,16 @@ $(document).ready(function() {
 		var indices = [];
 		var codigo = ''
 		var anio = '';
-		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idSalida = listaOrdenSalidaCache[index].idSalida;
+				var idSalida = listaProyectoManifiestoCache[index].idSalida;
 				codigo = codigo + idSalida + '_';
-				anio = listaOrdenSalidaCache[index].codigoAnio;
+				anio = listaProyectoManifiestoCache[index].codigoAnio;
 			}
 		});
 		
@@ -86,7 +87,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/';
+			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/mantenimientoProyectoManifiesto/';
 			$(location).attr('href', url + codigo + '/' + anio);
 		}
 		
@@ -96,7 +97,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/0/0';
+		var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/mantenimientoProyectoManifiesto/0/0';
 		$(location).attr('href', url);
 		
 	});
@@ -104,7 +105,7 @@ $(document).ready(function() {
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();
 		
-		var row = $('#tbl_mnt_ord_salida > tbody > tr').length;
+		var row = $('#tbl_mnt_pro_manifiesto > tbody > tr').length;
 		var empty = null;
 		$('tr.odd').each(function() {		
 			empty = $(this).find('.dataTables_empty').text();
@@ -119,10 +120,12 @@ $(document).ready(function() {
 		
 		var codigoAnio = $('#sel_anio').val();
 		var codigoMes = $('#sel_mes').val();
+		var codigoDdi = $('#sel_ddi').val();
 		var idAlmacen = $('#sel_almacen').val();
 		var idMovimiento = $('#sel_tip_movimiento').val();
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/exportarExcel/';
+		var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
+		url += verificaParametro(codigoMes) + '/';
 		url += verificaParametro(codigoDdi) + '/';
 		url += verificaParametro(idAlmacen) + '/';
 		url += verificaParametro(idMovimiento);
@@ -147,16 +150,16 @@ $(document).ready(function() {
 		var indices = [];
 		var codigo = '';
 		var anio = '';
-		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idSalida = listaOrdenSalidaCache[index].idSalida;
+				var idSalida = listaProyectoManifiestoCache[index].idSalida;
 				codigo = codigo + idSalida + '_';
-				anio = listaOrdenSalidaCache[index].codigoAnio;
+				anio = listaProyectoManifiestoCache[index].codigoAnio;
 			}
 		});
 		
@@ -170,7 +173,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/exportarPdf/'+codigo+'/'+anio;
+			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/exportarPdf/'+codigo+'/'+anio;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {
@@ -196,28 +199,28 @@ function inicializarDatos() {
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
 	$('#ul_alm_salidas').css('display', 'block');	
-	$('#li_ord_salida').attr('class', 'active');
-	$('#li_ord_salida').closest('li').children('a').attr('href', '#');
+	$('#li_man_carga').attr('class', 'active');
+	$('#li_man_carga').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-		$('#sel_anio').val(ordenSalida.codigoAnio);
-		$('#sel_mes').val(ordenSalida.codigoMes);
-		$('#sel_almacen').val(ordenSalida.idAlmacen);
+		$('#sel_anio').val(proyectoManifiesto.codigoAnio);
+		$('#sel_mes').val(proyectoManifiesto.codigoMes);
+		$('#sel_almacen').val(proyectoManifiesto.idAlmacen);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {
-			listarOrdenSalida(new Object());		
+			listarProyectoManifiesto(new Object());		
 		}
 	}
 }
 
-function listarOrdenSalida(respuesta) {
+function listarProyectoManifiesto(respuesta) {
 
-	tbl_mnt_ord_salida.dataTable().fnDestroy();
+	tbl_mnt_pro_manifiesto.dataTable().fnDestroy();
 	
-	tbl_mnt_ord_salida.dataTable({
+	tbl_mnt_pro_manifiesto.dataTable({
 		data : respuesta,
 		columns : [ {
 			data : 'idSalida',
@@ -244,7 +247,7 @@ function listarOrdenSalida(respuesta) {
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroOrdenSalida'
+			data : 'nroProyectoManifiesto'
 		}, {
 			data : 'fechaEmision'
 		}, {
@@ -273,7 +276,7 @@ function listarOrdenSalida(respuesta) {
   		]
 	});
 	
-	listaOrdenSalidaCache = respuesta;
+	listaProyectoManifiestoCache = respuesta;
 
 }
 

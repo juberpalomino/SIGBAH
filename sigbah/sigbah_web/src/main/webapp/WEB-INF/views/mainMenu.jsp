@@ -55,8 +55,8 @@
 					<li>
 						<a href="#">Salidas</a>
 						<ul id="ul_alm_salidas">
-							<li class="li_men_opcion">
-								<a href="glyph.html">
+							<li id="li_man_carga" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/proyecto-manifiesto/inicio/0">
 									<i class="fa fa-caret-right"></i>Manifiesto de Carga
 								</a>
 							</li>
@@ -65,48 +65,70 @@
 									<i class="fa fa-caret-right"></i>Orden de Salida
 								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="glyph.html"><i class="fa fa-caret-right"></i>Guia de Remision</a>
+							<li id="li_gui_remision" class="li_men_opcion">
+								<a href="glyph.html">
+									<i class="fa fa-caret-right"></i>Guia de Remision
+								</a>
 							</li>
 						</ul>
 					</li>
 					<li>
 						<a href="#">Inventarios</a>
-						<ul>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Cartilla de Inventario</a>
+						<ul id="ul_alm_inventarios">
+							<li id="li_car_inventario" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Cartilla de Inventario
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Cierre Mensual</a>
+							<li id="li_cie_mensual" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Cierre Mensual
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Stock de Productos</a>
+							<li id="li_sto_productos" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Stock de Productos
+								</a>
 							</li>
 						</ul>
 					</li>
 					<li>
 						<a href="#">Reportes</a>
-						<ul>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Ingreso</a>
+						<ul id="ul_alm_reportes">
+							<li id="li_rep_ord_ingreso" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Orden de Ingreso
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden de Salida</a>
+							<li id="li_rep_ord_salida" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Orden de Salida
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Guia de Remision</a>
+							<li id="li_rep_gui_remision" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Guia de Remision
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Manifiesto de Carga</a>
+							<li id="li_rep_man_carga" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Manifiesto de Carga
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Acta de Entrega y Recepcion</a>
+							<li id="li_rep_act_ent_recepcion" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Acta de Entrega y Recepcion
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Reporte de Control de Calidad</a>
+							<li id="li_rep_con_calidad" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Reporte de Control de Calidad
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Kardex / Bincard</a>
+							<li id="li_rep_kar_bincard" class="li_men_opcion">
+								<a href="fa.html">
+									<i class="fa fa-caret-right"></i>Kardex / Bincard
+								</a>
 							</li>
 						</ul>
 					</li>

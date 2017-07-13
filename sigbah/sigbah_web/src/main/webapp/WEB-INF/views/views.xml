@@ -48,6 +48,14 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_OrdenSalida.jsp" />
 	</definition>
 	
+	<definition name="listar_proyecto_manifiesto" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_ProyectoManifiesto.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_proyecto_manifiesto" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_ProyectoManifiesto.jsp" />
+	</definition>
+	
 	<definition name="listar-donaciones" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
 	</definition>
