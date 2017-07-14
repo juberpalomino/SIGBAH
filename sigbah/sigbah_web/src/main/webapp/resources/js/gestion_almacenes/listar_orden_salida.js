@@ -123,9 +123,9 @@ $(document).ready(function() {
 		var idMovimiento = $('#sel_tip_movimiento').val();
 		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
-		url += verificaParametro(codigoDdi) + '/';
-		url += verificaParametro(idAlmacen) + '/';
-		url += verificaParametro(idMovimiento);
+		url += verificaParametro(codigoMes) + '/';
+		url += verificaParametroInt(idAlmacen) + '/';
+		url += verificaParametroInt(idMovimiento);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	

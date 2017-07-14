@@ -60,17 +60,6 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-2 control-label">DDI:</label>
-									<div class="col-sm-2 form-group">
-										<select id="sel_ddi" name="sel_ddi" class="form-control">
-											<c:forEach items="${lista_ddi}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
-									
-								<div class="row">
 									<label class="col-sm-2 control-label">Almacén:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_almacen" name="sel_almacen" class="form-control">
@@ -79,7 +68,9 @@
 											</c:forEach>
 										</select>
 									</div>
-								
+								</div>
+									
+								<div class="row">
 									<label class="col-sm-2 control-label">Tipo Movimiento:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">

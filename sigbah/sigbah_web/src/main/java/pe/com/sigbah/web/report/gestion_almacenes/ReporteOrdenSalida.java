@@ -3,6 +3,8 @@ package pe.com.sigbah.web.report.gestion_almacenes;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -69,7 +71,7 @@ public class ReporteOrdenSalida implements Serializable {
 	public HSSFWorkbook generaReporteExcelOrdenSalida(List<OrdenSalidaBean> lista) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
-	        HSSFSheet sheet = wb.createSheet("REGISTRO DE ORDEN DE INGRESO");
+	        HSSFSheet sheet = wb.createSheet("REGISTRO DE ORDEN DE SALIDA");
 	        
 	        sheet.setColumnWidth(1, 1500);
 	        sheet.setColumnWidth(2, 2000);
@@ -77,8 +79,8 @@ public class ReporteOrdenSalida implements Serializable {
 	        sheet.setColumnWidth(4, 5000);
 	        sheet.setColumnWidth(5, 7000);
 	        sheet.setColumnWidth(6, 5000);
-			sheet.setColumnWidth(7, 6500);
-			sheet.setColumnWidth(8, 4000);
+			sheet.setColumnWidth(7, 7000);
+			sheet.setColumnWidth(8, 6000);
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
@@ -148,7 +150,7 @@ public class ReporteOrdenSalida implements Serializable {
 		        rows.createCell(2).setCellValue(ingreso.getCodigoAnio());
 		        rows.getCell(2).setCellStyle(style_cell);
 		        
-		        rows.createCell(3).setCellValue(ingreso.getNombreDdi());
+		        rows.createCell(3).setCellValue(ingreso.getNombreMes());
 		        rows.getCell(3).setCellStyle(style_cell);
 		        
 		        rows.createCell(4).setCellValue(ingreso.getNombreAlmacen());
@@ -200,23 +202,20 @@ public class ReporteOrdenSalida implements Serializable {
 			
 			float[] f1 = {100};
 			
-			float[] f2_1 = {60, 40};
+			float[] f5_1 = {5, 25, 30, 20, 20};
 			
-			float[] f2_2 = {40, 60};
-			
-			float[] f4_1 = {15, 25, 35, 25};
-			
-			float[] f4_2 = {10, 30, 30, 30};
-			
-			float[] f7 = {30, 2, 20, 2, 25, 2, 19};
+			float[] f5_2 = {35, 5, 30, 5, 25};
 
-			float[] f9 = {5, 20, 10, 10, 10, 10, 10, 10, 15};
+			float[] f8 = {5, 20, 15, 10, 10, 10, 15, 15};
 
 			Paragraph p     = null;
+			Paragraph pdet 	= null;
 			PdfPTable table = null;
 			PdfPCell cell   = null;
 
 			Font titulo = FontFactory.getFont(FontFactory.TIMES_ROMAN, 14, Font.BOLD, BaseColor.BLACK);
+			Font hide = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.WHITE);
+			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
 			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL, BaseColor.BLACK);			
 			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.BOLD, BaseColor.BLACK);
 			
@@ -237,44 +236,48 @@ public class ReporteOrdenSalida implements Serializable {
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0");
+			det_encabezado.append("\n");
+			det_encabezado.append("Fecha : ");
+			Date fecha_hora = Calendar.getInstance().getTime();
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+			det_encabezado.append("\n");
+			det_encabezado.append("Hora : ");
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+			p = new Paragraph(det_encabezado.toString(), encabezado);
+			pdet = new Paragraph("        .", hide);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
 			p = new Paragraph("ORDEN DE SALIDA N° ".concat(ordenSalida.getNroOrdenSalida()), titulo);
 			cell = new PdfPCell(p);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-			cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
 			document.add(table);
+			
+		
 						
-			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-						
-			table = new PdfPTable(4);
-			table.setWidths(f4_1);
+			table = new PdfPTable(1);
+			table.setWidths(f1);
 			
-			p = new Paragraph("Año : ".concat(ordenSalida.getCodigoAnio()), normal);
+			p = new Paragraph(ordenSalida.getFechaEmision(), titulo);
 			cell = new PdfPCell(p);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			cell.setBorderColor(BaseColor.WHITE);
-			table.addCell(cell);
-			
-			p = new Paragraph("DDI : ".concat(ordenSalida.getNombreDdi()), normal);
-			cell = new PdfPCell(p);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			cell.setBorderColor(BaseColor.WHITE);
-			table.addCell(cell);
-			
-			p = new Paragraph("Almacén : ".concat(ordenSalida.getNombreAlmacen()), normal);
-			cell = new PdfPCell(p);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			cell.setBorderColor(BaseColor.WHITE);
-			table.addCell(cell);
-			
-			p = new Paragraph("Fecha : ".concat(ordenSalida.getFechaEmision()), normal);
-			cell = new PdfPCell(p);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
@@ -282,66 +285,94 @@ public class ReporteOrdenSalida implements Serializable {
 			document.add(table);
 			
 			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//
-//			
-//			table = new PdfPTable(2);
-//			table.setWidths(f2_1);
-//			
-//			p = new Paragraph("Tipo de Movimiento : ".concat(ordenSalida.getNombreMovimiento()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Almacen Origen : ".concat(ordenSalida.getNombreAlmacenProcedencia()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//
-//			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			
-//			
-//			table = new PdfPTable(1);
-//			table.setWidths(f1);
-//			
-//			p = new Paragraph("Nombre Proveedor : ".concat(getString(ordenSalida.getProvRep())), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);			
-//			
-//			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			
-//			
-//			table = new PdfPTable(1);
-//			table.setWidths(f1);
-//			
-//			p = new Paragraph("Responsable Recepción : ".concat(getString(ordenSalida.getResponsable())), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+						
+			
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("DDI : ", negrita);
+			pdet = new Paragraph(ordenSalida.getNombreDdi(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
 			
 			
 			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
 			
 			
-			table = new PdfPTable(4);
-			table.setWidths(f4_2);
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("ALMACEN ORIGEN : ", negrita);
+			pdet = new Paragraph(ordenSalida.getNombreAlmacen(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("TIPO MOVIMIENTO : ", negrita);
+			pdet = new Paragraph(ordenSalida.getNombreMovimiento(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+
+			
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("ALMACEN DESTINO : ", negrita);
+			pdet = new Paragraph(ordenSalida.getNombreAlmacenDestino(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+	
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			table = new PdfPTable(5);
+			table.setWidths(f5_1);
 			
 			p = new Paragraph("N°", negrita);
 			cell = new PdfPCell(p);
@@ -350,14 +381,21 @@ public class ReporteOrdenSalida implements Serializable {
 			cell.setBackgroundColor(header);
 			table.addCell(cell);
 			
-			p = new Paragraph("Documentos Adjuntos", negrita);
+			p = new Paragraph("Tipo Documento", negrita);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setBackgroundColor(header);
 			table.addCell(cell);
 			
-			p = new Paragraph("Nro", negrita);
+			p = new Paragraph("N° Documento", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Fecha", negrita);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -375,8 +413,8 @@ public class ReporteOrdenSalida implements Serializable {
 			
 			for (DocumentoSalidaBean documento : listaDocumento) {
 			
-				table = new PdfPTable(4);
-				table.setWidths(f4_2);
+				table = new PdfPTable(5);
+				table.setWidths(f5_1);
 				
 				p = new Paragraph(String.valueOf(row_doc), normal);
 				cell = new PdfPCell(p);
@@ -396,6 +434,12 @@ public class ReporteOrdenSalida implements Serializable {
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				table.addCell(cell);
 				
+				p = new Paragraph(documento.getFechaDocumento(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
 				cell = new PdfPCell();
 				cell.setBorder(PdfPCell.NO_BORDER);
 				table.addCell(cell);
@@ -409,8 +453,8 @@ public class ReporteOrdenSalida implements Serializable {
 			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
 				
 			
-			table = new PdfPTable(9);
-			table.setWidths(f9);
+			table = new PdfPTable(8);
+			table.setWidths(f8);
 			
 			p = new Paragraph("N°", negrita);
 			cell = new PdfPCell(p);
@@ -475,8 +519,8 @@ public class ReporteOrdenSalida implements Serializable {
 			
 			for (ProductoSalidaBean producto : listaProducto) {
 			
-				table = new PdfPTable(9);
-				table.setWidths(f9);
+				table = new PdfPTable(8);
+				table.setWidths(f8);
 				
 				p = new Paragraph(String.valueOf(row_pro), normal);
 				cell = new PdfPCell(p);
@@ -567,10 +611,10 @@ public class ReporteOrdenSalida implements Serializable {
 			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
 			
 			
-			table = new PdfPTable(7);
-			table.setWidths(f7);
+			table = new PdfPTable(5);
+			table.setWidths(f5_2);
 			
-			p = new Paragraph("Responsable Abastecimiento ", normal);
+			p = new Paragraph("Responsable de Almacén", normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -582,19 +626,7 @@ public class ReporteOrdenSalida implements Serializable {
 			cell.setBorder(PdfPCell.NO_BORDER);
 			table.addCell(cell);
 			
-			p = new Paragraph("Jefe Almacén", normal);
-			cell = new PdfPCell(p);
-			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			cell.setBorder(Rectangle.TOP);
-			table.addCell(cell);
-			
-			cell = new PdfPCell();
-			cell.setBorder(PdfPCell.NO_BORDER);
-			table.addCell(cell);
-			
-			p = new Paragraph("Responsable Almacén", normal);
+			p = new Paragraph("Recicí Conforme", normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);

@@ -36,7 +36,6 @@ $(document).ready(function() {
 			var params = { 
 				codigoAnio : $('#sel_anio').val(),
 				codigoMes : $('#sel_mes').val(),
-				codigoDdi : $('#sel_ddi').val(),
 				idAlmacen : $('#sel_almacen').val(),
 				idMovimiento : $('#sel_tip_movimiento').val()
 			};
@@ -120,15 +119,13 @@ $(document).ready(function() {
 		
 		var codigoAnio = $('#sel_anio').val();
 		var codigoMes = $('#sel_mes').val();
-		var codigoDdi = $('#sel_ddi').val();
 		var idAlmacen = $('#sel_almacen').val();
 		var idMovimiento = $('#sel_tip_movimiento').val();
 		var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
 		url += verificaParametro(codigoMes) + '/';
-		url += verificaParametro(codigoDdi) + '/';
-		url += verificaParametro(idAlmacen) + '/';
-		url += verificaParametro(idMovimiento);
+		url += verificaParametroInt(idAlmacen) + '/';
+		url += verificaParametroInt(idMovimiento);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	

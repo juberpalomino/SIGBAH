@@ -10,6 +10,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -17,8 +18,10 @@ import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -325,11 +328,128 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	}
 
 	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProyectoManifiestoBean> listarManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		return logisticaDao.listarManifiesto(proyectoManifiestoBean);
+	}
+
+	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#listarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
-		return logisticaDao.listarProyectoManifiesto(proyectoManifiestoBean);
+	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativoProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public ProyectoManifiestoBean obtenerCorrelativoProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroProyectoManifiesto(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public ProyectoManifiestoBean obtenerRegistroProyectoManifiesto(Integer idProyecto, String anio) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(
+			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public ProductoProyectoManifiestoBean grabarProductoProyectoManifiesto(
+			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public ProductoProyectoManifiestoBean eliminarProductoProyectoManifiesto(
+			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<DocumentoProyectoManifiestoBean> listarDocumentoProyectoManifiesto(
+			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
+	 */
+	@Override
+	public DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(
+			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
+	 */
+	@Override
+	public DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(
+			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#verificarProductosProgramacion(java.lang.Integer)
+	 */
+	@Override
+	public int verificarProductosProgramacion(Integer idProgramacion) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProyectoManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
+	 */
+	@Override
+	public List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

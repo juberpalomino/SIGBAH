@@ -30,6 +30,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -37,8 +38,10 @@ import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -59,7 +62,7 @@ import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
 import pe.com.sigbah.mapper.RegistroOrdenSalidaMapper;
 import pe.com.sigbah.mapper.ProductoSalidaMapper;
-import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
+import pe.com.sigbah.mapper.ManifiestoMapper;
 import pe.com.sigbah.mapper.DocumentoSalidaMapper;
 
 /**
@@ -2068,11 +2071,11 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#listarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
-		LOGGER.info("[listarProyectoManifiesto] Inicio ");
+	public List<ProyectoManifiestoBean> listarManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		LOGGER.info("[listarManifiesto] Inicio ");
 		List<ProyectoManifiestoBean> lista = new ArrayList<ProyectoManifiestoBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
@@ -2092,7 +2095,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
-			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ProyectoManifiestoMapper()));			
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ManifiestoMapper()));			
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
@@ -2102,7 +2105,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
 				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
-				LOGGER.info("[listarProyectoManifiesto] Ocurrio un error en la operacion del USP_LISTAR_PROYECTO_MANIFIESTO : "+mensajeRespuesta);
+				LOGGER.info("[listarManifiesto] Ocurrio un error en la operacion del USP_LISTAR_PROYECTO_MANIFIESTO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
@@ -2112,8 +2115,126 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[listarProyectoManifiesto] Fin ");
+		LOGGER.info("[listarManifiesto] Fin ");
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerCorrelativoProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public ProyectoManifiestoBean obtenerCorrelativoProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroProyectoManifiesto(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public ProyectoManifiestoBean obtenerRegistroProyectoManifiesto(Integer idProyecto, String anio) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(
+			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public ProductoProyectoManifiestoBean grabarProductoProyectoManifiesto(
+			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public ProductoProyectoManifiestoBean eliminarProductoProyectoManifiesto(
+			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<DocumentoProyectoManifiestoBean> listarDocumentoProyectoManifiesto(
+			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
+	 */
+	@Override
+	public DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(
+			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
+	 */
+	@Override
+	public DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(
+			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#verificarProductosProgramacion(java.lang.Integer)
+	 */
+	@Override
+	public int verificarProductosProgramacion(Integer idProgramacion) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProyectoManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
+	 */
+	@Override
+	public List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(
+			ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

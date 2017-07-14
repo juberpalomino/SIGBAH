@@ -22,6 +22,17 @@ $(document).ready(function() {
 	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
+		var fecha = $(this).val();
+		if (!esnulo(fecha)) {
+			var mes = fecha.substring(3, 5);
+		    var anio = fecha.substring(6, 10);		    
+		    if (mes != ordenSalida.codigoMes || anio != ordenSalida.codigoAnio) {
+		    	$('#hid_val_fec_trabajo').val('0');
+		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    } else {
+		    	$('#hid_val_fec_trabajo').val('1');
+		    }
+		}
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
@@ -169,6 +180,12 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
+			
+			if ($('#hid_val_fec_trabajo').val() == '0') {
+		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	return;
+			}
+			
 			var codigo = $('#hid_cod_ord_ingreso').val();
 			var flagControlCalidad = $('input[name="rb_tie_nro_rep_con_calidad"]:checked').val();
 			var idProveedor = null;

@@ -330,4 +330,12 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 		return generalDao.listarEstadoDonacion(itemBean);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarTipoMovimientoPm()
+	 */
+	@Override
+	public List<ItemBean> listarTipoMovimientoPm() throws Exception {
+		return generalDao.listarTipoMovimientoPm();
+	}
+
 }

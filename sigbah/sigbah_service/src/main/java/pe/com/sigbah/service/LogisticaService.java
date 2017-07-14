@@ -6,6 +6,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -13,8 +14,10 @@ import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 
 /**
  * @className: LogisticaService.java
@@ -281,6 +284,91 @@ public interface LogisticaService {
 	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
+	public abstract List<ProyectoManifiestoBean> listarManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param proyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
 	public abstract List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param proyectoManifiestoBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProyectoManifiestoBean obtenerCorrelativoProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param proyectoManifiestoBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param idProyecto
+	 * @param anio 
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProyectoManifiestoBean obtenerRegistroProyectoManifiesto(Integer idProyecto, String anio) throws Exception;
+	
+	/**
+	 * @param productoProyectoManifiestoBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception;
+
+	/**
+	 * @param productoProyectoManifiestoBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ProductoProyectoManifiestoBean grabarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param productoProyectoManifiestoBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoProyectoManifiestoBean eliminarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception;
+
+	/**
+	 * @param documentoProyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<DocumentoProyectoManifiestoBean> listarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception;
+
+	/**
+	 * @param documentoProyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception;
+
+	/**
+	 * @param documentoProyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param idProgramacion
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract int verificarProductosProgramacion(Integer idProgramacion) throws Exception;
+	
+	/**
+	 * @param proyectoManifiestoVehiculoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception;
 	
 }

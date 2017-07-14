@@ -55,6 +55,7 @@
 									<form id="frm_dat_generales" class="form-horizontal">
 									
 										<input type="hidden" id="hid_cod_ord_salida" name="hid_cod_ord_salida">
+										<input type="hidden" id="hid_val_fec_trabajo" name="hid_val_fec_trabajo">
 									
 										<div class="header-form opc-center">	
 											<strong>Orden Salida</strong>
@@ -234,7 +235,7 @@
 															<select id="sel_gore" name="sel_gore" class="form-control">
 																<option value="">Seleccione</option>
 																<c:forEach items="${lista_region}" var="item">
-																	<option value="${item.icodigo}">${item.descripcion}</option>
+																	<option value="${item.descripcionCorta}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>

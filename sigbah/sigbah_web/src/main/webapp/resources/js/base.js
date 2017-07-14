@@ -1016,3 +1016,10 @@ function verificaParametro(campo) {
 	}
 	return campo;
 }
+
+function verificaParametroInt(campo) {
+	if (esnulo(campo)) {
+		return 0;
+	}
+	return campo;
+}

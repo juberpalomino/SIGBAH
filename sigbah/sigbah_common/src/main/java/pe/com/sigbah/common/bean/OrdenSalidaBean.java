@@ -56,6 +56,7 @@ public class OrdenSalidaBean extends BaseOutputBean {
 	private String nroRequerimiento;
 	private String nroProyectoManifiesto;
 	private String nroProgramacion;
+	private String nombreAlmacenDestino;
 	
 	
 	/**
@@ -636,6 +637,20 @@ public class OrdenSalidaBean extends BaseOutputBean {
 	 */
 	public void setNroProgramacion(String nroProgramacion) {
 		this.nroProgramacion = nroProgramacion;
+	}
+
+	/**
+	 * @return the nombreAlmacenDestino
+	 */
+	public String getNombreAlmacenDestino() {
+		return nombreAlmacenDestino;
+	}
+
+	/**
+	 * @param nombreAlmacenDestino the nombreAlmacenDestino to set
+	 */
+	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
+		this.nombreAlmacenDestino = nombreAlmacenDestino;
 	}
 	
 }

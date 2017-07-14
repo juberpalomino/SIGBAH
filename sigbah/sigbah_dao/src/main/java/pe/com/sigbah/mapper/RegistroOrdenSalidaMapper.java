@@ -59,6 +59,8 @@ public class RegistroOrdenSalidaMapper implements RowMapper<OrdenSalidaBean> {
 		ordenSalida.setNroPlaca(rs.getString("NRO_PLACA"));
 		ordenSalida.setFechaEntrega(rs.getString("FECHA_ENTREGA"));
 		ordenSalida.setObservacion(rs.getString("OBSERVACION"));
+		ordenSalida.setNombreAlmacenDestino(rs.getString("NOMBRE_ALMACEN_DESTINO"));
+		ordenSalida.setNombreMovimiento(rs.getString("NOMBRE_MOVIMIENTO"));
 		return ordenSalida;
 	}
 

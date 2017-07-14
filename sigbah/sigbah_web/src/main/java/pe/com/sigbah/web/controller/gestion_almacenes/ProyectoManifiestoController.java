@@ -77,7 +77,7 @@ public class ProyectoManifiestoController extends BaseController {
         	
         	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	        	
-        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
+        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimientoPm());
         	
         	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
         	
@@ -207,7 +207,7 @@ public class ProyectoManifiestoController extends BaseController {
         	
         	model.addAttribute("ordenSalida", getParserObject(ordenSalida));
         	
-        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
+        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimientoPm());
 
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	
@@ -215,7 +215,7 @@ public class ProyectoManifiestoController extends BaseController {
         	proyectoManifiestoBean.setCodigoAnio(anioActual);
         	proyectoManifiestoBean.setIdDdi(usuarioBean.getIdDdi());
         	proyectoManifiestoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
-        	model.addAttribute("lista_proyecto_manifiesto", logisticaService.listarProyectoManifiesto(proyectoManifiestoBean));
+        	model.addAttribute("lista_proyecto_manifiesto", logisticaService.listarManifiesto(proyectoManifiestoBean));
         	
         	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
         	

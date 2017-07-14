@@ -277,5 +277,11 @@ public interface GeneralService {
 	 * @throws Exception
 	 */
 	public abstract List<ItemBean> listarEstadoDonacion(ItemBean itemBean) throws Exception;
+	
+	/**
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarTipoMovimientoPm() throws Exception;
 
 }

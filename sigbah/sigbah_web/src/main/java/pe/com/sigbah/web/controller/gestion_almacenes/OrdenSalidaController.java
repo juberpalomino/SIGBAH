@@ -215,7 +215,7 @@ public class OrdenSalidaController extends BaseController {
         	proyectoManifiestoBean.setCodigoAnio(anioActual);
         	proyectoManifiestoBean.setIdDdi(usuarioBean.getIdDdi());
         	proyectoManifiestoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
-        	model.addAttribute("lista_proyecto_manifiesto", logisticaService.listarProyectoManifiesto(proyectoManifiestoBean));
+        	model.addAttribute("lista_proyecto_manifiesto", logisticaService.listarManifiesto(proyectoManifiestoBean));
         	
         	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
         	
@@ -746,6 +746,7 @@ public class OrdenSalidaController extends BaseController {
 	    	
 	    	DocumentoSalidaBean documento = new DocumentoSalidaBean();
 	    	documento.setIdSalida(codigo);
+	    	documento.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    	List<DocumentoSalidaBean> listaDocumento = logisticaService.listarDocumentoSalida(documento);	    	
 
 	    	StringBuilder file_path = new StringBuilder();

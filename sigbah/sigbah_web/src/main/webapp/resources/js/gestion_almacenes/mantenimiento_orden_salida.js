@@ -22,6 +22,17 @@ $(document).ready(function() {
 	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
+		var fecha = $(this).val();
+		if (!esnulo(fecha)) {
+			var mes = fecha.substring(3, 5);
+		    var anio = fecha.substring(6, 10);		    
+		    if (mes != ordenSalida.codigoMes || anio != ordenSalida.codigoAnio) {
+		    	$('#hid_val_fec_trabajo').val('0');
+		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    } else {
+		    	$('#hid_val_fec_trabajo').val('1');
+		    }
+		}
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
@@ -218,18 +229,29 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			var codigo = $('#hid_cod_ord_salida').val();
 			
+			if ($('#hid_val_fec_trabajo').val() == '0') {
+		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	return;
+			}
+			
+			var codigo = $('#hid_cod_ord_salida').val();			
 			var idResponsableExt = null;
 			var idResponsableRecepcion = null;
 			var idAlmacenDestino = null;
 			var idAlmacenDestinoExt = null;
+			var codigoUbigeo = null;
 			var flagTipoDestino = $('input[name="rb_tie_ate_gobierno"]:checked').val();
 			if (esnulo(flagTipoDestino)) {
 				flagTipoDestino = 'I';
 				idResponsableRecepcion = $('#sel_res_recepcion').val();
 				idAlmacenDestino = $('#sel_alm_destino').val();
 			} else {
+				if (flagTipoDestino == 'R') {
+					codigoUbigeo = $('#sel_gore').val();
+				} else {
+					codigoUbigeo = $('#sel_distrito').val();
+				}				
 				idResponsableExt = $('#sel_res_recepcion').val();
 				idAlmacenDestinoExt = $('#sel_alm_destino').val();
 			}
@@ -258,7 +280,7 @@ $(document).ready(function() {
 				codigoAlmacen : ordenSalida.codigoAlmacen,
 				nroOrdenSalida : $('#txt_nro_ord_salida').val(),
 				fechaEmision : $('#txt_fecha').val(),
-				codigoUbigeo : $('#sel_distrito').val(),
+				codigoUbigeo : codigoUbigeo,
 				idProgramacion : idProgramacion,
 				idResponsable : $('#sel_responsable').val(),
 				idResponsableExt : idResponsableExt,
@@ -796,11 +818,13 @@ function inicializarDatos() {
 			if (ordenSalida.flagTipoDestino == 'I') {
 				cargarDatosDdiDestino(ordenSalida.idDdiDestino, ordenSalida.idAlmacenDestino, ordenSalida.idResponsableRecepcion);
 			} else if (ordenSalida.flagTipoDestino == 'R') {
+				cargarTipoAtencion(ordenSalida.flagTipoDestino);
 				if (!esnulo(ordenSalida.codigoRegion)) {
 					$('#sel_gore').val(ordenSalida.codigoRegion);
 					cargarDatosRegionalDestino(ordenSalida.codigoRegion, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
 				}
 			} else if (ordenSalida.flagTipoDestino == 'L') {
+				cargarTipoAtencion(ordenSalida.flagTipoDestino);
 				if (!esnulo(ordenSalida.codigoUbigeo)) {
 					$('#sel_departamento').val(ordenSalida.codigoDepartamento);
 					cargarProvincia(ordenSalida.codigoDepartamento, ordenSalida.codigoProvincia);
@@ -1301,12 +1325,13 @@ function cargarDatosRegionalDestino(codigo, codigoAlmacenExtRegion, codigoPerson
 		} else {
 			var options = '';
 			$.each(respuesta, function(i, item) {
-				options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
 			});
 			$('#sel_alm_destino').html(options);
 			if (codigoAlmacenExtRegion != null) {
 	        	$('#sel_alm_destino').val(codigoAlmacenExtRegion);       	
 	        }
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
 		}
 		loadding(false);
 		
@@ -1316,13 +1341,14 @@ function cargarDatosRegionalDestino(codigo, codigoAlmacenExtRegion, codigoPerson
 			} else {
 				var options = '';
 				$.each(respuesta, function(i, item) {
-					options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+					options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
 				});
 				$('#sel_res_recepcion').html(options);
 				if (codigoPersonalExtRegion != null) {
 					$('#sel_res_recepcion').val(codigoPersonalExtRegion);       	
 				}
 			}
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
 		});				
 	});
 }
@@ -1344,6 +1370,7 @@ function cargarDatosLocalDestino(codigo, codigoAlmacenExtLocal, codigoPersonalEx
 			if (codigoAlmacenExtLocal != null) {
 	        	$('#sel_alm_destino').val(codigoAlmacenExtLocal);       	
 	        }
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
 		}
 		loadding(false);
 		
@@ -1359,6 +1386,7 @@ function cargarDatosLocalDestino(codigo, codigoAlmacenExtLocal, codigoPersonalEx
 				if (codigoPersonalExtLocal != null) {
 					$('#sel_res_recepcion').val(codigoPersonalExtLocal);       	
 				}
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
 			}
 		});				
 	});

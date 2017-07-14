@@ -55,6 +55,7 @@
 									<form id="frm_dat_generales" class="form-horizontal">
 									
 										<input type="hidden" id="hid_cod_ord_ingreso" name="hid_cod_ord_ingreso">
+										<input type="hidden" id="hid_val_fec_trabajo" name="hid_val_fec_trabajo">
 									
 										<div class="header-form opc-center">	
 											<strong>Orden Ingreso</strong>

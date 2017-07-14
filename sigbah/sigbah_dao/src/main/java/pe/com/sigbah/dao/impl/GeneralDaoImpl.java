@@ -1099,4 +1099,37 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 		return lista;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.GeneralDao#listarTipoMovimientoPm()
+	 */
+	@Override
+	public List<ItemBean> listarTipoMovimientoPm() throws Exception {
+		LOGGER.info("[listarTipoMovimientoPm] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_TIP_MOVIMIENTO_PM");
+
+			Map<String, Object> out = objJdbcCall.withoutProcedureColumnMetaDataAccess()
+					.returningResultSet("PO_LR_RECORDSET", new RowMapper<ItemBean>() {
+						public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+							ItemBean item = new ItemBean();
+							item.setIcodigo(rs.getInt("IDE_TIP_MOVIMIENTO"));
+							item.setDescripcion(rs.getString("NOM_MOVIMIENTO"));
+							return item;
+						}
+					}).execute(objJdbcCall);
+
+			lista = new ArrayList((Collection<ItemBean>) out.get("PO_LR_RECORDSET"));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarTipoMovimientoPm] Fin ");
+		return lista;
+	}
+
 }
