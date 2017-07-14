@@ -26,7 +26,7 @@ $(document).ready(function() {
 		if (!esnulo(fecha)) {
 			var mes = fecha.substring(3, 5);
 		    var anio = fecha.substring(6, 10);		    
-		    if (mes != ordenSalida.codigoMes || anio != ordenSalida.codigoAnio) {
+		    if (mes != ordenIngreso.codigoMes || anio != ordenIngreso.codigoAnio) {
 		    	$('#hid_val_fec_trabajo').val('0');
 		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
 		    } else {
