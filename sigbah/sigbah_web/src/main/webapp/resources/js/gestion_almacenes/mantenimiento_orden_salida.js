@@ -1328,10 +1328,12 @@ function cargarDatosRegionalDestino(codigo, codigoAlmacenExtRegion, codigoPerson
 				options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
 			});
 			$('#sel_alm_destino').html(options);
-			if (codigoAlmacenExtRegion != null) {
+			if (codigoAlmacenExtRegion != null && codigoAlmacenExtRegion != 0) {
 	        	$('#sel_alm_destino').val(codigoAlmacenExtRegion);       	
+	        } else {
+	        	frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
 	        }
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
+			
 		}
 		loadding(false);
 		
@@ -1344,11 +1346,12 @@ function cargarDatosRegionalDestino(codigo, codigoAlmacenExtRegion, codigoPerson
 					options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
 				});
 				$('#sel_res_recepcion').html(options);
-				if (codigoPersonalExtRegion != null) {
+				if (codigoPersonalExtRegion != null && codigoPersonalExtRegion != 0) {
 					$('#sel_res_recepcion').val(codigoPersonalExtRegion);       	
+				} else {
+					frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
 				}
 			}
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
 		});				
 	});
 }
@@ -1364,13 +1367,14 @@ function cargarDatosLocalDestino(codigo, codigoAlmacenExtLocal, codigoPersonalEx
 		} else {
 			var options = '';
 			$.each(respuesta, function(i, item) {
-				options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
 			});
 			$('#sel_alm_destino').html(options);
-			if (codigoAlmacenExtLocal != null) {
+			if (codigoAlmacenExtLocal != null && codigoAlmacenExtLocal != 0) {
 	        	$('#sel_alm_destino').val(codigoAlmacenExtLocal);       	
+	        } else {
+	        	frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
 	        }
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
 		}
 		loadding(false);
 		
@@ -1380,13 +1384,14 @@ function cargarDatosLocalDestino(codigo, codigoAlmacenExtLocal, codigoPersonalEx
 			} else {
 				var options = '';
 				$.each(respuesta, function(i, item) {
-					options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+					options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
 				});
 				$('#sel_res_recepcion').html(options);
-				if (codigoPersonalExtLocal != null) {
+				if (codigoPersonalExtLocal != null && codigoPersonalExtLocal != 0) {
 					$('#sel_res_recepcion').val(codigoPersonalExtLocal);       	
+				} else {
+					frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
 				}
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
 			}
 		});				
 	});
