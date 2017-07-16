@@ -19,16 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
@@ -377,15 +378,15 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarProyectoManifiestoVehiculo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarManifiestoVehiculo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarProyectoManifiestoVehiculo(HttpServletRequest request, HttpServletResponse response) {
-		List<ProyectoManifiestoVehiculoBean> lista = null;
+	public Object listarManifiestoVehiculo(HttpServletRequest request, HttpServletResponse response) {
+		List<ManifiestoVehiculoBean> lista = null;
 		try {			
-			ProyectoManifiestoVehiculoBean vehiculo = new ProyectoManifiestoVehiculoBean();			
+			ManifiestoVehiculoBean vehiculo = new ManifiestoVehiculoBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(vehiculo, request.getParameterMap());			
-			lista = logisticaService.listarProyectoManifiestoVehiculo(vehiculo);
+			lista = logisticaService.listarManifiestoVehiculo(vehiculo);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -394,19 +395,18 @@ public class ProyectoManifiestoController extends BaseController {
 	}
 	
 	/**
-	 * @param arrTipoCamion 
-	 * @param response
+	 * @param proyectoManifiestoVehiculo 
 	 * @return objeto en formato json
 	 */
 	@RequestMapping(value = "/procesarManifiestoVehiculo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object procesarManifiestoVehiculo(@RequestParam(value="arrTipoCamion") String[] arrTipoCamion, HttpServletResponse response) {
+	public Object procesarManifiestoVehiculo(@ModelAttribute(value="proyectoManifiestoVehiculo") ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculo) {
 		String indicador = null;
 		try {
 			
 			
-			for (String camion : arrTipoCamion) {
-				System.out.println(camion);
+			for (ManifiestoVehiculoBean vehiculo : proyectoManifiestoVehiculo.getVehiculos()) {
+				System.out.println(vehiculo.getIdTipoCamion());
 			}
 			
 			
@@ -513,30 +513,23 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param codigoAnio 
 	 * @param codigoMes 
 	 * @param idAlmacen
-	 * @param idMovimiento 
+	 * @param codigoMovimiento 
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{idAlmacen}/{idMovimiento}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{idAlmacen}/{codigoMovimiento}", method = RequestMethod.GET)
 	@ResponseBody
 	public String exportarExcel(@PathVariable("codigoAnio") String codigoAnio, 
 								@PathVariable("codigoMes") String codigoMes, 
 								@PathVariable("idAlmacen") Integer idAlmacen,
-								@PathVariable("idMovimiento") Integer idMovimiento, 
+								@PathVariable("codigoMovimiento") String codigoMovimiento, 
 								HttpServletResponse response) {
 	    try {
 	    	ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();
 	    	proyectoManifiestoBean.setCodigoAnio(verificaParametro(codigoAnio));
 	    	proyectoManifiestoBean.setCodigoMes(verificaParametro(codigoMes));
 	    	proyectoManifiestoBean.setIdAlmacen(idAlmacen);
-	    	proyectoManifiestoBean.setIdMovimiento(idMovimiento);
-	    	
-	    	// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-			
-        	proyectoManifiestoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
-        	proyectoManifiestoBean.setIdDdi(usuarioBean.getIdDdi());
-        	proyectoManifiestoBean.setCodigoDdi(usuarioBean.getCodigoDdi());	    	
+	    	proyectoManifiestoBean.setCodigoMovimiento(codigoMovimiento);
 	    	
 			List<ProyectoManifiestoBean> lista = logisticaService.listarProyectoManifiesto(proyectoManifiestoBean);
 	    	

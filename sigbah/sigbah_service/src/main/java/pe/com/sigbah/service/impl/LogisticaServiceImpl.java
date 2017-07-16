@@ -13,6 +13,7 @@ import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
+import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
@@ -432,11 +433,11 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	}
 	
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#listarProyectoManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
+	 * @see pe.com.sigbah.service.LogisticaService#listarManifiestoVehiculo(pe.com.sigbah.common.bean.ManifiestoVehiculoBean)
 	 */
 	@Override
-	public List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
-		return logisticaDao.listarProyectoManifiestoVehiculo(proyectoManifiestoVehiculoBean);
+	public List<ManifiestoVehiculoBean> listarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception {
+		return logisticaDao.listarManifiestoVehiculo(manifiestoVehiculoBean);
 	}
 
 	/* (non-Javadoc)

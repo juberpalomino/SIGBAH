@@ -122,12 +122,12 @@ function consultarAjax(metodoEnv, direccionUrl, jsonString, callback) {
 			if (respuesta.status == '404') {
 				resp = {
 					'mensajeRespuesta' : 'El recurso solicitado no existe (HTTP: 404).',
-					'codigoRespuesta' : '99'
+					'codigoRespuesta' : '00'
 				};
 			} else {
 				resp = {
 					'mensajeRespuesta' : 'Error no identificado. ' + respuesta.status,
-					'codigoRespuesta' : '99'
+					'codigoRespuesta' : '00'
 				};
 			}
 			callback(resp);
@@ -163,12 +163,12 @@ function consultarAjaxSincrono(metodoEnv, direccionUrl, jsonString, callback) {
 			if (respuesta.status == '404') {
 				resp = {
 					'mensajeRespuesta' : 'El recurso solicitado no existe (HTTP: 404).',
-					'codigoRespuesta' : '99'
+					'codigoRespuesta' : '00'
 				};
 			} else {
 				resp = {
 					'mensajeRespuesta' : 'Error no identificado. ' + respuesta.status,
-					'codigoRespuesta' : '99'
+					'codigoRespuesta' : '00'
 				};
 			}
 			callback(resp);
@@ -197,6 +197,7 @@ function consultarAjaxFile(metodoEnv, direccionUrl, formData, callback) {
 		contentType: false,
 		processData: false,
 		data: formData,
+		timeout : 30000, // 30 segundos
 		success: function(respuesta) {						
 			callback(respuesta);	
 		},
@@ -205,12 +206,12 @@ function consultarAjaxFile(metodoEnv, direccionUrl, formData, callback) {
 			if (respuesta.status == '404') {
 				resp = {
 					'mensajeRespuesta' : 'El recurso solicitado no existe (HTTP: 404).',
-					'codigoRespuesta' : '99'
+					'codigoRespuesta' : '00'
 				};
 			} else {
 				resp = {
 					'mensajeRespuesta' : 'Error no identificado. ' + respuesta.status,
-					'codigoRespuesta' : '99'
+					'codigoRespuesta' : '00'
 				};
 			}
 			callback(resp);

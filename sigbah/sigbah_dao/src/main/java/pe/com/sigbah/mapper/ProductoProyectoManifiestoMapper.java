@@ -33,7 +33,7 @@ public class ProductoProyectoManifiestoMapper implements RowMapper<ProductoProye
 		producto.setVolumenTotal(rs.getBigDecimal("VOLUMEN_TOTAL"));
 		producto.setCostoBruto(rs.getBigDecimal("COSTO_UNITARIO"));
 		producto.setCostoTotal(rs.getBigDecimal("COSTO_TOTAL"));
-		producto.setIdCategoria(rs.getInt("IDE_CATEGORIA_BAH"));
+		producto.setIdCategoria(rs.getInt("FK_IDE_CATEGORIA_BAH"));
 		producto.setNombreEnvase(rs.getString("NOM_ENVASE"));
 		return producto;
 	}

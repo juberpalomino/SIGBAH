@@ -69,7 +69,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 	public HSSFWorkbook generaReporteExcelProyectoManifiesto(List<ProyectoManifiestoBean> lista) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
-	        HSSFSheet sheet = wb.createSheet("REGISTRO DE ORDEN DE INGRESO");
+	        HSSFSheet sheet = wb.createSheet("REGISTRO DE PROYECTO MANIFIESTO");
 	        
 	        sheet.setColumnWidth(1, 1500);
 	        sheet.setColumnWidth(2, 2000);
@@ -77,8 +77,8 @@ public class ReporteProyectoManifiesto implements Serializable {
 	        sheet.setColumnWidth(4, 5000);
 	        sheet.setColumnWidth(5, 7000);
 	        sheet.setColumnWidth(6, 5000);
-			sheet.setColumnWidth(7, 6500);
-			sheet.setColumnWidth(8, 4000);
+			sheet.setColumnWidth(7, 6000);
+			sheet.setColumnWidth(8, 6000);
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
@@ -148,7 +148,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 		        rows.createCell(2).setCellValue(ingreso.getCodigoAnio());
 		        rows.getCell(2).setCellStyle(style_cell);
 		        
-		        rows.createCell(3).setCellValue(ingreso.getNombreDdi());
+		        rows.createCell(3).setCellValue(ingreso.getNombreMes());
 		        rows.getCell(3).setCellStyle(style_cell);
 		        
 		        rows.createCell(4).setCellValue(ingreso.getNombreAlmacen());
@@ -446,11 +446,11 @@ public class ReporteProyectoManifiesto implements Serializable {
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				table.addCell(cell);
 				
-				p = new Paragraph(getString(producto.getNroLote()), normal);
-				cell = new PdfPCell(p);
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				table.addCell(cell);
+//				p = new Paragraph(getString(producto.getNroLote()), normal);
+//				cell = new PdfPCell(p);
+//				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//				table.addCell(cell);
 				
 				p = new Paragraph(getString(producto.getCantidad()), normal);
 				cell = new PdfPCell(p);
@@ -458,17 +458,17 @@ public class ReporteProyectoManifiesto implements Serializable {
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				table.addCell(cell);
 				
-				p = new Paragraph(getString(producto.getPrecioUnitario()), normal);
-				cell = new PdfPCell(p);
-				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				table.addCell(cell);
-				
-				p = new Paragraph(getString(producto.getImporteTotal()), normal);
-				cell = new PdfPCell(p);
-				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				table.addCell(cell);
+//				p = new Paragraph(getString(producto.getPrecioUnitario()), normal);
+//				cell = new PdfPCell(p);
+//				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//				table.addCell(cell);
+//				
+//				p = new Paragraph(getString(producto.getImporteTotal()), normal);
+//				cell = new PdfPCell(p);
+//				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//				table.addCell(cell);
 				
 				document.add(table);	             
 				

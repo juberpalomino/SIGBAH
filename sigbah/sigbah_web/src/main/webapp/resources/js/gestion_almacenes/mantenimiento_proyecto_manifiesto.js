@@ -258,7 +258,7 @@ $(document).ready(function() {
 					loadding(true);
 					
 					var params = { 
-						arrIdDetalleProyecto : codigo
+						arrIdDetalleProyectoManifiesto : codigo
 					};
 			
 					consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarProductoProyectoManifiesto', params, function(respuesta) {
@@ -296,7 +296,7 @@ $(document).ready(function() {
 				idProyectoManifiesto : $('#hid_cod_proyecto').val(),
 				idProducto : idProducto,
 				cantidad : formatMonto($('#txt_cantidad').val()),
-				idAlmacen : $('#sel_almacen').val()
+				idAlmacen : proyectoManifiesto.idAlmacen
 			};
 
 			loadding(true);
@@ -377,29 +377,28 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var arrTipoCamion = [];
+		var vehiculos = [];
+		var idTipoCamion = new Object();
 //		var arrDetalleVehiculo = null;
 //		var arrDetalleVehiculo = null;
 //		var arrDetalleVehiculo = null;
 		tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				arrTipoCamion.push(listaVehiculosCache[index].idTipoCamion);
+				idTipoCamion = listaVehiculosCache[index].idTipoCamion;
+				vehiculos.push(idTipoCamion);
 			}
 		});
 		
 		if (indices.length == 0) {
 			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-		} else {
-
-			//listaVehiculosCache
-					
+		} else {		
 			loadding(true);								
-			var params = { 
-				idProyectoManifiesto : idProyectoManifiesto,
-				arrTipoCamion : arrTipoCamion
+			var proyectoManifiestoVehiculo = {
+				idProyectoManifiesto : $('#hid_cod_proyecto').val(),
+				vehiculos : vehiculos
 			};						
-			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/procesarManifiestoVehiculo', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/proyecto-manifiesto/procesarManifiestoVehiculo', proyectoManifiestoVehiculo, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -499,7 +498,7 @@ $(document).ready(function() {
 					loadding(true);
 					
 					var params = { 
-						arrIdDocumentoSalida : codigo
+						arrIdDocumentoProyectoManifiesto : codigo
 					};
 			
 					consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarDocumentoProyectoManifiesto', params, function(respuesta) {
@@ -741,7 +740,7 @@ function listarVehiculoProyectoManifiesto(indicador) {
 	var params = { 
 		idProyectoManifiesto : $('#hid_cod_proyecto').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/proyecto-manifiesto/listarProyectoManifiestoVehiculo', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/proyecto-manifiesto/listarManifiestoVehiculo', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -760,9 +759,9 @@ function listarVehiculoProyectoManifiesto(indicador) {
 
 function listarDetalleVehiculos(respuesta) {
 
-	tbl_det_productos.dataTable().fnDestroy();
+	tbl_det_vehiculos.dataTable().fnDestroy();
 	
-	tbl_det_productos.dataTable({
+	tbl_det_vehiculos.dataTable({
 		data : respuesta,
 		columns : [ {
 			data : 'idProyectoManifiesto',

@@ -9,6 +9,7 @@ import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
+import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
@@ -371,11 +372,11 @@ public interface LogisticaDao {
 	public abstract String procesarManifiestoProducto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
 	
 	/**
-	 * @param proyectoManifiestoVehiculoBean
+	 * @param manifiestoVehiculoBean
 	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
-	public abstract List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception;
+	public abstract List<ManifiestoVehiculoBean> listarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception;
 	
 	/**
 	 * @param proyectoManifiestoVehiculoBean

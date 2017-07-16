@@ -42,6 +42,7 @@ public class RegistroProyectoManifiestoMapper implements RowMapper<ProyectoManif
 		proyectoManifiesto.setObservacion(rs.getString("OBSERVACION"));
 		proyectoManifiesto.setIdProgramacion(rs.getInt("FK_IDE_PROGRAMACION"));	
 		proyectoManifiesto.setNroProgramacion(rs.getString("NRO_PROGRAMACION"));
+		proyectoManifiesto.setFlagProgramacion(rs.getString("FLG_PROGRAMACION"));
 		return proyectoManifiesto;
 	}
 

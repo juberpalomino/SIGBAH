@@ -33,6 +33,7 @@ import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
+import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
@@ -53,22 +54,22 @@ import pe.com.sigbah.mapper.DetalleProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoIngresoMapper;
 import pe.com.sigbah.mapper.DocumentoProyectoManifiestoMapper;
+import pe.com.sigbah.mapper.DocumentoSalidaMapper;
 import pe.com.sigbah.mapper.LoteProductoMapper;
+import pe.com.sigbah.mapper.ManifiestoMapper;
+import pe.com.sigbah.mapper.ManifiestoVehiculoMapper;
 import pe.com.sigbah.mapper.NroControlCalidadMapper;
 import pe.com.sigbah.mapper.OrdenIngresoMapper;
 import pe.com.sigbah.mapper.OrdenSalidaMapper;
 import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.ProductoIngresoMapper;
 import pe.com.sigbah.mapper.ProductoProyectoManifiestoMapper;
+import pe.com.sigbah.mapper.ProductoSalidaMapper;
+import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
 import pe.com.sigbah.mapper.RegistroOrdenSalidaMapper;
 import pe.com.sigbah.mapper.RegistroProyectoManifiestoMapper;
-import pe.com.sigbah.mapper.ProductoSalidaMapper;
-import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
-import pe.com.sigbah.mapper.ProyectoManifiestoVehiculoMapper;
-import pe.com.sigbah.mapper.ManifiestoMapper;
-import pe.com.sigbah.mapper.DocumentoSalidaMapper;
 
 /**
  * @className: LogisticaDaoImpl.java
@@ -2745,15 +2746,15 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	}
 	
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#listarProyectoManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProyectoManifiestoVehiculo(pe.com.sigbah.common.bean.ManifiestoVehiculoBean)
 	 */
 	@Override
-	public List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
-		LOGGER.info("[listarDocumentoProyectoManifiesto] Inicio ");
-		List<ProyectoManifiestoVehiculoBean> lista = new ArrayList<ProyectoManifiestoVehiculoBean>();
+	public List<ManifiestoVehiculoBean> listarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception {
+		LOGGER.info("[listarManifiestoVehiculo] Inicio ");
+		List<ManifiestoVehiculoBean> lista = new ArrayList<ManifiestoVehiculoBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
-			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", manifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -2765,7 +2766,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
-			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ProyectoManifiestoVehiculoMapper()));			
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ManifiestoVehiculoMapper()));			
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
@@ -2775,17 +2776,17 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
 				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
-				LOGGER.info("[listarDocumentoProyectoManifiesto] Ocurrio un error en la operacion del USP_LIST_PROY_MANIF_VEHICULO : "+mensajeRespuesta);
+				LOGGER.info("[listarManifiestoVehiculo] Ocurrio un error en la operacion del USP_LIST_PROY_MANIF_VEHICULO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
-			lista = (List<ProyectoManifiestoVehiculoBean>) out.get("po_Lr_Recordset");
+			lista = (List<ManifiestoVehiculoBean>) out.get("po_Lr_Recordset");
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[listarDocumentoProyectoManifiesto] Fin ");
+		LOGGER.info("[listarManifiestoVehiculo] Fin ");
 		return lista;
 	}
 
@@ -2798,11 +2799,11 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		String indicador = null;
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
-			input_objParametros.addValue("pi_FLAG_VEHICULO", proyectoManifiestoVehiculoBean.getFlagVehiculo(), Types.VARCHAR);
-			input_objParametros.addValue("pi_IDE_TIP_CAMION", proyectoManifiestoVehiculoBean.getIdTipoCamion(), Types.NUMERIC);
-			input_objParametros.addValue("pi_VOLUMEN", proyectoManifiestoVehiculoBean.getVolumen(), Types.NUMERIC);
-			input_objParametros.addValue("pi_USU_REGISTRO", proyectoManifiestoVehiculoBean.getUsuarioRegistro(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+//			input_objParametros.addValue("pi_FLAG_VEHICULO", proyectoManifiestoVehiculoBean.getFlagVehiculo(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_IDE_TIP_CAMION", proyectoManifiestoVehiculoBean.getIdTipoCamion(), Types.NUMERIC);
+//			input_objParametros.addValue("pi_VOLUMEN", proyectoManifiestoVehiculoBean.getVolumen(), Types.NUMERIC);
+//			input_objParametros.addValue("pi_USU_REGISTRO", proyectoManifiestoVehiculoBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();

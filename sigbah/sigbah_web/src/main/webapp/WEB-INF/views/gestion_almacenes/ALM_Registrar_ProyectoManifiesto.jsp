@@ -316,15 +316,19 @@
 															
 											<!-- widget content -->
 											<div class="widget-body">
+											
+												<div class="row">
+													<label class="col-sm-12">Tipo de Camiones Disponibles:</label>
+												</div>
 
 												<table id="tbl_det_vehiculos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
-															<th></th>
 															<th>Nº</th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Lote</th>
+															<th>Seleccione</th>															
+															<th>Tipo Camión</th>
+															<th>Volumen</th>
+															<th>N° Vehiculos Requeridos</th>
 														</tr>
 													</thead>
 												</table>
@@ -389,18 +393,14 @@
 											<!-- widget content -->
 											<div class="widget-body">
 											
-												<div class="row">
-													<label class="col-sm-12">Tipo de Camiones Disponibles:</label>
-												</div>
-
 												<table id="tbl_det_documentos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
+															<th></th>
 															<th>Nº</th>
-															<th>Seleccione</th>															
-															<th>Tipo Camión</th>
-															<th>Volumen</th>
-															<th>N° Vehiculos Requeridos</th>
+															<th>Tipo Documento</th>
+															<th>Nro Documento</th>
+															<th>Fecha</th>
 														</tr>
 													</thead>
 												</table>
