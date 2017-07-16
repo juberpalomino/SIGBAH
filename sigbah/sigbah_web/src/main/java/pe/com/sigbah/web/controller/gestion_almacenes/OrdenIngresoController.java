@@ -44,7 +44,7 @@ import pe.com.sigbah.web.report.gestion_almacenes.ReporteOrdenIngreso;
  * @className: OrdenIngresoController.java
  * @description: 
  * @date: 17 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Controller
 @RequestMapping("/gestion-almacenes/orden-ingreso")
@@ -117,7 +117,7 @@ public class OrdenIngresoController extends BaseController {
 	 * @return - Retorna a la vista JSP.
 	 */
 	@RequestMapping(value = "/mantenimientoOrdenIngreso/{codigo}", method = RequestMethod.GET)
-    public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, Model model) {
+    public String mantenimientoOrdenIngreso(@PathVariable("codigo") Integer codigo, Model model) {
         try {
         	OrdenIngresoBean ordenIngreso = new OrdenIngresoBean();
         	

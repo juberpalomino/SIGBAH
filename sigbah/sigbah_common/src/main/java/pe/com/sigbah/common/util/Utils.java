@@ -9,7 +9,7 @@ import java.util.Date;
  * @className: Utils.java
  * @description: Clase utilitaria.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class Utils implements Serializable {
 

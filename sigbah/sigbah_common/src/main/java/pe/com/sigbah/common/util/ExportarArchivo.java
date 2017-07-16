@@ -21,7 +21,7 @@ import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
  * @className: ExportarArchivo.java
  * @description: Clase utilitaria para la exportación de archivos.
  * @date: 2 de jul. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ExportarArchivo implements Serializable {
 	

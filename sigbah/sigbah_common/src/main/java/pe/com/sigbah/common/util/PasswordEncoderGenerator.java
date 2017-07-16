@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
  * @className: PasswordEncoderGenerator.java
  * @description: 
  * @date: 9 de may. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class PasswordEncoderGenerator implements Serializable {
 	

@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.SqlParameter;
  * @className: SpringUtil.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class SpringUtil implements Serializable {
 

@@ -32,7 +32,7 @@ import pe.com.sigbah.common.util.Constantes;
  * @className: PostAlfrescoBean.java
  * @description:
  * @date: 29 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @SuppressWarnings({ "deprecation", "resource" })
 @Component

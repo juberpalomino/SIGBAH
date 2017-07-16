@@ -9,10 +9,10 @@ import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.util.Constantes;
 
 /**
- * @className: EstadoMapper.java
+ * @className: CatologoProductosMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class CatologoProductosMapper implements RowMapper<ProductoBean> {
 	
@@ -43,6 +43,7 @@ public class CatologoProductosMapper implements RowMapper<ProductoBean> {
 			productoBean.setNombreEnvase(rs.getString("NOMBRE_ENVASE"));
 			productoBean.setPesoUnitarioNeto(rs.getBigDecimal("PESO_UNIT_NETO"));
 			productoBean.setPesoUnitarioBruto(rs.getBigDecimal("PESO_UNIT_BRUTO"));
+			productoBean.setVolumenUnitario(rs.getBigDecimal("VOLUMEN_UNIT"));
 		} else {	
 			productoBean.setIdProducto(rs.getInt("IDE_PRODUCTO"));
 			productoBean.setNombreProducto(rs.getString("NOM_PRODUCTO"));
@@ -53,6 +54,7 @@ public class CatologoProductosMapper implements RowMapper<ProductoBean> {
 			productoBean.setNombreEnvase(rs.getString("NOMBRE_ENVASE"));
 			productoBean.setPesoUnitarioNeto(rs.getBigDecimal("PESO_UNIT_NETO"));
 			productoBean.setPesoUnitarioBruto(rs.getBigDecimal("PESO_UNIT_BRUTO"));
+			productoBean.setVolumenUnitario(rs.getBigDecimal("VOLUMEN_UNIT"));
 		}
 		return productoBean;
 	}

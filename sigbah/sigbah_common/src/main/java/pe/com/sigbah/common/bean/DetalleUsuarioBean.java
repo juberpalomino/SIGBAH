@@ -6,7 +6,7 @@ import java.util.List;
  * @className: DetalleUsuarioBean.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class DetalleUsuarioBean extends BaseOutputBean {
 

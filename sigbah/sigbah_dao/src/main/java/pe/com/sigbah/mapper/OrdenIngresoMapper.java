@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.OrdenIngresoBean;
  * @className: OrdenIngresoMapper.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class OrdenIngresoMapper implements RowMapper<OrdenIngresoBean> {
 

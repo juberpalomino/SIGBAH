@@ -4,13 +4,13 @@ package pe.com.sigbah.common.bean;
  * @className: DocumentoSalidaBean.java
  * @description: 
  * @date: 25 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class DocumentoProyectoManifiestoBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
-	private Integer idDocumentoSalida;
-	private Integer idSalida;
+	private Integer idDocumentoProyecto;
+	private Integer idProyectoManifiesto;
 	private Integer idTipoDocumento;
 	private String nombreDocumento;
 	private String nroDocumento;
@@ -30,11 +30,11 @@ public class DocumentoProyectoManifiestoBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @param idDocumentoSalida
+	 * @param idDocumentoProyecto
 	 */
-	public DocumentoProyectoManifiestoBean(Integer idDocumentoSalida) {
+	public DocumentoProyectoManifiestoBean(Integer idDocumentoProyecto) {
 		super();
-		this.idDocumentoSalida = idDocumentoSalida;
+		this.idDocumentoProyecto = idDocumentoProyecto;
 	}
 
 	/**
@@ -136,31 +136,31 @@ public class DocumentoProyectoManifiestoBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the idDocumentoSalida
+	 * @return the idDocumentoProyecto
 	 */
-	public Integer getIdDocumentoSalida() {
-		return idDocumentoSalida;
+	public Integer getIdDocumentoProyecto() {
+		return idDocumentoProyecto;
 	}
 
 	/**
-	 * @param idDocumentoSalida the idDocumentoSalida to set
+	 * @param idDocumentoProyecto the idDocumentoProyecto to set
 	 */
-	public void setIdDocumentoSalida(Integer idDocumentoSalida) {
-		this.idDocumentoSalida = idDocumentoSalida;
+	public void setIdDocumentoProyecto(Integer idDocumentoProyecto) {
+		this.idDocumentoProyecto = idDocumentoProyecto;
 	}
 
 	/**
-	 * @return the idSalida
+	 * @return the idProyectoManifiesto
 	 */
-	public Integer getIdSalida() {
-		return idSalida;
+	public Integer getIdProyectoManifiesto() {
+		return idProyectoManifiesto;
 	}
 
 	/**
-	 * @param idSalida the idSalida to set
+	 * @param idProyectoManifiesto the idProyectoManifiesto to set
 	 */
-	public void setIdSalida(Integer idSalida) {
-		this.idSalida = idSalida;
+	public void setIdProyectoManifiesto(Integer idProyectoManifiesto) {
+		this.idProyectoManifiesto = idProyectoManifiesto;
 	}
 	
 	/**

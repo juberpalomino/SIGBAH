@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.ItemBean;
  * @className: AlmacenExternoRegionMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class AlmacenExternoRegionMapper implements RowMapper<ItemBean> {
 

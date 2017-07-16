@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @className: GenericoComboBean.java
  * @description: 
  * @date: 3 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class GenericoComboBean implements Serializable {
 

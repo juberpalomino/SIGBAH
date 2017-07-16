@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
  * @className: ManifiestoMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ManifiestoMapper implements RowMapper<ProyectoManifiestoBean> {
 	

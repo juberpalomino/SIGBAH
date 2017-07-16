@@ -34,7 +34,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 	
-							<ul id="ul_man_ord_salida" class="nav nav-tabs bordered">
+							<ul id="ul_man_pro_manifiesto" class="nav nav-tabs bordered">
 								<li id="li_dat_generales" class="active">
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Datos Generales</a>
@@ -55,6 +55,7 @@
 									<form id="frm_dat_generales" class="form-horizontal">
 									
 										<input type="hidden" id="hid_cod_proyecto" name="hid_cod_proyecto">
+										<input type="hidden" id="hid_val_fec_trabajo" name="hid_val_fec_trabajo">
 									
 										<div class="header-form opc-center">	
 											<strong>Orden Salida</strong>
@@ -64,9 +65,9 @@
 										
 										<div class="form-group">
 											<div class="col-sm-3"></div>
-											<label class="col-sm-3 control-label label-bold">Nº Orden Salida:</label>
+											<label class="col-sm-3 control-label label-bold">Nº Proyecto Manifiesto:</label>
 											<div class="col-sm-2">
-												<input type="text" id="txt_nro_ord_salida" class="form-control" disabled>
+												<input type="text" id="txt_nro_pro_manifiesto" class="form-control" disabled>
 											</div>
 										</div>												
 																
@@ -113,7 +114,7 @@
 														</div>
 														
 														<label class="col-sm-2 control-label">Tipo Movimiento:</label>
-														<div class="col-sm-2 form-group">
+														<div class="col-sm-3 form-group">
 															<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
 																<c:forEach items="${lista_tipo_movimiento}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
@@ -139,10 +140,10 @@
 														</div>																									
 													
 														<label class="col-sm-2 control-label">N° Programacion:</label>
-														<div class="col-sm-3 form-group">
+														<div class="col-sm-2 form-group">
 															<select id="sel_nro_programacion" name="sel_nro_programacion" class="form-control">
-																<c:forEach items="${lista_proyecto_manifiesto}" var="item">
-																    <option value="${item.idProyectoManifiesto}_${item.nroProgramacion}_${item.idProgramacion}">${item.nroProyectoManifiesto}</option>
+																<c:forEach items="${lista_programacion}" var="item">
+																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -170,7 +171,7 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Almacen:</label>
+														<label class="col-sm-3 control-label">Almacén:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_almacen" name="sel_almacen" class="form-control">
 																<option value="">Seleccione</option>
@@ -221,8 +222,7 @@
 								
 										</div>
 										<!-- end widget -->
-										
-														
+																								
 										<div class="form-actions">
 											<div class="row">
 												<div class="col-md-12 opc-center">
@@ -283,12 +283,13 @@
 															<th>Nº</th>
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
-															<th>Lote</th>
 															<th>Cantidad</th>
-															<th>Precio Unitario</th>
-															<th>Importe Total</th>
-															<th>Peso Neto Total</th>
-															<th>Peso Bruto Total</th>
+															<th>Peso Unitario</th>
+															<th>Peso Total Kg</th>
+															<th>Volumen Unitario</th>
+															<th>Volumen Total m3</th>
+															<th>Costo Unitario (S/.)</th>
+															<th>Costo Total (S/.)</th>
 														</tr>
 													</thead>
 												</table>
@@ -340,6 +341,13 @@
 									<div class="form-actions">
 										<div class="row">
 											<div class="col-md-12 opc-center">
+												<button class="btn btn-primary" type="button" id="btn_recalcular">
+													<i class="fa fa-retweet"></i>
+													Recalcular
+												</button>
+											
+												&nbsp; &nbsp;
+											
 												<button class="btn btn-default btn_retornar" type="button">
 													<i class="fa fa-mail-forward"></i>
 													Retornar
@@ -472,14 +480,8 @@
 						
 							<div id="div_pro_det_productos" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 form-group">
+								<div class="col-sm-6 form-group">
 									<select id="sel_producto" name="sel_producto" class="form-control">
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Lote:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_lote" name="sel_lote" class="form-control">
 									</select>
 								</div>
 							</div>
@@ -492,31 +494,26 @@
 									<input type="text" id="txt_uni_medida" class="form-control" disabled>
 								</div>
 								
-								<label class="col-sm-2 control-label">Peso Neto Unitario:</label>
-								<div class="col-sm-2 form-group">
-									<input type="text" id="txt_pes_net_unitario" class="form-control" disabled>
-								</div>
-
-								<label class="col-sm-2 control-label">Peso Bruto Unitario:</label>
-								<div class="col-sm-2 smart-form form-group">
-									<input type="text" id="txt_pes_bru_unitario" class="form-control" disabled>
-								</div>
-							</div>
-							
-							<div class="row">
 								<label class="col-sm-2 control-label">Cantidad:</label>
 								<div class="col-sm-2 form-group">
 									<input type="text" name="txt_cantidad" id="txt_cantidad" class="form-control monto-format" maxlength="10">
 								</div>
-
-								<label class="col-sm-2 control-label">Precio Unitario (S/.):</label>
-								<div class="col-sm-2 form-group">
-									<input type="text" name="txt_pre_unitario" id="txt_pre_unitario" class="form-control monto-format" maxlength="10">
+								
+<!-- 								<label class="col-sm-2 control-label">Importe Total:</label> -->
+<!-- 								<div class="col-sm-2 form-group"> -->
+<!-- 									<input type="text" name="txt_imp_total" id="txt_imp_total" class="form-control" disabled> -->
+<!-- 								</div> -->
+							</div>
+							
+							<div class="row">
+								<label class="col-sm-2 control-label">Peso Neto Unitario:</label>
+								<div class="col-sm-2 smart-form form-group">
+									<input type="text" id="txt_pes_net_unitario" class="form-control" disabled>
 								</div>
 								
-								<label class="col-sm-2 control-label">Importe Total (S/.):</label>
-								<div class="col-sm-2 form-group">
-									<input type="text" name="txt_imp_total" id="txt_imp_total" class="form-control" disabled>
+								<label class="col-sm-2 control-label">Volumen Unitario:</label>
+								<div class="col-sm-2 smart-form form-group">
+									<input type="text" id="txt_vol_unitario" class="form-control" disabled>
 								</div>
 							</div>
 						</form>
@@ -626,6 +623,6 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
-<script> var ordenSalida = JSON.parse('${ordenSalida}'); </script>
+<script> var proyectoManifiesto = JSON.parse('${proyectoManifiesto}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/mantenimiento_proyecto_manifiesto.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/validacion_mantenimiento_proyecto_manifiesto.js"></script>

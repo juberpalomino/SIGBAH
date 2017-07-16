@@ -13,7 +13,7 @@ import pe.com.sigbah.common.util.DateUtil;
  * @className: ControlCalidadMapper.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class RegistroControlCalidadMapper implements RowMapper<ControlCalidadBean> {
 

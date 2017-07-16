@@ -12,7 +12,7 @@ import pe.com.sigbah.common.bean.UsuarioBean;
  * @className: UsuarioMapper.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class UsuarioMapper implements RowMapper<UsuarioBean> {
 

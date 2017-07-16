@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
  * @className: ControlCalidadMapper.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ControlCalidadMapper implements RowMapper<ControlCalidadBean> {
 

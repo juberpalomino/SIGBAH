@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.AlmacenBean;
  * @className: AlmacenUsuarioMapper.java
  * @description: 
  * @date: 9 de jul. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class AlmacenUsuarioMapper implements RowMapper<AlmacenBean> {
 

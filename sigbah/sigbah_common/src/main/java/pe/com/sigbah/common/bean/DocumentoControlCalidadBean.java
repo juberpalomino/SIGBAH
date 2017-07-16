@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: DocumentoControlCalidadBean.java
  * @description: 
  * @date: 25 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class DocumentoControlCalidadBean extends BaseOutputBean {
 

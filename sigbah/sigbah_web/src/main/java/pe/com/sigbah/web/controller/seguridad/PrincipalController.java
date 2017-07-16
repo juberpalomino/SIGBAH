@@ -17,7 +17,7 @@ import pe.com.sigbah.web.controller.common.BaseController;
  * @className: PrincipalController.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Controller
 @RequestMapping("/principal")

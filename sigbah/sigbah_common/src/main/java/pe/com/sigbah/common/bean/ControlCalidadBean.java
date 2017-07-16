@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: ControlCalidadBean.java
  * @description: 
  * @date: 23 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ControlCalidadBean extends BaseOutputBean {
 

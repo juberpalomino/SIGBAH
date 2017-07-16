@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @className: ProductoSalidaBean.java
  * @description: 
  * @date: 25 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ProductoSalidaBean extends BaseOutputBean {
 

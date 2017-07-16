@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: OrdenIngresoBean.java
  * @description: 
  * @date: 3 de jul. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class OrdenIngresoBean extends BaseOutputBean {
 

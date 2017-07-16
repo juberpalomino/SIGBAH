@@ -37,7 +37,7 @@ $(document).ready(function() {
 				codigoAnio : $('#sel_anio').val(),
 				codigoMes : $('#sel_mes').val(),
 				idAlmacen : $('#sel_almacen').val(),
-				idMovimiento : $('#sel_tip_movimiento').val()
+				codigoMovimiento : $('#sel_tip_movimiento').val()
 			};
 			
 			loadding(true);
@@ -62,7 +62,6 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = ''
-		var anio = '';
 		tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -70,9 +69,8 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idSalida = listaProyectoManifiestoCache[index].idSalida;
-				codigo = codigo + idSalida + '_';
-				anio = listaProyectoManifiestoCache[index].codigoAnio;
+				var idProyectoManifiesto = listaProyectoManifiestoCache[index].idProyectoManifiesto;
+				codigo = codigo + idProyectoManifiesto + '_';
 			}
 		});
 		
@@ -87,7 +85,7 @@ $(document).ready(function() {
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/mantenimientoProyectoManifiesto/';
-			$(location).attr('href', url + codigo + '/' + anio);
+			$(location).attr('href', url + codigo);
 		}
 		
 	});
@@ -96,7 +94,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/mantenimientoProyectoManifiesto/0/0';
+		var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/mantenimientoProyectoManifiesto/0';
 		$(location).attr('href', url);
 		
 	});
@@ -146,7 +144,6 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
-		var anio = '';
 		tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -154,9 +151,8 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idSalida = listaProyectoManifiestoCache[index].idSalida;
-				codigo = codigo + idSalida + '_';
-				anio = listaProyectoManifiestoCache[index].codigoAnio;
+				var idProyectoManifiesto = listaProyectoManifiestoCache[index].idProyectoManifiesto;
+				codigo = codigo + idProyectoManifiesto + '_';
 			}
 		});
 		
@@ -170,7 +166,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/exportarPdf/'+codigo+'/'+anio;
+			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/exportarPdf/'+codigo;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {
@@ -220,7 +216,7 @@ function listarProyectoManifiesto(respuesta) {
 	tbl_mnt_pro_manifiesto.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idSalida',
+			data : 'idProyectoManifiesto',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -232,7 +228,7 @@ function listarProyectoManifiesto(respuesta) {
 				}											
 			}	
 		}, {	
-			data : 'idSalida',
+			data : 'idProyectoManifiesto',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -248,9 +244,9 @@ function listarProyectoManifiesto(respuesta) {
 		}, {
 			data : 'fechaEmision'
 		}, {
-			data : 'nombreMovimiento'
+			data : 'nroProgramacion'
 		}, {
-			data : 'nroGuiaRemision'
+			data : 'nombreMovimiento'
 		}, {
 			data : 'nombreEstado'
 		} ],
@@ -268,8 +264,8 @@ function listarProyectoManifiesto(respuesta) {
 		],
 		columnDefs : [
   			{ width : '15%', targets : 3 },
-			{ width : '15%', targets : 4 },
-			{ width : '15%', targets : 7 }
+			{ width : '15%', targets : 7 },
+			{ width : '15%', targets : 8 }
   		]
 	});
 	

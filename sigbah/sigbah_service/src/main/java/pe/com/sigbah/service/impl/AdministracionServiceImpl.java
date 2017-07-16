@@ -17,7 +17,7 @@ import pe.com.sigbah.service.AdministracionService;
  * @className: AdministracionServiceImpl.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_ADMINISTRACION.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Service
 public class AdministracionServiceImpl implements AdministracionService, Serializable {

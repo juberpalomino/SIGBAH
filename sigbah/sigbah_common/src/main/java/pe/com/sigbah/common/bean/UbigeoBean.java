@@ -6,7 +6,7 @@ import java.util.Date;
  * @className: EntidadFinancieraBean.java
  * @description: 
  * @date: 16 de jun. de 2016
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class UbigeoBean extends BaseOutputBean {
 	

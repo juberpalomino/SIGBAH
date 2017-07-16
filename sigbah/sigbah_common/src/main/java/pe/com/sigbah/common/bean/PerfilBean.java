@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: PerfilBean.java
  * @description: 
  * @date: 13 de jul. de 2016
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class PerfilBean extends BaseOutputBean {
 

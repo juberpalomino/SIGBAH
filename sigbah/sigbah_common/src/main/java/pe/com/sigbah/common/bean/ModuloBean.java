@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: ModuloBean.java
  * @description: 
  * @date: 24 de jul. de 2016
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ModuloBean extends BaseOutputBean {
 

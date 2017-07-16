@@ -29,7 +29,7 @@ import pe.com.sigbah.service.LogisticaService;
  * @className: LogisticaServiceImpl.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_LOGISTICA.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Service
 public class LogisticaServiceImpl implements LogisticaService, Serializable {
@@ -339,117 +339,112 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	 * @see pe.com.sigbah.service.LogisticaService#listarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		return logisticaDao.listarProyectoManifiesto(proyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativoProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public ProyectoManifiestoBean obtenerCorrelativoProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProyectoManifiestoBean obtenerCorrelativoProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		return logisticaDao.obtenerCorrelativoProyectoManifiesto(proyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#grabarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		return logisticaDao.grabarProyectoManifiesto(proyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroProyectoManifiesto(java.lang.Integer, java.lang.String)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroProyectoManifiesto(java.lang.Integer)
 	 */
 	@Override
-	public ProyectoManifiestoBean obtenerRegistroProyectoManifiesto(Integer idProyecto, String anio) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProyectoManifiestoBean obtenerRegistroProyectoManifiesto(Integer idProyecto) throws Exception {
+		return logisticaDao.obtenerRegistroProyectoManifiesto(idProyecto);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#listarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
 	 */
 	@Override
-	public List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(
-			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.listarProductoProyectoManifiesto(productoProyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#grabarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
 	 */
 	@Override
-	public ProductoProyectoManifiestoBean grabarProductoProyectoManifiesto(
-			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProductoProyectoManifiestoBean grabarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.grabarProductoProyectoManifiesto(productoProyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#eliminarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
 	 */
 	@Override
-	public ProductoProyectoManifiestoBean eliminarProductoProyectoManifiesto(
-			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProductoProyectoManifiestoBean eliminarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.eliminarProductoProyectoManifiesto(productoProyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#listarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
 	 */
 	@Override
-	public List<DocumentoProyectoManifiestoBean> listarDocumentoProyectoManifiesto(
-			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<DocumentoProyectoManifiestoBean> listarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.listarDocumentoProyectoManifiesto(documentoProyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#grabarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
 	 */
 	@Override
-	public DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(
-			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.grabarDocumentoProyectoManifiesto(documentoProyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#eliminarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
 	 */
 	@Override
-	public DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(
-			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.eliminarDocumentoProyectoManifiesto(documentoProyectoManifiestoBean);
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#verificarProductosProgramacion(java.lang.Integer)
 	 */
 	@Override
-	public int verificarProductosProgramacion(Integer idProgramacion) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int verificarProductosProgramacion(Integer idProyecto) throws Exception {
+		return logisticaDao.verificarProductosProgramacion(idProyecto);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#procesarManifiestoProducto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public String procesarManifiestoProducto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		return logisticaDao.procesarManifiestoProducto(proyectoManifiestoBean);
+	}
+	
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.LogisticaService#listarProyectoManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
 	 */
 	@Override
 	public List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return logisticaDao.listarProyectoManifiestoVehiculo(proyectoManifiestoVehiculoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#procesarManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
+	 */
+	@Override
+	public String procesarManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
+		return logisticaDao.procesarManifiestoVehiculo(proyectoManifiestoVehiculoBean);
 	}
 
 }

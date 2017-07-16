@@ -64,24 +64,10 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_can_lote : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Lote.'
-					}
-				}
-			},
 			txt_cantidad : {
 				validators : {
 					notEmpty : {
 						message : 'Debe ingresar Cantidad.'
-					}
-				}
-			},
-			txt_pre_unitario : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Precio Unitario.'
 					}
 				}
 			}

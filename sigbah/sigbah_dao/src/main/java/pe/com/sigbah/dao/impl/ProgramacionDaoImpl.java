@@ -17,7 +17,7 @@ import pe.com.sigbah.dao.ProgramacionDao;
  * @className: ProgramacionDaoImpl.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_PROGRAMACION.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Repository
 public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionDao, Serializable {

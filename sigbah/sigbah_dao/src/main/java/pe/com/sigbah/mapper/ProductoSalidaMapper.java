@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.ProductoSalidaBean;
  * @className: ProductoSalidaMapper.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ProductoSalidaMapper implements RowMapper<ProductoSalidaBean> {
 

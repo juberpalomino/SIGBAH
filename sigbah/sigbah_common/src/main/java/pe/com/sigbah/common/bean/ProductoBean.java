@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @className: ProductoBean.java
  * @description: Clase ProductoBean.
  * @date: 18/02/2015 22:26:30
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ProductoBean extends BaseOutputBean {
 
@@ -22,6 +22,7 @@ public class ProductoBean extends BaseOutputBean {
 	private Integer idCategoria;
 	private BigDecimal pesoUnitarioNeto;
 	private BigDecimal pesoUnitarioBruto;
+	private BigDecimal volumenUnitario;
 	
 	/**
 	 * 
@@ -179,6 +180,20 @@ public class ProductoBean extends BaseOutputBean {
 	 */
 	public void setPesoUnitarioBruto(BigDecimal pesoUnitarioBruto) {
 		this.pesoUnitarioBruto = pesoUnitarioBruto;
+	}
+
+	/**
+	 * @return the volumenUnitario
+	 */
+	public BigDecimal getVolumenUnitario() {
+		return volumenUnitario;
+	}
+
+	/**
+	 * @param volumenUnitario the volumenUnitario to set
+	 */
+	public void setVolumenUnitario(BigDecimal volumenUnitario) {
+		this.volumenUnitario = volumenUnitario;
 	}
 
 }

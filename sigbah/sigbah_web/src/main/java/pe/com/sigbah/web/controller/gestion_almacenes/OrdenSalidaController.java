@@ -28,9 +28,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.ItemBean;
-import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
-import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
@@ -46,7 +44,7 @@ import pe.com.sigbah.web.report.gestion_almacenes.ReporteOrdenSalida;
  * @className: OrdenSalidaController.java
  * @description: 
  * @date: 17 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Controller
 @RequestMapping("/gestion-almacenes/orden-salida")
@@ -142,7 +140,7 @@ public class OrdenSalidaController extends BaseController {
 	 * @return - Retorna a la vista JSP.
 	 */
 	@RequestMapping(value = "/mantenimientoOrdenSalida/{codigo}/{anio}", method = RequestMethod.GET)
-    public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, @PathVariable("anio") String anio, Model model) {
+    public String mantenimientoOrdenSalida(@PathVariable("codigo") Integer codigo, @PathVariable("anio") String anio, Model model) {
         try {
         	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
         	
@@ -226,8 +224,6 @@ public class OrdenSalidaController extends BaseController {
         	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
         	
         	model.addAttribute("lista_departamento", generalService.listarDepartamentos(new UbigeoBean()));
-        	
-        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
      
@@ -415,30 +411,6 @@ public class OrdenSalidaController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarEmpresaTransporte", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarEmpresaTransporte(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
-		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-        	item.setIcodigo(usuarioBean.getIdDdi());
-			lista = generalService.listarEmpresaTransporte(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
 	@RequestMapping(value = "/grabarOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
@@ -466,31 +438,6 @@ public class OrdenSalidaController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return ordenSalida;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarLoteProducto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarLoteProducto(HttpServletRequest request, HttpServletResponse response) {
-		List<LoteProductoBean> lista = null;
-		try {			
-			LoteProductoBean lote = new LoteProductoBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(lote, request.getParameterMap());
-			// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-        	lote.setIdDdi(usuarioBean.getIdDdi());
-        	lote.setIdAlmacen(usuarioBean.getIdAlmacen());
-			lista = logisticaService.listarLoteProductos(lote);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
 	}
 	
 	/**

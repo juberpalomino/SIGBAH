@@ -30,7 +30,7 @@ import pe.com.sigbah.common.util.Constantes;
  * @className: ArchivoController.java
  * @description: Clase generica para la carga y descarga de ficheros en Alfresco.
  * @date: 29 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Controller
 @RequestMapping("/common/archivo")

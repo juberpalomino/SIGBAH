@@ -12,7 +12,7 @@ import pe.com.sigbah.common.util.Constantes;
  * @className: EstadoMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class UnidadMedidaMapper implements RowMapper<ItemBean> {
 	

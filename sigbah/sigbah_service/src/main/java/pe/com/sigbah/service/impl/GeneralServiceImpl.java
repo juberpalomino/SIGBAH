@@ -16,7 +16,7 @@ import pe.com.sigbah.service.GeneralService;
  * @className: GeneralServiceImpl.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_GENERAL.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Service
 public class GeneralServiceImpl implements GeneralService, Serializable {
@@ -336,6 +336,14 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	@Override
 	public List<ItemBean> listarTipoMovimientoPm() throws Exception {
 		return generalDao.listarTipoMovimientoPm();
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarProgramacion()
+	 */
+	@Override
+	public List<ItemBean> listarProgramacion() throws Exception {
+		return generalDao.listarProgramacion();
 	}
 
 }

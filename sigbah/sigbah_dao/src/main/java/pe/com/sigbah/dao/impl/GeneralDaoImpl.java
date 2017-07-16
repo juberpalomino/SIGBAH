@@ -60,7 +60,7 @@ import pe.com.sigbah.mapper.UnidadMedidaMapper;
  * @className: GeneralDaoImpl.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_GENERAL.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 @Repository
@@ -1129,6 +1129,39 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 			throw new Exception();
 		}		
 		LOGGER.info("[listarTipoMovimientoPm] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.GeneralDao#listarProgramacion()
+	 */
+	@Override
+	public List<ItemBean> listarProgramacion() throws Exception {
+		LOGGER.info("[listarProgramacion] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_PROGRAMACION");
+
+			Map<String, Object> out = objJdbcCall.withoutProcedureColumnMetaDataAccess()
+					.returningResultSet("PO_LR_RECORDSET", new RowMapper<ItemBean>() {
+						public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+							ItemBean item = new ItemBean();
+							item.setIcodigo(rs.getInt("IDE_PROGRAMACION"));
+							item.setDescripcion(rs.getString("COD_PROGRAMACION"));
+							return item;
+						}
+					}).execute(objJdbcCall);
+
+			lista = new ArrayList((Collection<ItemBean>) out.get("PO_LR_RECORDSET"));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProgramacion] Fin ");
 		return lista;
 	}
 

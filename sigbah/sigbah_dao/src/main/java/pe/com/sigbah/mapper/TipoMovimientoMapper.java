@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.ItemBean;
  * @className: TipoMovimientoMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class TipoMovimientoMapper implements RowMapper<ItemBean> {
 

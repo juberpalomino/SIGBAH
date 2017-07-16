@@ -52,16 +52,21 @@ import pe.com.sigbah.mapper.ControlCalidadMapper;
 import pe.com.sigbah.mapper.DetalleProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoIngresoMapper;
+import pe.com.sigbah.mapper.DocumentoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.LoteProductoMapper;
 import pe.com.sigbah.mapper.NroControlCalidadMapper;
 import pe.com.sigbah.mapper.OrdenIngresoMapper;
 import pe.com.sigbah.mapper.OrdenSalidaMapper;
 import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.ProductoIngresoMapper;
+import pe.com.sigbah.mapper.ProductoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
 import pe.com.sigbah.mapper.RegistroOrdenSalidaMapper;
+import pe.com.sigbah.mapper.RegistroProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.ProductoSalidaMapper;
+import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
+import pe.com.sigbah.mapper.ProyectoManifiestoVehiculoMapper;
 import pe.com.sigbah.mapper.ManifiestoMapper;
 import pe.com.sigbah.mapper.DocumentoSalidaMapper;
 
@@ -69,7 +74,7 @@ import pe.com.sigbah.mapper.DocumentoSalidaMapper;
  * @className: LogisticaDaoImpl.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_LOGISTICA.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 @Repository
@@ -2123,118 +2128,715 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 * @see pe.com.sigbah.dao.LogisticaDao#listarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProyectoManifiestoBean> listarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		LOGGER.info("[listarProyectoManifiesto] Inicio ");
+		List<ProyectoManifiestoBean> lista = new ArrayList<ProyectoManifiestoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_COD_ANIO", proyectoManifiestoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_MES", proyectoManifiestoBean.getCodigoMes(), Types.VARCHAR);		
+			input_objParametros.addValue("pi_IDE_ALMACEN", proyectoManifiestoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_TIP_MOVIMIENTO", Utils.getParam(proyectoManifiestoBean.getCodigoMovimiento()), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_PROYECTO_MANIFIESTO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_IDE_TIP_MOVIMIENTO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ProyectoManifiestoMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProyectoManifiesto] Ocurrio un error en la operacion del USP_LISTAR_PROYECTO_MANIFIESTO : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProyectoManifiestoBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProyectoManifiesto] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerCorrelativoProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public ProyectoManifiestoBean obtenerCorrelativoProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProyectoManifiestoBean obtenerCorrelativoProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		LOGGER.info("[obtenerCorrelativoProyectoManifiesto] Inicio ");
+		ProyectoManifiestoBean detalleUsuarioBean = new ProyectoManifiestoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", proyectoManifiestoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DDI", proyectoManifiestoBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", proyectoManifiestoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", proyectoManifiestoBean.getTipoOrigen(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_GEN_NRO_PROY_MANIFIEST");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_NRO_PROYECTO", new SqlOutParameter("PO_NRO_PROYECTO", Types.VARCHAR));
+			output_objParametros.put("PO_COD_PROYECTO", new SqlOutParameter("PO_COD_PROYECTO", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerCorrelativoProyectoManifiesto] Ocurrio un error en la operacion del USP_SEL_GEN_NRO_PROY_MANIFIEST : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			detalleUsuarioBean.setNroProyectoManifiesto((String) out.get("PO_NRO_PROYECTO"));
+			detalleUsuarioBean.setCodigoProyectoManifiesto((String) out.get("PO_COD_PROYECTO"));
+			detalleUsuarioBean.setCodigoRespuesta(codigoRespuesta);
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerCorrelativoProyectoManifiesto] Fin ");
+		return detalleUsuarioBean;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
 	 */
 	@Override
-	public ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		LOGGER.info("[grabarProyectoManifiesto] Inicio ");
+		ProyectoManifiestoBean registroOrdenSalida = new ProyectoManifiestoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_TIPO_ORIGEN", proyectoManifiestoBean.getTipoOrigen(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_ANIO", proyectoManifiestoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_DDI", proyectoManifiestoBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_MES", proyectoManifiestoBean.getCodigoMes(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_COD_ALMACEN", proyectoManifiestoBean.getCodigoAlmacen(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN", proyectoManifiestoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN_DEST", proyectoManifiestoBean.getIdAlmacenDestino(), Types.NUMERIC);		
+			input_objParametros.addValue("pi_NRO_PROY_MANIFIESTO", proyectoManifiestoBean.getNroProyectoManifiesto(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_TIP_MOVIMIENTO", proyectoManifiestoBean.getIdMovimiento(), Types.NUMERIC);			
+			input_objParametros.addValue("pi_FEC_EMISION", DateUtil.obtenerFechaHoraParseada(proyectoManifiestoBean.getFechaEmision()), Types.DATE);
+			input_objParametros.addValue("pi_FLG_PROGRAMACION", proyectoManifiestoBean.getFlagProgramacion(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_PROGRAMACION", proyectoManifiestoBean.getIdProgramacion(), Types.NUMERIC);			
+			input_objParametros.addValue("pi_FK_IDE_ESTADO", proyectoManifiestoBean.getIdEstado(), Types.NUMERIC);
+			input_objParametros.addValue("pi_OBSERVACION", proyectoManifiestoBean.getObservacion(), Types.VARCHAR);
+			input_objParametros.addValue("pi_USUARIO", proyectoManifiestoBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_REG_PROYECTO_MANIF");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));			
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_DDI", new SqlParameter("pi_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ALMACEN", new SqlParameter("pi_COD_ALMACEN", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_ALMACEN_DEST", new SqlParameter("pi_FK_IDE_ALMACEN_DEST", Types.NUMERIC));			
+			output_objParametros.put("pi_NRO_PROY_MANIFIESTO", new SqlParameter("pi_NRO_PROY_MANIFIESTO", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_FK_IDE_TIP_MOVIMIENTO", Types.NUMERIC));			
+			output_objParametros.put("pi_FEC_EMISION", new SqlParameter("pi_FEC_EMISION", Types.DATE));
+			output_objParametros.put("pi_FLG_PROGRAMACION", new SqlParameter("pi_FLG_PROGRAMACION", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_PROGRAMACION", new SqlParameter("pi_FK_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_ESTADO", new SqlParameter("pi_FK_IDE_ESTADO", Types.NUMERIC));
+			output_objParametros.put("pi_OBSERVACION", new SqlParameter("pi_OBSERVACION", Types.VARCHAR));
+			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
+			output_objParametros.put("po_IDE_PROYECTO_MANIF", new SqlOutParameter("po_IDE_PROYECTO_MANIF", Types.NUMERIC));			
+			output_objParametros.put("po_NRO_PROYECTO", new SqlOutParameter("po_NRO_PROYECTO", Types.VARCHAR));
+			output_objParametros.put("po_COD_PROYECTO", new SqlOutParameter("po_COD_PROYECTO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarProyectoManifiesto] Ocurrio un error en la operacion del USP_INS_UPD_REG_PROYECTO_MANIF : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			registroOrdenSalida.setIdProyectoManifiesto(((BigDecimal) out.get("po_IDE_PROYECTO_MANIF")).intValue());
+			registroOrdenSalida.setNroProyectoManifiesto((String) out.get("po_NRO_PROYECTO"));
+			registroOrdenSalida.setCodigoProyectoManifiesto((String) out.get("po_COD_PROYECTO"));
+			registroOrdenSalida.setCodigoRespuesta(codigoRespuesta);
+			registroOrdenSalida.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarProyectoManifiesto] Fin ");
+		return registroOrdenSalida;
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroProyectoManifiesto(java.lang.Integer, java.lang.String)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroProyectoManifiesto(java.lang.Integer)
 	 */
 	@Override
-	public ProyectoManifiestoBean obtenerRegistroProyectoManifiesto(Integer idProyecto, String anio) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProyectoManifiestoBean obtenerRegistroProyectoManifiesto(Integer idProyecto) throws Exception {
+		LOGGER.info("[obtenerRegistroProyectoManifiesto] Inicio ");
+		ProyectoManifiestoBean proyectoManifiesto = new ProyectoManifiestoBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();	
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", idProyecto, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_PROY_MANIFIEST");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new RegistroProyectoManifiestoMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerRegistroProyectoManifiesto] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_PROY_MANIFIEST : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<ProyectoManifiestoBean> lista = (List<ProyectoManifiestoBean>) out.get("po_Lr_Recordset");
+			if (!Utils.isEmpty(lista)) {
+				proyectoManifiesto = lista.get(0);
+			}
+			
+			proyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
+			proyectoManifiesto.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerRegistroProyectoManifiesto] Fin ");
+		return proyectoManifiesto;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
 	 */
 	@Override
-	public List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(
-			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[listarProductoProyectoManifiesto] Inicio ");
+		List<ProductoProyectoManifiestoBean> lista = new ArrayList<ProductoProyectoManifiestoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", productoProyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LIST_PROYECTO_MANIF_PROD");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ProductoProyectoManifiestoMapper()));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoProyectoManifiesto] Ocurrio un error en la operacion del USP_LIST_PROYECTO_MANIF_PROD : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProductoProyectoManifiestoBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}
+		LOGGER.info("[listarProductoProyectoManifiesto] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
 	 */
 	@Override
-	public ProductoProyectoManifiestoBean grabarProductoProyectoManifiesto(
-			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProductoProyectoManifiestoBean grabarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[grabarProductoProyectoManifiesto] Inicio ");
+		ProductoProyectoManifiestoBean registroProductoProyectoManifiesto = new ProductoProyectoManifiestoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_ALMACEN", productoProyectoManifiestoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_DET_PROYECTO_MANIF", productoProyectoManifiestoBean.getIdDetalleProyecto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_PROYECTO_MANIF", productoProyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_PRODUCTO", productoProyectoManifiestoBean.getIdProducto(), Types.NUMERIC);		
+			input_objParametros.addValue("pi_CANTIDAD", productoProyectoManifiestoBean.getCantidad(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USUARIO", productoProyectoManifiestoBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_PROY_MANIF_PROD");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_DET_PROYECTO_MANIF", new SqlParameter("pi_IDE_DET_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_PROYECTO_MANIF", new SqlParameter("pi_FK_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_PRODUCTO", new SqlParameter("pi_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("pi_CANTIDAD", new SqlParameter("pi_CANTIDAD", Types.NUMERIC));
+			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));			
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarProductoProyectoManifiesto] Ocurrio un error en la operacion del USP_INS_UPD_PROY_MANIF_PROD : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			registroProductoProyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
+			registroProductoProyectoManifiesto.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarProductoProyectoManifiesto] Fin ");
+		return registroProductoProyectoManifiesto;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarProductoProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
 	 */
 	@Override
-	public ProductoProyectoManifiestoBean eliminarProductoProyectoManifiesto(
-			ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ProductoProyectoManifiestoBean eliminarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[eliminarProductoProyectoManifiesto] Inicio ");
+		ProductoProyectoManifiestoBean registroProductoProyectoManifiesto = new ProductoProyectoManifiestoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_ID_SALIDA_DET", productoProyectoManifiestoBean.getIdDetalleProyecto(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", productoProyectoManifiestoBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_PROY_MANIF_PROD");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_SALIDA_DET", new SqlParameter("PI_ID_SALIDA_DET", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarProductoProyectoManifiesto] Ocurrio un error en la operacion del USP_DEL_PROY_MANIF_PROD : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoProyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
+			registroProductoProyectoManifiesto.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarProductoProyectoManifiesto] Fin ");
+		return registroProductoProyectoManifiesto;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#listarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
 	 */
 	@Override
-	public List<DocumentoProyectoManifiestoBean> listarDocumentoProyectoManifiesto(
-			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<DocumentoProyectoManifiestoBean> listarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[listarDocumentoProyectoManifiesto] Inicio ");
+		List<DocumentoProyectoManifiestoBean> lista = new ArrayList<DocumentoProyectoManifiestoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", documentoProyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_DOCUMENT_PROY_MANIF");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new DocumentoProyectoManifiestoMapper()));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentoProyectoManifiesto] Ocurrio un error en la operacion del USP_LISTAR_DOCUMENT_PROY_MANIF : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DocumentoProyectoManifiestoBean>) out.get("po_Lr_Recordset");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDocumentoProyectoManifiesto] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#grabarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
 	 */
 	@Override
-	public DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(
-			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[grabarDocumentoProyectoManifiesto] Inicio ");
+		DocumentoProyectoManifiestoBean registroDocumentoProyectoManifiesto = new DocumentoProyectoManifiestoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DOCUMENTO_PROY", documentoProyectoManifiestoBean.getIdDocumentoProyecto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_PROYECTO_MANIF", documentoProyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_TIP_DOCUMENTO", documentoProyectoManifiestoBean.getIdTipoDocumento(), Types.NUMERIC);			
+			input_objParametros.addValue("pi_NRO_DOCUMENTO", StringUtils.upperCase(documentoProyectoManifiestoBean.getNroDocumento()), Types.VARCHAR);			
+			input_objParametros.addValue("pi_FEC_DOCUMENTO", DateUtil.obtenerFechaHoraParseada(documentoProyectoManifiestoBean.getFechaDocumento()), Types.DATE);
+	        input_objParametros.addValue("pi_COD_ALFRESCO", documentoProyectoManifiestoBean.getCodigoArchivoAlfresco(), Types.VARCHAR);
+			input_objParametros.addValue("pi_NOM_ARCHIVO", documentoProyectoManifiestoBean.getNombreArchivo(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_USU_REGISTRO", documentoProyectoManifiestoBean.getUsuarioRegistro(), Types.VARCHAR);	
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_DOCUMENTO_PROY");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DOCUMENTO_PROY", new SqlParameter("pi_IDE_DOCUMENTO_PROY", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_PROYECTO_MANIF", new SqlParameter("pi_FK_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_TIP_DOCUMENTO", new SqlParameter("pi_FK_IDE_TIP_DOCUMENTO", Types.NUMERIC));			
+			output_objParametros.put("pi_NRO_DOCUMENTO", new SqlParameter("pi_NRO_DOCUMENTO", Types.VARCHAR));			
+			output_objParametros.put("pi_FEC_DOCUMENTO", new SqlParameter("pi_FEC_DOCUMENTO", Types.DATE));
+			output_objParametros.put("pi_COD_ALFRESCO", new SqlParameter("pi_COD_ALFRESCO", Types.VARCHAR));
+			output_objParametros.put("pi_NOM_ARCHIVO", new SqlParameter("pi_NOM_ARCHIVO", Types.VARCHAR));
+			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarDocumentoProyectoManifiesto] Ocurrio un error en la operacion del USP_INS_UPD_DOCUMENTO_PROY : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroDocumentoProyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
+			registroDocumentoProyectoManifiesto.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarDocumentoProyectoManifiesto] Fin ");
+		return registroDocumentoProyectoManifiesto;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#eliminarDocumentoProyectoManifiesto(pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean)
 	 */
 	@Override
-	public DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(
-			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[eliminarDocumentoProyectoManifiesto] Inicio ");
+		DocumentoProyectoManifiestoBean registroDocumentoProyectoManifiesto = new DocumentoProyectoManifiestoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DOCUMENTO_PROY", documentoProyectoManifiestoBean.getIdDocumentoProyecto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USU_MODIFICA", documentoProyectoManifiestoBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_DOCUMENTO_PROY");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DOCUMENTO_PROY", new SqlParameter("pi_IDE_DOCUMENTO_PROY", Types.NUMERIC));
+			output_objParametros.put("pi_USU_MODIFICA", new SqlParameter("pi_USU_MODIFICA", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarDocumentoProyectoManifiesto] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_PROY : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroDocumentoProyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
+			registroDocumentoProyectoManifiesto.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarDocumentoProyectoManifiesto] Fin ");
+		return registroDocumentoProyectoManifiesto;
 	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#verificarProductosProgramacion(java.lang.Integer)
 	 */
 	@Override
-	public int verificarProductosProgramacion(Integer idProgramacion) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int verificarProductosProgramacion(Integer idProyecto) throws Exception {
+		LOGGER.info("[verificarProductosProgramacion] Inicio ");
+		Integer indicador = null;
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", idProyecto, Types.NUMERIC);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_PROC_COUNT_PROD_PROY_MANIF");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("po_count_productos", new SqlOutParameter("po_count_productos", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[verificarProductosProgramacion] Ocurrio un error en la operacion del USP_PROC_COUNT_PROD_PROY_MANIF : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			indicador = (Integer) out.get("po_count_productos");
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[verificarProductosProgramacion] Fin ");
+		return indicador;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#procesarManifiestoProducto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public String procesarManifiestoProducto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		LOGGER.info("[procesarManifiestoProducto] Inicio ");
+		String indicador = null;
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_PROGRAMACION", proyectoManifiestoBean.getIdProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USUARIO", proyectoManifiestoBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_PROC_PROYECTO_MANIF_PROD");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROGRAMACION", new SqlParameter("pi_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			indicador = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (indicador.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[procesarManifiestoProducto] Ocurrio un error en la operacion del USP_PROC_PROYECTO_MANIF_PROD : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[procesarManifiestoProducto] Fin ");
+		return indicador;
+	}
+	
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#listarProyectoManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
 	 */
 	@Override
-	public List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(
-			ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ProyectoManifiestoVehiculoBean> listarProyectoManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
+		LOGGER.info("[listarDocumentoProyectoManifiesto] Inicio ");
+		List<ProyectoManifiestoVehiculoBean> lista = new ArrayList<ProyectoManifiestoVehiculoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LIST_PROY_MANIF_VEHICULO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ProyectoManifiestoVehiculoMapper()));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentoProyectoManifiesto] Ocurrio un error en la operacion del USP_LIST_PROY_MANIF_VEHICULO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProyectoManifiestoVehiculoBean>) out.get("po_Lr_Recordset");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDocumentoProyectoManifiesto] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#procesarManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
+	 */
+	@Override
+	public String procesarManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
+		LOGGER.info("[procesarManifiestoVehiculo] Inicio ");
+		String indicador = null;
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FLAG_VEHICULO", proyectoManifiestoVehiculoBean.getFlagVehiculo(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_TIP_CAMION", proyectoManifiestoVehiculoBean.getIdTipoCamion(), Types.NUMERIC);
+			input_objParametros.addValue("pi_VOLUMEN", proyectoManifiestoVehiculoBean.getVolumen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USU_REGISTRO", proyectoManifiestoVehiculoBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_PROC_VEHICULO_PROYECTO_MAN");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("pi_FLAG_VEHICULO", new SqlParameter("pi_FLAG_VEHICULO", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_TIP_CAMION", new SqlParameter("pi_IDE_TIP_CAMION", Types.NUMERIC));
+			output_objParametros.put("pi_VOLUMEN", new SqlParameter("pi_VOLUMEN", Types.NUMERIC));
+			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			indicador = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (indicador.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[procesarManifiestoVehiculo] Ocurrio un error en la operacion del USP_PROC_VEHICULO_PROYECTO_MAN : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[procesarManifiestoVehiculo] Fin ");
+		return indicador;
 	}
 
 }

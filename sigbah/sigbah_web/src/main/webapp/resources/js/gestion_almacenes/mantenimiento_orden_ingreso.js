@@ -29,6 +29,7 @@ $(document).ready(function() {
 		    if (mes != ordenIngreso.codigoMes || anio != ordenIngreso.codigoAnio) {
 		    	$('#hid_val_fec_trabajo').val('0');
 		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	$('#'+$(this).attr('id')).focus();
 		    } else {
 		    	$('#hid_val_fec_trabajo').val('1');
 		    }
@@ -241,7 +242,7 @@ $(document).ready(function() {
 					} else {
 						
 						$('#hid_cod_ord_ingreso').val(respuesta.idIngreso);
-						$('#txt_nro_ord_ingreso').val(respuesta.nroOrdenIngreso);
+						$('#txt_nro_ord_ingreso').val(respuesta.codigoOrdenIngreso);
 				
 						$('#li_productos').attr('class', '');
 						$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
@@ -251,7 +252,7 @@ $(document).ready(function() {
 						
 						$('#txt_det_nro_ord_compra').val(nroOrdenCompra);
 
-						addSuccessMessage(null, 'Se genero el N° Orden de Ingreso: '+respuesta.nroOrdenIngreso);
+						addSuccessMessage(null, 'Se genero el N° Orden de Ingreso: '+respuesta.codigoOrdenIngreso);
 						
 					}
 					
@@ -471,6 +472,8 @@ $(document).ready(function() {
 		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
 			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
 			$('#txt_imp_total').val(formatMontoAll(imp_total));
+		} else {
+			$('#txt_imp_total').val('');
 		}
 	});
 	
@@ -480,6 +483,8 @@ $(document).ready(function() {
 		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
 			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
 			$('#txt_imp_total').val(formatMontoAll(imp_total));
+		} else {
+			$('#txt_imp_total').val('');
 		}
 	});
 	
@@ -690,14 +695,14 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		
-		$('#txt_nro_ord_ingreso').val(ordenIngreso.nroOrdenIngreso);
 		$('#txt_anio').val(ordenIngreso.codigoAnio);
 		$('#txt_ddi').val(ordenIngreso.nombreDdi);
 		$('#txt_almacen').val(ordenIngreso.nombreAlmacen);
 		
 		if (!esnulo(ordenIngreso.idIngreso)) {
 			
-			$('#hid_cod_ord_ingreso').val(ordenIngreso.idIngreso);		
+			$('#hid_cod_ord_ingreso').val(ordenIngreso.idIngreso);
+			$('#txt_nro_ord_ingreso').val(ordenIngreso.codigoAnio+'-'+ordenIngreso.codigoDdi+'-'+ordenIngreso.nroOrdenIngreso);
 
 			$('#txt_fecha').val(ordenIngreso.fechaEmision);
 			$('#sel_estado').val(ordenIngreso.idEstado);
@@ -727,6 +732,8 @@ function inicializarDatos() {
 			$('#txt_det_nro_ord_compra').val(ordenIngreso.nroOrdenCompra);
 			
 		} else {
+			
+			$('#txt_nro_ord_ingreso').val(ordenIngreso.nroOrdenIngreso);
 			
 			$('#li_productos').addClass('disabled');
 			$('#li_documentos').addClass('disabled');

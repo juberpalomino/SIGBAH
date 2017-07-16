@@ -1,10 +1,13 @@
 var listaProductosCache = new Object();
+var listaVehiculosCache = new Object();
 var listaDocumentosCache = new Object();
 
 var frm_dat_generales = $('#frm_dat_generales');
 
 var tbl_det_productos = $('#tbl_det_productos');
 var frm_det_productos = $('#frm_det_productos');
+
+var tbl_det_vehiculos = $('#tbl_det_vehiculos');
 
 var tbl_det_documentos = $('#tbl_det_documentos');
 var frm_det_documentos = $('#frm_det_documentos');
@@ -22,11 +25,18 @@ $(document).ready(function() {
 	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
-		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
-	});
-	
-	$('#txt_fec_entrega').datepicker().on('changeDate', function(e) {
-		e.preventDefault();
+		var fecha = $(this).val();
+		if (!esnulo(fecha)) {
+			var mes = fecha.substring(3, 5);
+		    var anio = fecha.substring(6, 10);		    
+		    if (mes != proyectoManifiesto.codigoMes || anio != proyectoManifiesto.codigoAnio) {
+		    	$('#hid_val_fec_trabajo').val('0');
+		    	addWarnMessage(null, 'Está ingresando una fecha con año diferente al mes de cierre.');
+		    	$('#'+$(this).attr('id')).focus();
+		    } else {
+		    	$('#hid_val_fec_trabajo').val('1');
+		    }
+		}
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
@@ -35,132 +45,48 @@ $(document).ready(function() {
 		frm_det_documentos.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
-	$('#sel_nro_ord_compra').change(function() {
-		var codigo = $(this).val();
-		var arr = codigo.split('_');
-		if (arr.length > 1) {
-			$('#txt_det_ord_compra').val(arr[1]);
-		} else {
-			$('#txt_det_ord_compra').val('');
-		}
-	});
-	
-	$('#sel_tip_movimiento').change(function() {
-		var val_tip_movimiento = $(this).val();		
-		if (!esnulo(val_tip_movimiento)) {
-			
-			frm_dat_generales.data('bootstrapValidator').resetForm();
-			
-			cargarTipoMovimiento(val_tip_movimiento);
-			
-			$('#sel_ddi').val('');
-			$('input[name=rb_tie_ate_gobierno]').prop('checked', false);
-			$('#sel_gore').val('');
-			$('#sel_departamento').val('');
-			
-			$('#sel_provincia').html('');
-			$('#sel_distrito').html('');
-			$('#sel_alm_destino').html('');
-			$('#sel_res_recepcion').html('');
-			
-			$('#sel_med_transporte').val('');
-			$('#sel_emp_transporte').html('');
-			$('#txt_nro_placa').val('');
-			$('#txt_fec_entrega').val('');
-			$('#sel_chofer').val('');
-			
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ddi');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'rb_tie_ate_gobierno');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_gore');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_departamento');
-			
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_med_transporte');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_entrega');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-
-		}
-	});
-	
-	$('input[type=radio][name=rb_tie_ate_gobierno]').change(function() {
-		cargarTipoAtencion(this.value);
+	$('input[type=radio][name=rb_man_tie_programacion]').change(function() {
+		cargarIndicadorProgramacion(this.value);
     });
 	
-	$('#sel_nro_pro_manifiesto').change(function() {
-		var codigo = $(this).val();		
-		if (!esnulo(codigo)) {
-			var arr = codigo.split('_');
-			if (arr.length > 1) {
-				$('#txt_requerimiento').val(arr[1]);
-			} else {
-				$('#txt_requerimiento').val('');
-			}			
-		} else {
-			$('#txt_requerimiento').val('');
-		}
-	});
-	
-	$('#sel_med_transporte').change(function() {
-		var codigo = $(this).val();		
-		if (!esnulo(codigo)) {						
-			var params = { 
-				icodigoParam2 : codigo
-			};			
-			loadding(true);
-			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarEmpresaTransporte', params, function(respuesta) {
+	$('#sel_nro_programacion').change(function() {
+		var codigo = $(this).val();
+		var idProyectoManifiesto = $('#hid_cod_proyecto').val();
+		if (!esnulo(codigo) && !esnulo(idProyectoManifiesto)) {			
+			var params = {
+				idProyectoManifiesto : idProyectoManifiesto
+			};
+			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarProductoProyectoManifiesto', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					var options = '';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-			        });
-			        $('#sel_emp_transporte').html(options);
-				}
-				loadding(false);
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
-				
-				consultarAjax('GET', '/gestion-almacenes/control-calidad/listarChofer', {icodigo : $('#sel_emp_transporte').val()}, function(respuesta) {
-					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-						addErrorMessage(null, respuesta.mensajeRespuesta);
-					} else {
-						var options = '';
-				        $.each(respuesta, function(i, item) {
-				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-				        });
-				        $('#sel_chofer').html(options);
+					var indicador = parseInt(respuesta);
+					if (indicador > 0) {					
+						$.SmartMessageBox({
+							title : 'Se va reemplazar los productos de la programación.<br>Está usted seguro ?',
+							content : '',
+							buttons : '[Cancelar][Aceptar]'
+						}, function(ButtonPressed) {
+							if (ButtonPressed === 'Aceptar') {				
+								loadding(true);								
+								var params_proy = { 
+									idProyectoManifiesto : idProyectoManifiesto,
+									idProgramacion : codigo
+								};						
+								consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/procesarProyectoManifiesto', params_proy, function(respuesta) {
+									if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+										loadding(false);
+										addErrorMessage(null, respuesta.mensajeRespuesta);
+									} else {
+										listarProductoProyectoManifiesto(true);
+										addSuccessMessage(null, respuesta.mensajeRespuesta);							
+									}
+								});							
+							}	
+						});
 					}
-					frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-				});
-				
-			});
-		} else {
-			$('#sel_emp_transporte').html('');
-		}
-	});
-	
-	$('#sel_emp_transporte').change(function() {
-		var codigo = $(this).val();		
-		if (!esnulo(codigo)) {						
-			var params = { 
-				icodigo : codigo
-			};			
-			loadding(true);
-			consultarAjax('GET', '/gestion-almacenes/control-calidad/listarChofer', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					var options = '';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-			        });
-			        $('#sel_chofer').html(options);
 				}
-				loadding(false);
-				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
 			});
-		} else {
-			$('#sel_chofer').html('');
 		}
 	});
 	
@@ -170,70 +96,34 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
+			
+			if ($('#hid_val_fec_trabajo').val() == '0') {
+		    	addWarnMessage(null, 'Está ingresando una fecha con año diferente al mes de cierre.');
+		    	return;
+			}
+			
 			var codigo = $('#hid_cod_proyecto').val();
-			
-			var idResponsableExt = null;
-			var idResponsableRecepcion = null;
-			var idAlmacenDestino = null;
-			var idAlmacenDestinoExt = null;
-			var flagTipoDestino = $('input[name="rb_tie_ate_gobierno"]:checked').val();
-			if (esnulo(flagTipoDestino)) {
-				flagTipoDestino = 'I';
-				idResponsableRecepcion = $('#sel_res_recepcion').val();
-				idAlmacenDestino = $('#sel_alm_destino').val();
-			} else {
-				idResponsableExt = $('#sel_res_recepcion').val();
-				idAlmacenDestinoExt = $('#sel_alm_destino').val();
-			}
-			var indControl = null;
-			if (esnulo(codigo)) {
-				indControl = 'I'; // I= INSERT
-			} else {
-				indControl = 'U'; // U= UPDATE
-			}
-			
-			var idProyectoManifiesto = null;
-			var idProgramacion = null
-			var nro_pro_manifiesto = $('#sel_nro_pro_manifiesto').val();
-			if (!esnulo(nro_pro_manifiesto)) {
-				var arr = nro_pro_manifiesto.split('_');
-				idProyectoManifiesto = arr[0];
-				idProgramacion = arr[2];
-			}
-			
+			var flagProgramacion = $('input[name="rb_man_tie_programacion"]:checked').val();
 			var params = {
-				idSalida : codigo,
+				idProyectoManifiesto : codigo,
 				codigoAnio : $('#txt_anio').val(),
-				codigoMes : ordenSalida.codigoMes,
-				idAlmacen : ordenSalida.idAlmacen,
-				codigoDdi : ordenSalida.codigoDdi,
-				codigoAlmacen : ordenSalida.codigoAlmacen,
-				nroOrdenSalida : $('#txt_nro_ord_salida').val(),
+				codigoDdi : proyectoManifiesto.codigoDdi,
+				codigoMes : proyectoManifiesto.codigoMes,
+				idAlmacen : proyectoManifiesto.idAlmacen,				
+				codigoAlmacen : proyectoManifiesto.codigoAlmacen,
+				idAlmacenDestino : $('#sel_almacen').val(),
+				nroProyectoManifiesto : $('#txt_nro_pro_manifiesto').val(),
 				fechaEmision : $('#txt_fecha').val(),
-				codigoUbigeo : $('#sel_distrito').val(),
-				idProgramacion : idProgramacion,
-				idResponsable : $('#sel_responsable').val(),
-				idResponsableExt : idResponsableExt,
-				idSolicitante : $('#sel_solicitada').val(),
-				idResponsableRecepcion : idResponsableRecepcion,
-				idProyectoManifiesto : idProyectoManifiesto,
+				flagProgramacion : flagProgramacion,
+				idProgramacion : $('#sel_nro_programacion').val(),
 				idMovimiento : $('#sel_tip_movimiento').val(),
-				idAlmacenDestino : idAlmacenDestino,
-				idAlmacenDestinoExt : idAlmacenDestinoExt,
-				idMedioTransporte : $('#sel_med_transporte').val(),
-				idEmpresaTransporte : $('#sel_emp_transporte').val(),
-				idChofer : $('#sel_chofer').val(),
-				nroPlaca : $.trim($('#txt_nro_placa').val()),
-				fechaEntrega : $('#txt_fec_entrega').val(),
-				flagTipoDestino : flagTipoDestino,
-				observacion : $('#txt_observaciones').val(),
 				idEstado : $('#sel_estado').val(),
-				indControl : indControl
+				observacion : $('#txt_observaciones').val()
 			};
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarOrdenSalida', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarProyectoManifiesto', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -244,8 +134,8 @@ $(document).ready(function() {
 						
 					} else {
 						
-						$('#hid_cod_proyecto').val(respuesta.idSalida);
-						$('#txt_nro_ord_salida').val(respuesta.nroOrdenSalida);
+						$('#hid_cod_proyecto').val(respuesta.idProyectoManifiesto);
+						$('#txt_nro_pro_manifiesto').val(respuesta.codigoProyectoManifiesto);
 				
 						$('#li_productos').attr('class', '');
 						$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
@@ -253,8 +143,9 @@ $(document).ready(function() {
 						$('#li_documentos').attr('class', '');
 						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
 						
-						addSuccessMessage(null, 'Se genero el N° Orden de Salida: '+respuesta.nroOrdenSalida);
+						addSuccessMessage(null, 'Se creó el Proyecto de Manifiesto N° '+respuesta.codigoProyectoManifiesto);
 						
+						listarVehiculoProyectoManifiesto(false);
 					}
 					
 				}
@@ -285,8 +176,6 @@ $(document).ready(function() {
 			$('#sel_producto').select2('destroy');
 		}
 		
-		$('#sel_lote').html('');
-		
 		$('#hid_cod_producto').val('');
 		$('#div_det_productos').modal('show');
 		
@@ -313,19 +202,19 @@ $(document).ready(function() {
 			$('#h4_tit_productos').html('Actualizar Producto');
 			limpiarFormularioProducto();
 			
-			$('#hid_cod_producto').val(obj.idDetalleSalida);
+			$('#hid_cod_producto').val(obj.idDetalleProyecto);
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
 			
-			var val_producto = obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.pesoUnitarioNeto+'_'+obj.pesoUnitarioBruto;
-			cargarProducto(obj.idCategoria, val_producto, obj.nroLote);
+			var val_producto = obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.pesoUnitarioBruto+'_'+obj.volumenUnitario;
+			cargarProducto(obj.idCategoria, val_producto);
 
 			$('#txt_uni_medida').val(obj.nombreUnidad);
-			$('#txt_pes_net_unitario').val(obj.pesoUnitarioNeto);
-			$('#txt_pes_bru_unitario').val(obj.pesoUnitarioBruto);
+			$('#txt_pes_net_unitario').val(obj.pesoUnitarioBruto);
+			$('#txt_vol_unitario').val(obj.volumenUnitario);
 			$('#txt_cantidad').val(obj.cantidad);
-			$('#txt_pre_unitario').val(obj.precioUnitario);
-			$('#txt_imp_total').val(obj.importeTotal);
+			
+			$('#txt_imp_total').val(obj.pesoTotal);
 			
 			$('#div_det_productos').modal('show');
 		}
@@ -340,8 +229,8 @@ $(document).ready(function() {
 		tbl_det_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				var idDetalleSalida = listaProductosCache[index].idDetalleSalida;
-				codigo = codigo + idDetalleSalida + '_';
+				var idDetalleProyecto = listaProductosCache[index].idDetalleProyecto;
+				codigo = codigo + idDetalleProyecto + '_';
 			}
 		});
 		
@@ -369,15 +258,15 @@ $(document).ready(function() {
 					loadding(true);
 					
 					var params = { 
-						arrIdDetalleSalida : codigo
+						arrIdDetalleProyecto : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarProductoOrdenSalida', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarProductoProyectoManifiesto', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
 						} else {
-							listarProductoOrdenSalida(true);
+							listarProductoProyectoManifiesto(true);
 							addSuccessMessage(null, respuesta.mensajeRespuesta);							
 						}
 					});
@@ -401,33 +290,24 @@ $(document).ready(function() {
 				var arr = val_producto.split('_');
 				idProducto = arr[0];
 			}
-			var indControl = null;
-			var idDetalleSalida = $('#hid_cod_producto').val();
-			if (esnulo(idDetalleSalida)) {
-				indControl = 'I'; // I= INSERT
-			} else {
-				indControl = 'U'; // U= UPDATE
-			}
+			var idDetalleProyecto = $('#hid_cod_producto').val();
 			var params = { 
-				idDetalleSalida : idDetalleSalida,
-				idSalida : $('#hid_cod_proyecto').val(),
+				idDetalleProyecto : idDetalleProyecto,
+				idProyectoManifiesto : $('#hid_cod_proyecto').val(),
 				idProducto : idProducto,
 				cantidad : formatMonto($('#txt_cantidad').val()),
-				precioUnitario : formatMonto($('#txt_pre_unitario').val()),
-				importeTotal : formatMonto($('#txt_imp_total').val()),
-				nroLote : $('#sel_lote').val(),
-				indControl : indControl
+				idAlmacen : $('#sel_almacen').val()
 			};
 
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarProductoOrdenSalida', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarProductoProyectoManifiesto', params, function(respuesta) {
 				$('#div_det_productos').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					listarProductoOrdenSalida(true);					
+					listarProductoProyectoManifiesto(true);					
 					addSuccessMessage(null, respuesta.mensajeRespuesta);					
 				}
 				frm_det_productos.data('bootstrapValidator').resetForm();
@@ -445,7 +325,7 @@ $(document).ready(function() {
 	$('#sel_cat_producto').change(function() {
 		var idCategoria = $(this).val();		
 		if (!esnulo(idCategoria)) {					
-			cargarProducto(idCategoria, null, null);
+			cargarProducto(idCategoria, null);
 		} else {
 			$('#sel_producto').html('');
 			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_producto');
@@ -459,18 +339,24 @@ $(document).ready(function() {
 			if (arr.length > 1) {
 				$('#txt_uni_medida').val(arr[1]);
 				if (!esnulo(arr[2])) {
-					$('#txt_envase').val(arr[2]);
+					$('#txt_pes_net_unitario').val(arr[2]);
 				} else {
-					$('#txt_envase').val('');
+					$('#txt_pes_net_unitario').val('');
+				}
+				if (!esnulo(arr[3])) {
+					$('#txt_vol_unitario').val(arr[3]);
+				} else {
+					$('#txt_vol_unitario').val('');
 				}
 			} else {
 				$('#txt_uni_medida').val('');
-				$('#txt_envase').val('');
+				$('#txt_pes_net_unitario').val('');
+				$('#txt_vol_unitario').val('');
 			}
-			cargarLote(arr[0], null);
 		} else {
 			$('#txt_uni_medida').val('');
-			$('#txt_envase').val('');
+			$('#txt_pes_net_unitario').val('');
+			$('#txt_vol_unitario').val('');
 		}
 //		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	});
@@ -478,23 +364,54 @@ $(document).ready(function() {
 	
 	$('#txt_cantidad').change(function() {
 		var cantidad = $(this).val();
-		var pre_unitario = $('#txt_pre_unitario').val();
+		var pre_unitario = $('#txt_pes_net_unitario').val();
 		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
 			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
 			$('#txt_imp_total').val(formatMontoAll(imp_total));
+		} else {
+			$('#txt_imp_total').val('');
 		}
 	});
 	
-	$('#txt_pre_unitario').change(function() {
-		var cantidad = $('#txt_cantidad').val();
-		var pre_unitario = $(this).val();
-		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
-			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
-			$('#txt_imp_total').val(formatMontoAll(imp_total));
-		}
-	});
-	
+	$('#btn_recalcular').click(function(e) {
+		e.preventDefault();
 
+		var indices = [];
+		var arrTipoCamion = [];
+//		var arrDetalleVehiculo = null;
+//		var arrDetalleVehiculo = null;
+//		var arrDetalleVehiculo = null;
+		tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+				arrTipoCamion.push(listaVehiculosCache[index].idTipoCamion);
+			}
+		});
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else {
+
+			//listaVehiculosCache
+					
+			loadding(true);								
+			var params = { 
+				idProyectoManifiesto : idProyectoManifiesto,
+				arrTipoCamion : arrTipoCamion
+			};						
+			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/procesarManifiestoVehiculo', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					loadding(false);
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarProductoProyectoManifiesto(true);
+					addSuccessMessage(null, respuesta.mensajeRespuesta);							
+				}
+			});	
+		}
+		
+	});
+	
 	$('#href_doc_nuevo').click(function(e) {
 		e.preventDefault();
 
@@ -531,7 +448,7 @@ $(document).ready(function() {
 			$('#h4_tit_documentos').html('Actualizar Documento');
 			$('#frm_det_documentos').trigger('reset');
 			
-			$('#hid_cod_documento').val(obj.idDocumentoSalida);			
+			$('#hid_cod_documento').val(obj.idDocumentoProyecto);			
 			$('#sel_tip_producto').val(obj.idTipoDocumento);
 			$('#txt_nro_documento').val(obj.nroDocumento);
 			$('#txt_doc_fecha').val(obj.fechaDocumento);
@@ -549,12 +466,12 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				var idDocumentoSalida = listaDocumentosCache[index].idDocumentoSalida;
-				codigo = codigo + idDocumentoSalida + '_';
+				var idDocumentoProyecto = listaDocumentosCache[index].idDocumentoProyecto;
+				codigo = codigo + idDocumentoProyecto + '_';
 			}
 		});
 		
@@ -585,12 +502,12 @@ $(document).ready(function() {
 						arrIdDocumentoSalida : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarDocumentoOrdenSalida', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarDocumentoProyectoManifiesto', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
 						} else {
-							listarDocumentoOrdenSalida(true);
+							listarDocumentoProyectoManifiesto(true);
 							addSuccessMessage(null, respuesta.mensajeRespuesta);							
 						}
 					});
@@ -610,22 +527,15 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {			
 			loadding(true);
 			
-			var indControl = null;
-			var idDocumentoSalida = $('#hid_cod_documento').val();
-			if (esnulo(idDocumentoSalida)) {
-				indControl = 'I'; // I= INSERT
-			} else {
-				indControl = 'U'; // U= UPDATE
-			}
+			var idDocumentoProyecto = $('#hid_cod_documento').val();
 			
 			var params = { 
-				idDocumentoSalida : idDocumentoSalida,
-				idSalida : $('#hid_cod_proyecto').val(),
+				idDocumentoProyecto : idDocumentoProyecto,
+				idProyectoManifiesto : $('#hid_cod_proyecto').val(),
 				idTipoDocumento : $('#sel_tip_producto').val(),
 				nroDocumento : $('#txt_nro_documento').val(),
 				fechaDocumento : $('#txt_doc_fecha').val(),
-				nombreArchivo : $('#txt_lee_sub_archivo').val(),
-				indControl : indControl
+				nombreArchivo : $('#txt_lee_sub_archivo').val()
 			};
 			
 			var cod_ind_alfresco = $('#hid_cod_ind_alfresco').val();
@@ -703,68 +613,33 @@ function inicializarDatos() {
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
 	$('#ul_alm_salidas').css('display', 'block');	
-	$('#li_ord_salida').attr('class', 'active');
-	$('#li_ord_salida').closest('li').children('a').attr('href', '#');
+	$('#li_man_carga').attr('class', 'active');
+	$('#li_man_carga').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		
-		$('#txt_nro_ord_salida').val(ordenSalida.nroOrdenSalida);
-		$('#txt_anio').val(ordenSalida.codigoAnio);
-		$('#txt_ddi').val(ordenSalida.nombreDdi);
-		$('#txt_almacen').val(ordenSalida.nombreAlmacen);
+		$('#txt_nro_pro_manifiesto').val(proyectoManifiesto.nroProyectoManifiesto);
+		$('#txt_anio').val(proyectoManifiesto.codigoAnio);
+		$('#txt_ddi').val(proyectoManifiesto.nombreDdi);
+		$('#txt_almacen').val(proyectoManifiesto.nombreAlmacen);
 		
-		if (!esnulo(ordenSalida.idSalida)) {
+		if (!esnulo(proyectoManifiesto.idProyectoManifiesto)) {
 			
-			$('#hid_cod_proyecto').val(ordenSalida.idSalida);		
+			$('#hid_cod_proyecto').val(proyectoManifiesto.idProyectoManifiesto);		
 
-			$('#txt_fecha').val(ordenSalida.fechaEmision);
-			$('#sel_estado').val(ordenSalida.idEstado);
-			$('#sel_tip_movimiento').val(ordenSalida.idMovimiento);
-			
-			var val_nro_pro_manifiesto = ordenSalida.idProyectoManifiesto+'_'+ordenSalida.nroProgramacion+'_'+ordenSalida.idProgramacion;
-			$('#sel_nro_pro_manifiesto').val(val_nro_pro_manifiesto);			
-			$('#txt_requerimiento').val(ordenSalida.nroProgramacion);			
-			
-			$('#sel_solicitada').val(ordenSalida.idSolicitante);
-			$('#sel_responsable').val(ordenSalida.idResponsable);
-			
-			if (!esnulo(ordenSalida.idDdiDestino)) {
-				$('#sel_ddi').val(ordenSalida.idDdiDestino);
-			}
-			
-			$('input[name=rb_tie_ate_gobierno][value="'+ordenSalida.flagTipoDestino+'"]').prop('checked', true);
-			
-			$('#sel_med_transporte').val(ordenSalida.idMedioTransporte);
-			$('#sel_emp_transporte').val(ordenSalida.idEmpresaTransporte);
-			$('#txt_fec_entrega').val(ordenSalida.fechaEntrega);
-			$('#sel_chofer').val(ordenSalida.idChofer);
-			$('#txt_nro_placa').val(ordenSalida.nroPlaca);
-			$('#txt_observaciones').val(ordenSalida.observacion);
-			
-			cargarTipoMovimiento(ordenSalida.idMovimiento);
-			
-			if (ordenSalida.flagTipoDestino == 'I') {
-				cargarDatosDdiDestino(ordenSalida.idDdiDestino, ordenSalida.idAlmacenDestino, ordenSalida.idResponsableRecepcion);
-			} else if (ordenSalida.flagTipoDestino == 'R') {
-				if (!esnulo(ordenSalida.codigoRegion)) {
-					$('#sel_gore').val(ordenSalida.codigoRegion);
-					cargarDatosRegionalDestino(ordenSalida.codigoRegion, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
-				}
-			} else if (ordenSalida.flagTipoDestino == 'L') {
-				if (!esnulo(ordenSalida.codigoUbigeo)) {
-					$('#sel_departamento').val(ordenSalida.codigoDepartamento);
-					cargarProvincia(ordenSalida.codigoDepartamento, ordenSalida.codigoProvincia);
-					cargarDistrito(ordenSalida.codigoProvincia, ordenSalida.codigoUbigeo);
-					cargarDatosLocalDestino(ordenSalida.codigoUbigeo, ordenSalida.idAlmacenDestinoExt, ordenSalida.idResponsableExt);
-				}
-			}
-			
-			listarProductoOrdenSalida(false);			
-			listarDocumentoOrdenSalida(false);
-			
-			$('#txt_det_nro_ord_compra').val(ordenSalida.nroOrdenCompra);
+			$('#txt_fecha').val(proyectoManifiesto.fechaEmision);
+			$('#sel_estado').val(proyectoManifiesto.idEstado);
+			$('#sel_tip_movimiento').val(proyectoManifiesto.idMovimiento);			
+			$('input[name=rb_man_tie_programacion][value="'+proyectoManifiesto.flagProgramacion+'"]').prop('checked', true);			
+			$('#sel_nro_programacion').val(proyectoManifiesto.idProgramacion);
+			$('#sel_almacen').val(proyectoManifiesto.idAlmacenDestino);
+			$('#txt_observaciones').val(proyectoManifiesto.observacion);
+
+			listarProductoProyectoManifiesto(false);
+			listarVehiculoProyectoManifiesto(false);
+			listarDocumentoProyectoManifiesto(false);
 			
 		} else {
 			
@@ -774,18 +649,8 @@ function inicializarDatos() {
 			
 			$('#txt_fecha').datepicker('setDate', new Date());
 			
-			var val_nro_pro_manifiesto = $('#sel_nro_pro_manifiesto').val();		
-			if (!esnulo(val_nro_pro_manifiesto)) {
-				var arr = val_nro_pro_manifiesto.split('_');
-				if (arr.length > 1) {
-					$('#txt_requerimiento').val(arr[1]);
-				} else {
-					$('#txt_requerimiento').val('');
-				}			
-			}
-			
-			cargarTipoMovimiento($('#sel_tip_movimiento').val());
-			
+			cargarIndicadorProgramacion(null);
+
 			listarDetalleProductos(new Object());
 			listarDetalleDocumentos(new Object());
 
@@ -795,11 +660,11 @@ function inicializarDatos() {
 		
 }
 
-function listarProductoOrdenSalida(indicador) {
+function listarProductoProyectoManifiesto(indicador) {
 	var params = { 
-		idSalida : $('#hid_cod_proyecto').val()
+		idProyectoManifiesto : $('#hid_cod_proyecto').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/proyecto-manifiesto/listarProductoOrdenSalida', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/proyecto-manifiesto/listarProductoProyectoManifiesto', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -823,7 +688,7 @@ function listarDetalleProductos(respuesta) {
 	tbl_det_productos.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idDetalleSalida',
+			data : 'idDetalleProyecto',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -835,7 +700,7 @@ function listarDetalleProductos(respuesta) {
 				}											
 			}
 		}, {	
-			data : 'idDetalleSalida',
+			data : 'idDetalleProyecto',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -845,17 +710,19 @@ function listarDetalleProductos(respuesta) {
 		}, {
 			data : 'nombreUnidad'
 		}, {
-			data : 'nroLote'
-		}, {
 			data : 'cantidad'
 		}, {
-			data : 'precioUnitario'
+			data : 'pesoUnitarioBruto'
 		}, {
-			data : 'importeTotal'
+			data : 'pesoTotal'
 		}, {
-			data : 'pesoNetoTotal'
+			data : 'volumenUnitario'
 		}, {
-			data : 'pesoBrutoTotal'
+			data : 'volumenTotal'
+		}, {
+			data : 'costoBruto'
+		}, {
+			data : 'costoTotal'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -870,11 +737,76 @@ function listarDetalleProductos(respuesta) {
 
 }
 
-function listarDocumentoOrdenSalida(indicador) {
+function listarVehiculoProyectoManifiesto(indicador) {
 	var params = { 
-		idSalida : $('#hid_cod_proyecto').val()
+		idProyectoManifiesto : $('#hid_cod_proyecto').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/proyecto-manifiesto/listarDocumentoOrdenSalida', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/proyecto-manifiesto/listarProyectoManifiestoVehiculo', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleVehiculos(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+//			if (respuesta != null && respuesta.length > 0) {
+//				$('#sel_tip_movimiento').prop('disabled', true);
+//			} else {
+//				$('#sel_tip_movimiento').prop('disabled', false);
+//			}
+		}
+	});
+}
+
+function listarDetalleVehiculos(respuesta) {
+
+	tbl_det_productos.dataTable().fnDestroy();
+	
+	tbl_det_productos.dataTable({
+		data : respuesta,
+		columns : [ {
+			data : 'idProyectoManifiesto',
+			sClass : 'opc-center',
+			render: function(data, type, row) {
+				if (data != null) {
+					return '<label class="checkbox">'+
+								'<input type="checkbox"><i></i>'+
+						   '</label>';	
+				} else {
+					return '';	
+				}											
+			}
+		}, {	
+			data : 'idProyectoManifiesto',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'descripcionCamion'
+		}, {
+			data : 'volumen'
+		}, {
+			data : 'cantidadVehiculos'
+		} ],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : false,
+		paging : false,
+		ordering : false,
+		info : true
+	});
+	
+	listaVehiculosCache = respuesta;
+
+}
+
+function listarDocumentoProyectoManifiesto(indicador) {
+	var params = { 
+		idProyectoManifiesto : $('#hid_cod_proyecto').val()
+	};			
+	consultarAjaxSincrono('GET', '/gestion-almacenes/proyecto-manifiesto/listarDocumentoProyectoManifiesto', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -893,7 +825,7 @@ function listarDetalleDocumentos(respuesta) {
 	tbl_det_documentos.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idDocumentoSalida',
+			data : 'idDocumentoProyecto',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -905,7 +837,7 @@ function listarDetalleDocumentos(respuesta) {
 				}											
 			}
 		}, {	
-			data : 'idDocumentoSalida',
+			data : 'idDocumentoProyecto',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -939,13 +871,13 @@ function listarDetalleDocumentos(respuesta) {
 }
 
 function grabarDetalleDocumento(params) {
-	consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarDocumentoOrdenSalida', params, function(respuesta) {
+	consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarDocumentoProyectoManifiesto', params, function(respuesta) {
 		$('#div_det_documentos').modal('hide');
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			loadding(false);			
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
-			listarDocumentoOrdenSalida(true);
+			listarDocumentoProyectoManifiesto(true);
 			addSuccessMessage(null, respuesta.mensajeRespuesta);	
 		}
 		frm_det_documentos.data('bootstrapValidator').resetForm();
@@ -968,150 +900,7 @@ function descargarDocumento(codigo, nombre) {
 	});	
 }
 
-function cargarTipoMovimiento(val_tip_movimiento) {
-	if (val_tip_movimiento == '3') { // Transferencia entre Almacenes 
-		$('#div_ddi_destino').show();
-		$('#div_gob_destino').hide();
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').hide();
-		
-		$('#sel_ddi').prop('disabled', false);
-		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
-		$('#sel_alm_destino').prop('disabled', false);
-		$('#sel_res_recepcion').prop('disabled', false);
-		
-		$('#sel_med_transporte').prop('disabled', false);
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
-		$('#txt_fec_entrega').prop('disabled', false);
-		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
-			$('#txt_fec_entrega').removeClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', false);
-		
-	} else if (val_tip_movimiento == '4') { // Transferencia Interna
-		$('#div_ddi_destino').show();
-		$('#div_gob_destino').hide();
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').hide();
-
-		$('#sel_ddi').prop('disabled', false);
-		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
-		$('#sel_alm_destino').prop('disabled', false);
-		$('#sel_res_recepcion').prop('disabled', false);
-		
-		$('#sel_med_transporte').prop('disabled', false);
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
-		$('#txt_fec_entrega').prop('disabled', false);
-		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
-			$('#txt_fec_entrega').removeClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', false);
-		
-	} else if (val_tip_movimiento == '5') { // Atención de Emergencias 
-		$('#div_ddi_destino').hide();
-		$('#div_gob_destino').show();
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').hide();
-
-		$('#sel_ddi').prop('disabled', false);
-		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
-		$('#sel_alm_destino').prop('disabled', false);
-		$('#sel_res_recepcion').prop('disabled', false);
-		
-		$('#sel_med_transporte').prop('disabled', false);
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
-		$('#txt_fec_entrega').prop('disabled', false);
-		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
-			$('#txt_fec_entrega').removeClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', false);		
-		
-	} else if (val_tip_movimiento == '1') { // Ajustes por inventario 
-		$('#div_ddi_destino').show();
-		$('#div_gob_destino').hide();
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').hide();
-
-		$('#sel_ddi').prop('disabled', true);
-		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
-		$('#sel_alm_destino').prop('disabled', true);
-		$('#sel_res_recepcion').prop('disabled', true);
-		
-		$('#sel_med_transporte').prop('disabled', true);
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-		$('#txt_fec_entrega').prop('disabled', true);
-		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
-			$('#txt_fec_entrega').addClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', true);
-		
-	} else if (val_tip_movimiento == '9') { // Ajuste por Importe 
-		$('#div_ddi_destino').show();
-		$('#div_gob_destino').hide();
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').hide();
-
-		$('#sel_ddi').prop('disabled', true);
-		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
-		$('#sel_alm_destino').prop('disabled', true);
-		$('#sel_res_recepcion').prop('disabled', true);
-		
-		$('#sel_med_transporte').prop('disabled', true);
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-		$('#txt_fec_entrega').prop('disabled', true);
-		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
-			$('#txt_fec_entrega').addClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', true);
-		
-	} else if (val_tip_movimiento == '2') { // Baja de Bienes 
-		$('#div_ddi_destino').show();
-		$('#div_gob_destino').hide();
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').hide();
-
-		$('#sel_ddi').prop('disabled', true);
-		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
-		$('#sel_alm_destino').prop('disabled', true);
-		$('#sel_res_recepcion').prop('disabled', true);
-		
-		$('#sel_med_transporte').prop('disabled', true);
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-		$('#txt_fec_entrega').prop('disabled', true);
-		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
-			$('#txt_fec_entrega').addClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', true);
-		
-	} else if (val_tip_movimiento == '10') { // Muestras
-		$('#div_ddi_destino').show();
-		$('#div_gob_destino').hide();
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').hide();
-
-		$('#sel_ddi').prop('disabled', true);
-		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
-		$('#sel_alm_destino').prop('disabled', true);
-		$('#sel_res_recepcion').prop('disabled', true);
-		
-		$('#sel_med_transporte').prop('disabled', true);
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-		$('#txt_fec_entrega').prop('disabled', true);
-		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
-			$('#txt_fec_entrega').addClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', true);
-	}
-}
-
-function cargarProducto(idCategoria, codigoProducto, codigoLote) {
+function cargarProducto(idCategoria, codigoProducto) {
 	var params = { 
 		idCategoria : idCategoria
 	};			
@@ -1128,8 +917,7 @@ function cargarProducto(idCategoria, codigoProducto, codigoLote) {
 	        });
 	        $('#sel_producto').html(options);
 	        if (codigoProducto != null) {
-	        	$('#sel_producto').val(codigoProducto);
-				cargarLote(codigoProducto, codigoLote);      	
+	        	$('#sel_producto').val(codigoProducto);      	
 	        } else {
 	        	var arr = $('#sel_producto').val().split('_');
 				if (arr.length > 1) {
@@ -1140,14 +928,14 @@ function cargarProducto(idCategoria, codigoProducto, codigoLote) {
 						$('#txt_pes_net_unitario').val('');
 					}
 					if (!esnulo(arr[3])) {
-						$('#txt_pes_bru_unitario').val(arr[3]);
+						$('#txt_vol_unitario').val(arr[3]);
 					} else {
-						$('#txt_pes_bru_unitario').val('');
+						$('#txt_vol_unitario').val('');
 					}
 				} else {
 					$('#txt_uni_medida').val('');
 					$('#txt_pes_net_unitario').val('');
-					$('#txt_pes_bru_unitario').val('');
+					$('#txt_vol_unitario').val('');
 				}
 //				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	        }
@@ -1160,47 +948,26 @@ function cargarProducto(idCategoria, codigoProducto, codigoLote) {
 	});
 }
 
-function cargarLote(idProducto, codigoLote) {
-	var params = { 
-		idProducto : idProducto
-	};			
-	loadding(true);
-	consultarAjax('GET', '/gestion-almacenes/proyecto-manifiesto/listarLoteProducto', params, function(respuesta) {
-		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-			addErrorMessage(null, respuesta.mensajeRespuesta);
-		} else {
-			var options = '<option value="">Seleccione</option>';
-	        $.each(respuesta, function(i, item) {
-	            options += '<option value="'+item.nroLote+'">'+item.nroLote+'</option>';
-	        });
-	        $('#sel_lote').html(options);
-	        if (codigoLote != null) {
-	        	$('#sel_lote').val(codigoLote);       	
-	        }
-		}
-		loadding(false);		
-	});
-}
-
 function limpiarFormularioProducto() {
 	$('#sel_cat_producto').val('');
 	$('#sel_producto').val('');
-	$('#sel_lote').val('');
 	$('#txt_uni_medida').val('');
 	$('#txt_pes_net_unitario').val('');
-	$('#txt_pes_bru_unitario').val('');
+	$('#txt_vol_unitario').val('');
 	$('#txt_cantidad').val('');
 	$('#txt_pre_unitario').val('');
 	$('#txt_imp_total').val('');
 }
 
-function cargarTipoAtencion(valor) {
-	if (valor == 'R') {
-		$('#div_gore_destino').show();
-		$('#div_ubi_destino').hide();
-	} else if (valor == 'L') {
-		$('#div_gore_destino').hide();
-		$('#div_ubi_destino').show();
+function cargarIndicadorProgramacion(valor) {
+	if (valor == '1') {
+		$('#sel_nro_programacion').prop('disabled', false);	
+	} else if (valor == '0') {
+		$('#sel_nro_programacion').prop('disabled', true);
+		$('#sel_nro_programacion').val('');
+	} else {
+		$('#sel_nro_programacion').prop('disabled', true);
+		$('#sel_nro_programacion').val('');
 	}
 }
 

@@ -29,17 +29,17 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import pe.com.sigbah.common.bean.DocumentoSalidaBean;
-import pe.com.sigbah.common.bean.OrdenSalidaBean;
-import pe.com.sigbah.common.bean.ProductoSalidaBean;
+import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 
 /**
- * @className: ReporteOrdenSalida.java
+ * @className: ReporteProyectoManifiesto.java
  * @description: 
- * @date: 20 de jul. de 2016
- * @author: SUMERIO.
+ * @date: 20 de jul. de 2017
+ * @author: Junior Huaman Flores.
  */
 public class ReporteProyectoManifiesto implements Serializable {
 
@@ -66,7 +66,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
-	public HSSFWorkbook generaReporteExcelOrdenSalida(List<OrdenSalidaBean> lista) throws Exception {
+	public HSSFWorkbook generaReporteExcelProyectoManifiesto(List<ProyectoManifiestoBean> lista) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
 	        HSSFSheet sheet = wb.createSheet("REGISTRO DE ORDEN DE INGRESO");
@@ -113,16 +113,16 @@ public class ReporteProyectoManifiesto implements Serializable {
 	        row1.createCell(4).setCellValue("Almacén");
 	        row1.getCell(4).setCellStyle(style_header);
 	        
-	        row1.createCell(5).setCellValue("N° Orden de Salida");
+	        row1.createCell(5).setCellValue("N° Proyecto de Manifiesto");
 	        row1.getCell(5).setCellStyle(style_header);
 	        
 	        row1.createCell(6).setCellValue("Fecha");
 	        row1.getCell(6).setCellStyle(style_header);
 	        
-	        row1.createCell(7).setCellValue("Tipo de Movimiento");
+	        row1.createCell(7).setCellValue("N° Programación");
 	        row1.getCell(7).setCellStyle(style_header);
 	        
-	        row1.createCell(8).setCellValue("N° Guia de Remision");
+	        row1.createCell(8).setCellValue("Tipo de Movimiento");
 	        row1.getCell(8).setCellStyle(style_header);
 	        
 	        row1.createCell(9).setCellValue("Estado");
@@ -138,7 +138,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 	        style_cell.setBorderRight((short) 1);
 	        style_cell.setBorderTop((short) 1);
 	        
-	        for (OrdenSalidaBean ingreso : lista) {
+	        for (ProyectoManifiestoBean ingreso : lista) {
 	        	
 	        	HSSFRow rows  = sheet.createRow((short) row + 1);
 	        	
@@ -154,16 +154,16 @@ public class ReporteProyectoManifiesto implements Serializable {
 		        rows.createCell(4).setCellValue(ingreso.getNombreAlmacen());
 		        rows.getCell(4).setCellStyle(style_cell);
 		        
-		        rows.createCell(5).setCellValue(ingreso.getNroOrdenSalida());
+		        rows.createCell(5).setCellValue(ingreso.getNroProyectoManifiesto());
 		        rows.getCell(5).setCellStyle(style_cell);
 		        
 		        rows.createCell(6).setCellValue(ingreso.getFechaEmision());
 		        rows.getCell(6).setCellStyle(style_cell);
 		        
-		        rows.createCell(7).setCellValue(ingreso.getNombreMovimiento());
+		        rows.createCell(7).setCellValue(ingreso.getNroProgramacion());
 		        rows.getCell(7).setCellStyle(style_cell);
 		        
-		        rows.createCell(8).setCellValue(ingreso.getNroGuiaRemision());
+		        rows.createCell(8).setCellValue(ingreso.getNombreMovimiento());
 		        rows.getCell(8).setCellStyle(style_cell);
 		        
 		        rows.createCell(9).setCellValue(ingreso.getNombreEstado());
@@ -181,13 +181,13 @@ public class ReporteProyectoManifiesto implements Serializable {
 	
 	/**
 	 * @param ruta
-	 * @param ordenSalida
+	 * @param proyectoManifiesto
 	 * @param listaProducto
 	 * @param listaDocumento
 	 * @throws Exception 
 	 */
-	public void generaPDFReporteSalidas(String ruta, OrdenSalidaBean ordenSalida, List<ProductoSalidaBean> listaProducto, 
-										List<DocumentoSalidaBean> listaDocumento) throws Exception {
+	public void generaPDFReporteProyectoManifiesto(String ruta, ProyectoManifiestoBean proyectoManifiesto, List<ProductoProyectoManifiestoBean> listaProducto, 
+												   List<DocumentoProyectoManifiestoBean> listaDocumento) throws Exception {
 		Document document = null;
 		try {
 			document = new Document(PageSize.A4, 0, 0, 20, 20);
@@ -237,7 +237,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("ORDEN DE SALIDA N° ".concat(ordenSalida.getNroOrdenSalida()), titulo);
+			p = new Paragraph("ORDEN DE SALIDA N° ".concat(proyectoManifiesto.getNroProyectoManifiesto()), titulo);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
@@ -251,28 +251,28 @@ public class ReporteProyectoManifiesto implements Serializable {
 			table = new PdfPTable(4);
 			table.setWidths(f4_1);
 			
-			p = new Paragraph("Año : ".concat(ordenSalida.getCodigoAnio()), normal);
+			p = new Paragraph("Año : ".concat(proyectoManifiesto.getCodigoAnio()), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("DDI : ".concat(ordenSalida.getNombreDdi()), normal);
+			p = new Paragraph("DDI : ".concat(proyectoManifiesto.getNombreDdi()), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("Almacén : ".concat(ordenSalida.getNombreAlmacen()), normal);
+			p = new Paragraph("Almacén : ".concat(proyectoManifiesto.getNombreAlmacen()), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("Fecha : ".concat(ordenSalida.getFechaEmision()), normal);
+			p = new Paragraph("Fecha : ".concat(proyectoManifiesto.getFechaEmision()), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -280,63 +280,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			table.addCell(cell);
 			
 			document.add(table);
-			
-			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//
-//			
-//			table = new PdfPTable(2);
-//			table.setWidths(f2_1);
-//			
-//			p = new Paragraph("Tipo de Movimiento : ".concat(ordenSalida.getNombreMovimiento()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Almacen Origen : ".concat(ordenSalida.getNombreAlmacenProcedencia()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//
-//			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			
-//			
-//			table = new PdfPTable(1);
-//			table.setWidths(f1);
-//			
-//			p = new Paragraph("Nombre Proveedor : ".concat(getString(ordenSalida.getProvRep())), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);			
-//			
-//			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			
-//			
-//			table = new PdfPTable(1);
-//			table.setWidths(f1);
-//			
-//			p = new Paragraph("Responsable Recepción : ".concat(getString(ordenSalida.getResponsable())), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-			
-			
+
 			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
 			
 			
@@ -373,7 +317,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			
 			int row_doc = 1;
 			
-			for (DocumentoSalidaBean documento : listaDocumento) {
+			for (DocumentoProyectoManifiestoBean documento : listaDocumento) {
 			
 				table = new PdfPTable(4);
 				table.setWidths(f4_2);
@@ -473,7 +417,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			
 			int row_pro = 1;
 			
-			for (ProductoSalidaBean producto : listaProducto) {
+			for (ProductoProyectoManifiestoBean producto : listaProducto) {
 			
 				table = new PdfPTable(9);
 				table.setWidths(f9);
@@ -551,7 +495,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			table = new PdfPTable(1);
 			table.setWidths(f1);
 			
-			p = new Paragraph(ordenSalida.getObservacion(), normal);
+			p = new Paragraph(proyectoManifiesto.getObservacion(), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_TOP);

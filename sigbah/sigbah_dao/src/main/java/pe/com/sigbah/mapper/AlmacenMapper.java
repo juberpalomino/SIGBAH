@@ -12,7 +12,7 @@ import pe.com.sigbah.common.util.Constantes;
  * @className: AlmacenMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class AlmacenMapper implements RowMapper<ItemBean> {
 	

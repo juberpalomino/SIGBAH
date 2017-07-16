@@ -6,28 +6,27 @@ import java.math.BigDecimal;
  * @className: ProductoSalidaBean.java
  * @description: 
  * @date: 25 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
-	private Integer idDetalleSalida;
-	private Integer idSalida;
+	private Integer idDetalleProyecto;
+	private Integer idProyectoManifiesto;
 	private Integer idCategoria;
 	private Integer idProducto;
 	private String nombreProducto;
 	private String nombreUnidad;
 	private String nombreEnvase;
 	private BigDecimal cantidad;
-	private BigDecimal precioUnitario;
-	private BigDecimal importeTotal;
-	private BigDecimal pesoNetoTotal;
-	private BigDecimal pesoBrutoTotal;
-	private BigDecimal pesoUnitarioNeto;
 	private BigDecimal pesoUnitarioBruto;
-	private String nroLote;
-	private String indControl;
-	private String arrIdDetalleSalida;
+	private BigDecimal pesoTotal;
+	private BigDecimal volumenUnitario;
+	private BigDecimal volumenTotal;
+	private BigDecimal costoBruto;
+	private BigDecimal costoTotal;
+	private String arrIdDetalleProyecto;
+	private Integer idAlmacen;
 	
 	
 	/**
@@ -38,39 +37,39 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @param idDetalleSalida
+	 * @param idDetalleProyecto
 	 */
-	public ProductoProyectoManifiestoBean(Integer idDetalleSalida) {
+	public ProductoProyectoManifiestoBean(Integer idDetalleProyecto) {
 		super();
-		this.idDetalleSalida = idDetalleSalida;
+		this.idDetalleProyecto = idDetalleProyecto;
 	}
 
 	/**
-	 * @return the idDetalleSalida
+	 * @return the idDetalleProyecto
 	 */
-	public Integer getIdDetalleSalida() {
-		return idDetalleSalida;
+	public Integer getIdDetalleProyecto() {
+		return idDetalleProyecto;
 	}
 
 	/**
-	 * @param idDetalleSalida the idDetalleSalida to set
+	 * @param idDetalleProyecto the idDetalleProyecto to set
 	 */
-	public void setIdDetalleSalida(Integer idDetalleSalida) {
-		this.idDetalleSalida = idDetalleSalida;
+	public void setIdDetalleProyecto(Integer idDetalleProyecto) {
+		this.idDetalleProyecto = idDetalleProyecto;
 	}
 
 	/**
-	 * @return the idSalida
+	 * @return the idProyectoManifiesto
 	 */
-	public Integer getIdSalida() {
-		return idSalida;
+	public Integer getIdProyectoManifiesto() {
+		return idProyectoManifiesto;
 	}
 
 	/**
-	 * @param idSalida the idSalida to set
+	 * @param idProyectoManifiesto the idProyectoManifiesto to set
 	 */
-	public void setIdSalida(Integer idSalida) {
-		this.idSalida = idSalida;
+	public void setIdProyectoManifiesto(Integer idProyectoManifiesto) {
+		this.idProyectoManifiesto = idProyectoManifiesto;
 	}
 
 	/**
@@ -144,75 +143,19 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the precioUnitario
+	 * @return the nombreEnvase
 	 */
-	public BigDecimal getPrecioUnitario() {
-		return precioUnitario;
+	public String getNombreEnvase() {
+		return nombreEnvase;
 	}
 
 	/**
-	 * @param precioUnitario the precioUnitario to set
+	 * @param nombreEnvase the nombreEnvase to set
 	 */
-	public void setPrecioUnitario(BigDecimal precioUnitario) {
-		this.precioUnitario = precioUnitario;
+	public void setNombreEnvase(String nombreEnvase) {
+		this.nombreEnvase = nombreEnvase;
 	}
 
-	/**
-	 * @return the importeTotal
-	 */
-	public BigDecimal getImporteTotal() {
-		return importeTotal;
-	}
-
-	/**
-	 * @param importeTotal the importeTotal to set
-	 */
-	public void setImporteTotal(BigDecimal importeTotal) {
-		this.importeTotal = importeTotal;
-	}
-
-	/**
-	 * @return the pesoNetoTotal
-	 */
-	public BigDecimal getPesoNetoTotal() {
-		return pesoNetoTotal;
-	}
-
-	/**
-	 * @param pesoNetoTotal the pesoNetoTotal to set
-	 */
-	public void setPesoNetoTotal(BigDecimal pesoNetoTotal) {
-		this.pesoNetoTotal = pesoNetoTotal;
-	}
-
-	/**
-	 * @return the pesoBrutoTotal
-	 */
-	public BigDecimal getPesoBrutoTotal() {
-		return pesoBrutoTotal;
-	}
-
-	/**
-	 * @param pesoBrutoTotal the pesoBrutoTotal to set
-	 */
-	public void setPesoBrutoTotal(BigDecimal pesoBrutoTotal) {
-		this.pesoBrutoTotal = pesoBrutoTotal;
-	}
-	
-	/**
-	 * @return the pesoUnitarioNeto
-	 */
-	public BigDecimal getPesoUnitarioNeto() {
-		return pesoUnitarioNeto;
-	}
-
-	/**
-	 * @param pesoUnitarioNeto the pesoUnitarioNeto to set
-	 */
-	public void setPesoUnitarioNeto(BigDecimal pesoUnitarioNeto) {
-		this.pesoUnitarioNeto = pesoUnitarioNeto;
-	}
-	
 	/**
 	 * @return the pesoUnitarioBruto
 	 */
@@ -228,59 +171,101 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the nroLote
+	 * @return the pesoTotal
 	 */
-	public String getNroLote() {
-		return nroLote;
+	public BigDecimal getPesoTotal() {
+		return pesoTotal;
 	}
 
 	/**
-	 * @param nroLote the nroLote to set
+	 * @param pesoTotal the pesoTotal to set
 	 */
-	public void setNroLote(String nroLote) {
-		this.nroLote = nroLote;
-	}
-	
-	/**
-	 * @return the indControl
-	 */
-	public String getIndControl() {
-		return indControl;
-	}
-	
-	/**
-	 * @param indControl the indControl to set
-	 */
-	public void setIndControl(String indControl) {
-		this.indControl = indControl;
+	public void setPesoTotal(BigDecimal pesoTotal) {
+		this.pesoTotal = pesoTotal;
 	}
 
 	/**
-	 * @return the arrIdDetalleSalida
+	 * @return the volumenUnitario
 	 */
-	public String getArrIdDetalleSalida() {
-		return arrIdDetalleSalida;
+	public BigDecimal getVolumenUnitario() {
+		return volumenUnitario;
 	}
 
 	/**
-	 * @param arrIdDetalleSalida the arrIdDetalleSalida to set
+	 * @param volumenUnitario the volumenUnitario to set
 	 */
-	public void setArrIdDetalleSalida(String arrIdDetalleSalida) {
-		this.arrIdDetalleSalida = arrIdDetalleSalida;
+	public void setVolumenUnitario(BigDecimal volumenUnitario) {
+		this.volumenUnitario = volumenUnitario;
 	}
 
 	/**
-	 * @return the nombreEnvase
+	 * @return the volumenTotal
 	 */
-	public String getNombreEnvase() {
-		return nombreEnvase;
+	public BigDecimal getVolumenTotal() {
+		return volumenTotal;
 	}
 
 	/**
-	 * @param nombreEnvase the nombreEnvase to set
+	 * @param volumenTotal the volumenTotal to set
 	 */
-	public void setNombreEnvase(String nombreEnvase) {
-		this.nombreEnvase = nombreEnvase;
+	public void setVolumenTotal(BigDecimal volumenTotal) {
+		this.volumenTotal = volumenTotal;
 	}
-	
+
+	/**
+	 * @return the costoBruto
+	 */
+	public BigDecimal getCostoBruto() {
+		return costoBruto;
+	}
+
+	/**
+	 * @param costoBruto the costoBruto to set
+	 */
+	public void setCostoBruto(BigDecimal costoBruto) {
+		this.costoBruto = costoBruto;
+	}
+
+	/**
+	 * @return the costoTotal
+	 */
+	public BigDecimal getCostoTotal() {
+		return costoTotal;
+	}
+
+	/**
+	 * @param costoTotal the costoTotal to set
+	 */
+	public void setCostoTotal(BigDecimal costoTotal) {
+		this.costoTotal = costoTotal;
+	}
+
+	/**
+	 * @return the arrIdDetalleProyecto
+	 */
+	public String getArrIdDetalleProyecto() {
+		return arrIdDetalleProyecto;
+	}
+
+	/**
+	 * @param arrIdDetalleProyecto the arrIdDetalleProyecto to set
+	 */
+	public void setArrIdDetalleProyecto(String arrIdDetalleProyecto) {
+		this.arrIdDetalleProyecto = arrIdDetalleProyecto;
+	}
+
+	/**
+	 * @return the idAlmacen
+	 */
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+
+	/**
+	 * @param idAlmacen the idAlmacen to set
+	 */
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+
 }

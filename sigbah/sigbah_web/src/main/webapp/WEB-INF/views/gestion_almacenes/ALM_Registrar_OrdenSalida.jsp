@@ -266,7 +266,7 @@
 													</div>
 														
 													<div class="row">
-														<label class="col-sm-3 control-label">Almacen Destino:</label>
+														<label class="col-sm-3 control-label">Almacén Destino:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_alm_destino" name="sel_alm_destino" class="form-control">
 															</select>

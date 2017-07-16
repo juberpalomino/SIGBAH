@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @className: AlmacenBean.java
  * @description: 
  * @date: 9 de jul. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class AlmacenBean implements Serializable {
 

@@ -40,8 +40,8 @@ import pe.com.sigbah.common.util.DateUtil;
 /**
  * @className: ReporteOrdenSalida.java
  * @description: 
- * @date: 20 de jul. de 2016
- * @author: SUMERIO.
+ * @date: 20 de jul. de 2017
+ * @author: Junior Huaman Flores.
  */
 public class ReporteOrdenSalida implements Serializable {
 

@@ -286,7 +286,7 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Almacen:</label>
+														<label class="col-sm-3 control-label">Almacén:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_almacen" name="sel_almacen" class="form-control">
 																<option value="">Seleccione</option>
@@ -359,7 +359,7 @@
 													</div>
 													
 													<div class="row">
-														<div class="col-sm-6"></div>
+														<div class="col-sm-6 form-group"></div>
 													
 														<label class="col-sm-3 control-label">N° de Placa:</label>
 														<div class="col-sm-3 form-group">

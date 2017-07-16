@@ -29,6 +29,7 @@ $(document).ready(function() {
 		    if (mes != ordenSalida.codigoMes || anio != ordenSalida.codigoAnio) {
 		    	$('#hid_val_fec_trabajo').val('0');
 		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	$('#'+$(this).attr('id')).focus();
 		    } else {
 		    	$('#hid_val_fec_trabajo').val('1');
 		    }
@@ -315,7 +316,7 @@ $(document).ready(function() {
 					} else {
 						
 						$('#hid_cod_ord_salida').val(respuesta.idSalida);
-						$('#txt_nro_ord_salida').val(respuesta.nroOrdenSalida);
+						$('#txt_nro_ord_salida').val(respuesta.codigoSalida);
 				
 						$('#li_productos').attr('class', '');
 						$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
@@ -323,7 +324,7 @@ $(document).ready(function() {
 						$('#li_documentos').attr('class', '');
 						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
 						
-						addSuccessMessage(null, 'Se genero el N° Orden de Salida: '+respuesta.nroOrdenSalida);
+						addSuccessMessage(null, 'Se genero el N° Orden de Salida: '+respuesta.codigoSalida);
 						
 					}
 					
@@ -529,18 +530,27 @@ $(document).ready(function() {
 			if (arr.length > 1) {
 				$('#txt_uni_medida').val(arr[1]);
 				if (!esnulo(arr[2])) {
-					$('#txt_envase').val(arr[2]);
+					$('#txt_pes_net_unitario').val(arr[2]);
 				} else {
-					$('#txt_envase').val('');
+					$('#txt_pes_net_unitario').val('');
+				}
+				if (!esnulo(arr[3])) {
+					$('#txt_pes_bru_unitario').val(arr[3]);
+				} else {
+					$('#txt_pes_bru_unitario').val('');
 				}
 			} else {
 				$('#txt_uni_medida').val('');
-				$('#txt_envase').val('');
+				$('#txt_envase').val('');			
+				$('#txt_pes_net_unitario').val('');
+				$('#txt_pes_bru_unitario').val('');
 			}
 			cargarLote(arr[0], null);
 		} else {
 			$('#txt_uni_medida').val('');
-			$('#txt_envase').val('');
+			$('#txt_envase').val('');			
+			$('#txt_pes_net_unitario').val('');
+			$('#txt_pes_bru_unitario').val('');
 		}
 //		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	});
@@ -552,6 +562,8 @@ $(document).ready(function() {
 		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
 			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
 			$('#txt_imp_total').val(formatMontoAll(imp_total));
+		} else {
+			$('#txt_imp_total').val('');
 		}
 	});
 	
@@ -561,10 +573,11 @@ $(document).ready(function() {
 		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
 			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
 			$('#txt_imp_total').val(formatMontoAll(imp_total));
+		} else {
+			$('#txt_imp_total').val('');
 		}
 	});
 	
-
 	$('#href_doc_nuevo').click(function(e) {
 		e.preventDefault();
 
@@ -780,7 +793,6 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		
-		$('#txt_nro_ord_salida').val(ordenSalida.nroOrdenSalida);
 		$('#txt_anio').val(ordenSalida.codigoAnio);
 		$('#txt_ddi').val(ordenSalida.nombreDdi);
 		$('#txt_almacen').val(ordenSalida.nombreAlmacen);
@@ -788,6 +800,7 @@ function inicializarDatos() {
 		if (!esnulo(ordenSalida.idSalida)) {
 			
 			$('#hid_cod_ord_salida').val(ordenSalida.idSalida);		
+			$('#txt_nro_ord_salida').val(ordenSalida.nroOrdenSalida);
 
 			$('#txt_fecha').val(ordenSalida.fechaEmision);
 			$('#sel_estado').val(ordenSalida.idEstado);
@@ -839,6 +852,8 @@ function inicializarDatos() {
 			$('#txt_det_nro_ord_compra').val(ordenSalida.nroOrdenCompra);
 			
 		} else {
+			
+			$('#txt_nro_ord_salida').val(ordenSalida.nroOrdenSalida);
 			
 			$('#li_productos').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
@@ -1237,7 +1252,7 @@ function cargarLote(idProducto, codigoLote) {
 		idProducto : idProducto
 	};			
 	loadding(true);
-	consultarAjax('GET', '/gestion-almacenes/orden-salida/listarLoteProducto', params, function(respuesta) {
+	consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarLoteProducto', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {

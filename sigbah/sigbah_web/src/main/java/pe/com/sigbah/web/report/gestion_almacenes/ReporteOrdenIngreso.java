@@ -38,8 +38,8 @@ import pe.com.sigbah.common.util.DateUtil;
 /**
  * @className: ReporteOrdenIngreso.java
  * @description: 
- * @date: 20 de jul. de 2016
- * @author: SUMERIO.
+ * @date: 20 de jul. de 2017
+ * @author: Junior Huaman Flores.
  */
 public class ReporteOrdenIngreso implements Serializable {
 
@@ -231,7 +231,14 @@ public class ReporteOrdenIngreso implements Serializable {
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("Orden de Ingreso N° ".concat(ordenIngreso.getNroOrdenIngreso()), titulo);
+			StringBuilder nroOrdenIngreso = new StringBuilder();
+			nroOrdenIngreso.append(ordenIngreso.getCodigoAnio());
+			nroOrdenIngreso.append(Constantes.SEPARADOR);
+			nroOrdenIngreso.append(ordenIngreso.getCodigoDdi());
+			nroOrdenIngreso.append(Constantes.SEPARADOR);
+			nroOrdenIngreso.append(ordenIngreso.getNroOrdenIngreso());
+			
+			p = new Paragraph("Orden de Ingreso N° ".concat(nroOrdenIngreso.toString()), titulo);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
@@ -259,7 +266,7 @@ public class ReporteOrdenIngreso implements Serializable {
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("Almacén : ".concat(ordenIngreso.getNombreAlmacen()), normal);
+			p = new Paragraph("Almacén : ".concat(getString(ordenIngreso.getNombreAlmacen())), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -289,7 +296,7 @@ public class ReporteOrdenIngreso implements Serializable {
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("Almacen Origen : ".concat(ordenIngreso.getNombreAlmacenProcedencia()), normal);
+			p = new Paragraph("Almacen Origen : ".concat(getString(ordenIngreso.getNombreAlmacenProcedencia())), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);

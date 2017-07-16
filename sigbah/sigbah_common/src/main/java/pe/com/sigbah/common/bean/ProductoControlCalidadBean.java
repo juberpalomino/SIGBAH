@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * @className: ProductoControlCalidadBean.java
  * @description: 
  * @date: 25 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ProductoControlCalidadBean extends BaseOutputBean {
 

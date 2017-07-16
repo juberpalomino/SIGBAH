@@ -10,7 +10,7 @@ import pe.com.sigbah.common.bean.UbigeoBean;
  * @className: GeneralService.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_GENERAL.
  * @date: 20 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public interface GeneralService {
 	
@@ -283,5 +283,11 @@ public interface GeneralService {
 	 * @throws Exception
 	 */
 	public abstract List<ItemBean> listarTipoMovimientoPm() throws Exception;
+	
+	/**
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarProgramacion() throws Exception;
 
 }

@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: ItemBean.java
  * @description: POJO genérico para cargar combos, autocompletar, etc.
  * @date: 18/02/2015 22:26:30
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ItemBean extends BaseOutputBean {
 

@@ -36,7 +36,7 @@ import pe.com.sigbah.mapper.UsuarioMapper;
  * @className: AdministracionDaoImpl.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_ADMINISTRACION.
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Repository
 public class AdministracionDaoImpl extends JdbcDaoSupport implements AdministracionDao, Serializable {

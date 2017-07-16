@@ -22,31 +22,29 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
-import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ItemBean;
-import pe.com.sigbah.common.bean.LoteProductoBean;
-import pe.com.sigbah.common.bean.OrdenSalidaBean;
-import pe.com.sigbah.common.bean.ProductoBean;
-import pe.com.sigbah.common.bean.ProductoSalidaBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
-import pe.com.sigbah.common.bean.UbigeoBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
-import pe.com.sigbah.web.report.gestion_almacenes.ReporteOrdenSalida;
+import pe.com.sigbah.web.report.gestion_almacenes.ReporteProyectoManifiesto;
 
 /**
  * @className: ProyectoManifiestoController.java
  * @description: 
  * @date: 17 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Controller
 @RequestMapping("/gestion-almacenes/proyecto-manifiesto")
@@ -79,21 +77,21 @@ public class ProyectoManifiestoController extends BaseController {
         	        	
         	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimientoPm());
         	
-        	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
+        	ProyectoManifiestoBean proyectoManifiesto = new ProyectoManifiestoBean();
         	
         	ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
     		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
     		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
     		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
     		if (!isEmpty(listaAlmacenActivo)) {
-    			ordenSalida.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-    			ordenSalida.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-    			ordenSalida.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-    			ordenSalida.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-    			ordenSalida.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+    			proyectoManifiesto.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+    			proyectoManifiesto.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+    			proyectoManifiesto.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+    			proyectoManifiesto.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+    			proyectoManifiesto.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
     		}
     		
-    		model.addAttribute("ordenSalida", getParserObject(ordenSalida));
+    		model.addAttribute("proyectoManifiesto", getParserObject(proyectoManifiesto));
         	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
@@ -110,24 +108,15 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarOrdenSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarProyectoManifiesto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		List<OrdenSalidaBean> lista = null;
+	public Object listarProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		List<ProyectoManifiestoBean> lista = null;
 		try {			
-			OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
-			
+			ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(ordenSalidaBean, request.getParameterMap());
-			
-        	// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-			
-        	ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
-        	ordenSalidaBean.setIdDdi(usuarioBean.getIdDdi());
-        	ordenSalidaBean.setCodigoDdi(usuarioBean.getCodigoDdi());
-			
-			lista = logisticaService.listarOrdenSalida(ordenSalidaBean);
+			BeanUtils.populate(proyectoManifiestoBean, request.getParameterMap());			
+			lista = logisticaService.listarProyectoManifiesto(proyectoManifiestoBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -136,15 +125,14 @@ public class ProyectoManifiestoController extends BaseController {
 	}
 	
 	/**
-	 * @param codigo 
-	 * @param anio 
+	 * @param codigo
 	 * @param model
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/mantenimientoOrdenSalida/{codigo}/{anio}", method = RequestMethod.GET)
-    public String mantenimientoControlCalidad(@PathVariable("codigo") Integer codigo, @PathVariable("anio") String anio, Model model) {
+	@RequestMapping(value = "/mantenimientoProyectoManifiesto/{codigo}", method = RequestMethod.GET)
+    public String mantenimientoProyectoManifiesto(@PathVariable("codigo") Integer codigo, Model model) {
         try {
-        	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
+        	ProyectoManifiestoBean proyectoManifiesto = new ProyectoManifiestoBean();
         	
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
@@ -153,17 +141,8 @@ public class ProyectoManifiestoController extends BaseController {
         	
         	if (!isNullInteger(codigo)) {
         		
-        		ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo, anio);
-        		
-        		if (!isNullInteger(ordenSalida.getIdMedioTransporte())) {
-        			ItemBean item = new ItemBean();
-        			item.setIcodigo(usuarioBean.getIdDdi());
-        			item.setIcodigoParam2(ordenSalida.getIdMedioTransporte());
-        			model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(item));
-        		}        		
-        		if (!isNullInteger(ordenSalida.getIdEmpresaTransporte())) {
-        			model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(ordenSalida.getIdEmpresaTransporte())));
-        		}
+        		proyectoManifiesto = logisticaService.obtenerRegistroProyectoManifiesto(codigo);
+
         	} else {
 
         		StringBuilder correlativo = new StringBuilder();
@@ -172,63 +151,48 @@ public class ProyectoManifiestoController extends BaseController {
         		correlativo.append(usuarioBean.getCodigoAlmacen());
         		correlativo.append(Constantes.SEPARADOR);
         		
-        		OrdenSalidaBean parametros = new OrdenSalidaBean();        		
+        		ProyectoManifiestoBean parametros = new ProyectoManifiestoBean();        		
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
-        		parametros.setCodigoAlmacen(usuarioBean.getCodigoAlmacen());
         		parametros.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
-        		OrdenSalidaBean respuestaCorrelativo = logisticaService.obtenerCorrelativoOrdenSalida(parametros);
+        		ProyectoManifiestoBean respuestaCorrelativo = logisticaService.obtenerCorrelativoProyectoManifiesto(parametros);
       
-        		correlativo.append(respuestaCorrelativo.getNroOrdenSalida());
+        		correlativo.append(respuestaCorrelativo.getNroProyectoManifiesto());
         		
-        		ordenSalida.setNroOrdenSalida(correlativo.toString());        		
+        		proyectoManifiesto.setNroProyectoManifiesto(correlativo.toString());        		
         		
         		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
         		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
         		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
         		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
         		if (!isEmpty(listaAlmacenActivo)) {
-        			ordenSalida.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-        			ordenSalida.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-        			ordenSalida.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-        			ordenSalida.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-        			ordenSalida.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+        			proyectoManifiesto.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+        			proyectoManifiesto.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+        			proyectoManifiesto.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+        			proyectoManifiesto.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+        			proyectoManifiesto.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
         		}
         		
-        		ordenSalida.setIdDdi(usuarioBean.getIdDdi());
-        		ordenSalida.setCodigoDdi(usuarioBean.getCodigoDdi());
-        		ordenSalida.setNombreDdi(usuarioBean.getNombreDdi());
+        		proyectoManifiesto.setIdDdi(usuarioBean.getIdDdi());
+        		proyectoManifiesto.setCodigoDdi(usuarioBean.getCodigoDdi());
+        		proyectoManifiesto.setNombreDdi(usuarioBean.getNombreDdi());
         	}
         	
         	if (!Utils.isNullInteger(usuarioBean.getIdDdi())) {
         		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	}
         	
-        	model.addAttribute("ordenSalida", getParserObject(ordenSalida));
+        	model.addAttribute("proyectoManifiesto", getParserObject(proyectoManifiesto));
         	
         	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimientoPm());
 
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	
-        	ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();
-        	proyectoManifiestoBean.setCodigoAnio(anioActual);
-        	proyectoManifiestoBean.setIdDdi(usuarioBean.getIdDdi());
-        	proyectoManifiestoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
-        	model.addAttribute("lista_proyecto_manifiesto", logisticaService.listarManifiesto(proyectoManifiestoBean));
-        	
-        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
-        	
-        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean()));
-        	
-        	model.addAttribute("lista_medio_transporte", generalService.listarMedioTransporte(new ItemBean()));
-        	
-        	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
-        	
-        	model.addAttribute("lista_departamento", generalService.listarDepartamentos(new UbigeoBean()));
-        	
-        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
-        	
+        	model.addAttribute("lista_programacion", generalService.listarProgramacion());
+
+        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean()));
+   	
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
      
         	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.THREE_INT)));
@@ -247,225 +211,33 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarAlmacenDestino", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarProyectoManifiesto", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarAlmacenDestino(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
+	public Object grabarProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		ProyectoManifiestoBean proyectoManifiesto = null;
 		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			lista = generalService.listarAlmacen(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarResponsableRecepcion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarResponsableRecepcion(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
-		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			lista = generalService.listarPersonal(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarAlmacenExtRegion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarAlmacenExtRegion(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
-		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			lista = generalService.listarAlmacenExternoRegion(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarPersonalExtRegion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarPersonalExtRegion(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
-		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			lista = generalService.listarPersonalExternoRegion(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarProvincia", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarProvincia(HttpServletRequest request, HttpServletResponse response) {
-		List<UbigeoBean> lista = null;
-		try {			
-			UbigeoBean ubigeoBean = new UbigeoBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(ubigeoBean, request.getParameterMap());
-			lista = generalService.listarProvincia(ubigeoBean);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarDistrito", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarDistrito(HttpServletRequest request, HttpServletResponse response) {
-		List<UbigeoBean> lista = null;
-		try {			
-			UbigeoBean ubigeoBean = new UbigeoBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(ubigeoBean, request.getParameterMap());
-			lista = generalService.listarDistrito(ubigeoBean);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarAlmacenExtLocal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarAlmacenExtLocal(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
-		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			lista = generalService.listarAlmacenExternoLocal(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarPersonalExtLocal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarPersonalExtLocal(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
-		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			lista = generalService.listarPersonalExternoLocal(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/listarEmpresaTransporte", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarEmpresaTransporte(HttpServletRequest request, HttpServletResponse response) {
-		List<ItemBean> lista = null;
-		try {			
-			ItemBean item = new ItemBean();			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());
-			// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-        	item.setIcodigo(usuarioBean.getIdDdi());
-			lista = generalService.listarEmpresaTransporte(item);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/grabarOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object grabarOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		OrdenSalidaBean ordenSalida = null;
-		try {			
-			OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
+			ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();
 			
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);
 			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
 			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(ordenSalidaBean, request.getParameterMap());
+			beanUtilsBean.populate(proyectoManifiestoBean, request.getParameterMap());
 
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-			ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
-        	ordenSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			proyectoManifiestoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+        	proyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-        	ordenSalida = logisticaService.grabarOrdenSalida(ordenSalidaBean);
+        	proyectoManifiesto = logisticaService.grabarProyectoManifiesto(proyectoManifiestoBean);
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return ordenSalida;
+		return proyectoManifiesto;
 	}
 	
 	/**
@@ -473,24 +245,41 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarLoteProducto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/verificarProductosProgramacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarLoteProducto(HttpServletRequest request, HttpServletResponse response) {
-		List<LoteProductoBean> lista = null;
+	public Object verificarProductosProgramacion(HttpServletRequest request, HttpServletResponse response) {
+		Integer indicador = null;
 		try {			
-			LoteProductoBean lote = new LoteProductoBean();			
+			indicador = logisticaService.verificarProductosProgramacion(getInteger(request.getParameter("idProyecto")));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return indicador;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/procesarProyectoManifiesto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object procesarProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		String indicador = null;
+		try {			
+			ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(lote, request.getParameterMap());
+			BeanUtils.populate(proyectoManifiestoBean, request.getParameterMap());
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-        	lote.setIdDdi(usuarioBean.getIdDdi());
-        	lote.setIdAlmacen(usuarioBean.getIdAlmacen());
-			lista = logisticaService.listarLoteProductos(lote);
+        	proyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
+			indicador = logisticaService.procesarManifiestoProducto(proyectoManifiestoBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return lista;
+		return indicador;
 	}
 	
 	/**
@@ -498,15 +287,15 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarProductoOrdenSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarProductoProyectoManifiesto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarProductoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoSalidaBean> lista = null;
+	public Object listarProductoProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoProyectoManifiestoBean> lista = null;
 		try {			
-			ProductoSalidaBean producto = new ProductoSalidaBean();			
+			ProductoProyectoManifiestoBean producto = new ProductoProyectoManifiestoBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(producto, request.getParameterMap());			
-			lista = logisticaService.listarProductoSalida(producto);
+			lista = logisticaService.listarProductoProyectoManifiesto(producto);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -519,12 +308,12 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarProductoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarProductoProyectoManifiesto", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarProductoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		ProductoSalidaBean producto = null;
+	public Object grabarProductoProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		ProductoProyectoManifiestoBean producto = null;
 		try {			
-			ProductoSalidaBean productoSalidaBean = new ProductoSalidaBean();
+			ProductoProyectoManifiestoBean productoProyectoManifiestoBean = new ProductoProyectoManifiestoBean();
 
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);			
@@ -534,14 +323,14 @@ public class ProyectoManifiestoController extends BaseController {
 			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
 			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(productoSalidaBean, request.getParameterMap());
+			beanUtilsBean.populate(productoProyectoManifiestoBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	productoSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	productoProyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-			producto = logisticaService.grabarProductoSalida(productoSalidaBean);
+			producto = logisticaService.grabarProductoProyectoManifiesto(productoProyectoManifiestoBean);
 			
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -557,21 +346,21 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarProductoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarProductoProyectoManifiesto", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object eliminarProductoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		ProductoSalidaBean producto = null;
+	public Object eliminarProductoProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		ProductoProyectoManifiestoBean producto = null;
 		try {			
-			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleSalida").split(Constantes.UNDERLINE);
-			for (String codigo : arrIdDetalleControlCalidad) {				
-				ProductoSalidaBean productoControlCalidadBean = new ProductoSalidaBean(getInteger(codigo));
+			String[] arrIdDetalleProyectoManifiesto = request.getParameter("arrIdDetalleProyectoManifiesto").split(Constantes.UNDERLINE);
+			for (String codigo : arrIdDetalleProyectoManifiesto) {				
+				ProductoProyectoManifiestoBean productoControlCalidadBean = new ProductoProyectoManifiestoBean(getInteger(codigo));
 
 				// Retorno los datos de session
 	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 	        	
 	        	productoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-				producto = logisticaService.eliminarProductoSalida(productoControlCalidadBean);				
+				producto = logisticaService.eliminarProductoProyectoManifiesto(productoControlCalidadBean);				
 			}
 
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -588,16 +377,68 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarDocumentoOrdenSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarProyectoManifiestoVehiculo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarDocumentoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		List<DocumentoSalidaBean> lista = null;
+	public Object listarProyectoManifiestoVehiculo(HttpServletRequest request, HttpServletResponse response) {
+		List<ProyectoManifiestoVehiculoBean> lista = null;
 		try {			
-			DocumentoSalidaBean documento = new DocumentoSalidaBean();			
+			ProyectoManifiestoVehiculoBean vehiculo = new ProyectoManifiestoVehiculoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(vehiculo, request.getParameterMap());			
+			lista = logisticaService.listarProyectoManifiestoVehiculo(vehiculo);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param arrTipoCamion 
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/procesarManifiestoVehiculo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object procesarManifiestoVehiculo(@RequestParam(value="arrTipoCamion") String[] arrTipoCamion, HttpServletResponse response) {
+		String indicador = null;
+		try {
+			
+			
+			for (String camion : arrTipoCamion) {
+				System.out.println(camion);
+			}
+			
+			
+//			ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean = new ProyectoManifiestoVehiculoBean();			
+//			// Copia los parametros del cliente al objeto
+//			BeanUtils.populate(proyectoManifiestoVehiculoBean, request.getParameterMap());
+//			// Retorno los datos de session
+//        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+//        	proyectoManifiestoVehiculoBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
+//			indicador = logisticaService.procesarManifiestoVehiculo(proyectoManifiestoVehiculoBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return indicador;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarDocumentoProyectoManifiesto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarDocumentoProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		List<DocumentoProyectoManifiestoBean> lista = null;
+		try {			
+			DocumentoProyectoManifiestoBean documento = new DocumentoProyectoManifiestoBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documento, request.getParameterMap());
 			documento.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
-			lista = logisticaService.listarDocumentoSalida(documento);
+			lista = logisticaService.listarDocumentoProyectoManifiesto(documento);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -610,22 +451,22 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarDocumentoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarDocumentoProyectoManifiesto", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarDocumentoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoSalidaBean documento = null;
+	public Object grabarDocumentoProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoProyectoManifiestoBean documento = null;
 		try {			
-			DocumentoSalidaBean documentoSalidaBean = new DocumentoSalidaBean();
+			DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean = new DocumentoProyectoManifiestoBean();
 			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(documentoSalidaBean, request.getParameterMap());
+			BeanUtils.populate(documentoProyectoManifiestoBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	documentoSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	documentoProyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-        	documento = logisticaService.grabarDocumentoSalida(documentoSalidaBean);
+        	documento = logisticaService.grabarDocumentoProyectoManifiesto(documentoProyectoManifiestoBean);
 			
         	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -641,22 +482,22 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarDocumentoOrdenSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarDocumentoProyectoManifiesto", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object eliminarDocumentoOrdenSalida(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoSalidaBean documento = null;
+	public Object eliminarDocumentoProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoProyectoManifiestoBean documento = null;
 		try {			
-			String[] arrIdDocumentoSalida = request.getParameter("arrIdDocumentoSalida").split(Constantes.UNDERLINE);
+			String[] arrIdDocumentoProyectoManifiesto = request.getParameter("arrIdDocumentoProyectoManifiesto").split(Constantes.UNDERLINE);
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-			for (String codigo : arrIdDocumentoSalida) {				
-				DocumentoSalidaBean documentoSalidaBean = new DocumentoSalidaBean(getInteger(codigo));
+			for (String codigo : arrIdDocumentoProyectoManifiesto) {				
+				DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean = new DocumentoProyectoManifiestoBean(getInteger(codigo));
 
-	        	documentoSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
+	        	documentoProyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-	        	documento = logisticaService.eliminarDocumentoSalida(documentoSalidaBean);				
+	        	documento = logisticaService.eliminarDocumentoProyectoManifiesto(documentoProyectoManifiestoBean);				
 			}
 
 			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -684,26 +525,26 @@ public class ProyectoManifiestoController extends BaseController {
 								@PathVariable("idMovimiento") Integer idMovimiento, 
 								HttpServletResponse response) {
 	    try {
-	    	OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
-	    	ordenSalidaBean.setCodigoAnio(verificaParametro(codigoAnio));
-	    	ordenSalidaBean.setCodigoMes(verificaParametro(codigoMes));
-	    	ordenSalidaBean.setIdAlmacen(idAlmacen);
-	    	ordenSalidaBean.setIdMovimiento(idMovimiento);
+	    	ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();
+	    	proyectoManifiestoBean.setCodigoAnio(verificaParametro(codigoAnio));
+	    	proyectoManifiestoBean.setCodigoMes(verificaParametro(codigoMes));
+	    	proyectoManifiestoBean.setIdAlmacen(idAlmacen);
+	    	proyectoManifiestoBean.setIdMovimiento(idMovimiento);
 	    	
 	    	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 			
-        	ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
-        	ordenSalidaBean.setIdDdi(usuarioBean.getIdDdi());
-        	ordenSalidaBean.setCodigoDdi(usuarioBean.getCodigoDdi());	    	
+        	proyectoManifiestoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+        	proyectoManifiestoBean.setIdDdi(usuarioBean.getIdDdi());
+        	proyectoManifiestoBean.setCodigoDdi(usuarioBean.getCodigoDdi());	    	
 	    	
-			List<OrdenSalidaBean> lista = logisticaService.listarOrdenSalida(ordenSalidaBean);
+			List<ProyectoManifiestoBean> lista = logisticaService.listarProyectoManifiesto(proyectoManifiestoBean);
 	    	
-			String file_name = "OrdenSalida";
+			String file_name = "ProyectoManifiesto";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
 			
-			ReporteOrdenSalida reporte = new ReporteOrdenSalida();
-		    HSSFWorkbook wb = reporte.generaReporteExcelOrdenSalida(lista);
+			ReporteProyectoManifiesto reporte = new ReporteProyectoManifiesto();
+		    HSSFWorkbook wb = reporte.generaReporteExcelProyectoManifiesto(lista);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_XLS);
@@ -728,25 +569,24 @@ public class ProyectoManifiestoController extends BaseController {
 	}
 	
 	/**
-	 * @param codigo 
-	 * @param anio 
+	 * @param codigo
 	 * @param request 
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarPdf/{codigo}/{anio}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarPdf/{codigo}", method = RequestMethod.GET)
 	@ResponseBody
-	public String exportarPdf(@PathVariable("codigo") Integer codigo, @PathVariable("anio") String anio, HttpServletRequest request, HttpServletResponse response) {
+	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
 	    	
-	    	OrdenSalidaBean ordenSalida = logisticaService.obtenerRegistroOrdenSalida(codigo, anio);
-	    	ProductoSalidaBean producto = new ProductoSalidaBean();
-	    	producto.setIdSalida(codigo);
-	    	List<ProductoSalidaBean> listaProducto = logisticaService.listarProductoSalida(producto);
+	    	ProyectoManifiestoBean proyectoManifiesto = logisticaService.obtenerRegistroProyectoManifiesto(codigo);
+	    	ProductoProyectoManifiestoBean producto = new ProductoProyectoManifiestoBean();
+	    	producto.setIdProyectoManifiesto(codigo);
+	    	List<ProductoProyectoManifiestoBean> listaProducto = logisticaService.listarProductoProyectoManifiesto(producto);
 	    	
-	    	DocumentoSalidaBean documento = new DocumentoSalidaBean();
-	    	documento.setIdSalida(codigo);
-	    	List<DocumentoSalidaBean> listaDocumento = logisticaService.listarDocumentoSalida(documento);	    	
+	    	DocumentoProyectoManifiestoBean documento = new DocumentoProyectoManifiestoBean();
+	    	documento.setIdProyectoManifiesto(codigo);
+	    	List<DocumentoProyectoManifiestoBean> listaDocumento = logisticaService.listarDocumentoProyectoManifiesto(documento);	    	
 
 	    	StringBuilder file_path = new StringBuilder();
 	    	file_path.append(getPath(request));
@@ -756,11 +596,11 @@ public class ProyectoManifiestoController extends BaseController {
 	    	file_path.append(Calendar.getInstance().getTime().getTime());
 	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
 	    	
-	    	String file_name = "Orden_Salida";
+	    	String file_name = "Proyecto_Manifiesto";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
-			ReporteOrdenSalida reporte = new ReporteOrdenSalida();
-			reporte.generaPDFReporteSalidas(file_path.toString(), ordenSalida, listaProducto, listaDocumento);
+			ReporteProyectoManifiesto reporte = new ReporteProyectoManifiesto();
+			reporte.generaPDFReporteProyectoManifiesto(file_path.toString(), proyectoManifiesto, listaProducto, listaDocumento);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);

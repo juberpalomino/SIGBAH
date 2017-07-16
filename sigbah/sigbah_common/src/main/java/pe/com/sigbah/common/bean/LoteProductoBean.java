@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: LoteProductoBean.java
  * @description: 
  * @date: 5 de jul. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class LoteProductoBean extends BaseOutputBean {
 

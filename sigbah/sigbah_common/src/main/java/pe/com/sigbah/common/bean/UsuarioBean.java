@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @className: UsuarioBean.java
  * @description: 
  * @date: 17 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class UsuarioBean implements Serializable {
 

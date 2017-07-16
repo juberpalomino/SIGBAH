@@ -6,7 +6,7 @@ import java.io.Serializable;
  * @className: BaseException1.java
  * @description: 
  * @date: 2 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class BaseOutputBean implements Serializable {
 

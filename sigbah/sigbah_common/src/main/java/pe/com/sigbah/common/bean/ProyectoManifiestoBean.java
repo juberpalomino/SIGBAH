@@ -4,7 +4,7 @@ package pe.com.sigbah.common.bean;
  * @className: ProyectoManifiestoBean.java
  * @description: Clase ProyectoManifiestoBean.
  * @date: 18/02/2015 22:26:30
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class ProyectoManifiestoBean extends BaseOutputBean {
 
@@ -29,6 +29,12 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	private String nombreMovimiento;
 	private Integer idEstado;
 	private String nombreEstado;
+	private String observacion;
+	private String tipoOrigen;
+	private String flagProgramacion;
+	private Integer idAlmacenDestino;
+	private String nombreAlmacenDestino;
+	private String codigoProyectoManifiesto;
 
 	/**
 	 * 
@@ -315,6 +321,90 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setIdProgramacion(Integer idProgramacion) {
 		this.idProgramacion = idProgramacion;
+	}
+
+	/**
+	 * @return the observacion
+	 */
+	public String getObservacion() {
+		return observacion;
+	}
+
+	/**
+	 * @param observacion the observacion to set
+	 */
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+
+	/**
+	 * @return the tipoOrigen
+	 */
+	public String getTipoOrigen() {
+		return tipoOrigen;
+	}
+
+	/**
+	 * @param tipoOrigen the tipoOrigen to set
+	 */
+	public void setTipoOrigen(String tipoOrigen) {
+		this.tipoOrigen = tipoOrigen;
+	}
+
+	/**
+	 * @return the flagProgramacion
+	 */
+	public String getFlagProgramacion() {
+		return flagProgramacion;
+	}
+
+	/**
+	 * @param flagProgramacion the flagProgramacion to set
+	 */
+	public void setFlagProgramacion(String flagProgramacion) {
+		this.flagProgramacion = flagProgramacion;
+	}
+
+	/**
+	 * @return the idAlmacenDestino
+	 */
+	public Integer getIdAlmacenDestino() {
+		return idAlmacenDestino;
+	}
+
+	/**
+	 * @param idAlmacenDestino the idAlmacenDestino to set
+	 */
+	public void setIdAlmacenDestino(Integer idAlmacenDestino) {
+		this.idAlmacenDestino = idAlmacenDestino;
+	}
+
+	/**
+	 * @return the codigoProyectoManifiesto
+	 */
+	public String getCodigoProyectoManifiesto() {
+		return codigoProyectoManifiesto;
+	}
+
+	/**
+	 * @param codigoProyectoManifiesto the codigoProyectoManifiesto to set
+	 */
+	public void setCodigoProyectoManifiesto(String codigoProyectoManifiesto) {
+		this.codigoProyectoManifiesto = codigoProyectoManifiesto;
+	}
+
+	/**
+	 * @return the nombreAlmacenDestino
+	 */
+	public String getNombreAlmacenDestino() {
+		return nombreAlmacenDestino;
+	}
+
+	/**
+	 * @param nombreAlmacenDestino the nombreAlmacenDestino to set
+	 */
+	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
+		this.nombreAlmacenDestino = nombreAlmacenDestino;
 	}
 
 }

@@ -11,7 +11,7 @@ import pe.com.sigbah.common.bean.DocumentoIngresoBean;
  * @className: DocumentoIngresoMapper.java
  * @description: 
  * @date: 21 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 public class DocumentoIngresoMapper implements RowMapper<DocumentoIngresoBean> {
 

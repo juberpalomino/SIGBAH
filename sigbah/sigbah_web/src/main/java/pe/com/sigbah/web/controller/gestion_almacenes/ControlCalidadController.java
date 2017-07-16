@@ -46,7 +46,7 @@ import pe.com.sigbah.web.report.gestion_almacenes.ReporteControlCalidad;
  * @className: ControlCalidadController.java
  * @description: 
  * @date: 17 de jun. de 2017
- * @author: SUMERIO.
+ * @author: Junior Huaman Flores.
  */
 @Controller
 @RequestMapping("/gestion-almacenes/control-calidad")
