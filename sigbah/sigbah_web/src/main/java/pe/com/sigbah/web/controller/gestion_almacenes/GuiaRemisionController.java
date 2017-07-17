@@ -149,9 +149,47 @@ public class GuiaRemisionController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarGuiaRemision", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/anularGuiaRemision", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarGuiaRemision(HttpServletRequest request, HttpServletResponse response) {
+	public Object anularGuiaRemision(HttpServletRequest request, HttpServletResponse response) {
+		GuiaRemisionBean guiaRemision = null;
+		try {			
+			GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();
+			
+			// Convierte los vacios en nulos en los enteros
+			IntegerConverter con_integer = new IntegerConverter(null);
+			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
+			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			// Copia los parametros del cliente al objeto
+			beanUtilsBean.populate(guiaRemisionBean, request.getParameterMap());
+
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	guiaRemisionBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	guiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+			
+        	logisticaService.anularGuiaRemision(guiaRemisionBean);
+        	
+        	guiaRemision = logisticaService.insertarGuiaRemision(guiaRemisionBean);
+        	
+        	guiaRemision = logisticaService.obtenerRegistroGuiaRemision(guiaRemision.getIdGuiaRemision());
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return guiaRemision;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/actualizarGuiaRemision", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object actualizarGuiaRemision(HttpServletRequest request, HttpServletResponse response) {
 		GuiaRemisionBean guiaRemision = null;
 		try {			
 			GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();
@@ -169,7 +207,7 @@ public class GuiaRemisionController extends BaseController {
 			guiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
         	guiaRemisionBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-        	guiaRemision = logisticaService.grabarGuiaRemision(guiaRemisionBean);
+        	guiaRemision = logisticaService.actualizarGuiaRemision(guiaRemisionBean);
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

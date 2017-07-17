@@ -22,27 +22,22 @@ public class RegistroGuiaRemisionMapper implements RowMapper<GuiaRemisionBean> {
 	public GuiaRemisionBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		GuiaRemisionBean guiaRemision = new GuiaRemisionBean();
 		guiaRemision.setIdGuiaRemision(rs.getInt("IDE_GUIA_REMISION"));
+		guiaRemision.setNroOrdenSalida(rs.getString("NRO_ORDEN_SALIDA"));
 		guiaRemision.setNroGuiaRemision(rs.getString("NRO_GUIA_REMISION"));
-		guiaRemision.setCodigoAnio(rs.getString("COD_ANIO"));
-		guiaRemision.setCodigoMes(rs.getString("COD_MES"));
-		guiaRemision.setIdDdi(rs.getInt("IDE_DDI"));
-		guiaRemision.setCodigoDdi(rs.getString("COD_DDI"));		
+		guiaRemision.setNroManifiestoCarga(rs.getString("NRO_MANIFIESTO"));
+		guiaRemision.setFechaEmision(rs.getString("FEC_EMISION"));
+		guiaRemision.setNombreMovimiento(rs.getString("TIP_MOVIMIENTO"));
+		guiaRemision.setIdDdi(rs.getInt("IDE_DDI"));		
 		guiaRemision.setNombreDdi(rs.getString("NOMBRE_DDI"));
-		guiaRemision.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
+		guiaRemision.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
 		guiaRemision.setCodigoAlmacen(rs.getString("COD_ALMACEN"));		
 		guiaRemision.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));		
-		guiaRemision.setTipoOrigen(rs.getString("TIPO_ORIGEN"));
-		guiaRemision.setFechaEmision(rs.getString("FECHA_EMISION"));
 		guiaRemision.setIdEstado(rs.getInt("FK_IDE_ESTADO"));
 		guiaRemision.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
-		guiaRemision.setIdMovimiento(rs.getInt("FK_IDE_TIP_MOVIMIENTO"));
-		guiaRemision.setNombreMovimiento(rs.getString("NOMBRE_MOVIMIENTO"));
-//		guiaRemision.setIdAlmacenDestino(rs.getInt("FK_IDE_ALMACEN_DEST"));
-//		guiaRemision.setNombreAlmacenDestino(rs.getString("NOMBRE_ALMACEN_DESTINO"));
-//		guiaRemision.setObservacion(rs.getString("OBSERVACION"));
-//		guiaRemision.setIdProgramacion(rs.getInt("FK_IDE_PROGRAMACION"));	
-//		guiaRemision.setNroProgramacion(rs.getString("NRO_PROGRAMACION"));
-//		guiaRemision.setFlagProgramacion(rs.getString("FLG_PROGRAMACION"));
+		guiaRemision.setObservacionGuiaRemision(rs.getString("OBSERVACION_GUIA"));
+		guiaRemision.setObservacionManifiestoCarga(rs.getString("OBSERVACION_MANIFIESTO"));
+		guiaRemision.setNroActaEntregaRecepcion(rs.getString("NRO_ACTA"));
+		guiaRemision.setObservacionActaEntregaRecepcion(rs.getString("OBSERVACION_ACTA"));
 		return guiaRemision;
 	}
 

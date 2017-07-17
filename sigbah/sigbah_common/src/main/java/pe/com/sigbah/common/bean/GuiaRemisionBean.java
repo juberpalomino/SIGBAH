@@ -10,6 +10,7 @@ public class GuiaRemisionBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	private Integer idGuiaRemision;
+	private Integer idSalida;
 	private String codigoAnio;
 	private String codigoMes;
 	private String nombreMes;
@@ -406,5 +407,19 @@ public class GuiaRemisionBean extends BaseOutputBean {
 	 */
 	public void setIdManifiestoCarga(Integer idManifiestoCarga) {
 		this.idManifiestoCarga = idManifiestoCarga;
+	}
+
+	/**
+	 * @return the idSalida
+	 */
+	public Integer getIdSalida() {
+		return idSalida;
+	}
+
+	/**
+	 * @param idSalida the idSalida to set
+	 */
+	public void setIdSalida(Integer idSalida) {
+		this.idSalida = idSalida;
 	}
 }

@@ -2235,7 +2235,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	@Override
 	public ProyectoManifiestoBean grabarProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
 		LOGGER.info("[grabarProyectoManifiesto] Inicio ");
-		ProyectoManifiestoBean registroOrdenSalida = new ProyectoManifiestoBean();
+		ProyectoManifiestoBean registroProyectoManifiesto = new ProyectoManifiestoBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
 			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);
@@ -2296,18 +2296,18 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
     			throw new Exception();
     		}
 		
-			registroOrdenSalida.setIdProyectoManifiesto(((BigDecimal) out.get("po_IDE_PROYECTO_MANIF")).intValue());
-			registroOrdenSalida.setNroProyectoManifiesto((String) out.get("po_NRO_PROYECTO"));
-			registroOrdenSalida.setCodigoProyectoManifiesto((String) out.get("po_COD_PROYECTO"));
-			registroOrdenSalida.setCodigoRespuesta(codigoRespuesta);
-			registroOrdenSalida.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+			registroProyectoManifiesto.setIdProyectoManifiesto(((BigDecimal) out.get("po_IDE_PROYECTO_MANIF")).intValue());
+			registroProyectoManifiesto.setNroProyectoManifiesto((String) out.get("po_NRO_PROYECTO"));
+			registroProyectoManifiesto.setCodigoProyectoManifiesto((String) out.get("po_COD_PROYECTO"));
+			registroProyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
+			registroProyectoManifiesto.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
 	
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
 		LOGGER.info("[grabarProyectoManifiesto] Fin ");
-		return registroOrdenSalida;
+		return registroProyectoManifiesto;
 	}
 
 	/* (non-Javadoc)
@@ -2944,12 +2944,174 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#grabarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 * @see pe.com.sigbah.dao.LogisticaDao#insertarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
 	 */
 	@Override
-	public GuiaRemisionBean grabarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public GuiaRemisionBean insertarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		LOGGER.info("[insertarGuiaRemision] Inicio ");
+		GuiaRemisionBean registroGuiaRemision = new GuiaRemisionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_TIPO_ORIGEN", guiaRemisionBean.getTipoOrigen(), Types.VARCHAR);
+			input_objParametros.addValue("PI_cod_anio", guiaRemisionBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_cod_mes", guiaRemisionBean.getCodigoMes(), Types.VARCHAR);
+			input_objParametros.addValue("PI_fk_ide_salida", guiaRemisionBean.getIdSalida(), Types.NUMERIC);
+			input_objParametros.addValue("PI_fec_emision", DateUtil.obtenerFechaHoraParseada(guiaRemisionBean.getFechaEmision()), Types.DATE);
+			input_objParametros.addValue("PI_cod_ddi", guiaRemisionBean.getCodigoDdi(), Types.VARCHAR);			
+			input_objParametros.addValue("PI_cod_almacen", guiaRemisionBean.getCodigoAlmacen(), Types.VARCHAR);
+			input_objParametros.addValue("PI_USERNAME", guiaRemisionBean.getUsuarioRegistro(), Types.VARCHAR);		
+			input_objParametros.addValue("PI_fk_ide_estado", guiaRemisionBean.getIdEstado(), Types.NUMERIC);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_GUIA_REMISION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));			
+			output_objParametros.put("PI_cod_anio", new SqlParameter("PI_cod_anio", Types.VARCHAR));
+			output_objParametros.put("PI_cod_mes", new SqlParameter("PI_cod_mes", Types.VARCHAR));
+			output_objParametros.put("PI_fk_ide_salida", new SqlParameter("PI_fk_ide_salida", Types.NUMERIC));
+			output_objParametros.put("PI_fec_emision", new SqlParameter("PI_fec_emision", Types.DATE));
+			output_objParametros.put("PI_cod_ddi", new SqlParameter("PI_cod_ddi", Types.VARCHAR));
+			output_objParametros.put("PI_cod_almacen", new SqlParameter("PI_cod_almacen", Types.VARCHAR));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));			
+			output_objParametros.put("PI_fk_ide_estado", new SqlParameter("PI_fk_ide_estado", Types.NUMERIC));
+			output_objParametros.put("PO_ide_guia_remision", new SqlOutParameter("PO_ide_guia_remision", Types.NUMERIC));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[insertarGuiaRemision] Ocurrio un error en la operacion del USP_INS_GUIA_REMISION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			registroGuiaRemision.setIdGuiaRemision(((BigDecimal) out.get("PO_ide_guia_remision")).intValue());
+			registroGuiaRemision.setCodigoRespuesta(codigoRespuesta);
+			registroGuiaRemision.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[insertarGuiaRemision] Fin ");
+		return registroGuiaRemision;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#anularGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean anularGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		LOGGER.info("[anularGuiaRemision] Inicio ");
+		GuiaRemisionBean registroGuiaRemision = new GuiaRemisionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", guiaRemisionBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_FK_IDE_SALIDA", guiaRemisionBean.getIdSalida(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", guiaRemisionBean.getTipoOrigen(), Types.VARCHAR);
+			input_objParametros.addValue("PI_USERNAME", guiaRemisionBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_ANULA_GUIA_REMISION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_FK_IDE_SALIDA", new SqlParameter("PI_FK_IDE_SALIDA", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[anularGuiaRemision] Ocurrio un error en la operacion del USP_ANULA_GUIA_REMISION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroGuiaRemision.setCodigoRespuesta(codigoRespuesta);
+			registroGuiaRemision.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[anularGuiaRemision] Fin ");
+		return registroGuiaRemision;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#actualizarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		LOGGER.info("[actualizarGuiaRemision] Inicio ");
+		GuiaRemisionBean registroGuiaRemision = new GuiaRemisionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_fk_ide_salida", guiaRemisionBean.getIdSalida(), Types.NUMERIC);
+			input_objParametros.addValue("PI_ide_guia_remision", guiaRemisionBean.getIdGuiaRemision(), Types.NUMERIC);
+			input_objParametros.addValue("PI_observacion_guia", guiaRemisionBean.getObservacionGuiaRemision(), Types.VARCHAR);
+			input_objParametros.addValue("PI_observacion_acta", guiaRemisionBean.getObservacionActaEntregaRecepcion(), Types.VARCHAR);			
+			input_objParametros.addValue("PI_observacion_manifiesto", guiaRemisionBean.getObservacionManifiestoCarga(), Types.VARCHAR);
+			input_objParametros.addValue("PI_fk_ide_estado", guiaRemisionBean.getIdEstado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", guiaRemisionBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_UPD_GUIA_REMISION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_fk_ide_salida", new SqlParameter("PI_fk_ide_salida", Types.NUMERIC));
+			output_objParametros.put("PI_ide_guia_remision", new SqlParameter("PI_ide_guia_remision", Types.NUMERIC));
+			output_objParametros.put("PI_observacion_guia", new SqlParameter("PI_observacion_guia", Types.VARCHAR));
+			output_objParametros.put("PI_observacion_acta", new SqlParameter("PI_observacion_acta", Types.VARCHAR));
+			output_objParametros.put("PI_observacion_manifiesto", new SqlParameter("PI_observacion_manifiesto", Types.VARCHAR));
+			output_objParametros.put("PI_fk_ide_estado", new SqlParameter("PI_fk_ide_estado", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));			
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[actualizarGuiaRemision] Ocurrio un error en la operacion del USP_UPD_GUIA_REMISION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			registroGuiaRemision.setCodigoRespuesta(codigoRespuesta);
+			registroGuiaRemision.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[actualizarGuiaRemision] Fin ");
+		return registroGuiaRemision;
 	}
 
 }

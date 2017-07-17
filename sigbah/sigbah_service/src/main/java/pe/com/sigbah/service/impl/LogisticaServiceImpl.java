@@ -465,11 +465,27 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#grabarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 * @see pe.com.sigbah.service.LogisticaService#insertarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
 	 */
 	@Override
-	public GuiaRemisionBean grabarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
-		return logisticaDao.grabarGuiaRemision(guiaRemisionBean);
+	public GuiaRemisionBean insertarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.insertarGuiaRemision(guiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#anularGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean anularGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.anularGuiaRemision(guiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#actualizarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.actualizarGuiaRemision(guiaRemisionBean);
 	}
 
 }
