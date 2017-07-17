@@ -14,16 +14,16 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
-import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.util.DateUtil;
 
 /**
- * @className: ReporteProyectoManifiesto.java
+ * @className: ReporteGuiaRemision.java
  * @description: 
  * @date: 20 de jul. de 2017
  * @author: Junior Huaman Flores.
  */
-public class ReporteProyectoManifiesto implements Serializable {
+public class ReporteGuiaRemision implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
@@ -48,7 +48,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
-	public HSSFWorkbook generaReporteExcelProyectoManifiesto(List<ProyectoManifiestoBean> lista) throws Exception {
+	public HSSFWorkbook generaReporteExcelGuiaRemision(List<GuiaRemisionBean> lista) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
 	        HSSFSheet sheet = wb.createSheet("REGISTRO DE PROYECTO MANIFIESTO");
@@ -57,10 +57,11 @@ public class ReporteProyectoManifiesto implements Serializable {
 	        sheet.setColumnWidth(2, 2000);
 	        sheet.setColumnWidth(3, 5000);
 	        sheet.setColumnWidth(4, 5000);
-	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(5, 6000);
 	        sheet.setColumnWidth(6, 5000);
 			sheet.setColumnWidth(7, 6000);
 			sheet.setColumnWidth(8, 6000);
+			sheet.setColumnWidth(9, 6000);
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
@@ -92,23 +93,26 @@ public class ReporteProyectoManifiesto implements Serializable {
 	        row1.createCell(3).setCellValue("Mes");
 	        row1.getCell(3).setCellStyle(style_header);
 	        
-	        row1.createCell(4).setCellValue("Almacén");
+	        row1.createCell(4).setCellValue("Fecha");
 	        row1.getCell(4).setCellStyle(style_header);
 	        
-	        row1.createCell(5).setCellValue("N° Proyecto de Manifiesto");
+	        row1.createCell(5).setCellValue("N° Orden de Salida");
 	        row1.getCell(5).setCellStyle(style_header);
 	        
-	        row1.createCell(6).setCellValue("Fecha");
+	        row1.createCell(6).setCellValue("N° Guia de Remisión");
 	        row1.getCell(6).setCellStyle(style_header);
 	        
-	        row1.createCell(7).setCellValue("N° Programación");
+	        row1.createCell(7).setCellValue("N° Manifiesto de Carga");
 	        row1.getCell(7).setCellStyle(style_header);
 	        
-	        row1.createCell(8).setCellValue("Tipo de Movimiento");
+	        row1.createCell(8).setCellValue("N° Acta de Entrega Recepción");
 	        row1.getCell(8).setCellStyle(style_header);
-	        
-	        row1.createCell(9).setCellValue("Estado");
+
+	        row1.createCell(9).setCellValue("Tipo de Movimiento");
 	        row1.getCell(9).setCellStyle(style_header);
+	        
+	        row1.createCell(10).setCellValue("Estado");
+	        row1.getCell(10).setCellStyle(style_header);
 	       
 	        int row = 1;
 
@@ -120,7 +124,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 	        style_cell.setBorderRight((short) 1);
 	        style_cell.setBorderTop((short) 1);
 	        
-	        for (ProyectoManifiestoBean ingreso : lista) {
+	        for (GuiaRemisionBean ingreso : lista) {
 	        	
 	        	HSSFRow rows  = sheet.createRow((short) row + 1);
 	        	
@@ -133,23 +137,26 @@ public class ReporteProyectoManifiesto implements Serializable {
 		        rows.createCell(3).setCellValue(ingreso.getNombreMes());
 		        rows.getCell(3).setCellStyle(style_cell);
 		        
-		        rows.createCell(4).setCellValue(ingreso.getNombreAlmacen());
+		        rows.createCell(4).setCellValue(ingreso.getFechaEmision());
 		        rows.getCell(4).setCellStyle(style_cell);
 		        
-		        rows.createCell(5).setCellValue(ingreso.getNroProyectoManifiesto());
+		        rows.createCell(5).setCellValue(ingreso.getNroGuiaRemision());
 		        rows.getCell(5).setCellStyle(style_cell);
 		        
-		        rows.createCell(6).setCellValue(ingreso.getFechaEmision());
+		        rows.createCell(6).setCellValue(ingreso.getNroGuiaRemision());
 		        rows.getCell(6).setCellStyle(style_cell);
 		        
-		        rows.createCell(7).setCellValue(ingreso.getNroProgramacion());
+		        rows.createCell(7).setCellValue(ingreso.getNroManifiestoCarga());
 		        rows.getCell(7).setCellStyle(style_cell);
 		        
-		        rows.createCell(8).setCellValue(ingreso.getNombreMovimiento());
+		        rows.createCell(8).setCellValue(ingreso.getNroActaEntregaRecepcion());
 		        rows.getCell(8).setCellStyle(style_cell);
 		        
-		        rows.createCell(9).setCellValue(ingreso.getNombreEstado());
+		        rows.createCell(9).setCellValue(ingreso.getNombreMovimiento());
 		        rows.getCell(9).setCellStyle(style_cell);
+		        
+		        rows.createCell(10).setCellValue(ingreso.getNombreEstado());
+		        rows.getCell(10).setCellStyle(style_cell);
 	            
 	            row++;	
 	        }
@@ -168,8 +175,8 @@ public class ReporteProyectoManifiesto implements Serializable {
 	 * @param listaDocumento
 	 * @throws Exception 
 	 */
-//	public void generaPDFReporteProyectoManifiesto(String ruta, ProyectoManifiestoBean proyectoManifiesto, List<ProductoProyectoManifiestoBean> listaProducto, 
-//												   List<DocumentoProyectoManifiestoBean> listaDocumento) throws Exception {
+//	public void generaPDFReporteGuiaRemision(String ruta, GuiaRemisionBean proyectoManifiesto, List<ProductoGuiaRemisionBean> listaProducto, 
+//												   List<DocumentoGuiaRemisionBean> listaDocumento) throws Exception {
 //		Document document = null;
 //		try {
 //			document = new Document(PageSize.A4, 0, 0, 20, 20);
@@ -219,7 +226,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 //			cell.setBorderColor(BaseColor.WHITE);
 //			table.addCell(cell);
 //			
-//			p = new Paragraph("ORDEN DE SALIDA N° ".concat(proyectoManifiesto.getNroProyectoManifiesto()), titulo);
+//			p = new Paragraph("ORDEN DE SALIDA N° ".concat(proyectoManifiesto.getNroGuiaRemision()), titulo);
 //			cell = new PdfPCell(p);
 //			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 //			cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
@@ -299,7 +306,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 //			
 //			int row_doc = 1;
 //			
-//			for (DocumentoProyectoManifiestoBean documento : listaDocumento) {
+//			for (DocumentoGuiaRemisionBean documento : listaDocumento) {
 //			
 //				table = new PdfPTable(4);
 //				table.setWidths(f4_2);
@@ -399,7 +406,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 //			
 //			int row_pro = 1;
 //			
-//			for (ProductoProyectoManifiestoBean producto : listaProducto) {
+//			for (ProductoGuiaRemisionBean producto : listaProducto) {
 //			
 //				table = new PdfPTable(9);
 //				table.setWidths(f9);

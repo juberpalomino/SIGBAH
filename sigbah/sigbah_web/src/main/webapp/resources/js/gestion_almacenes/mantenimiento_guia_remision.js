@@ -613,8 +613,8 @@ function inicializarDatos() {
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
 	$('#ul_alm_salidas').css('display', 'block');	
-	$('#li_man_carga').attr('class', 'active');
-	$('#li_man_carga').closest('li').children('a').attr('href', '#');
+	$('#li_gui_remision').attr('class', 'active');
+	$('#li_gui_remision').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);

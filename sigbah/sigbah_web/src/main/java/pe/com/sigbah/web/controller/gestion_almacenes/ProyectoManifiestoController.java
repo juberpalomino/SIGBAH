@@ -19,20 +19,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.BaseOutputBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
-import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.Utils;
@@ -246,12 +246,12 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/verificarProductosProgramacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/verificarProductosProgramacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object verificarProductosProgramacion(HttpServletRequest request, HttpServletResponse response) {
 		Integer indicador = null;
 		try {			
-			indicador = logisticaService.verificarProductosProgramacion(getInteger(request.getParameter("idProyecto")));
+			indicador = logisticaService.verificarProductosProgramacion(getInteger(request.getParameter("idProyectoManifiesto")));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -264,10 +264,10 @@ public class ProyectoManifiestoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/procesarProyectoManifiesto", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/procesarProyectoManifiesto", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object procesarProyectoManifiesto(HttpServletRequest request, HttpServletResponse response) {
-		String indicador = null;
+		BaseOutputBean indicador = null;
 		try {			
 			ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();			
 			// Copia los parametros del cliente al objeto
@@ -275,7 +275,8 @@ public class ProyectoManifiestoController extends BaseController {
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	proyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
-			indicador = logisticaService.procesarManifiestoProducto(proyectoManifiestoBean);
+			logisticaService.procesarManifiestoProducto(proyectoManifiestoBean);
+			indicador = getBaseRespuesta(Constantes.COD_EXITO_GENERAL);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -395,33 +396,38 @@ public class ProyectoManifiestoController extends BaseController {
 	}
 	
 	/**
-	 * @param proyectoManifiestoVehiculo 
+	 * @param idProyectoManifiesto 
+	 * @param arrFlagVehiculo 
+	 * @param arrIdTipoCamion 
+	 * @param arrVolumen 
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/procesarManifiestoVehiculo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/procesarManifiestoVehiculo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object procesarManifiestoVehiculo(@ModelAttribute(value="proyectoManifiestoVehiculo") ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculo) {
-		String indicador = null;
+	public Object procesarManifiestoVehiculo(@RequestParam(value="idProyectoManifiesto") Integer idProyectoManifiesto,
+											 @RequestParam(value="arrFlagVehiculo[]") List<String> arrFlagVehiculo,
+											 @RequestParam(value="arrIdTipoCamion[]") List<Integer> arrIdTipoCamion,
+											 @RequestParam(value="arrVolumen[]") List<BigDecimal> arrVolumen) {
+		ManifiestoVehiculoBean manifiesto = new ManifiestoVehiculoBean();
 		try {
-			
-			
-			for (ManifiestoVehiculoBean vehiculo : proyectoManifiestoVehiculo.getVehiculos()) {
-				System.out.println(vehiculo.getIdTipoCamion());
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			for (int i = 0; i < arrIdTipoCamion.size(); i++) {
+				ManifiestoVehiculoBean registroManifiestoVehiculo = new ManifiestoVehiculoBean();
+				registroManifiestoVehiculo.setIdProyectoManifiesto(idProyectoManifiesto);
+				registroManifiestoVehiculo.setFlagVehiculo(arrFlagVehiculo.get(i));
+				registroManifiestoVehiculo.setIdTipoCamion(arrIdTipoCamion.get(i));
+				registroManifiestoVehiculo.setVolumen(arrVolumen.get(i));				
+				registroManifiestoVehiculo.setUsuarioRegistro(usuarioBean.getNombreUsuario());
+				logisticaService.procesarManifiestoVehiculo(registroManifiestoVehiculo);
 			}
-			
-			
-//			ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean = new ProyectoManifiestoVehiculoBean();			
-//			// Copia los parametros del cliente al objeto
-//			BeanUtils.populate(proyectoManifiestoVehiculoBean, request.getParameterMap());
-//			// Retorno los datos de session
-//        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-//        	proyectoManifiestoVehiculoBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
-//			indicador = logisticaService.procesarManifiestoVehiculo(proyectoManifiestoVehiculoBean);
+			manifiesto.setCodigoRespuesta(Constantes.COD_EXITO_GENERAL);
+        	manifiesto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return indicador;
+		return manifiesto;
 	}
 	
 	/**
@@ -593,7 +599,7 @@ public class ProyectoManifiestoController extends BaseController {
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
 			ReporteProyectoManifiesto reporte = new ReporteProyectoManifiesto();
-			reporte.generaPDFReporteProyectoManifiesto(file_path.toString(), proyectoManifiesto, listaProducto, listaDocumento);
+//			reporte.generaPDFReporteProyectoManifiesto(file_path.toString(), proyectoManifiesto, listaProducto, listaDocumento);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);

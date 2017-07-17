@@ -32,6 +32,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -42,7 +43,6 @@ import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
-import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -55,6 +55,7 @@ import pe.com.sigbah.mapper.DocumentoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoIngresoMapper;
 import pe.com.sigbah.mapper.DocumentoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.DocumentoSalidaMapper;
+import pe.com.sigbah.mapper.GuiaRemisionMapper;
 import pe.com.sigbah.mapper.LoteProductoMapper;
 import pe.com.sigbah.mapper.ManifiestoMapper;
 import pe.com.sigbah.mapper.ManifiestoVehiculoMapper;
@@ -67,6 +68,7 @@ import pe.com.sigbah.mapper.ProductoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.ProductoSalidaMapper;
 import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
+import pe.com.sigbah.mapper.RegistroGuiaRemisionMapper;
 import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
 import pe.com.sigbah.mapper.RegistroOrdenSalidaMapper;
 import pe.com.sigbah.mapper.RegistroProyectoManifiestoMapper;
@@ -2689,7 +2691,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
     			throw new Exception();
     		}
 			
-			indicador = (Integer) out.get("po_count_productos");
+			indicador = ((BigDecimal) out.get("po_count_productos")).intValue();
 	
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -2791,19 +2793,19 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#procesarManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
+	 * @see pe.com.sigbah.dao.LogisticaDao#procesarManifiestoVehiculo(pe.com.sigbah.common.bean.ManifiestoVehiculoBean)
 	 */
 	@Override
-	public String procesarManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
+	public ManifiestoVehiculoBean procesarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception {
 		LOGGER.info("[procesarManifiestoVehiculo] Inicio ");
-		String indicador = null;
+		ManifiestoVehiculoBean registroManifiestoVehiculo = new ManifiestoVehiculoBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-//			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", proyectoManifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FLAG_VEHICULO", proyectoManifiestoVehiculoBean.getFlagVehiculo(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_IDE_TIP_CAMION", proyectoManifiestoVehiculoBean.getIdTipoCamion(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_VOLUMEN", proyectoManifiestoVehiculoBean.getVolumen(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_USU_REGISTRO", proyectoManifiestoVehiculoBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", manifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FLAG_VEHICULO", manifiestoVehiculoBean.getFlagVehiculo(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_TIP_CAMION", manifiestoVehiculoBean.getIdTipoCamion(), Types.NUMERIC);
+			input_objParametros.addValue("pi_VOLUMEN", manifiestoVehiculoBean.getVolumen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USU_REGISTRO", manifiestoVehiculoBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -2824,20 +2826,130 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			
-			indicador = (String) out.get("po_CODIGO_RESPUESTA");
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			
-			if (indicador.equals(Constantes.COD_ERROR_GENERAL)) {
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
 				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
 				LOGGER.info("[procesarManifiestoVehiculo] Ocurrio un error en la operacion del USP_PROC_VEHICULO_PROYECTO_MAN : "+mensajeRespuesta);
     			throw new Exception();
     		}
+			
+			registroManifiestoVehiculo.setCodigoRespuesta(codigoRespuesta);
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
 		LOGGER.info("[procesarManifiestoVehiculo] Fin ");
-		return indicador;
+		return registroManifiestoVehiculo;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public List<GuiaRemisionBean> listarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		LOGGER.info("[listarGuiaRemision] Inicio ");
+		List<GuiaRemisionBean> lista = new ArrayList<GuiaRemisionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_COD_ANIO", guiaRemisionBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_MES", guiaRemisionBean.getCodigoMes(), Types.VARCHAR);		
+			input_objParametros.addValue("pi_IDE_ALMACEN", guiaRemisionBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_TIP_MOVIMIENTO", Utils.getParam(guiaRemisionBean.getCodigoMovimiento()), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_GUIA_REMISION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_IDE_TIP_MOVIMIENTO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new GuiaRemisionMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarGuiaRemision] Ocurrio un error en la operacion del USP_LISTAR_GUIA_REMISION : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<GuiaRemisionBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarGuiaRemision] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroGuiaRemision(java.lang.Integer)
+	 */
+	@Override
+	public GuiaRemisionBean obtenerRegistroGuiaRemision(Integer idGuiaRemision) throws Exception {
+		LOGGER.info("[obtenerRegistroGuiaRemision] Inicio ");
+		GuiaRemisionBean guiaRemision = new GuiaRemisionBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_GUIA_REMISION", idGuiaRemision, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_GUIA_REMISION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_GUIA_REMISION", new SqlParameter("pi_IDE_GUIA_REMISION", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new RegistroGuiaRemisionMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerRegistroGuiaRemision] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_GUIA_REMISION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<GuiaRemisionBean> lista = (List<GuiaRemisionBean>) out.get("po_Lr_Recordset");
+			if (!Utils.isEmpty(lista)) {
+				guiaRemision = lista.get(0);
+			}
+			
+			guiaRemision.setCodigoRespuesta(codigoRespuesta);
+			guiaRemision.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerRegistroGuiaRemision] Fin ");
+		return guiaRemision;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean grabarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

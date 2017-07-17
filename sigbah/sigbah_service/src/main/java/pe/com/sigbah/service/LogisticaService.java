@@ -8,6 +8,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -18,7 +19,6 @@ import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
-import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 
 /**
  * @className: LogisticaService.java
@@ -379,10 +379,31 @@ public interface LogisticaService {
 	public abstract List<ManifiestoVehiculoBean> listarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception;
 
 	/**
-	 * @param proyectoManifiestoVehiculoBean
+	 * @param manifiestoVehiculoBean
 	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
-	public abstract String procesarManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception;
+	public abstract ManifiestoVehiculoBean procesarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception;
+
+	/**
+	 * @param guiaRemisionBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<GuiaRemisionBean> listarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+
+	/**
+	 * @param idGuiaRemision
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract GuiaRemisionBean obtenerRegistroGuiaRemision(Integer idGuiaRemision) throws Exception;
+
+	/**
+	 * @param guiaRemisionBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract GuiaRemisionBean grabarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
 	
 }

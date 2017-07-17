@@ -285,8 +285,11 @@ public class BaseController implements Serializable {
 	 */
 	public BaseOutputBean getBaseRespuesta(String codigo) {
 		BaseOutputBean baseOutputBean = new BaseOutputBean();
-		if (codigo != null && codigo.equals(Constantes.COD_EXITO_GENERAL)) {
+		if (codigo != null && !codigo.equals(Constantes.COD_ERROR_GENERAL)) {
 			baseOutputBean.setCodigoRespuesta(codigo);
+			if (codigo.equals(Constantes.COD_EXITO_GENERAL)) {
+				baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			}	
 		} else {
 			baseOutputBean.setCodigoRespuesta(Constantes.COD_ERROR_GENERAL);
 			baseOutputBean.setMensajeRespuesta(getMensaje(messageSource, "msg.error.errorOperacion"));

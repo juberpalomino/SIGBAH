@@ -1,6 +1,5 @@
 package pe.com.sigbah.common.bean;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -9,7 +8,7 @@ import java.math.BigDecimal;
  * @date: 18/02/2015 22:26:30
  * @author: Junior Huaman Flores.
  */
-public class ManifiestoVehiculoBean implements Serializable {
+public class ManifiestoVehiculoBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	private Integer idProyectoManifiesto;
