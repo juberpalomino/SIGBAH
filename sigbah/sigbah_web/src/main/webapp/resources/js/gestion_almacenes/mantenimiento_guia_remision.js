@@ -15,10 +15,16 @@ $(document).ready(function() {
 				if (ButtonPressed === 'SI') {				
 					loadding(true);								
 					var params = { 
-						idProyectoManifiesto : idProyectoManifiesto,
-						idProgramacion : codigo
+						idSalida : $('#hid_cod_ord_salida').val(),
+						idGuiaRemision : $('#hid_cod_gui_remision').val(),
+						codigoAnio : $('#hid_cod_anio').val(),
+						codigoMes : $('#hid_cod_mes').val(),
+						codigoDdi : $('#hid_cod_ddi').val(),
+						codigoAlmacen : $('#hid_cod_almacen').val(),
+						fechaEmision : $('#txt_fecha').val(),
+						idEstado : $('#sel_estado').val()						
 					};						
-					consultarAjax('POST', '/gestion-almacenes/guia-remision/procesarProyectoManifiesto', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/guia-remision/anularGuiaRemision', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							addErrorMessage(null, respuesta.mensajeRespuesta);
 						} else {
@@ -93,7 +99,11 @@ function inicializarDatos() {
 
 function cargarDatosGuiaRemision(guiaRemision) {
 	$('#hid_cod_gui_remision').val(guiaRemision.idGuiaRemision);
-	$('#hid_cod_ord_salida').val(guiaRemision.idSalida);
+	$('#hid_cod_ord_salida').val(guiaRemision.idSalida);	
+	$('#hid_cod_anio').val(guiaRemision.codigoAnio);
+	$('#hid_cod_mes').val(guiaRemision.codigoMes);
+	$('#hid_cod_ddi').val(guiaRemision.codigoDdi);
+	$('#hid_cod_almacen').val(guiaRemision.codigoAlmacen);
 	$('#txt_nro_ord_salida').val(guiaRemision.nroOrdenSalida);
 	$('#txt_fecha').val(guiaRemision.fechaEmision);
 	$('#txt_tip_movimiento').val(guiaRemision.nombreMovimiento);

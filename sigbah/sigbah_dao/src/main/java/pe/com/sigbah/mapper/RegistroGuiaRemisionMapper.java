@@ -22,16 +22,20 @@ public class RegistroGuiaRemisionMapper implements RowMapper<GuiaRemisionBean> {
 	public GuiaRemisionBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		GuiaRemisionBean guiaRemision = new GuiaRemisionBean();
 		guiaRemision.setIdGuiaRemision(rs.getInt("IDE_GUIA_REMISION"));
+		guiaRemision.setIdSalida(rs.getInt("FK_IDE_SALIDA"));
 		guiaRemision.setNroOrdenSalida(rs.getString("NRO_ORDEN_SALIDA"));
 		guiaRemision.setNroGuiaRemision(rs.getString("NRO_GUIA_REMISION"));
 		guiaRemision.setNroManifiestoCarga(rs.getString("NRO_MANIFIESTO"));
 		guiaRemision.setFechaEmision(rs.getString("FEC_EMISION"));
 		guiaRemision.setNombreMovimiento(rs.getString("TIP_MOVIMIENTO"));
-		guiaRemision.setIdDdi(rs.getInt("IDE_DDI"));		
+		guiaRemision.setIdDdi(rs.getInt("IDE_DDI"));
+		guiaRemision.setCodigoDdi(rs.getString("COD_DDI"));
 		guiaRemision.setNombreDdi(rs.getString("NOMBRE_DDI"));
 		guiaRemision.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
 		guiaRemision.setCodigoAlmacen(rs.getString("COD_ALMACEN"));		
 		guiaRemision.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));		
+		guiaRemision.setCodigoAnio(rs.getString("COD_ANIO"));
+		guiaRemision.setCodigoMes(rs.getString("COD_MES"));		
 		guiaRemision.setIdEstado(rs.getInt("FK_IDE_ESTADO"));
 		guiaRemision.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
 		guiaRemision.setObservacionGuiaRemision(rs.getString("OBSERVACION_GUIA"));

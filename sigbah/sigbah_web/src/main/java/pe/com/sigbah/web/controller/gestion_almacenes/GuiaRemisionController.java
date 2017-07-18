@@ -174,6 +174,8 @@ public class GuiaRemisionController extends BaseController {
         	guiaRemision = logisticaService.insertarGuiaRemision(guiaRemisionBean);
         	
         	guiaRemision = logisticaService.obtenerRegistroGuiaRemision(guiaRemision.getIdGuiaRemision());
+        	guiaRemision.setIdEstado(Constantes.ESTADO_ACTIVO);
+        	guiaRemision.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -208,6 +210,7 @@ public class GuiaRemisionController extends BaseController {
         	guiaRemisionBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
         	guiaRemision = logisticaService.actualizarGuiaRemision(guiaRemisionBean);
+        	guiaRemision.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

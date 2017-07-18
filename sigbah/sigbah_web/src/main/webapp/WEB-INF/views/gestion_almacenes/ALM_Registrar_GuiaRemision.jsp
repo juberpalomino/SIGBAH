@@ -66,29 +66,29 @@
 								
 													<div class="row">
 														<label class="col-sm-2 control-label">Nº Orden Salida:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_nro_ord_salida" class="form-control" disabled>
 														</div>
 
 														<label class="col-sm-2 control-label">Fecha:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_fecha" class="form-control" disabled>
 														</div>
 														
 														<label class="col-sm-2 control-label">Tipo de Movimiento:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_tip_movimiento" class="form-control" disabled>
 														</div>
 													</div>
 													
 													<div class="row">
 														<label class="col-sm-2 control-label">DDI:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_ddi" class="form-control" disabled>
 														</div>
 
 														<label class="col-sm-2 control-label">Almacén:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_almacen" class="form-control" disabled>
 														</div>
 													</div>
@@ -116,7 +116,7 @@
 								
 													<div class="row">
 														<label class="col-sm-3 control-label">Nº Guia de Remisión:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_nro_gui_remision" class="form-control" disabled>
 														</div>
 													
@@ -135,7 +135,7 @@
 														<div class="col-sm-9 smart-form">
 															<section>														
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_obs_gui_remision" id="txt_obs_gui_remsion" 
+																	<textarea rows="3" name="txt_obs_gui_remision" id="txt_obs_gui_remision" 
 																		maxlength="500" class="custom-scroll"></textarea> 
 																</label>
 															</section>
@@ -165,7 +165,7 @@
 								
 													<div class="row">
 														<label class="col-sm-3 control-label">Nº Manifiesto de Carga:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_nro_man_carga" class="form-control" disabled>
 														</div>
 													</div>
@@ -205,7 +205,7 @@
 								
 													<div class="row">
 														<label class="col-sm-3 control-label">Nº Acta de Entrega:</label>
-														<div class="col-sm-2">
+														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_nro_act_entrega" class="form-control" disabled>
 														</div>
 													</div>
