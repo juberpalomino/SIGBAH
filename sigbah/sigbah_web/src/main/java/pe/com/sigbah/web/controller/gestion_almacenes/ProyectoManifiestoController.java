@@ -579,13 +579,12 @@ public class ProyectoManifiestoController extends BaseController {
 	    try {
 	    	
 	    	ProyectoManifiestoBean proyectoManifiesto = logisticaService.obtenerRegistroProyectoManifiesto(codigo);
+	    	
 	    	ProductoProyectoManifiestoBean producto = new ProductoProyectoManifiestoBean();
 	    	producto.setIdProyectoManifiesto(codigo);
 	    	List<ProductoProyectoManifiestoBean> listaProducto = logisticaService.listarProductoProyectoManifiesto(producto);
 	    	
-	    	DocumentoProyectoManifiestoBean documento = new DocumentoProyectoManifiestoBean();
-	    	documento.setIdProyectoManifiesto(codigo);
-	    	List<DocumentoProyectoManifiestoBean> listaDocumento = logisticaService.listarDocumentoProyectoManifiesto(documento);	    	
+	    	List<ManifiestoVehiculoBean> listaVehiculo = logisticaService.listarManifiestoVehiculo(new ManifiestoVehiculoBean(codigo));
 
 	    	StringBuilder file_path = new StringBuilder();
 	    	file_path.append(getPath(request));
@@ -599,7 +598,7 @@ public class ProyectoManifiestoController extends BaseController {
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
 			ReporteProyectoManifiesto reporte = new ReporteProyectoManifiesto();
-//			reporte.generaPDFReporteProyectoManifiesto(file_path.toString(), proyectoManifiesto, listaProducto, listaDocumento);
+			reporte.generaPDFReporteProyectoManifiesto(file_path.toString(), proyectoManifiesto, listaProducto, listaVehiculo);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);

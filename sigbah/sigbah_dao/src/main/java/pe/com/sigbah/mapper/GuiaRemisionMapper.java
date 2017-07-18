@@ -28,9 +28,10 @@ public class GuiaRemisionMapper implements RowMapper<GuiaRemisionBean> {
 		guia.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
 		guia.setCodigoAlmacen(rs.getString("COD_ALMACEN"));		
 		guia.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
+		guia.setNroOrdenSalida(rs.getString("NRO_ORDEN_SALIDA"));
 		guia.setNroGuiaRemision(rs.getString("NRO_GUIA_REMISION"));
 		guia.setNroManifiestoCarga(rs.getString("NRO_MANIFIESTO"));
-		guia.setNroActaEntregaRecepcion(rs.getString("NRO_ACTA"));
+		guia.setNroActaEntregaRecepcion(rs.getString("NRO_ACTA"));		
 		guia.setFechaEmision(rs.getString("FECHA_EMISION"));
 		guia.setIdMovimiento(rs.getInt("IDE_TIP_MOVIMIENTO"));
 		guia.setNombreMovimiento(rs.getString("NOM_MOVIMIENTO"));

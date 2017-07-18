@@ -65,9 +65,9 @@ $(document).ready(function() {
 						$.SmartMessageBox({
 							title : 'Se va reemplazar los productos de la programación.<br>Está usted seguro ?',
 							content : '',
-							buttons : '[Cancelar][Aceptar]'
+							buttons : '[NO][SI]'
 						}, function(ButtonPressed) {
-							if (ButtonPressed === 'Aceptar') {				
+							if (ButtonPressed === 'SI') {				
 								loadding(true);								
 								var params_proy = { 
 									idProyectoManifiesto : idProyectoManifiesto,

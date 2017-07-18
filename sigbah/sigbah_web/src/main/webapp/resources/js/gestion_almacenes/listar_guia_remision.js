@@ -156,24 +156,42 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
-			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/guia-remision/exportarPdf/'+codigo;
-			$.fileDownload(url).done(function(respuesta) {
-				loadding(false);	
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else {
-					addInfoMessage(null, mensajeReporteExito);
-				}
-			}).fail(function (respuesta) {
-				loadding(false);
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else if (respuesta == NOTIFICACION_VALIDACION) {
-					addWarnMessage(null, mensajeReporteValidacion);
-				}
-			});
+			$('#hid_codigo').val(codigo);
+			$('#chk_gui_remision').prop('checked', true);
+			$('#chk_man_carga').prop('checked', true);
+			$('#chk_act_ent_recepcion').prop('checked', true);
+			$('#div_imp_pdf').modal('show');
 		}
+	});
+	
+	$('#btn_exportar').click(function(e) {
+		e.preventDefault();
+
+		loadding(true);
+		var codigo = $('#hid_codigo').val();
+		var ind_gui = $('#chk_gui_remision').is(':checked') ? '1' : '0';
+		var ind_man = $('#chk_man_carga').is(':checked') ? '1' : '0';
+		var ind_act = $('#chk_act_ent_recepcion').is(':checked') ? '1' : '0';
+		var url = VAR_CONTEXT + '/gestion-almacenes/guia-remision/exportarPdf/';
+		url = url + codigo + '/' + ind_gui + '/'+ ind_man + '/' + ind_act;
+		$.fileDownload(url).done(function(respuesta) {
+			$('#div_imp_pdf').modal('hide');
+			loadding(false);	
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else {
+				addInfoMessage(null, mensajeReporteExito);
+			}
+		}).fail(function (respuesta) {
+			$('#div_imp_pdf').modal('hide');
+			loadding(false);
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else if (respuesta == NOTIFICACION_VALIDACION) {
+				addWarnMessage(null, mensajeReporteValidacion);
+			}
+		});
+
 	});
 	
 });
@@ -185,6 +203,10 @@ function inicializarDatos() {
 	$('#ul_alm_salidas').css('display', 'block');	
 	$('#li_gui_remision').attr('class', 'active');
 	$('#li_gui_remision').closest('li').children('a').attr('href', '#');
+	
+	$('#chk_gui_remision').prop('checked', true);
+	$('#chk_man_carga').prop('checked', true);
+	$('#chk_act_ent_recepcion').prop('checked', true);
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
@@ -231,7 +253,7 @@ function listarGuiaRemision(respuesta) {
 		}, {
 			data : 'fechaEmision'
 		}, {
-			data : 'nroGuiaRemision' // Modificar
+			data : 'nroOrdenSalida'
 		}, {
 			data : 'nroGuiaRemision'
 		}, {

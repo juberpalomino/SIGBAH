@@ -1,6 +1,9 @@
 package pe.com.sigbah.web.controller.gestion_almacenes;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -273,15 +276,23 @@ public class GuiaRemisionController extends BaseController {
 	
 	/**
 	 * @param codigo
+	 * @param ind_gui 
+	 * @param ind_man 
+	 * @param ind_act 
 	 * @param request 
 	 * @param response
 	 * @return Objeto.
 	 */
-//	@RequestMapping(value = "/exportarPdf/{codigo}", method = RequestMethod.GET)
-//	@ResponseBody
-//	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
-//	    try {
-//	    	
+	@RequestMapping(value = "/exportarPdf/{codigo}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarPdf(@PathVariable("codigo") Integer codigo,
+							  @PathVariable("ind_gui") String ind_gui,
+							  @PathVariable("ind_man") String ind_man,
+							  @PathVariable("ind_act") String ind_act,
+							  HttpServletRequest request, 
+							  HttpServletResponse response) {
+	    try {
+	    	
 //	    	GuiaRemisionBean guiaRemision = logisticaService.obtenerRegistroGuiaRemision(codigo);
 //	    	ProductoGuiaRemisionBean producto = new ProductoGuiaRemisionBean();
 //	    	producto.setIdGuiaRemision(codigo);
@@ -290,51 +301,55 @@ public class GuiaRemisionController extends BaseController {
 //	    	DocumentoGuiaRemisionBean documento = new DocumentoGuiaRemisionBean();
 //	    	documento.setIdGuiaRemision(codigo);
 //	    	List<DocumentoGuiaRemisionBean> listaDocumento = logisticaService.listarDocumentoGuiaRemision(documento);	    	
-//
-//	    	StringBuilder file_path = new StringBuilder();
-//	    	file_path.append(getPath(request));
-//	    	file_path.append(File.separator);
-//	    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
-//	    	file_path.append(File.separator);
-//	    	file_path.append(Calendar.getInstance().getTime().getTime());
-//	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
-//	    	
-//	    	String file_name = "Proyecto_Manifiesto";
-//			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-//			
-//			ReporteGuiaRemision reporte = new ReporteGuiaRemision();
+
+	    	StringBuilder file_path = new StringBuilder();
+	    	file_path.append(getPath(request));
+	    	file_path.append(File.separator);
+	    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
+	    	file_path.append(File.separator);
+	    	file_path.append(Calendar.getInstance().getTime().getTime());
+	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
+	    	
+	    	String file_name = "Proyecto_Manifiesto";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+			
+			ReporteGuiaRemision reporte = new ReporteGuiaRemision();
 //			reporte.generaPDFReporteGuiaRemision(file_path.toString(), guiaRemision, listaProducto, listaDocumento);
-//			
-//			response.resetBuffer();
-//            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-//            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-//			response.setHeader("Pragma", "no-cache");
-//			response.setHeader("Cache-Control", "no-store");
-//			response.setHeader("Pragma", "private");
-//			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-//			response.setDateHeader("Expires", 1);
-//	    	
-//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//			baos = convertPDFToByteArrayOutputStream(file_path.toString());
-//			
-//			// Captured backflow
-//	        OutputStream out = response.getOutputStream();
-//	        baos.writeTo(out); // We write in that flow
-//	        out.flush(); // We emptied the flow
-//	    	out.close(); // We close the flow
-//	    	
-//	    	File file_temp = new File(file_path.toString());
-//    		if (file_temp.delete()) {
-//    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" se borra el archivo temporal.");
-//    		} else {
-//    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
-//    		}
-//    		
-//	    	return Constantes.COD_EXITO_GENERAL;
-//	    } catch (Exception e) {
-//	    	LOGGER.error(e.getMessage(), e);
-//	    	return Constantes.COD_ERROR_GENERAL;
-//	    } 
-//	}
+			
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+	    	
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			baos = convertPDFToByteArrayOutputStream(file_path.toString());
+			
+			// Captured backflow
+	        OutputStream out = response.getOutputStream();
+	        baos.writeTo(out); // We write in that flow
+	        out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	File file_temp = new File(file_path.toString());
+    		if (file_temp.delete()) {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" se borra el archivo temporal.");
+    		} else {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+    		}
+    		
+	    	return Constantes.COD_EXITO_GENERAL;
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
+	
+	private void generarReporteGuiaRemision() {
+		
+	}
 	
 }

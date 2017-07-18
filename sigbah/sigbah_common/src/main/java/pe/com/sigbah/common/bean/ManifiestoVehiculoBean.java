@@ -28,6 +28,14 @@ public class ManifiestoVehiculoBean extends BaseOutputBean {
 	}
 
 	/**
+	 * @param idProyectoManifiesto
+	 */
+	public ManifiestoVehiculoBean(Integer idProyectoManifiesto) {
+		super();
+		this.idProyectoManifiesto = idProyectoManifiesto;
+	}
+
+	/**
 	 * @return the idProyectoManifiesto
 	 */
 	public Integer getIdProyectoManifiesto() {

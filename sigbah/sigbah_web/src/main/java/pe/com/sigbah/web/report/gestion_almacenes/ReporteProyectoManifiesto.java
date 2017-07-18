@@ -1,6 +1,10 @@
 package pe.com.sigbah.web.report.gestion_almacenes;
 
+import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -14,7 +18,22 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 
 /**
@@ -165,412 +184,465 @@ public class ReporteProyectoManifiesto implements Serializable {
 	 * @param ruta
 	 * @param proyectoManifiesto
 	 * @param listaProducto
-	 * @param listaDocumento
+	 * @param listaVehiculo
 	 * @throws Exception 
 	 */
-//	public void generaPDFReporteProyectoManifiesto(String ruta, ProyectoManifiestoBean proyectoManifiesto, List<ProductoProyectoManifiestoBean> listaProducto, 
-//												   List<DocumentoProyectoManifiestoBean> listaDocumento) throws Exception {
-//		Document document = null;
-//		try {
-//			document = new Document(PageSize.A4, 0, 0, 20, 20);
-//			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
-//			
-//			document.open();
-//			 
-//			// Considerar que cada campo en array es una columna table de tu reporte
-//			float[] ftit = {20, 15, 65};			
-//			
-//			float[] f1 = {100};
-//			
-//			float[] f2_1 = {60, 40};
-//			
-//			float[] f2_2 = {40, 60};
-//			
-//			float[] f4_1 = {15, 25, 35, 25};
-//			
-//			float[] f4_2 = {10, 30, 30, 30};
-//			
-//			float[] f7 = {30, 2, 20, 2, 25, 2, 19};
-//
-//			float[] f9 = {5, 20, 10, 10, 10, 10, 10, 10, 15};
-//
-//			Paragraph p     = null;
-//			PdfPTable table = null;
-//			PdfPCell cell   = null;
-//
-//			Font titulo = FontFactory.getFont(FontFactory.TIMES_ROMAN, 14, Font.BOLD, BaseColor.BLACK);
-//			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.NORMAL, BaseColor.BLACK);			
-//			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 9, Font.BOLD, BaseColor.BLACK);
-//			
-//			BaseColor header = new BaseColor(242, 242, 242);
-//			   
-//			
-//			table = new PdfPTable(3);
-//			table.setWidths(ftit);
-//			
-//			String path = ruta.substring(0, ruta.indexOf("resources"));			
-//			Image img = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
-//			cell = new PdfPCell(img, true);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			cell = new PdfPCell();
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("ORDEN DE SALIDA N° ".concat(proyectoManifiesto.getNroProyectoManifiesto()), titulo);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_BOTTOM);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//						
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//						
-//			table = new PdfPTable(4);
-//			table.setWidths(f4_1);
-//			
-//			p = new Paragraph("Año : ".concat(proyectoManifiesto.getCodigoAnio()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("DDI : ".concat(proyectoManifiesto.getNombreDdi()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Almacén : ".concat(proyectoManifiesto.getNombreAlmacen()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Fecha : ".concat(proyectoManifiesto.getFechaEmision()), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorderColor(BaseColor.WHITE);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			
-//			
-//			table = new PdfPTable(4);
-//			table.setWidths(f4_2);
-//			
-//			p = new Paragraph("N°", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Documentos Adjuntos", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Nro", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			cell = new PdfPCell();
-//			cell.setBorder(PdfPCell.NO_BORDER);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//			
-//			
-//			int row_doc = 1;
-//			
-//			for (DocumentoProyectoManifiestoBean documento : listaDocumento) {
-//			
-//				table = new PdfPTable(4);
-//				table.setWidths(f4_2);
-//				
-//				p = new Paragraph(String.valueOf(row_doc), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//			
-//				p = new Paragraph(documento.getNombreDocumento(), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//				
-//				p = new Paragraph(documento.getNroDocumento(), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//				
-//				cell = new PdfPCell();
-//				cell.setBorder(PdfPCell.NO_BORDER);
-//				table.addCell(cell);
-//			
-//				document.add(table);	             
-//				
-//				row_doc++;
-//			}	
-//				
-//			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//				
-//			
-//			table = new PdfPTable(9);
-//			table.setWidths(f9);
-//			
-//			p = new Paragraph("N°", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Producto", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Unidad Medida", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Envase", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Lote", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Cantidad", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Precio Unitario (S/.)", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Importe Total (S/.)", negrita);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBackgroundColor(header);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//			
-//			
-//			int row_pro = 1;
-//			
-//			for (ProductoProyectoManifiestoBean producto : listaProducto) {
-//			
-//				table = new PdfPTable(9);
-//				table.setWidths(f9);
-//				
-//				p = new Paragraph(String.valueOf(row_pro), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//			
-//				p = new Paragraph(producto.getNombreProducto(), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//				
-//				p = new Paragraph(producto.getNombreUnidad(), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//				
-//				p = new Paragraph(producto.getNombreEnvase(), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//				
-////				p = new Paragraph(getString(producto.getNroLote()), normal);
-////				cell = new PdfPCell(p);
-////				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-////				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-////				table.addCell(cell);
-//				
-//				p = new Paragraph(getString(producto.getCantidad()), normal);
-//				cell = new PdfPCell(p);
-//				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//				table.addCell(cell);
-//				
-////				p = new Paragraph(getString(producto.getPrecioUnitario()), normal);
-////				cell = new PdfPCell(p);
-////				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-////				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-////				table.addCell(cell);
-////				
-////				p = new Paragraph(getString(producto.getImporteTotal()), normal);
-////				cell = new PdfPCell(p);
-////				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-////				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-////				table.addCell(cell);
-//				
-//				document.add(table);	             
-//				
-//				row_pro++;
-//			}
-//
-//			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			
-//			
-//			table = new PdfPTable(1);
-//			table.setWidths(f1);
-//			
-//			p = new Paragraph("Observación: ", normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setBorder(PdfPCell.NO_BORDER);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//			
-//			
-//			table = new PdfPTable(1);
-//			table.setWidths(f1);
-//			
-//			p = new Paragraph(proyectoManifiesto.getObservacion(), normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_TOP);
-//			cell.setFixedHeight(72f);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//			
-//			
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-//			
-//			
-//			table = new PdfPTable(7);
-//			table.setWidths(f7);
-//			
-//			p = new Paragraph("Responsable Abastecimiento ", normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setBorder(Rectangle.TOP);
-//			table.addCell(cell);
-//			
-//			cell = new PdfPCell();
-//			cell.setBorder(PdfPCell.NO_BORDER);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Jefe Almacén", normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setBorder(Rectangle.TOP);
-//			table.addCell(cell);
-//			
-//			cell = new PdfPCell();
-//			cell.setBorder(PdfPCell.NO_BORDER);
-//			table.addCell(cell);
-//			
-//			p = new Paragraph("Responsable Almacén", normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setBorder(Rectangle.TOP);
-//			table.addCell(cell);
-//			
-//			cell = new PdfPCell();
-//			cell.setBorder(PdfPCell.NO_BORDER);
-//			table.addCell(cell);
-//
-//			p = new Paragraph("Fecha", normal);
-//			cell = new PdfPCell(p);
-//			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-//			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-//			cell.setBorder(Rectangle.TOP);
-//			table.addCell(cell);
-//			
-//			document.add(table);
-//			
-//			
-//		} catch(Exception e) {
-//    		LOGGER.error(e);
-//    		throw new Exception();
-//		} finally {
-//			if (document != null) {
-//				document.close();
-//			}
-//		}
-//	}
-//	
-//	/**
-//	 * Retorna el valor parseado.
-//	 * @param campo - Valor del parámetro a evaluar, tipo Object.
-//	 * @return valor - Valor de la cadena.
-//	 */
-//	private static String getString(Object campo) {
-//		if (campo != null) {
-//			if (campo instanceof Integer) {
-//				return String.valueOf((Integer) campo);
-//			} else if (campo instanceof Long) {
-//				return String.valueOf((Long) campo);
-//			} else if (campo instanceof BigDecimal) {
-//				return String.valueOf((BigDecimal) campo);
-//			} else {
-//				return (String) campo;
-//			}
-//		}
-//		return Constantes.EMPTY; 	
-//	}
+	public void generaPDFReporteProyectoManifiesto(String ruta, ProyectoManifiestoBean proyectoManifiesto, List<ProductoProyectoManifiestoBean> listaProducto, 
+												   List<ManifiestoVehiculoBean> listaVehiculo) throws Exception {
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4, 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte
+			float[] ftit = {15, 15, 10, 60};			
+			
+			float[] f1 = {100};
+			
+			float[] f2 = {40, 60};
+			
+			float[] f3 = {50, 5, 45};
+
+			float[] f9 = {20, 10, 10, 10, 10, 10, 10, 10, 10};
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font hide = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.WHITE);
+			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			
+			BaseColor header = new BaseColor(242, 242, 242);
+			   
+			
+			table = new PdfPTable(4);
+			table.setWidths(ftit);
+			
+			String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));			
+			Image img_ind = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			cell = new PdfPCell(img_ind, true);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			Image img_wfp = Image.getInstance(path.concat(Constantes.IMAGE_WFP_REPORT_PATH));
+			cell = new PdfPCell(img_wfp, true);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0");
+			det_encabezado.append("\n");
+			det_encabezado.append("Fecha : ");
+			Date fecha_hora = Calendar.getInstance().getTime();
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+			det_encabezado.append("\n");
+			det_encabezado.append("Hora : ");
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+			p = new Paragraph(det_encabezado.toString(), encabezado);
+			pdet = new Paragraph("        .", hide);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("BIENES DE AYUDA ALIMENTARIA", titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+		
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("PROYECTO DE MANIFIESTO DE CARGA", titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+						
+			
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("TIPO DE MOVIMIENTO : ", negrita);
+			pdet = new Paragraph(proyectoManifiesto.getNombreMovimiento(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("DESTINO : ", negrita);
+			pdet = new Paragraph(proyectoManifiesto.getNombreAlmacenDestino(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			table = new PdfPTable(9);
+			table.setWidths(f9);
+			
+			p = new Paragraph("DESCRIPCIÓN DE ARTICULOS", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("MEDIDA", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("CANTIDAD", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("PRECIO UNITARIO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("PESO TOTAL APROX.", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("VOLUMEN UNIT. APROX.", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("VOLUMEN TOTAL", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("COSTO UNITARIO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("COSTO TOTAL", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			BigDecimal pesoTotal = BigDecimal.ZERO;
+			BigDecimal volumenTotal = BigDecimal.ZERO;	
+			
+			for (ProductoProyectoManifiestoBean producto : listaProducto) {
+			
+				table = new PdfPTable(9);
+				table.setWidths(f9);
+				
+				p = new Paragraph(producto.getNombreProducto(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+			
+				p = new Paragraph(producto.getNombreUnidad(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getCantidad()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getPesoUnitarioBruto()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getPesoTotal()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getVolumenUnitario()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getVolumenTotal()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getCostoBruto()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getCostoTotal()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				document.add(table);
+				
+				pesoTotal = pesoTotal.add(getBigDecimal(producto.getPesoTotal()));
+				volumenTotal = volumenTotal.add(getBigDecimal(producto.getVolumenTotal()));
+			}
+			
+			table = new PdfPTable(9);
+			table.setWidths(f9);
+			
+			p = new Paragraph("TOTALES", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph(getString(pesoTotal), normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph(getString(volumenTotal), negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("Observación: ", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			p = new Paragraph("RESUMEN VEHICULAR", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			
+			
+			
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph(proyectoManifiesto.getObservacion(), normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			
+			PdfPTable table_veh = new PdfPTable(2);
+			table_veh.setWidths(f2);
+			
+			p = new Paragraph("MEDIO DE TRANSPORTE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table_veh.addCell(cell);
+			
+			p = new Paragraph("TRANSPORTE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table_veh.addCell(cell);
+			
+			for (ManifiestoVehiculoBean vehiculo : listaVehiculo) {
+			
+				p = new Paragraph(vehiculo.getDescripcionCamion(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table_veh.addCell(cell);
+				
+				p = new Paragraph(getString(vehiculo.getCantidadVehiculos()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table_veh.addCell(cell);
+			}
+			
+			cell = new PdfPCell(table_veh);
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+
+			document.add(table);
+			
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
+	}
+	
+	/**
+	 * Retorna el valor parseado.
+	 * @param campo - Valor del parámetro a evaluar, tipo Object.
+	 * @return valor - Valor de la cadena.
+	 */
+	private static String getString(Object campo) {
+		if (campo != null) {
+			if (campo instanceof Integer) {
+				return String.valueOf((Integer) campo);
+			} else if (campo instanceof Long) {
+				return String.valueOf((Long) campo);
+			} else if (campo instanceof BigDecimal) {
+				return String.valueOf((BigDecimal) campo);
+			} else {
+				return (String) campo;
+			}
+		}
+		return Constantes.EMPTY; 	
+	}
+	
+	/**
+	 * Retorna el valor parseado.
+	 * @param campo - Valor del parámetro a evaluar, tipo String.
+	 * @return date - Valor long sino retorna cero.
+	 */
+	public static BigDecimal getBigDecimal(BigDecimal campo) {
+		BigDecimal valor = null;
+		if (campo == null) {
+			valor = BigDecimal.ZERO;
+		}
+		return valor; 	
+	}
     
 }
