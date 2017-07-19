@@ -4,8 +4,8 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Gestión de Almacenes</li>
-		<li>Control de Calidad</li>
+		<li>Programación de BAH</li>
+		<li>Emergencias en SINPAD</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -27,16 +27,16 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Controles de Calidad</h2>
+						<h2>Búsqueda de Emergencias en SINPAD</h2>
 					</header>
 		
 					<!-- widget div-->
-					<div id="div_wid_bod_bus_con_calidad">
+					<div id="div_wid_bod_emer_sinpad">
 		
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_con_calidad" class="form-horizontal">
+							<form id="frm_emer_sinpad" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -50,24 +50,52 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-1 control-label">DDI:</label>
+									<label class="col-sm-1 control-label">Mes:</label>
 									<div class="col-sm-2 form-group">
-										<select id="sel_ddi" name="sel_ddi" class="form-control">
-											<c:forEach items="${lista_ddi}" var="item">
+										<select id="sel_mes" name="sel_mes" class="form-control">
+											<option value="0">Todos</option>
+											<c:forEach items="${lista_mes}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
 									
-									<label class="col-sm-2 control-label">Almacén:</label>
+									<label class="col-sm-1 control-label">Región:</label>
 									<div class="col-sm-2 form-group">
-										<select id="sel_almacen" name="sel_almacen" class="form-control">
-											<c:forEach items="${lista_almacen}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
+										<select id="sel_region" name="sel_region" class="form-control">
+											<c:forEach items="${lista_region}" var="item">
+											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
 									
+									<label class="col-sm-1 control-label">Fenómeno:</label>
+									<div class="col-sm-2 form-group">
+										<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
+											<c:forEach items="${lista_fenomeno}" var="item">
+											    <option value="${item.icodigo}">${item.descripcion}</option>
+											</c:forEach>
+										</select>
+									</div>
+									
+									<div class="col-sm-1 opc-center">
+										<button class="btn btn-primary" type="button" id="btn_aceptar">
+											<i class="fa fa-search"></i>
+											Aceptar
+										</button>
+									</div>
+								</div>
+								
+								
+							</form>
+		
+							<form id="frm_emer_sinpad2" class="form-horizontal">
+							
+								<div class="row">
+									<label class="col-sm-1 control-label"></label>
+									<div class="col-sm-2  form-group" >
+										<input type="text" id="txt_caja_busqueda" class="form-control">
+									</div>
 									<div class="col-sm-2 opc-center">
 										<button class="btn btn-primary" type="button" id="btn_buscar">
 											<i class="fa fa-search"></i>
@@ -77,7 +105,6 @@
 								</div>
 								
 							</form>
-		
 						</div>
 						<!-- end widget content -->
 		
@@ -98,7 +125,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Relación de Controles de Calidad</h2>
+						<h2>Emergencias de la región</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
@@ -113,10 +140,7 @@
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
 							</a>
-							<a href="#" id="href_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Nuevo">
-								<i class="fa fa-file-o"></i>
-							</a>
+							
 						</div>
 					</header>
 	
@@ -126,18 +150,27 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_emer_sinpad" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
 										<th>Nº</th>
 										<th>Año</th>
-										<th>DDI</th>
-										<th>Almacén</th>
-										<th>N° Reporte de Control de Calidad</th>
+										<th>Mes</th>
 										<th>Fecha</th>
-										<th>Tipo de Control</th>
-										<th>Estado</th>
+										<th>Código SINPAD</th>
+										<th>Fenómeno</th>
+										<th>Nombre Emergencias</th>
+										<th>Región</th>
+										<th>Provincia</th>
+										<th>Distrito</th>
+<!-- 										<th>Población INEI</th> -->
+										<th>Fam. afect.</th>
+										<th>Fam. Dam</th>
+										<th>Total Fam.</th>
+										<th>Pers. Afect.</th>
+										<th>Pers. Dam.</th>
+										<th>Total Pers.</th>
 									</tr>
 								</thead>
 							</table>
@@ -164,4 +197,4 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_control_calidad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_emergencias_sinpad.js"></script>

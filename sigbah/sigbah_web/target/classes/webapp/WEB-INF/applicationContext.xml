@@ -11,9 +11,10 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc classpath:org/springframework/jdbc/config/spring-jdbc-3.2.xsd">
 						
-	<context:property-placeholder location="classpath:jdbc.properties" />
+	<context:property-placeholder location="/WEB-INF/i18n/jdbc.properties" />
 	
 	<!-- Package needed to be scanned for annotation -->
     <context:component-scan base-package="pe.com.sigbah" />
@@ -21,7 +22,8 @@
 	<!-- Use annotation for configuration-->
 	<context:annotation-config />
 	
-	<mvc:view-controller path="/resourceNotFound"/>
+	<mvc:view-controller path="/principal/resourceNotFound" />
+	<mvc:view-controller path="/principal/uncaughtException" />
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
     
@@ -34,41 +36,30 @@
     	  p:basenames="WEB-INF/i18n/messages" p:fallbackToSystemLocale="false"/>
     	  
     <!-- store preferred language configuration in a cookie -->
-    <bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver" id="localeResolver" p:cookieName="locale"/>
+    <bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver" id="localeResolver" p:cookieName="locale" />
     
     <!-- resolves localized <theme_name>.properties files in the classpath to allow for theme support -->
-    <bean class="org.springframework.ui.context.support.ResourceBundleThemeSource" id="themeSource"/>	  
+    <bean class="org.springframework.ui.context.support.ResourceBundleThemeSource" id="themeSource" />	  
     	  
     <!-- Data Source Declaration -->
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-	    <property name="jndiName" value="${jndi.dataSource}"/>
+	    <property name="jndiName" value="${jndi.dataSource}" />
 	    <property name="resourceRef" value="true" />
 	</bean>
 
-	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath*:pe/com/sigbah/mappers/*.xml" />
-    </bean>
-    
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="pe.com.sigbah.mapper" />
-    </bean>
-    
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
-    
+	
     <!-- Configures the @Controller programming model -->
 	<mvc:annotation-driven />
 	
-	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+<!-- 	<bean class="org.springframework.web.client.RestTemplate"> -->
+<!-- 	    <property name="errorHandler"> -->
+<!-- 	        <bean class="pe.com.sigbah.web.controller.BaseResponseErrorHandler" /> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
 	
-	<bean class="org.springframework.web.client.RestTemplate">
-	    <property name="errorHandler">
-	        <bean class="pe.com.sigbah.web.controller.BaseResponseErrorHandler" />
-	    </property>
-	</bean>
-    
     <bean id="viewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
 
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
@@ -80,6 +71,6 @@
 		</property>
 	</bean>
     
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
 </beans>

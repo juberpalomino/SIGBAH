@@ -1,10 +1,14 @@
 package pe.com.sigbah.service.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.EmergenciaBean;
+import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.dao.ProgramacionDao;
 import pe.com.sigbah.service.ProgramacionService;
 
@@ -22,4 +26,21 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	@Autowired
 	private ProgramacionDao programacionDao;
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarEmergencia(pe.com.sigbah.common.bean.EmergenciaBean)
+	 */
+	@Override
+	public List<EmergenciaBean> listarEmergencia(EmergenciaBean emergenciaBean) throws Exception {
+		return programacionDao.listarEmergencia(emergenciaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerRegistroEmergencia(java.lang.Integer)
+	 */
+	@Override
+	public ListaRespuestaEmergenciaBean obtenerRegistroEmergencia(Integer idEmergencia, String codAnio) throws Exception {
+		return programacionDao.obtenerRegistroEmergencia(idEmergencia,  codAnio);
+	}
+	
+	
 }

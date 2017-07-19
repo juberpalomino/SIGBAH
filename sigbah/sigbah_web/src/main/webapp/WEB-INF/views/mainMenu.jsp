@@ -12,23 +12,34 @@
 					<span class="menu-item-parent">Programación de BAH</span>
 				</a>
 				<ul id="ul_pro_bah">
-					<li class="li_men_opcion">
-						<a href="general-elements.html">Emergencias en SINPAD</a>
+					<li class="li_emer_sinpad">
+						<a href="${pageContext.request.contextPath}/programacion-bath/emergencia/inicio/0">Emergencias en SINPAD</a>
 					</li>
 					<li class="li_men_opcion">
-						<a href="buttons.html">Requerimientos EDAN</a>
+						<a href="${pageContext.request.contextPath}/programacion-bath/requerimiento/inicio/0"> Requerimientos EDAN</a>
 					</li>
 					<li class="li_men_opcion">
-						<a href="grid.html">Raciones Operativas</a>
+						<a href="${pageContext.request.contextPath}/programacion-bath/racion/inicio/0">Raciones Operativas</a>
 					</li>
 					<li class="li_men_opcion">
-						<a href="treeview.html">Programación</a>
+						<a href="${pageContext.request.contextPath}/programacion-bath/programacion/inicio/0">Programación</a>
 					</li>
 					<li class="li_men_opcion">
-						<a href="nestable-list.html">Pedidos de Compra</a>
+						<a href="${pageContext.request.contextPath}/programacion-bath/pedido/inicio/0">Pedidos de Compra</a>
 					</li>
 					<li class="li_men_opcion">
-						<a href="jqui.html">Consultas</a>
+						<a href="${pageContext.request.contextPath}/programacion-bath/decreto/inicio/0">Decretos de emergencia</a>
+					</li>
+					<li>
+						<a href="#">Consultas</a>
+						<ul>
+							<li class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/programacion-bath/consulta-programacion/inicio/0">Consulta de programaciones</a>
+							</li>
+							<li class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/programacion-bath/consulta-pedido/inicio/0">Consulta de pedido de compra</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</li>

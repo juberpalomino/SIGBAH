@@ -32,12 +32,80 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Mostrar_ControlCalidad.jsp" />
 	</definition>
 	
+	<definition name="listar_orden_ingreso" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_OrdenIngreso.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_orden_ingreso" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_OrdenIngreso.jsp" />
+	</definition>
+	
+	<definition name="listar_orden_salida" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_OrdenSalida.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_orden_salida" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_OrdenSalida.jsp" />
+	</definition>
+	
+	<definition name="listar_proyecto_manifiesto" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_ProyectoManifiesto.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_proyecto_manifiesto" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_ProyectoManifiesto.jsp" />
+	</definition>
+	
+	<definition name="listar_guia_remision" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_GuiaRemision.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_guia_remision" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_GuiaRemision.jsp" />
+	</definition>
+	
 	<definition name="listar-donaciones" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
 	</definition>
 		
 	<definition name="mantenimiento_donaciones" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Mostrar_PropuestaDonaciones.jsp" />
+	</definition>
+
+	<definition name="listar-donaciones-ingreso" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Orden_Ingreso.jsp" />
+	</definition>
+	
+	
+	<definition name="emergencias-sinpad" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_EmergenciasSINPAD.jsp" />
+	</definition>
+	<definition name="mantenimiento_emergencias-sinpad" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Mostrar_DetalleEmergenciasSINPAD.jsp" />
+	</definition>
+	<definition name="requerimiento-edan" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RequerimientoEDAN.jsp" />
+	</definition>
+	<definition name="racion-operativa" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RacionOperativa.jsp" />
+	</definition>
+	<definition name="programacion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_Programacion.jsp" />
+	</definition>
+	<definition name="pedido-compra" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_PedidoCompra.jsp" />
+	</definition>
+	<definition name="decreto-estado" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_ListarDEE.jsp" />
+	</definition>
+	<definition name="decreto-estado" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_ListarDEE.jsp" />
+	</definition>
+	<definition name="consulta-programacion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Consulta_Programacion.jsp" />
+	</definition>
+	<definition name="consulta-pedido" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Consulta_PedidoCompra.jsp" />
 	</definition>
 	
 </tiles-definitions>

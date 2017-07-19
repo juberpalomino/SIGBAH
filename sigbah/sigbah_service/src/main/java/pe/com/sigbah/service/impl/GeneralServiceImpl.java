@@ -346,4 +346,21 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 		return generalDao.listarProgramacion();
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarFenomeno(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
+	public List<ItemBean> listarFenomeno(ItemBean itemBean) throws Exception {
+		return generalDao.listarFenomeno(itemBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarRacion(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
+	public List<ItemBean> listarRacion(ItemBean itemBean) throws Exception {
+		// TODO Auto-generated method stub
+		return generalDao.listarRacion(itemBean);
+	}
+
 }

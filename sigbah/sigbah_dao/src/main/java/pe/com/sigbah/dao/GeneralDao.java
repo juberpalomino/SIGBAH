@@ -290,4 +290,18 @@ public interface GeneralDao {
 	 */
 	public abstract List<ItemBean> listarProgramacion() throws Exception;
 
+	/**
+	 * @param itemBean
+	 * @return Lista de fenomenos.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarFenomeno(ItemBean itemBean) throws Exception;
+	
+	/**
+	 * @param itemBean
+	 * @return Lista de fenomenos.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarRacion(ItemBean itemBean) throws Exception;
+
 }

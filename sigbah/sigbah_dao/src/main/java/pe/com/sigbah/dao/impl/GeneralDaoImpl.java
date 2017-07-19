@@ -43,6 +43,7 @@ import pe.com.sigbah.mapper.DistritoMapper;
 import pe.com.sigbah.mapper.EmpresaTransporteMapper;
 import pe.com.sigbah.mapper.EstadoDonacionMapper;
 import pe.com.sigbah.mapper.EstadoMapper;
+import pe.com.sigbah.mapper.FenomenoMapper;
 import pe.com.sigbah.mapper.MedioTransporteMapper;
 import pe.com.sigbah.mapper.MesMapper;
 import pe.com.sigbah.mapper.PersonalExternoLocalMapper;
@@ -1165,4 +1166,52 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 		return lista;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.GeneralDao#listarRacion(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
+	public List<ItemBean> listarRacion(ItemBean itemBean) throws Exception {
+		ItemBean item = new ItemBean();
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+			item.setIcodigo(1);
+			item.setDescripcion("Cruda");
+			lista.add(item);
+			item = new ItemBean();
+			item.setIcodigo(2);
+			item.setDescripcion("Fria");
+			lista.add(item);
+		return lista;
+	}
+	
+	@Override
+	public List<ItemBean> listarFenomeno(ItemBean itemBean) throws Exception {
+		LOGGER.info("[listarFenomeno] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_FENOMENO", parametro, Types.NUMERIC);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_FENOMENOS");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_FENOMENO", new SqlParameter("PI_IDE_FENOMENO", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new FenomenoMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarEstado] Fin ");
+		return lista;
+	}
 }
