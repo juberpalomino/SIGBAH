@@ -2,7 +2,7 @@
 <!-- Left panel : Navigation area -->
 <!-- Note: This width of the aside area can be adjusted through LESS/SASS variables -->
 <aside id="left-panel">
-
+ 
 	<nav>
 		<ul id="ul_men_opcion">
 		
