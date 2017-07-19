@@ -2,14 +2,9 @@ package pe.com.sigbah.web.controller.common;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.util.Properties;
-
-import javax.servlet.ServletContext;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,6 +19,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import pe.com.sigbah.common.util.Constantes;
@@ -42,14 +38,14 @@ public class ManageAlfresco implements Serializable {
 	protected transient final Log LOGGER = LogFactory.getLog(getClass());
 	
 	@Autowired
-	private ServletContext context;
+	private MessageSource messageSource;
 	
 	/**
 	 * @param servletContext
 	 */
-	public void setServletContext(ServletContext servletContext) {
-	    this.context = servletContext;
-	}
+//	public void setServletContext(ServletContext servletContext) {
+//	    this.context = servletContext;
+//	}
 
 	/**
 	 * @param path
@@ -63,20 +59,25 @@ public class ManageAlfresco implements Serializable {
 		try {
 			LOGGER.info("[uploadFile] Inicio - Se ingresa a ejecutar Alfresco ");
 			
-			String ip = getPropertyValue("params.alfresco.ip");
-			Integer port = Integer.parseInt(getPropertyValue("params.alfresco.port"));
-			String user = getPropertyValue("params.alfresco.user");
-			String pass = getPropertyValue("params.alfresco.pass");
+			String ip = getPropertyValue(messageSource, "params.alfresco.ip");
+			String port = getPropertyValue(messageSource, "params.alfresco.port");
+			String user = getPropertyValue(messageSource, "params.alfresco.user");
+			String pass = getPropertyValue(messageSource, "params.alfresco.pass");
+			
+			LOGGER.info("[uploadFile] ip >>> "+ip);
+			LOGGER.info("[uploadFile] port >>> "+port);
+			LOGGER.info("[uploadFile] user >>> "+user);
+			LOGGER.info("[uploadFile] pass >>> "+pass);
 			
 			String authTicket = login(user, pass, ip, port);
 			
-			String description = getPropertyValue("params.alfresco.description");			
-			String siteId = getPropertyValue("params.alfresco.siteId");
-			String containerId = getPropertyValue("params.alfresco.containerId");
+			String description = getPropertyValue(messageSource, "params.alfresco.description");			
+			String siteId = getPropertyValue(messageSource, "params.alfresco.siteId");
+			String containerId = getPropertyValue(messageSource, "params.alfresco.containerId");
 
 			HttpClient client = new DefaultHttpClient();
-			HttpHost targetHost = new HttpHost(ip, port, getPropertyValue("params.alfresco.http"));
-			HttpPost mPost = new HttpPost(getPropertyValue("params.alfresco.http.post.upload") + authTicket);
+			HttpHost targetHost = new HttpHost(ip, Integer.parseInt(port), getPropertyValue(messageSource, "params.alfresco.http"));
+			HttpPost mPost = new HttpPost(getPropertyValue(messageSource, "params.alfresco.http.post.upload") + authTicket);
 
 			File upFile = new File(path);
 			FileBody bin = new FileBody(upFile);
@@ -103,7 +104,7 @@ public class ManageAlfresco implements Serializable {
 
 			String output = null;
 			
-			String spacesStore = getPropertyValue("params.alfresco.http.spaces.store");
+			String spacesStore = getPropertyValue(messageSource, "params.alfresco.http.spaces.store");
 
 			LOGGER.info("[uploadFile] Output from Server ....");
 			
@@ -136,17 +137,17 @@ public class ManageAlfresco implements Serializable {
 	 * @return Retorna el ticket de acceso.
 	 * @throws Exception 
 	 */
-	public String login(String user, String pass, String ip, Integer port) throws Exception {
+	public String login(String user, String pass, String ip, String port) throws Exception {
 		try {
 			StringBuilder url = new StringBuilder();
-			url.append(getPropertyValue("params.alfresco.http.url"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.url"));
 			url.append(ip);
 			url.append(Constantes.DOS_PUNTOS);
 			url.append(port);
-			url.append(getPropertyValue("params.alfresco.http.alfresco"));
-			url.append(getPropertyValue("params.alfresco.http.service"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.alfresco"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.service"));
 			url.append(user);
-			url.append(getPropertyValue("params.alfresco.http.pass"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.pass"));
 			url.append(pass);
 
 			LOGGER.info("[login] url >>> "+url.toString());
@@ -156,7 +157,7 @@ public class ManageAlfresco implements Serializable {
 			HttpGet mGet = new HttpGet(url.toString());
 			mGet.addHeader("accept", "application/json");
 			
-			String ticket = getPropertyValue("params.alfresco.http.ticket");
+			String ticket = getPropertyValue(messageSource, "params.alfresco.http.ticket");
 
 			HttpResponse response = client.execute(mGet);
 			BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -204,24 +205,29 @@ public class ManageAlfresco implements Serializable {
 	 */
 	public String downloadFile(String id) throws Exception {
 		try {
-			String ip = getPropertyValue("params.alfresco.ip");
-			Integer port = Integer.parseInt(getPropertyValue("params.alfresco.port"));
-			String user = getPropertyValue("params.alfresco.user");
-			String pass = getPropertyValue("params.alfresco.pass");
+			String ip = getPropertyValue(messageSource, "params.alfresco.ip");
+			String port = getPropertyValue(messageSource, "params.alfresco.port");
+			String user = getPropertyValue(messageSource, "params.alfresco.user");
+			String pass = getPropertyValue(messageSource, "params.alfresco.pass");
+			
+			LOGGER.info("[downloadFile] ip >>> "+ip);
+			LOGGER.info("[downloadFile] port >>> "+port);
+			LOGGER.info("[downloadFile] user >>> "+user);
+			LOGGER.info("[downloadFile] pass >>> "+pass);
 			
 			String ticket = login(user, pass, ip, port);
 			
 			StringBuilder url = new StringBuilder();
-			url.append(getPropertyValue("params.alfresco.http.url"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.url"));
 			url.append(ip);
 			url.append(Constantes.DOS_PUNTOS);
 			url.append(port);
-			url.append(getPropertyValue("params.alfresco.http.alfresco"));
-			url.append(getPropertyValue("params.alfresco.http.worskpace"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.alfresco"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.worskpace"));
 			url.append(id);
-			url.append(getPropertyValue("params.alfresco.http.alf_ticket"));
+			url.append(getPropertyValue(messageSource, "params.alfresco.http.alf_ticket"));
 			url.append(ticket);
-			
+
 			LOGGER.info("[downloadFile] url >>> "+url.toString());
 			
 			return url.toString();			
@@ -236,29 +242,40 @@ public class ManageAlfresco implements Serializable {
 	 * @param key - Llave de codigo de valor;
 	 * @return El valor de la propiedad correspondiente a la llave.
 	 */
-	private String getPropertyValue(String key) {
-		Properties properties = new Properties();
-		String directorio = null;
-		InputStream inputStream = null;
-		try {
-			inputStream = context.getResourceAsStream(Constantes.FICHERO_CONFIGURACION);
-			properties.load(inputStream);
-			if (inputStream == null) {
-				throw new FileNotFoundException("Archivo properties '" + Constantes.FICHERO_CONFIGURACION +"' no se encuentra en el classpath");
-			}
-			directorio = properties.getProperty(key);
-		} catch (IOException e) {			
-			LOGGER.error(e.getMessage(), e);
-		} finally {
-		    if (inputStream != null) {
-		    	try {
-					inputStream.close();
-				} catch (IOException e) {
-					LOGGER.error(e.getMessage(), e);
-				}
-		    }
-		}
-		return directorio;
+//	private String getPropertyValue(messageSource, String key) {
+//		Properties properties = new Properties();
+//		String directorio = null;
+//		InputStream inputStream = null;
+//		try {
+//			inputStream = context.getResourceAsStream(Constantes.FICHERO_CONFIGURACION);
+//			properties.load(inputStream);
+//			if (inputStream == null) {
+//				throw new FileNotFoundException("Archivo properties '" + Constantes.FICHERO_CONFIGURACION +"' no se encuentra en el classpath");
+//			}
+//			directorio = properties.getProperty(key);
+//		} catch (IOException e) {			
+//			LOGGER.error(e.getMessage(), e);
+//		} finally {
+//		    if (inputStream != null) {
+//		    	try {
+//					inputStream.close();
+//				} catch (IOException e) {
+//					LOGGER.error(e.getMessage(), e);
+//				}
+//		    }
+//		}
+//		return directorio;
+//	}
+	
+	/**
+	 * Obtener mensaje i18n con Locale.Default
+	 * 
+	 * @param messageSource
+	 * @param mensaje
+	 * @return Retorna el mensaje del archivo properties.
+	 */
+	private static String getPropertyValue(MessageSource messageSource, String mensaje) {
+		return messageSource.getMessage(mensaje, null, Locale.getDefault());
 	}
 
 }

@@ -304,5 +304,10 @@ public interface GeneralService {
 	 */
 	public abstract List<ItemBean> listarFenomeno(ItemBean itemBean) throws Exception;
 
+	/**
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarMotivoTraslado() throws Exception;
 
 }

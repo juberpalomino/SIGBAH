@@ -115,12 +115,22 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Nº Guia de Remisión:</label>
+														<label class="col-sm-2 control-label">Nº Guia de Remisión:</label>
 														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_nro_gui_remision" class="form-control" disabled>
 														</div>
+														
+														<label class="col-sm-2 control-label">Motivo Traslado:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_mot_traslado" name="sel_mot_traslado" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_motivo_traslado}" var="item">
+																    <option value="${item.icodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
 													
-														<label class="col-sm-3 control-label">Estado:</label>
+														<label class="col-sm-2 control-label">Estado:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_estado" name="sel_estado" class="form-control">
 																<c:forEach items="${lista_estado}" var="item">

@@ -138,6 +138,8 @@ public class GuiaRemisionController extends BaseController {
 
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
         	
+        	model.addAttribute("lista_motivo_traslado", generalService.listarMotivoTraslado());
+        	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
         } catch (Exception e) {

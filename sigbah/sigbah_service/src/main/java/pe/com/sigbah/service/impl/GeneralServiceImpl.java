@@ -359,8 +359,15 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	 */
 	@Override
 	public List<ItemBean> listarRacion(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
 		return generalDao.listarRacion(itemBean);
+	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarMotivoTraslado()
+	 */
+	@Override
+	public List<ItemBean> listarMotivoTraslado() throws Exception {
+		return generalDao.listarMotivoTraslado();
 	}
 
 }

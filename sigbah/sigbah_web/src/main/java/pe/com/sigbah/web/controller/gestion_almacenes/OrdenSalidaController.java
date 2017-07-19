@@ -432,6 +432,7 @@ public class OrdenSalidaController extends BaseController {
         	ordenSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
         	ordenSalida = logisticaService.grabarOrdenSalida(ordenSalidaBean);
+        	ordenSalida.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

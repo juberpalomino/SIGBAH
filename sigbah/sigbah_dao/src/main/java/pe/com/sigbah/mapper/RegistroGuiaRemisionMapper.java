@@ -42,6 +42,8 @@ public class RegistroGuiaRemisionMapper implements RowMapper<GuiaRemisionBean> {
 		guiaRemision.setObservacionManifiestoCarga(rs.getString("OBSERVACION_MANIFIESTO"));
 		guiaRemision.setNroActaEntregaRecepcion(rs.getString("NRO_ACTA"));
 		guiaRemision.setObservacionActaEntregaRecepcion(rs.getString("OBSERVACION_ACTA"));
+		guiaRemision.setIdMotivoTraslado(rs.getInt("FK_IDE_MOTIVO_TRASLADO"));
+		guiaRemision.setMotivoTraslado(rs.getString("MOTIVO_TRASLADO"));
 		return guiaRemision;
 	}
 

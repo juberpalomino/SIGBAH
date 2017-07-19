@@ -1,21 +1,19 @@
 package pe.com.sigbah.web.controller.common;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.Properties;
+import java.util.Locale;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,14 +40,14 @@ public class ArchivoController extends BaseController {
 	private ManageAlfresco manageAlfresco;
 	
 	@Autowired
-	private ServletContext context;
+	private MessageSource messageSource;
 	
 	/**
 	 * @param servletContext
 	 */
-	public void setServletContext(ServletContext servletContext) {
-	    this.context = servletContext;
-	}	
+//	public void setServletContext(ServletContext servletContext) {
+//	    this.context = servletContext;
+//	}	
 	
 	/**
 	 * @param request
@@ -61,12 +59,14 @@ public class ArchivoController extends BaseController {
 	public String cargarArchivo(MultipartHttpServletRequest request, HttpServletResponse response) {
 		String alfrescoId = null;
 		try {			
+			LOGGER.info("[cargarArchivo] Inicio ");
+			
 			StringBuilder path = new StringBuilder();
 			path.append(getPath(request));
 			path.append(File.separator);
-			path.append(getPropertyValue("params.file.resources"));
+			path.append(getPropertyValue(messageSource, "params.file.resources"));
 			path.append(File.separator);
-			path.append(getPropertyValue("params.file.upload"));
+			path.append(getPropertyValue(messageSource, "params.file.upload"));
 			
 			Iterator<String> itr = request.getFileNames();
 			MultipartFile mpf = request.getFile(itr.next());
@@ -88,7 +88,7 @@ public class ArchivoController extends BaseController {
 
 			String contentType = request.getContentType();
 			
-			String uploadDirectory = getPropertyValue(request.getParameter("uploadDirectory"));
+			String uploadDirectory = getPropertyValue(messageSource, request.getParameter("uploadDirectory"));
 			
 			alfrescoId = manageAlfresco.uploadFile(file_doc.toString(), uploadDirectory, contentType);
 			
@@ -167,29 +167,40 @@ public class ArchivoController extends BaseController {
 	 * @param key - Llave de codigo de valor;
 	 * @return El valor de la propiedad correspondiente a la llave.
 	 */
-	private String getPropertyValue(String key) {
-		Properties properties = new Properties();
-		String directorio = null;
-		InputStream inputStream = null;
-		try {
-			inputStream = context.getResourceAsStream(Constantes.FICHERO_CONFIGURACION);
-			properties.load(inputStream);
-			if (inputStream == null) {
-				throw new FileNotFoundException("Archivo properties '" + Constantes.FICHERO_CONFIGURACION +"' no se encuentra en el classpath");
-			}
-			directorio = properties.getProperty(key);
-		} catch (IOException e) {			
-			LOGGER.error(e.getMessage(), e);
-		} finally {
-		    if (inputStream != null) {
-		    	try {
-					inputStream.close();
-				} catch (IOException e) {
-					LOGGER.error(e.getMessage(), e);
-				}
-		    }
-		}
-		return directorio;
+//	private String getPropertyValue(String key) {
+//		Properties properties = new Properties();
+//		String directorio = null;
+//		InputStream inputStream = null;
+//		try {
+//			inputStream = context.getResourceAsStream(Constantes.FICHERO_CONFIGURACION);
+//			properties.load(inputStream);
+//			if (inputStream == null) {
+//				throw new FileNotFoundException("Archivo properties '" + Constantes.FICHERO_CONFIGURACION +"' no se encuentra en el classpath");
+//			}
+//			directorio = properties.getProperty(key);
+//		} catch (IOException e) {			
+//			LOGGER.error(e.getMessage(), e);
+//		} finally {
+//		    if (inputStream != null) {
+//		    	try {
+//					inputStream.close();
+//				} catch (IOException e) {
+//					LOGGER.error(e.getMessage(), e);
+//				}
+//		    }
+//		}
+//		return directorio;
+//	}
+	
+	/**
+	 * Obtener mensaje i18n con Locale.Default
+	 * 
+	 * @param messageSource
+	 * @param mensaje
+	 * @return Retorna el mensaje del archivo properties.
+	 */
+	private static String getPropertyValue(MessageSource messageSource, String mensaje) {
+		return messageSource.getMessage(mensaje, null, Locale.getDefault());
 	}
 	
 }

@@ -36,6 +36,8 @@ public class GuiaRemisionBean extends BaseOutputBean {
 	private String observacionManifiestoCarga;
 	private String observacionActaEntregaRecepcion;
 	private String tipoOrigen;
+	private Integer idMotivoTraslado;
+	private String motivoTraslado;
 
 
 	/**
@@ -422,4 +424,33 @@ public class GuiaRemisionBean extends BaseOutputBean {
 	public void setIdSalida(Integer idSalida) {
 		this.idSalida = idSalida;
 	}
+
+	/**
+	 * @return the idMotivoTraslado
+	 */
+	public Integer getIdMotivoTraslado() {
+		return idMotivoTraslado;
+	}
+
+	/**
+	 * @param idMotivoTraslado the idMotivoTraslado to set
+	 */
+	public void setIdMotivoTraslado(Integer idMotivoTraslado) {
+		this.idMotivoTraslado = idMotivoTraslado;
+	}
+
+	/**
+	 * @return the motivoTraslado
+	 */
+	public String getMotivoTraslado() {
+		return motivoTraslado;
+	}
+
+	/**
+	 * @param motivoTraslado the motivoTraslado to set
+	 */
+	public void setMotivoTraslado(String motivoTraslado) {
+		this.motivoTraslado = motivoTraslado;
+	}
+	
 }

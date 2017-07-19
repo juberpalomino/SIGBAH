@@ -303,5 +303,11 @@ public interface GeneralDao {
 	 * @throws Exception
 	 */
 	public abstract List<ItemBean> listarRacion(ItemBean itemBean) throws Exception;
+	
+	/**
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarMotivoTraslado() throws Exception;
 
 }

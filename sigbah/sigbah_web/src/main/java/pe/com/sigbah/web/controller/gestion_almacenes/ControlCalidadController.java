@@ -267,11 +267,11 @@ public class ControlCalidadController extends BaseController {
         	controlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
 			if (!isNullInteger(controlCalidadBean.getIdControlCalidad())) {				
-				controlCalidad = logisticaService.actualizarRegistroControlCalidad(controlCalidadBean);
-				controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+				controlCalidad = logisticaService.actualizarRegistroControlCalidad(controlCalidadBean);				
 			} else {			
 				controlCalidad = logisticaService.insertarRegistroControlCalidad(controlCalidadBean);			
 			}
+			controlCalidad.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

@@ -233,6 +233,7 @@ public class ProyectoManifiestoController extends BaseController {
         	proyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
         	proyectoManifiesto = logisticaService.grabarProyectoManifiesto(proyectoManifiestoBean);
+        	proyectoManifiesto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

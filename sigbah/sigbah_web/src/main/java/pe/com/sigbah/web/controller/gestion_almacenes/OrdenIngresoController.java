@@ -262,6 +262,7 @@ public class OrdenIngresoController extends BaseController {
         	ordenIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
         	ordenIngreso = logisticaService.grabarOrdenIngreso(ordenIngresoBean);
+        	ordenIngreso.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
