@@ -112,7 +112,7 @@ function listarDetalleLocalidad(respuesta) {
 		ordering : false,
 		info : true
 	});
-	
+	   
 	listaLocalidadesCache = respuesta;
 }
 
