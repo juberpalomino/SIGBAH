@@ -50,7 +50,7 @@ $(document).ready(function() {
 			$('#txt_uni_medida').val('');
 		}
 	});
-	
+	   
 
 	
 });
