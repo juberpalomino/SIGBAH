@@ -12,6 +12,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -22,7 +23,6 @@ import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
-import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -444,8 +444,48 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	 * @see pe.com.sigbah.service.LogisticaService#procesarManifiestoVehiculo(pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean)
 	 */
 	@Override
-	public String procesarManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception {
-		return logisticaDao.procesarManifiestoVehiculo(proyectoManifiestoVehiculoBean);
+	public ManifiestoVehiculoBean procesarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception {
+		return logisticaDao.procesarManifiestoVehiculo(manifiestoVehiculoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public List<GuiaRemisionBean> listarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.listarGuiaRemision(guiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroGuiaRemision(java.lang.Integer)
+	 */
+	@Override
+	public GuiaRemisionBean obtenerRegistroGuiaRemision(Integer idGuiaRemision) throws Exception {
+		return logisticaDao.obtenerRegistroGuiaRemision(idGuiaRemision);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#insertarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean insertarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.insertarGuiaRemision(guiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#anularGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean anularGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.anularGuiaRemision(guiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#actualizarGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.actualizarGuiaRemision(guiaRemisionBean);
 	}
 
 }

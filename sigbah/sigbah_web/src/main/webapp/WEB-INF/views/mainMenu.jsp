@@ -66,7 +66,7 @@
 								</a>
 							</li>
 							<li id="li_gui_remision" class="li_men_opcion">
-								<a href="glyph.html">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/guia-remision/inicio/0">
 									<i class="fa fa-caret-right"></i>Guia de Remision
 								</a>
 							</li>

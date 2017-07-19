@@ -56,7 +56,7 @@ $(document).ready(function() {
 			var params = {
 				idProyectoManifiesto : idProyectoManifiesto
 			};
-			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/eliminarProductoProyectoManifiesto', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/verificarProductosProgramacion', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -65,9 +65,9 @@ $(document).ready(function() {
 						$.SmartMessageBox({
 							title : 'Se va reemplazar los productos de la programación.<br>Está usted seguro ?',
 							content : '',
-							buttons : '[Cancelar][Aceptar]'
+							buttons : '[NO][SI]'
 						}, function(ButtonPressed) {
-							if (ButtonPressed === 'Aceptar') {				
+							if (ButtonPressed === 'SI') {				
 								loadding(true);								
 								var params_proy = { 
 									idProyectoManifiesto : idProyectoManifiesto,
@@ -376,29 +376,30 @@ $(document).ready(function() {
 	$('#btn_recalcular').click(function(e) {
 		e.preventDefault();
 
-		var indices = [];
-		var vehiculos = [];
-		var idTipoCamion = new Object();
-//		var arrDetalleVehiculo = null;
-//		var arrDetalleVehiculo = null;
-//		var arrDetalleVehiculo = null;
+		var indices = [];		
+		var arrFlagVehiculo= [];	
+		var arrIdTipoCamion = [];
+		var arrVolumen = [];
 		tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				idTipoCamion = listaVehiculosCache[index].idTipoCamion;
-				vehiculos.push(idTipoCamion);
+				arrFlagVehiculo.push(listaVehiculosCache[index].flagVehiculo);
+				arrIdTipoCamion.push(listaVehiculosCache[index].idTipoCamion);
+				arrVolumen.push(listaVehiculosCache[index].volumen);
 			}
 		});
 		
 		if (indices.length == 0) {
 			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 		} else {		
-			loadding(true);								
-			var proyectoManifiestoVehiculo = {
+			loadding(true);
+			var params = {
 				idProyectoManifiesto : $('#hid_cod_proyecto').val(),
-				vehiculos : vehiculos
-			};						
-			consultarAjax('GET', '/gestion-almacenes/proyecto-manifiesto/procesarManifiestoVehiculo', proyectoManifiestoVehiculo, function(respuesta) {
+				arrFlagVehiculo : arrFlagVehiculo,
+				arrIdTipoCamion : arrIdTipoCamion,
+				arrVolumen : arrVolumen
+			};
+			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/procesarManifiestoVehiculo', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -729,7 +730,29 @@ function listarDetalleProductos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : true,
+		'footerCallback' : function ( row, data, start, end, display ) {
+			var api = this.api(), data;	 
+			
+			// Remove the formatting to get integer data for summation
+			var intVal = function ( i ) {
+				return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ?	i : 0;
+			};
+ 
+			// total_page_peso over this page
+			total_page_peso = api.column(6, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			
+			// total_page_peso over this page
+			total_page_volumen = api.column(8, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+
+			// Update footer
+			$('#sp_tot_peso').html(parseFloat(total_page_peso).toFixed(2));
+			$('#sp_tot_volumen').html(parseFloat(total_page_volumen).toFixed(2));
+		}
 	});
 	
 	listaProductosCache = respuesta;

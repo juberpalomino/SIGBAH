@@ -137,6 +137,8 @@ public final class Constantes implements Serializable {
 	public static final BigDecimal AVANCE_CIEN_POR_CIENTO = BigDecimal.valueOf(100);
 
 	/* REPORTES */	
+	public static final String REPORT_PATH_RESOURCES = "resources";
+			
 	public static final String REPORT_PATH_ADMINISTRACION = new StringBuilder("resources")
 			.append(File.separator).append("report").append(File.separator)
 			.append("administracion").append(File.separator).append("jrxml")

@@ -8,6 +8,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -18,7 +19,6 @@ import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
-import pe.com.sigbah.common.bean.ProyectoManifiestoVehiculoBean;
 
 /**
  * @className: LogisticaService.java
@@ -78,7 +78,7 @@ public interface LogisticaService {
 
 	/**
 	 * @param producto
-	 * @return Objeto.
+	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
 	public abstract List<ProductoControlCalidadBean> listarProductoControlCalidad(ProductoControlCalidadBean producto) throws Exception;
@@ -99,7 +99,7 @@ public interface LogisticaService {
 	
 	/**
 	 * @param documentoControlCalidadBean
-	 * @return Objeto.
+	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
 	public abstract List<DocumentoControlCalidadBean> listarDocumentoControlCalidad(DocumentoControlCalidadBean documentoControlCalidadBean) throws Exception;
@@ -197,14 +197,14 @@ public interface LogisticaService {
 
 	/**
 	 * @param documentoIngresoBean
-	 * @return Lista de registros.
+	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public abstract DocumentoIngresoBean grabarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception;
 
 	/**
 	 * @param documentoIngresoBean
-	 * @return Lista de registros.
+	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public abstract DocumentoIngresoBean eliminarDocumentoIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception;
@@ -240,7 +240,7 @@ public interface LogisticaService {
 	
 	/**
 	 * @param productoSalidaBean
-	 * @return Objeto.
+	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
 	public abstract List<ProductoSalidaBean> listarProductoSalida(ProductoSalidaBean productoSalidaBean) throws Exception;
@@ -268,14 +268,14 @@ public interface LogisticaService {
 
 	/**
 	 * @param documentoSalidaBean
-	 * @return Lista de registros.
+	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public abstract DocumentoSalidaBean grabarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
 
 	/**
 	 * @param documentoSalidaBean
-	 * @return Lista de registros.
+	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public abstract DocumentoSalidaBean eliminarDocumentoSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
@@ -345,14 +345,14 @@ public interface LogisticaService {
 
 	/**
 	 * @param documentoProyectoManifiestoBean
-	 * @return Lista de registros.
+	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public abstract DocumentoProyectoManifiestoBean grabarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception;
 
 	/**
 	 * @param documentoProyectoManifiestoBean
-	 * @return Lista de registros.
+	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public abstract DocumentoProyectoManifiestoBean eliminarDocumentoProyectoManifiesto(DocumentoProyectoManifiestoBean documentoProyectoManifiestoBean) throws Exception;
@@ -366,7 +366,7 @@ public interface LogisticaService {
 
 	/**
 	 * @param proyectoManifiestoBean
-	 * @return Lista de registros.
+	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public abstract String procesarManifiestoProducto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
@@ -379,10 +379,45 @@ public interface LogisticaService {
 	public abstract List<ManifiestoVehiculoBean> listarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception;
 
 	/**
-	 * @param proyectoManifiestoVehiculoBean
+	 * @param manifiestoVehiculoBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ManifiestoVehiculoBean procesarManifiestoVehiculo(ManifiestoVehiculoBean manifiestoVehiculoBean) throws Exception;
+
+	/**
+	 * @param guiaRemisionBean
 	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
-	public abstract String procesarManifiestoVehiculo(ProyectoManifiestoVehiculoBean proyectoManifiestoVehiculoBean) throws Exception;
+	public abstract List<GuiaRemisionBean> listarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+
+	/**
+	 * @param idGuiaRemision
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract GuiaRemisionBean obtenerRegistroGuiaRemision(Integer idGuiaRemision) throws Exception;
+
+	/**
+	 * @param guiaRemisionBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract GuiaRemisionBean insertarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+	
+	/**
+	 * @param guiaRemisionBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract GuiaRemisionBean anularGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+	
+	/**
+	 * @param guiaRemisionBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
 	
 }

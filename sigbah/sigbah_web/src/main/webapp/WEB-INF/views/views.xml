@@ -56,6 +56,14 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_ProyectoManifiesto.jsp" />
 	</definition>
 	
+	<definition name="listar_guia_remision" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_GuiaRemision.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_guia_remision" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_GuiaRemision.jsp" />
+	</definition>
+	
 	<definition name="listar-donaciones" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
 	</definition>

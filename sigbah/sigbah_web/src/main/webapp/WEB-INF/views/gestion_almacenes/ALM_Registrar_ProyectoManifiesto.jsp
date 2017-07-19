@@ -292,6 +292,21 @@
 															<th>Costo Total (S/.)</th>
 														</tr>
 													</thead>
+													<tfoot>
+														<tr>
+															<td colspan="6">
+																<span class="label-bold" style="float:right;">Totales:</span>
+															</td>
+															<td colspan="1">
+																<span id="sp_tot_peso"></span>
+															</td>															
+															<td colspan="1"></td>															
+															<td colspan="1">
+																<span id="sp_tot_volumen"></span>
+															</td>
+															<td colspan="2"></td>
+														</tr>
+													</tfoot>
 												</table>
 
 											</div>

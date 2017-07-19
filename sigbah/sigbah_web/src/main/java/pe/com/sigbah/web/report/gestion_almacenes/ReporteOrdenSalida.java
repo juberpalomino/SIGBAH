@@ -225,7 +225,7 @@ public class ReporteOrdenSalida implements Serializable {
 			table = new PdfPTable(3);
 			table.setWidths(ftit);
 			
-			String path = ruta.substring(0, ruta.indexOf("resources"));			
+			String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));			
 			Image img = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
 			cell = new PdfPCell(img, true);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
