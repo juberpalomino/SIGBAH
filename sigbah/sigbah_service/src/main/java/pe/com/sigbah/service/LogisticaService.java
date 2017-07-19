@@ -3,6 +3,9 @@ package pe.com.sigbah.service;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
+import pe.com.sigbah.common.bean.DetalleManifiestoCargaBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
@@ -419,5 +422,29 @@ public interface LogisticaService {
 	 * @throws Exception 
 	 */
 	public abstract GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+
+	/**
+	 * @param idGuiaRemision
+	 * @param tipoOrigen
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<DetalleGuiaRemisionBean> listarDetalleGuiaRemision(Integer idGuiaRemision, String tipoOrigen) throws Exception;
+
+	/**
+	 * @param idGuiaRemision
+	 * @param tipoOrigen
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<DetalleManifiestoCargaBean> listarDetalleManifiestoCarga(Integer idGuiaRemision, String tipoOrigen) throws Exception;
+	
+	/**
+	 * @param idGuiaRemision
+	 * @param tipoOrigen
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<DetalleActaEntregaBean> listarDetalleActaEntrega(Integer idGuiaRemision, String tipoOrigen) throws Exception;
 	
 }

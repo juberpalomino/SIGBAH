@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
+import pe.com.sigbah.common.bean.DetalleManifiestoCargaBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
@@ -295,53 +298,17 @@ public class GuiaRemisionController extends BaseController {
 							  HttpServletResponse response) {
 	    try {
 	    	
-//	    	GuiaRemisionBean guiaRemision = logisticaService.obtenerRegistroGuiaRemision(codigo);
-//	    	ProductoGuiaRemisionBean producto = new ProductoGuiaRemisionBean();
-//	    	producto.setIdGuiaRemision(codigo);
-//	    	List<ProductoGuiaRemisionBean> listaProducto = logisticaService.listarProductoGuiaRemision(producto);
-//	    	
-//	    	DocumentoGuiaRemisionBean documento = new DocumentoGuiaRemisionBean();
-//	    	documento.setIdGuiaRemision(codigo);
-//	    	List<DocumentoGuiaRemisionBean> listaDocumento = logisticaService.listarDocumentoGuiaRemision(documento);	    	
+	    	if (ind_gui.equals(Constantes.ONE_STRING)) {
+	    		generarReporteGuiaRemision(codigo, request, response);
+	    	}
+	    	
+	    	if (ind_man.equals(Constantes.ONE_STRING)) {
+	    		generarReporteManifiestoCarga(codigo, request, response);
+	    	}
 
-	    	StringBuilder file_path = new StringBuilder();
-	    	file_path.append(getPath(request));
-	    	file_path.append(File.separator);
-	    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
-	    	file_path.append(File.separator);
-	    	file_path.append(Calendar.getInstance().getTime().getTime());
-	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
-	    	
-	    	String file_name = "Proyecto_Manifiesto";
-			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-			
-			ReporteGuiaRemision reporte = new ReporteGuiaRemision();
-//			reporte.generaPDFReporteGuiaRemision(file_path.toString(), guiaRemision, listaProducto, listaDocumento);
-			
-			response.resetBuffer();
-            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-			response.setHeader("Pragma", "no-cache");
-			response.setHeader("Cache-Control", "no-store");
-			response.setHeader("Pragma", "private");
-			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-			response.setDateHeader("Expires", 1);
-	    	
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			baos = convertPDFToByteArrayOutputStream(file_path.toString());
-			
-			// Captured backflow
-	        OutputStream out = response.getOutputStream();
-	        baos.writeTo(out); // We write in that flow
-	        out.flush(); // We emptied the flow
-	    	out.close(); // We close the flow
-	    	
-	    	File file_temp = new File(file_path.toString());
-    		if (file_temp.delete()) {
-    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" se borra el archivo temporal.");
-    		} else {
-    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
-    		}
+	    	if (ind_act.equals(Constantes.ONE_STRING)) {
+	    		generarReporteActaEntrega(codigo, request, response);
+	    	}
     		
 	    	return Constantes.COD_EXITO_GENERAL;
 	    } catch (Exception e) {
@@ -350,8 +317,133 @@ public class GuiaRemisionController extends BaseController {
 	    } 
 	}
 	
-	private void generarReporteGuiaRemision() {
+	private void generarReporteGuiaRemision(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		StringBuilder file_path = new StringBuilder();
+    	file_path.append(getPath(request));
+    	file_path.append(File.separator);
+    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
+    	file_path.append(File.separator);
+    	file_path.append(Calendar.getInstance().getTime().getTime());
+    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
+    	
+    	String file_name = "Guia_Remision";
+		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 		
+		List<DetalleGuiaRemisionBean> listaGuiaRemision = logisticaService.listarDetalleGuiaRemision(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+		
+		ReporteGuiaRemision reporte = new ReporteGuiaRemision();
+		reporte.generaPDFReporteGuiaRemision(file_path.toString(), listaGuiaRemision);
+		
+		response.resetBuffer();
+        response.setContentType(Constantes.MIME_APPLICATION_PDF);
+        response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "private");
+		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+		response.setDateHeader("Expires", 1);
+    	
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		baos = convertPDFToByteArrayOutputStream(file_path.toString());
+		
+		// Captured backflow
+        OutputStream out = response.getOutputStream();
+        baos.writeTo(out); // We write in that flow
+        out.flush(); // We emptied the flow
+    	out.close(); // We close the flow
+    	
+    	File file_temp = new File(file_path.toString());
+		if (file_temp.delete()) {
+			LOGGER.info("[generarReporteGuiaRemision] "+file_temp.getName()+" se borra el archivo temporal.");
+		} else {
+			LOGGER.info("[generarReporteGuiaRemision] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+		}
+	}
+	
+	private void generarReporteManifiestoCarga(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		StringBuilder file_path = new StringBuilder();
+    	file_path.append(getPath(request));
+    	file_path.append(File.separator);
+    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
+    	file_path.append(File.separator);
+    	file_path.append(Calendar.getInstance().getTime().getTime());
+    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
+    	
+    	String file_name = "Guia_Remision";
+		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+		
+		List<DetalleManifiestoCargaBean> listaManifiestoCarga = logisticaService.listarDetalleManifiestoCarga(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+		
+		ReporteGuiaRemision reporte = new ReporteGuiaRemision();
+		reporte.generaPDFReporteManifiestoCarga(file_path.toString(), listaManifiestoCarga);
+		
+		response.resetBuffer();
+        response.setContentType(Constantes.MIME_APPLICATION_PDF);
+        response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "private");
+		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+		response.setDateHeader("Expires", 1);
+    	
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		baos = convertPDFToByteArrayOutputStream(file_path.toString());
+		
+		// Captured backflow
+        OutputStream out = response.getOutputStream();
+        baos.writeTo(out); // We write in that flow
+        out.flush(); // We emptied the flow
+    	out.close(); // We close the flow
+    	
+    	File file_temp = new File(file_path.toString());
+		if (file_temp.delete()) {
+			LOGGER.info("[generarReporteManifiestoCarga] "+file_temp.getName()+" se borra el archivo temporal.");
+		} else {
+			LOGGER.info("[generargenerarReporteManifiestoCargaReporteGuiaRemision] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+		}
+	}
+	
+	private void generarReporteActaEntrega(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		StringBuilder file_path = new StringBuilder();
+    	file_path.append(getPath(request));
+    	file_path.append(File.separator);
+    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
+    	file_path.append(File.separator);
+    	file_path.append(Calendar.getInstance().getTime().getTime());
+    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
+    	
+    	String file_name = "Guia_Remision";
+		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+		
+		List<DetalleActaEntregaBean> listaManifiestoCarga = logisticaService.listarDetalleActaEntrega(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+		
+		ReporteGuiaRemision reporte = new ReporteGuiaRemision();
+		reporte.generaPDFReporteActaEntrega(file_path.toString(), listaManifiestoCarga);
+		
+		response.resetBuffer();
+        response.setContentType(Constantes.MIME_APPLICATION_PDF);
+        response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-store");
+		response.setHeader("Pragma", "private");
+		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+		response.setDateHeader("Expires", 1);
+    	
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		baos = convertPDFToByteArrayOutputStream(file_path.toString());
+		
+		// Captured backflow
+        OutputStream out = response.getOutputStream();
+        baos.writeTo(out); // We write in that flow
+        out.flush(); // We emptied the flow
+    	out.close(); // We close the flow
+    	
+    	File file_temp = new File(file_path.toString());
+		if (file_temp.delete()) {
+			LOGGER.info("[generarReporteActaEntrega] "+file_temp.getName()+" se borra el archivo temporal.");
+		} else {
+			LOGGER.info("[generarReporteActaEntrega] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+		}
 	}
 	
 }

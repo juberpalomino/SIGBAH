@@ -115,8 +115,12 @@ function cargarDatosGuiaRemision(guiaRemision) {
 	$('#txt_tip_movimiento').val(guiaRemision.nombreMovimiento);
 	$('#txt_ddi').val(guiaRemision.nombreDdi);		
 	$('#txt_almacen').val(guiaRemision.nombreAlmacen);		
-	$('#txt_nro_gui_remision').val(guiaRemision.nroGuiaRemision);	
-	$('#sel_mot_traslado').val(guiaRemision.idMotivoTraslado);	
+	$('#txt_nro_gui_remision').val(guiaRemision.nroGuiaRemision);
+	if (!esnulo(guiaRemision.idMotivoTraslado)) {
+		$('#sel_mot_traslado').val(guiaRemision.idMotivoTraslado);
+	} else {
+		$('#sel_mot_traslado').val('');
+	}
 	$('#sel_estado').val(guiaRemision.idEstado);
 	$('#txt_obs_gui_remision').val(guiaRemision.observacionGuiaRemision);
 	$('#txt_nro_man_carga').val(guiaRemision.nroManifiestoCarga);

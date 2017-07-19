@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
+import pe.com.sigbah.common.bean.DetalleManifiestoCargaBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
@@ -486,6 +489,30 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
 		return logisticaDao.actualizarGuiaRemision(guiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDetalleGuiaRemision(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public List<DetalleGuiaRemisionBean> listarDetalleGuiaRemision(Integer idGuiaRemision, String tipoOrigen) throws Exception {
+		return logisticaDao.listarDetalleGuiaRemision(idGuiaRemision, tipoOrigen);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDetalleManifiestoCarga(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public List<DetalleManifiestoCargaBean> listarDetalleManifiestoCarga(Integer idGuiaRemision, String tipoOrigen) throws Exception {
+		return logisticaDao.listarDetalleManifiestoCarga(idGuiaRemision, tipoOrigen);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarDetalleActaEntrega(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public List<DetalleActaEntregaBean> listarDetalleActaEntrega(Integer idGuiaRemision, String tipoOrigen) throws Exception {
+		return logisticaDao.listarDetalleActaEntrega(idGuiaRemision, tipoOrigen);
 	}
 
 }

@@ -14,6 +14,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
+import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
+import pe.com.sigbah.common.bean.DetalleManifiestoCargaBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.util.DateUtil;
 
@@ -166,6 +169,33 @@ public class ReporteGuiaRemision implements Serializable {
     		throw new Exception();
     	}
 		return wb;
+	}
+
+	/**
+	 * @param string
+	 * @param listaGuiaRemision
+	 */
+	public void generaPDFReporteGuiaRemision(String string, List<DetalleGuiaRemisionBean> listaGuiaRemision) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param string
+	 * @param listaManifiestoCarga
+	 */
+	public void generaPDFReporteManifiestoCarga(String string, List<DetalleManifiestoCargaBean> listaManifiestoCarga) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param string
+	 * @param listaManifiestoCarga
+	 */
+	public void generaPDFReporteActaEntrega(String string, List<DetalleActaEntregaBean> listaManifiestoCarga) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/**
