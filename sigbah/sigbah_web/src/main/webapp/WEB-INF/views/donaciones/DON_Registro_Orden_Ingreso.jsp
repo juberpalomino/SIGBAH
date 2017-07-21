@@ -5,7 +5,7 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
 		<li>Donaciones</li>
-		<li>Registro de Donaciones</li>
+		<li>Registro de Orden de Ingreso</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -59,7 +59,23 @@
 								
 									<form id="frm_dat_generales" class="form-horizontal">
 									
-										<input type="hidden" id="hid_id_donacion" name="hid_id_donacion">								
+										<input type="hidden" id="hid_id_ingreso" name="hid_id_ingreso">
+										
+										<div class="header-form opc-center">	
+											<strong>Orden Ingreso</strong>
+										</div>
+										
+										<div class="form-group"></div>
+										
+										<div class="form-group">
+											<div class="col-sm-3"></div>
+											<label class="col-sm-3 control-label label-bold">Nº Orden Ingreso:</label>
+											<div class="col-sm-2">
+												<input type="text" id="txt_cod_ingreso" class="form-control"  disabled>
+												<input type="hidden" id="txt_nro_ingreso" name="txt_nro_ingreso">
+											</div>
+										</div>				
+																		
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
@@ -71,13 +87,21 @@
 								
 												<!-- widget content -->
 												<div class="widget-body">				
+													
 													<div class="row">
-														<label class="col-sm-2 control-label">Codigo de Donacion:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_cod_donacion" class="form-control"  disabled>
-															<input type="hidden" id="txt_cod_id" name="txt_cod_id">
+														<label class="col-sm-1 control-label">Año:</label>
+														<div class="col-sm-1 form-group">
+															<input type="text" id="txt_anio" class="form-control" disabled>
 														</div>
-														<label class="col-sm-2 control-label">Fecha:</label>
+
+														<label class="col-sm-1 control-label">DDI:</label>
+														<div class="col-sm-2 form-group">
+															<input type="text" id="txt_ddi" class="form-control" disabled>
+															<input type="hidden" id="txt_codDdi" name="txt_codDdi">
+															<input type="hidden" id="txt_idDdi" name="txt_idDdi">
+														</div>
+														
+														<label class="col-sm-1 control-label">Fecha:</label>
 														<div class="col-sm-2 smart-form form-group">
 															<label class="input"> 
 																<i class="icon-append fa fa-calendar"></i>
@@ -88,7 +112,8 @@
 														<label class="col-sm-2 control-label">Estado de la Donación:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_estado" name="sel_estado" class="form-control" disabled>
-																<option value="1">En Propuesta</option>
+																<option value="1">Activo</option>
+																<option value="0">Anulado</option>
 																<c:forEach items="${lista_estado}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -97,44 +122,17 @@
 													</div>
 													
 													<div class="row">
-														<label class="col-sm-2 control-label">Año:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_anio" class="form-control" disabled>
-														</div>
-
-														<label class="col-sm-2 control-label">DDI:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_ddi" class="form-control" disabled>
-															<input type="hidden" id="txt_codDdi" name="txt_codDdi">
-															<input type="hidden" id="txt_idDdi" name="txt_idDdi">
-														</div>
-													</div>
-													
-													<div class="row">
-														<label class="col-sm-2 control-label">Nº DEE:</label>
-														<div class="col-sm-3 smart-form form-group">
-															<select id="sel_dee" name="sel_dee" class="select2 form-control">
-																<c:forEach items="${lista_dee}" var="item">
-																    <option value="${item.icodigo}_${item.descripcion}">${item.descripcionCorta}</option>
+														<label class="col-sm-2 control-label">Tipo de Movimiento:</label>
+														<div class="col-sm-4">
+															<select id="sel_movimiento" name="sel_movimiento" class="form-control">
+																<option value="0">Todos</option>
+																<c:forEach items="${lista_movimiento}" var="item">
+																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
-														<div class="col-sm-1 form-group"></div> 
-														<div class="col-sm-6 form-group">
-															<input type="text" id="txt_dee" class="form-control" value="${nombreDee}" disabled>
-														</div> 
 													</div>
 													
-													<div class="row">
-														<label class="col-sm-2 control-label">Tipo de Donación:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_tip_donacion" name="sel_tip_donacion" class="form-control">
-																<option value="1">Bienes de Ayuda Humanitaria</option>
-																<option value="2">Proyectos</option>
-																<option value="3">Fortalecimiento Institucional</option>
-															</select>
-														</div>
-													</div>	
 								
 												</div>
 												<!-- end widget content -->
@@ -148,7 +146,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos del Donante</h2>
+												<h2>Datos de la Donación</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -158,45 +156,29 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Procedemcia Donacion:</label>
+														<label class="col-sm-3 control-label">Datos de la Donación:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_ori_donacion" name="sel_ori_donacion" class="form-control">
-																<option value="1">Nacional</option>
-																<option value="2">Internacional</option> 
-															</select>
-														</div>
-														
-														<label class="col-sm-3 control-label">Pais Procedencia:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_ori_pais" name="sel_ori_pais" class="form-control">
-																<c:forEach items="${lista_proce_pais}" var="item">
-																    <option value="${item.icodigo}">${item.descripcion}</option>
+															<select id="sel_cod_donacion" name="sel_cod_donacion" class="form-control">
+																<c:forEach items="${lista_codigo_donacion}" var="item">
+																    <option value="${item.idDonacion}_${item.tipoDonante}_${item.nombreDonante}_${item.representante}">${item.codigoDonacion}</option>
 																</c:forEach>
 															</select>
 														</div>
-													</div>
-													
-													<div class="row">
-														<label class="col-sm-3 control-label">Tipo de Persona:</label>
+														
+														<label class="col-sm-3 control-label">Tipo de Donación:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_tip_persona" name="sel_tip_persona" class="form-control">
-																	<option value="1">Persona Natural</option>
-																	<option value="2">Persona Juridica</option> 
-															</select>
+															<input type="text" id="txt_tipo_donacion" class="form-control" disabled>
 														</div>
 													</div>
+													
 													
 													<div class="row">
 														<label class="col-sm-3 control-label">Donante:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_donante" name="sel_donante" class="form-control">
-																<c:forEach items="${lista_donadores}" var="item">
-																    <option value="${item.icodigo}_${item.descripcion}">${item.descripcionCorta}</option>
-																</c:forEach>
-															</select>
+															<input type="text" id="txt_donante" class="form-control" disabled>
 														</div>
-														<label class="col-sm-2 control-label">Representante:</label>
-														<div class="col-sm-2 form-group">
+														<label class="col-sm-3 control-label">Representante:</label>
+														<div class="col-sm-3 form-group">
 															<input type="text" id="txt_representante" class="form-control" disabled>
 														</div>
 													</div>
@@ -213,7 +195,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Finalidad</h2>
+												<h2>Datos Control de Calidad</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -223,12 +205,26 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<div class="col-sm-1 form-group">
-															
+														
+														<label class="col-sm-3 control-label">N° Reporte de Control de Calidad:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_control_calidad" name="sel_control_calidad" class="form-control">
+																<option value="0">Seleccione</option>
+																<c:forEach items="${lista_control_calidad}" var="item">
+																    <option value="${item.idControlCalidad}">${item.nroControlCalidad}</option>
+																</c:forEach>
+															</select>
+														</div> 
+													    <label class="col-sm-3 control-label">Almacén de Precedencia:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_almacen" name="sel_almacen" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_almacen}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
 														</div>
-														<div class="col-sm-11 form-group">
-															<input type="text" name="txt_finalidad" id="txt_finalidad" class="form-control">
-														</div>
+													
 													</div>
 								
 												</div>
@@ -243,7 +239,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Evaluado Por</h2>
+												<h2>Datos del Transporte</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -252,29 +248,55 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								
-													<div class="row"> 
-														<div class="col-sm-1 form-group">
-															
-														</div>
+													<div class="row">
+														<label class="col-sm-3 control-label">Medio de Transporte:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_oficina" name="sel_oficina" class="form-control">
+															<select id="sel_med_transporte" name="sel_med_transporte" class="form-control">
 																<option value="">Seleccione</option>
-																<c:forEach items="${lista_oficinas}" var="item">
+																<c:forEach items="${lista_medio_transporte}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
-														</div> 
-													    <div class="col-sm-1 form-group"></div> 
+														</div>
+													
+														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_personal_oficina" name="sel_personal_oficina" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_personal_oficina}" var="item">
-																    <option value="${item.icodigo}">${item.descripcion}</option>
+															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
+																<c:forEach items="${lista_empresa_transporte}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 													</div>
 													
+													<div class="row">
+														<label class="col-sm-3 control-label">Fecha de Llegada:</label>
+														<div class="col-sm-3 smart-form form-group">
+															<label class="input"> 
+																<i class="icon-append fa fa-calendar"></i>
+																<input type="text" name="txt_fec_llegada" id="txt_fec_llegada" class="datepicker" readonly>
+															</label>
+														</div>
+														
+														<label class="col-sm-3 control-label">Chofer:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_chofer" name="sel_chofer" class="form-control">
+																<c:forEach items="${lista_chofer}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+													
+													<div class="row">
+														<div class="col-sm-6"></div>
+													
+														<label class="col-sm-3 control-label">N° de Placa:</label>
+														<div class="col-sm-3 form-group">
+															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control upperValue" maxlength="10">
+														</div>
+													</div>
+								
 												</div>
 												<!-- end widget content -->
 								
@@ -287,7 +309,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos para la solicitud de Aprobacion</h2>
+												<h2>Responsable de Recepción</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -295,20 +317,26 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								 
-												    <div class="row">
-													 	<div class="col-sm-1 form-group">
-															
-														</div>
-														<div class="col-sm-11 form-group">
-															<input type="text" name="txt_a" id="txt_a" class="form-control">
+												   <div class="row">
+														<label class="col-sm-3 control-label">Responsable:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_responsable" name="sel_responsable" class="form-control">
+																<c:forEach items="${lista_personal}" var="item">
+																    <option value="${item.vcodigo}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
 														</div>
 													</div>
+													
 													<div class="row">
-												 		<div class="col-sm-1 form-group">
-															
-														</div>
-														<div class="col-sm-11 form-group">
-															<input type="text" name="txt_b" id="txt_b" class="form-control">
+														<div class="col-sm-12 smart-form">
+															<section>														
+																<label class="control-label">Observaciones:</label>
+																<label class="textarea textarea-resizable"> 										
+																	<textarea rows="3" name="txt_observaciones" id="txt_observaciones" 
+																		maxlength="500" class="custom-scroll"></textarea> 
+																</label>
+															</section>
 														</div>
 													</div>
 
@@ -1227,5 +1255,5 @@
 
 <!-- inline scripts related to this page -->
 <script> var donaciones = JSON.parse('${donaciones}'); </script>
-<script src="${pageContext.request.contextPath}/resources/js/donaciones/mantenimiento_donaciones.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/donaciones/validacion_mantenimiento_donaciones.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/donaciones/mantenimiento_donaciones_ingreso.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/donaciones/validacion_mantenimiento_donaciones_ingreso.js"></script>

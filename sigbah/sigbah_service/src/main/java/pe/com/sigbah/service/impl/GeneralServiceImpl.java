@@ -369,5 +369,14 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	public List<ItemBean> listarMotivoTraslado() throws Exception {
 		return generalDao.listarMotivoTraslado();
 	}
+	
+	public List<ItemBean> listarOficinas(ItemBean itemBean) throws Exception {
+		return generalDao.listarOficinas(itemBean);
+	}
+	
+	@Override
+	public List<ItemBean> listarPersonalOficina(ItemBean itemBean) throws Exception {
+		return generalDao.listarPersonalOficina(itemBean);
+	}
 
 }

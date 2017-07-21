@@ -125,7 +125,7 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
-			var codigo = $('#hid_cod_con_calidad').val();
+			var codigo = $('#hid_id_ingreso').val();
 		//	var tipoBien = $('input[name="rb_tip_bien"]:checked').val();
 			var idDonante = null;
 			var val_donante = $('#sel_donante').val();
@@ -134,39 +134,53 @@ $(document).ready(function() {
 				idDonante = arr[0];
 			}
 			
-			var idDee = null;
-			var val_dee = $('#sel_dee').val();
-			if (!esnulo(val_dee)) {
-				var arr = val_dee.split('_');
-				idDee = arr[0];
+			var idDonacion = null;
+			var val_donacion = $('#sel_cod_donacion').val();
+			if (!esnulo(val_donacion)) {
+				var arr = val_donacion.split('_');
+				idDonacion = arr[0];
 			}
 			
+			var idControlCalidad = null;
+			var flagControlCalidad = null;
+			var selecControlCalidad = $('#sel_control_calidad').val();
+			if(selecControlCalidad==='0'){
+				idControlCalidad='';
+				flagControlCalidad='0';
+			}else{
+				idControlCalidad=$('#sel_control_calidad').val();
+				flagControlCalidad='1';
+			}
+
+			
 			var params = {
-					
-					idDdi : $('#txt_idDdi').val(),
-					idDonacion : $('#hid_id_donacion').val(),
-					fechaEmision : $('#txt_fecha').val(),
-					idPaisDonante : $('#sel_ori_pais').val(), 
-					tipoDonante : $('#sel_tip_donacion').val(), 
-					tipoOrigenDonante : $('#sel_ori_donacion').val(),
-					idOficina :  $('#sel_oficina').val(), 
-					idPersonal :  $('#sel_tip_persona').val(), 
-					idDonante :  idDonante, 
-					finalidad :  $('#txt_finalidad').val(), 
-					observacion :  $('#sel_ori_donacion').val(), 
-					idEstado :  $('#sel_estado').val(), 
-					textoa   :  $('#txt_a').val(), 
-					textob   :  $('#txt_b').val(), 
-					codigoDdi : $('#txt_codDdi').val(),
-					codigoDonacion : $('#txt_cod_id').val(),
+					idIngreso : $('#hid_id_ingreso').val(),
 					codigoAnio : $('#txt_anio').val(),
-					idDee : idDee,
-					tipoDonacion : $('#sel_tip_donacion').val() 
+					//codigoMes : $('#hid_id_donacion').val(),
+					fechaEmision : $('#txt_fecha').val(),
+					idDonacion : idDonacion, 
+					idMedTransporte: $('#sel_med_transporte').val(),
+					idTipoMovimiento : $('#sel_movimiento').val(),
+					//codAlmacen :  $('#sel_oficina').val(), 
+					//idAlmacen :  $('#sel_tip_persona').val(), 
+					idAlmacenProcedencia : $('#sel_almacen').val(), 
+					codigoDdi : $('#txt_codDdi').val(),
+					nroOrdenIngreso :  '', 
+					idControlCalidad :  idControlCalidad, 
+					idChofer :  $('#sel_chofer').val(), 
+					nroPlaca :  $('#txt_nro_placa').val(), 
+					observacion   :  $('#txt_observaciones').val(), 
+					idEstado   :  $('#sel_estado').val(), 
+					flagControlCalidad : flagControlCalidad,
+					idEmpresaTrans : $('#sel_emp_transporte').val(),
+					idResponsable : $('#sel_responsable').val(),
+					fechaLlegada : $('#txt_fec_llegada').val()
+
 			};
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/donaciones/registro-donaciones/grabarDonaciones', params, function(respuesta) {
+			consultarAjax('POST', '/donacionesIngreso/registro-donacionesIngreso/grabarDonacionesIngreso', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -570,17 +584,87 @@ $(document).ready(function() {
 //		});
 //	}
 	
-	$('#sel_dee').change(function() {
+	$('#sel_cod_donacion').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {
 			var arr = codigo.split('_');
 			if (arr.length > 1) {
-				$('#txt_dee').val(arr[1]);
+				$('#txt_tipo_donacion').val(arr[1]);
+				$('#txt_donante').val(arr[2]);
+				$('#txt_representante').val(arr[3]);
 			} else {
-				$('#txt_dee').val('');
+				$('#txt_tipo_donacion').val('');
+				$('#txt_donante').val('');
+				$('#txt_representante').val('');
 			}			
 		} else {
-			$('#txt_dee').val('');
+			$('#txt_tipo_donacion').val('');
+			$('#txt_donante').val('');
+			$('#txt_representante').val('');
+		}
+	});
+	
+	$('#sel_med_transporte').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				icodigoParam2 : codigo
+			};			
+			loadding(true);
+			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarEmpresaTransporte', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			        });
+			        $('#sel_emp_transporte').html(options);
+				}
+				loadding(false);
+				//frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
+				
+				consultarAjax('GET', '/gestion-almacenes/control-calidad/listarChofer', {icodigo : $('#sel_emp_transporte').val()}, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						var options = '';
+				        $.each(respuesta, function(i, item) {
+				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				        });
+				        $('#sel_chofer').html(options);
+					}
+					//frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+				});
+				
+			});
+		} else {
+			$('#sel_emp_transporte').html('');
+		}
+	});
+	
+	$('#sel_emp_transporte').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			var params = { 
+				icodigo : codigo
+			};			
+			loadding(true);
+			consultarAjax('GET', '/gestion-almacenes/control-calidad/listarChofer', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			        });
+			        $('#sel_chofer').html(options);
+				}
+				loadding(false);
+				//frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+			});
+		} else {
+			$('#sel_chofer').html('');
 		}
 	});
 	
@@ -699,13 +783,29 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 	
-		$('#txt_cod_donacion').val(donaciones.textoCodigo);
+		$('#txt_cod_ingreso').val(donaciones.codIngreso);
+		$('#txt_nro_ingreso').val(donaciones.nroOrdenIngreso);
 		$('#txt_cod_id').val(donaciones.codigoDonacion);
 		$('#txt_anio').val(donaciones.codigoAnio);
 		$('#txt_ddi').val(donaciones.nombreDdi);
 		$('#txt_codDdi').val(donaciones.codigoDdi);
 		$('#txt_idDdi').val(donaciones.idDdi);
 		//$('#txt_dee').val(donaciones.nombreDdi);
+		
+		var val_donante = $('#sel_cod_donacion').val();		
+		if (!esnulo(val_donante)) {
+			var arr = val_donante.split('_');
+			if (arr.length > 1) {
+				$('#txt_tipo_donacion').val(arr[1]);
+				$('#txt_donante').val(arr[2]);
+				$('#txt_representante').val(arr[3]);
+				
+			} else {
+				$('#txt_tipo_donacion').val('');
+				$('#txt_donante').val('');
+				$('#txt_representante').val('');
+			}			
+		}
 
 		if (!esnulo(donaciones.idDonacion)) {
 			

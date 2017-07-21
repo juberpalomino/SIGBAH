@@ -309,5 +309,9 @@ public interface GeneralService {
 	 * @throws Exception
 	 */
 	public abstract List<ItemBean> listarMotivoTraslado() throws Exception;
+	
+	public abstract List<ItemBean> listarOficinas(ItemBean itemBean) throws Exception;
+	
+	public abstract List<ItemBean> listarPersonalOficina(ItemBean itemBean) throws Exception;
 
 }

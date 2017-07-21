@@ -84,6 +84,21 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Orden_Ingreso.jsp" />
 	</definition>
 	
+	<definition name="registrar-donaciones-ingreso" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registro_Orden_Ingreso.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones-salida" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Orden_Salida.jsp" />
+	</definition>
+	
+	<definition name="registrar-donaciones-salida" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registro_Orden_Salida.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones-guia" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Guia_Remision.jsp" />
+	</definition>
 	
 	<definition name="emergencias-sinpad" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_EmergenciasSINPAD.jsp" />

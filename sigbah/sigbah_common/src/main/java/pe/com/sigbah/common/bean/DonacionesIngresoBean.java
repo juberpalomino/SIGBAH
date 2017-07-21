@@ -1,27 +1,46 @@
 package pe.com.sigbah.common.bean;
 
 /**
- * @className: DonacionesBean.java
+ * @className: DonacionesIngresoBean.java
  * @description: 
- * @date: 23 de jun. de 2017
- * @author: SUMERIO.
+ * @date: 20 de jul. de 2017
+ * @author: ARCHY.
  */
-public class DonacionesBean extends BaseOutputBean {
+public class DonacionesIngresoBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	private String codigoAnio;
 	private String codigoMes;
 	private String nombreDdi;
-	private String codigoDonacion;
 	private String fechaEmision;
-	private String nombrePais;
-	private String nombreDonante;
-	private String nombreEstado;
-	private String codigoDdi;
-	private String codigoEstado;
 	private Integer idEstado;
-	private Integer idDonacion;
+	private Integer idIngreso;
 	private Integer idDdi;
+	private String codigoDdi;
+	private Integer idAlmacen;
+	private String codAlmacen;
+	private String nombreAlmacen;
+	private Integer idDonacion;
+	private String nombreDonante;
+	private String nroOrdenIngreso;
+	private String nombreMovimiento;
+	private Integer idMovimiento;
+	private String codIngreso;
+	private Integer idMedTransporte;
+	private Integer idTipoTransporte;
+	private Integer idControlCalidad;
+	private Integer idChofer;
+	private String nroPlaca;
+	private String flagControlCalidad;
+	private Integer idEmpresaTrans;
+	private Integer idResponsable;
+	private Integer idTipoMovimiento;
+	private Integer idAlmacenProcedencia;
+	private String fechaLlegada;
+	private String tipoOrigen;
+	private String nombreTipoDonacion;
+	
+	private String codigoEstado;
 	private Integer idPaisDonante;
 	private String tipoDonante;
 	private String tipoOrigenDonante;
@@ -34,11 +53,10 @@ public class DonacionesBean extends BaseOutputBean {
 	private String textob;
 	private String tipoDonacion;
 	private Integer idDee;
-	
 	private String textoCodigo;  
 	private String nombreDeclaratoria;
 	private String representante;
-	 
+	private String nombreEstado;
 	/**
 	 * @return the codigoAnio
 	 */
@@ -103,30 +121,7 @@ public class DonacionesBean extends BaseOutputBean {
 	public void setNombreDdi(String nombreDdi) {
 		this.nombreDdi = nombreDdi;
 	}
-	/**
-	 * @return the codigoDonacion
-	 */
-	public String getCodigoDonacion() {
-		return codigoDonacion;
-	}
-	/**
-	 * @param codigoDonacion the codigoDonacion to set
-	 */
-	public void setCodigoDonacion(String codigoDonacion) {
-		this.codigoDonacion = codigoDonacion;
-	}
-	/**
-	 * @return the nombrePais
-	 */
-	public String getNombrePais() {
-		return nombrePais;
-	}
-	/**
-	 * @param nombrePais the nombrePais to set
-	 */
-	public void setNombrePais(String nombrePais) {
-		this.nombrePais = nombrePais;
-	}
+
 	/**
 	 * @return the nombreDonante
 	 */
@@ -388,5 +383,172 @@ public class DonacionesBean extends BaseOutputBean {
 	}
 	 
 	
+	public void setIdIngreso(Integer idIngreso) {
+		this.idIngreso = idIngreso;
+	}
+
+	public Integer getIdIngreso() {
+		return idIngreso;
+	}
+	
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+	
+	public String getCodAlmacen() {
+		return codAlmacen;
+	}
+
+	public void setCodAlmacen(String codAlmacen) {
+		this.codAlmacen = codAlmacen;
+	}
+	
+	public String getNombreAlmacen() {
+		return nombreAlmacen;
+	}
+
+	public void setNombreAlmacen(String nombreAlmacen) {
+		this.nombreAlmacen = nombreAlmacen;
+	}
+	
+	public String getNroOrdenIngreso() {
+		return nroOrdenIngreso;
+	}
+
+	public void setNroOrdenIngreso(String nroOrdenIngreso) {
+		this.nroOrdenIngreso = nroOrdenIngreso;
+	}
+	
+	public String getNombreMovimiento() {
+		return nombreMovimiento;
+	}
+
+	public void setNombreMovimiento(String nombreMovimiento) {
+		this.nombreMovimiento = nombreMovimiento;
+	}
+	
+	public void setIdMovimiento(Integer idMovimiento) {
+		this.idMovimiento = idMovimiento;
+	}
+
+	public Integer getIdMovimiento() {
+		return idMovimiento;
+	}
+	
+	public String getCodIngreso() {
+		return codIngreso;
+	}
+
+	public void setCodIngreso(String codIngreso) {
+		this.codIngreso = codIngreso;
+	}
+	
+	public void setIdMedTransporte(Integer idMedTransporte) {
+		this.idMedTransporte = idMedTransporte;
+	}
+
+	public Integer getIdMedTransporte() {
+		return idMedTransporte;
+	}
+	
+	public void setIdTipoTransporte(Integer idTipoTransporte) {
+		this.idTipoTransporte = idTipoTransporte;
+	}
+
+	public Integer getIdTipoTransporte() {
+		return idTipoTransporte;
+	}
+	
+	public void setIdControlCalidad(Integer idControlCalidad) {
+		this.idControlCalidad = idControlCalidad;
+	}
+
+	public Integer getIdControlCalidad() {
+		return idControlCalidad;
+	}
+	
+	public void setIdChofer(Integer idChofer) {
+		this.idChofer = idChofer;
+	}
+
+	public Integer getIdChofer() {
+		return idChofer;
+	}
+	
+	public String getNroPlaca() {
+		return nroPlaca;
+	}
+
+	public void setNroPlaca(String nroPlaca) {
+		this.nroPlaca = nroPlaca;
+	}
+	
+	public String getFlagControlCalidad() {
+		return flagControlCalidad;
+	}
+
+	public void setFlagControlCalidad(String flagControlCalidad) {
+		this.flagControlCalidad = flagControlCalidad;
+	}
+	
+	public void setIdEmpresaTrans(Integer idEmpresaTrans) {
+		this.idEmpresaTrans = idEmpresaTrans;
+	}
+
+	public Integer getIdEmpresaTrans() {
+		return idEmpresaTrans;
+	}
+	
+	public void setIdResponsable(Integer idResponsable) {
+		this.idResponsable = idResponsable;
+	}
+
+	public Integer getIdResponsable() {
+		return idResponsable;
+	}
+	
+	public void setIdTipoMovimiento(Integer idTipoMovimiento) {
+		this.idTipoMovimiento = idTipoMovimiento;
+	}
+
+	public Integer getIdTipoMovimiento() {
+		return idTipoMovimiento;
+	}
+	
+	public void setIdAlmacenProcedencia(Integer idAlmacenProcedencia) {
+		this.idAlmacenProcedencia = idAlmacenProcedencia;
+	}
+
+	public Integer getIdAlmacenProcedencia() {
+		return idAlmacenProcedencia;
+	}
+	
+	public String getFechaLlegada() {
+		return fechaLlegada;
+	}
+
+	public void setFechaLlegada(String fechaLlegada) {
+		this.fechaLlegada = fechaLlegada;
+	}
+	
+	public String getTipoOrigen() {
+		return tipoOrigen;
+	}
+
+	public void setTipoOrigen(String tipoOrigen) {
+		this.tipoOrigen = tipoOrigen;
+	}
+	
+	public String getNombreTipoDonacion() {
+		return nombreTipoDonacion;
+	}
+
+	public void setNombreTipoDonacion(String nombreTipoDonacion) {
+		this.nombreTipoDonacion = nombreTipoDonacion;
+	}
 
 }

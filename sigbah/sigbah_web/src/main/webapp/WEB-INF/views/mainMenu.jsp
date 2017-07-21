@@ -159,7 +159,7 @@
 						<a href="#">Ingresos</a>
 						<ul id="ul_reg_donaciones_ingresos">
 							<li id="li_reg_orden_ingresos" class="li_men_opcion">							
-								<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/ingreso"><i class="fa fa-caret-right"></i>Orden de Ingreso - Donaciones</a>
+								<a href="${pageContext.request.contextPath}/donacionesIngreso/registro-donacionesIngreso/inicio"><i class="fa fa-caret-right"></i>Orden de Ingreso - Donaciones</a>
 							</li>
 						</ul>
 					</li>
@@ -167,10 +167,10 @@
 						<a href="#">Salidas</a>
 						<ul>
 							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Orden Salida - Donaciones</a>
+								<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/salida"><i class="fa fa-caret-right"></i>Orden Salida - Donaciones</a>
 							</li>
 							<li class="li_men_opcion">
-								<a href="glyph.html"><i class="fa fa-caret-right"></i>Guia de Remisión - Donaciones</a>
+								<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/guiaRemision"><i class="fa fa-caret-right"></i>Guia de Remisión - Donaciones</a>
 							</li>
 						</ul>
 					</li>

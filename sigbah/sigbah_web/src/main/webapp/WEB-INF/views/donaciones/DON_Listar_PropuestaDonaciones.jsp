@@ -39,7 +39,7 @@
 							<form id="frm_con_donaciones" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
-							
+								<input type="hidden" id="txt_cod_ddi" name="txt_cod_ddi" value="${txt_cod_ddi}">
 								<div class="form-group">
 									<label class="col-sm-1 control-label">Año:</label>
 									<div class="col-sm-2">
@@ -50,10 +50,11 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-1 control-label">DDI:</label>
+									<label class="col-sm-1 control-label">Mes:</label>
 									<div class="col-sm-2">
-										<select id="sel_ddi" name="sel_ddi" class="form-control">
-											<c:forEach items="${lista_ddi}" var="item">
+										<select id="sel_mes" name="sel_mes" class="form-control">
+											<option value="">Todos</option>
+											<c:forEach items="${lista_mes}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
@@ -62,6 +63,7 @@
 									<label class="col-sm-2 control-label">Estado:</label>
 									<div class="col-sm-2">
 										<select id="sel_estado" name="sel_estado" class="form-control">
+											<option value="0">Todos</option>
 											<c:forEach items="${lista_estado}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -116,6 +118,10 @@
 								data-original-title="Nuevo">
 								<i class="fa fa-file-o"></i>
 							</a>
+							<a href="#" id="href_estado" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Estado">
+								<i class="fa fa-book"></i>
+							</a>
 						</div>
 					</header>
 	
@@ -160,6 +166,89 @@
 	
 </div>
 <!-- END MAIN CONTENT -->
+
+<!-- Modal -->
+<div id="div_estado" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="h4_tit_documentos">Estado de la Donación</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<form id="frm_nue_estado" class="form-horizontal" role="form">
+							
+							<input type="hidden" id="hid_est_documento" name="hid_est_documento">
+
+							<div class="form-group">																				
+								<label class="col-sm-3 control-label">Nuevo Estado:</label>
+								<div class="col-sm-8">
+									<select id="sel_estados_donacion" name="sel_estados_donacion" class="form-control">
+										<option value="0">Seleccione</option>
+										<c:forEach items="${lista_est_donacion}" var="item">
+											<option value="${item.icodigo}">${item.descripcion}</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<div id="divRegiones">
+									<label class="col-sm-3 control-label">Seleccione Región a Distribuir</label>
+									<div class="col-sm-8">
+										<select id="sel_region_donacion" name="sel_region_donacion" class="form-control">
+											<option value="">Seleccione</option>
+											<c:forEach items="${lista_region}" var="item">
+												<option value="${item.icodigo}">${item.descripcion}</option>
+											</c:forEach>
+										</select>
+										
+							
+									</div class="col-sm-12">
+									
+									<div>
+										<table id="tbl_regiones" class="table table-bordered table-hover tbl-responsive">
+											<thead>			                
+												<tr>
+													<th>N°</th>
+													<th>Región</th>
+													<th>Eliminar</th>
+												</tr>
+											</thead>
+										</table>
+									</div>
+									
+									
+									
+								</div>
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_act_estado">
+					<i class="fa fa-floppy-o"></i>
+					Aceptar
+				</button>
+				
+				&nbsp; &nbsp;
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_documento">
+					<i class="fa fa-mail-forward"></i>
+					Cancelar
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
 <script src="${pageContext.request.contextPath}/resources/js/donaciones/listar_donaciones.js"></script>
