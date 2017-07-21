@@ -381,7 +381,7 @@ public class DonacionesBean extends BaseOutputBean {
 		return representante;
 	}
 	/**
-	 * @param nombreDeclaratoria the nombreDeclaratoria to set
+	 * @param representante the representante to set
 	 */
 	public void setRepresentante(String representante) {
 		this.representante = representante;
