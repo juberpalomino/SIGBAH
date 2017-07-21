@@ -498,7 +498,7 @@
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="5" y="33" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("1")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
@@ -545,7 +545,7 @@
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="160" y="34" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("4")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
@@ -564,7 +564,7 @@
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="397" y="35" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("7")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
@@ -589,7 +589,7 @@
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="160" y="51" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("5")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
@@ -621,13 +621,13 @@
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="5" y="50" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("2")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="397" y="52" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("8")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
@@ -639,7 +639,7 @@
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="5" y="67" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("6")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
@@ -658,7 +658,7 @@
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="160" y="68" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("6")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
@@ -677,7 +677,7 @@
 			</image>
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement uuid="268d6387-6603-40fd-aa06-6e0e349dc25d" positionType="Float" stretchType="RelativeToTallestObject" x="397" y="68" width="13" height="13" isPrintWhenDetailOverflows="true">
-					<printWhenExpression><![CDATA[$P{P_MOTIVO_TRASLADO}.equals("")]]></printWhenExpression>
+					<printWhenExpression><![CDATA[!$P{P_MOTIVO_TRASLADO}.equals("9")]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$P{P_LOGO_CHECK}]]></imageExpression>
 			</image>
