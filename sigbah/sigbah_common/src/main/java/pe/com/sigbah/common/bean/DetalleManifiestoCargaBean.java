@@ -1,6 +1,7 @@
 package pe.com.sigbah.common.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @className: DetalleManifiestoCargaBean.java
@@ -11,402 +12,267 @@ import java.io.Serializable;
 public class DetalleManifiestoCargaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Integer idProyectoManifiesto;
-	private String codigoAnio;
-	private String codigoMes;
-	private String nombreMes;
-	private Integer idDdi;
-	private String codigoDdi;
-	private String nombreDdi;
-	private Integer idAlmacen;
-	private String codigoAlmacen;
-	private String nombreAlmacen;
-	private Integer idProgramacion;
-	private String nroProyectoManifiesto;
-	private String nroProgramacion;
+	private Integer idSalida;
+	private Integer idGuiaRemision;
+	private String nroManifiestoCarga;
+	private String almacenOrigen;
 	private String fechaEmision;
-	private String codigoProgramacion;
-	private Integer idMovimiento;
-	private String codigoMovimiento;
-	private String nombreMovimiento;
-	private Integer idEstado;
-	private String nombreEstado;
-	private String observacion;
-	private String tipoOrigen;
-	private String flagProgramacion;
-	private Integer idAlmacenDestino;
-	private String nombreAlmacenDestino;
-	private String codigoProyectoManifiesto;
-
+	private String ddiRegionDestino;
+	private String almacenDestino;
+	private String referencia;
+	private String tipoTransporte;
+	private String nombreChofer;
+	private String nroPlacaVehiculo;
+	private String nombreProducto;
+	private String nombreUnidad;
+	private BigDecimal cantidad;
+	private BigDecimal pesoUnitario;
+	private BigDecimal pesoTotal;
+	private BigDecimal volumenUnitario;
+	private BigDecimal volumenTotal;
+	private String version;
+	private String observacionManifiesto;
+	
+	
 	/**
-	 * 
+	 * @return the idSalida
 	 */
-	public DetalleManifiestoCargaBean() {
-		super();
+	public Integer getIdSalida() {
+		return idSalida;
 	}
-
 	/**
-	 * @return the idProyectoManifiesto
+	 * @param idSalida the idSalida to set
 	 */
-	public Integer getIdProyectoManifiesto() {
-		return idProyectoManifiesto;
+	public void setIdSalida(Integer idSalida) {
+		this.idSalida = idSalida;
 	}
-
 	/**
-	 * @param idProyectoManifiesto the idProyectoManifiesto to set
+	 * @return the idGuiaRemision
 	 */
-	public void setIdProyectoManifiesto(Integer idProyectoManifiesto) {
-		this.idProyectoManifiesto = idProyectoManifiesto;
+	public Integer getIdGuiaRemision() {
+		return idGuiaRemision;
 	}
-
 	/**
-	 * @return the codigoAnio
+	 * @param idGuiaRemision the idGuiaRemision to set
 	 */
-	public String getCodigoAnio() {
-		return codigoAnio;
+	public void setIdGuiaRemision(Integer idGuiaRemision) {
+		this.idGuiaRemision = idGuiaRemision;
 	}
-
 	/**
-	 * @param codigoAnio the codigoAnio to set
+	 * @return the almacenOrigen
 	 */
-	public void setCodigoAnio(String codigoAnio) {
-		this.codigoAnio = codigoAnio;
+	public String getAlmacenOrigen() {
+		return almacenOrigen;
 	}
-
 	/**
-	 * @return the idDdi
+	 * @param almacenOrigen the almacenOrigen to set
 	 */
-	public Integer getIdDdi() {
-		return idDdi;
+	public void setAlmacenOrigen(String almacenOrigen) {
+		this.almacenOrigen = almacenOrigen;
 	}
-
-	/**
-	 * @param idDdi the idDdi to set
-	 */
-	public void setIdDdi(Integer idDdi) {
-		this.idDdi = idDdi;
-	}
-
-	/**
-	 * @return the codigoDdi
-	 */
-	public String getCodigoDdi() {
-		return codigoDdi;
-	}
-
-	/**
-	 * @param codigoDdi the codigoDdi to set
-	 */
-	public void setCodigoDdi(String codigoDdi) {
-		this.codigoDdi = codigoDdi;
-	}
-
-	/**
-	 * @return the nombreDdi
-	 */
-	public String getNombreDdi() {
-		return nombreDdi;
-	}
-
-	/**
-	 * @param nombreDdi the nombreDdi to set
-	 */
-	public void setNombreDdi(String nombreDdi) {
-		this.nombreDdi = nombreDdi;
-	}
-
-	/**
-	 * @return the idAlmacen
-	 */
-	public Integer getIdAlmacen() {
-		return idAlmacen;
-	}
-
-	/**
-	 * @param idAlmacen the idAlmacen to set
-	 */
-	public void setIdAlmacen(Integer idAlmacen) {
-		this.idAlmacen = idAlmacen;
-	}
-
-	/**
-	 * @return the codigoAlmacen
-	 */
-	public String getCodigoAlmacen() {
-		return codigoAlmacen;
-	}
-
-	/**
-	 * @param codigoAlmacen the codigoAlmacen to set
-	 */
-	public void setCodigoAlmacen(String codigoAlmacen) {
-		this.codigoAlmacen = codigoAlmacen;
-	}
-
-	/**
-	 * @return the nombreAlmacen
-	 */
-	public String getNombreAlmacen() {
-		return nombreAlmacen;
-	}
-
-	/**
-	 * @param nombreAlmacen the nombreAlmacen to set
-	 */
-	public void setNombreAlmacen(String nombreAlmacen) {
-		this.nombreAlmacen = nombreAlmacen;
-	}
-
-	/**
-	 * @return the nroProyectoManifiesto
-	 */
-	public String getNroProyectoManifiesto() {
-		return nroProyectoManifiesto;
-	}
-
-	/**
-	 * @param nroProyectoManifiesto the nroProyectoManifiesto to set
-	 */
-	public void setNroProyectoManifiesto(String nroProyectoManifiesto) {
-		this.nroProyectoManifiesto = nroProyectoManifiesto;
-	}
-
-	/**
-	 * @return the nroProgramacion
-	 */
-	public String getNroProgramacion() {
-		return nroProgramacion;
-	}
-
-	/**
-	 * @param nroProgramacion the nroProgramacion to set
-	 */
-	public void setNroProgramacion(String nroProgramacion) {
-		this.nroProgramacion = nroProgramacion;
-	}
-
 	/**
 	 * @return the fechaEmision
 	 */
 	public String getFechaEmision() {
 		return fechaEmision;
 	}
-
 	/**
 	 * @param fechaEmision the fechaEmision to set
 	 */
 	public void setFechaEmision(String fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
-
 	/**
-	 * @return the codigoProgramacion
+	 * @return the ddiRegionDestino
 	 */
-	public String getCodigoProgramacion() {
-		return codigoProgramacion;
+	public String getDdiRegionDestino() {
+		return ddiRegionDestino;
 	}
-
 	/**
-	 * @param codigoProgramacion the codigoProgramacion to set
+	 * @param ddiRegionDestino the ddiRegionDestino to set
 	 */
-	public void setCodigoProgramacion(String codigoProgramacion) {
-		this.codigoProgramacion = codigoProgramacion;
+	public void setDdiRegionDestino(String ddiRegionDestino) {
+		this.ddiRegionDestino = ddiRegionDestino;
 	}
-
 	/**
-	 * @return the idMovimiento
+	 * @return the almacenDestino
 	 */
-	public Integer getIdMovimiento() {
-		return idMovimiento;
+	public String getAlmacenDestino() {
+		return almacenDestino;
 	}
-
 	/**
-	 * @param idMovimiento the idMovimiento to set
+	 * @param almacenDestino the almacenDestino to set
 	 */
-	public void setIdMovimiento(Integer idMovimiento) {
-		this.idMovimiento = idMovimiento;
+	public void setAlmacenDestino(String almacenDestino) {
+		this.almacenDestino = almacenDestino;
 	}
-
 	/**
-	 * @return the codigoMovimiento
+	 * @return the referencia
 	 */
-	public String getCodigoMovimiento() {
-		return codigoMovimiento;
+	public String getReferencia() {
+		return referencia;
 	}
-
 	/**
-	 * @param codigoMovimiento the codigoMovimiento to set
+	 * @param referencia the referencia to set
 	 */
-	public void setCodigoMovimiento(String codigoMovimiento) {
-		this.codigoMovimiento = codigoMovimiento;
+	public void setReferencia(String referencia) {
+		this.referencia = referencia;
 	}
-
 	/**
-	 * @return the nombreMovimiento
+	 * @return the tipoTransporte
 	 */
-	public String getNombreMovimiento() {
-		return nombreMovimiento;
+	public String getTipoTransporte() {
+		return tipoTransporte;
 	}
-
 	/**
-	 * @param nombreMovimiento the nombreMovimiento to set
+	 * @param tipoTransporte the tipoTransporte to set
 	 */
-	public void setNombreMovimiento(String nombreMovimiento) {
-		this.nombreMovimiento = nombreMovimiento;
+	public void setTipoTransporte(String tipoTransporte) {
+		this.tipoTransporte = tipoTransporte;
 	}
-
 	/**
-	 * @return the idEstado
+	 * @return the nombreChofer
 	 */
-	public Integer getIdEstado() {
-		return idEstado;
+	public String getNombreChofer() {
+		return nombreChofer;
 	}
-
 	/**
-	 * @param idEstado the idEstado to set
+	 * @param nombreChofer the nombreChofer to set
 	 */
-	public void setIdEstado(Integer idEstado) {
-		this.idEstado = idEstado;
+	public void setNombreChofer(String nombreChofer) {
+		this.nombreChofer = nombreChofer;
 	}
-
 	/**
-	 * @return the nombreEstado
+	 * @return the nroPlacaVehiculo
 	 */
-	public String getNombreEstado() {
-		return nombreEstado;
+	public String getNroPlacaVehiculo() {
+		return nroPlacaVehiculo;
 	}
-
 	/**
-	 * @param nombreEstado the nombreEstado to set
+	 * @param nroPlacaVehiculo the nroPlacaVehiculo to set
 	 */
-	public void setNombreEstado(String nombreEstado) {
-		this.nombreEstado = nombreEstado;
+	public void setNroPlacaVehiculo(String nroPlacaVehiculo) {
+		this.nroPlacaVehiculo = nroPlacaVehiculo;
 	}
-
 	/**
-	 * @return the codigoMes
+	 * @return the nombreProducto
 	 */
-	public String getCodigoMes() {
-		return codigoMes;
+	public String getNombreProducto() {
+		return nombreProducto;
 	}
-
 	/**
-	 * @param codigoMes the codigoMes to set
+	 * @param nombreProducto the nombreProducto to set
 	 */
-	public void setCodigoMes(String codigoMes) {
-		this.codigoMes = codigoMes;
+	public void setNombreProducto(String nombreProducto) {
+		this.nombreProducto = nombreProducto;
 	}
-
 	/**
-	 * @return the nombreMes
+	 * @return the nombreUnidad
 	 */
-	public String getNombreMes() {
-		return nombreMes;
+	public String getNombreUnidad() {
+		return nombreUnidad;
 	}
-
 	/**
-	 * @param nombreMes the nombreMes to set
+	 * @param nombreUnidad the nombreUnidad to set
 	 */
-	public void setNombreMes(String nombreMes) {
-		this.nombreMes = nombreMes;
+	public void setNombreUnidad(String nombreUnidad) {
+		this.nombreUnidad = nombreUnidad;
 	}
-
 	/**
-	 * @return the idProgramacion
+	 * @return the cantidad
 	 */
-	public Integer getIdProgramacion() {
-		return idProgramacion;
+	public BigDecimal getCantidad() {
+		return cantidad;
 	}
-
 	/**
-	 * @param idProgramacion the idProgramacion to set
+	 * @param cantidad the cantidad to set
 	 */
-	public void setIdProgramacion(Integer idProgramacion) {
-		this.idProgramacion = idProgramacion;
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
 	}
-
 	/**
-	 * @return the observacion
+	 * @return the pesoUnitario
 	 */
-	public String getObservacion() {
-		return observacion;
+	public BigDecimal getPesoUnitario() {
+		return pesoUnitario;
 	}
-
 	/**
-	 * @param observacion the observacion to set
+	 * @param pesoUnitario the pesoUnitario to set
 	 */
-	public void setObservacion(String observacion) {
-		this.observacion = observacion;
+	public void setPesoUnitario(BigDecimal pesoUnitario) {
+		this.pesoUnitario = pesoUnitario;
 	}
-
 	/**
-	 * @return the tipoOrigen
+	 * @return the pesoTotal
 	 */
-	public String getTipoOrigen() {
-		return tipoOrigen;
+	public BigDecimal getPesoTotal() {
+		return pesoTotal;
 	}
-
 	/**
-	 * @param tipoOrigen the tipoOrigen to set
+	 * @param pesoTotal the pesoTotal to set
 	 */
-	public void setTipoOrigen(String tipoOrigen) {
-		this.tipoOrigen = tipoOrigen;
+	public void setPesoTotal(BigDecimal pesoTotal) {
+		this.pesoTotal = pesoTotal;
 	}
-
 	/**
-	 * @return the flagProgramacion
+	 * @return the volumenUnitario
 	 */
-	public String getFlagProgramacion() {
-		return flagProgramacion;
+	public BigDecimal getVolumenUnitario() {
+		return volumenUnitario;
 	}
-
 	/**
-	 * @param flagProgramacion the flagProgramacion to set
+	 * @param volumenUnitario the volumenUnitario to set
 	 */
-	public void setFlagProgramacion(String flagProgramacion) {
-		this.flagProgramacion = flagProgramacion;
+	public void setVolumenUnitario(BigDecimal volumenUnitario) {
+		this.volumenUnitario = volumenUnitario;
 	}
-
 	/**
-	 * @return the idAlmacenDestino
+	 * @return the volumenTotal
 	 */
-	public Integer getIdAlmacenDestino() {
-		return idAlmacenDestino;
+	public BigDecimal getVolumenTotal() {
+		return volumenTotal;
 	}
-
 	/**
-	 * @param idAlmacenDestino the idAlmacenDestino to set
+	 * @param volumenTotal the volumenTotal to set
 	 */
-	public void setIdAlmacenDestino(Integer idAlmacenDestino) {
-		this.idAlmacenDestino = idAlmacenDestino;
+	public void setVolumenTotal(BigDecimal volumenTotal) {
+		this.volumenTotal = volumenTotal;
 	}
-
 	/**
-	 * @return the codigoProyectoManifiesto
+	 * @return the version
 	 */
-	public String getCodigoProyectoManifiesto() {
-		return codigoProyectoManifiesto;
+	public String getVersion() {
+		return version;
 	}
-
 	/**
-	 * @param codigoProyectoManifiesto the codigoProyectoManifiesto to set
+	 * @param version the version to set
 	 */
-	public void setCodigoProyectoManifiesto(String codigoProyectoManifiesto) {
-		this.codigoProyectoManifiesto = codigoProyectoManifiesto;
+	public void setVersion(String version) {
+		this.version = version;
 	}
-
 	/**
-	 * @return the nombreAlmacenDestino
+	 * @return the observacionManifiesto
 	 */
-	public String getNombreAlmacenDestino() {
-		return nombreAlmacenDestino;
+	public String getObservacionManifiesto() {
+		return observacionManifiesto;
 	}
-
 	/**
-	 * @param nombreAlmacenDestino the nombreAlmacenDestino to set
+	 * @param observacionManifiesto the observacionManifiesto to set
 	 */
-	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
-		this.nombreAlmacenDestino = nombreAlmacenDestino;
+	public void setObservacionManifiesto(String observacionManifiesto) {
+		this.observacionManifiesto = observacionManifiesto;
+	}
+	/**
+	 * @return the nroManifiestoCarga
+	 */
+	public String getNroManifiestoCarga() {
+		return nroManifiestoCarga;
+	}
+	/**
+	 * @param nroManifiestoCarga the nroManifiestoCarga to set
+	 */
+	public void setNroManifiestoCarga(String nroManifiestoCarga) {
+		this.nroManifiestoCarga = nroManifiestoCarga;
 	}
 
 }

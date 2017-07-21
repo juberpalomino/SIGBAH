@@ -638,11 +638,10 @@ public class ReporteProyectoManifiesto implements Serializable {
 	 * @return date - Valor long sino retorna cero.
 	 */
 	public static BigDecimal getBigDecimal(BigDecimal campo) {
-		BigDecimal valor = null;
 		if (campo == null) {
-			valor = BigDecimal.ZERO;
+			campo = BigDecimal.ZERO;
 		}
-		return valor; 	
+		return campo; 	
 	}
     
 }

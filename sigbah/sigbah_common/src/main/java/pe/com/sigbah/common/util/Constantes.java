@@ -48,8 +48,10 @@ public final class Constantes implements Serializable {
 	public static final int FIVE_INT = 5;
 	public static final String FIVE_STRING = "5";
 	public static final short SIX_SHORT = 6;
+	public static final int SIX_INT = 6;
 	public static final String SIX_STRING = "6";
 	public static final short SEVEN_SHORT = 7;
+	public static final int SEVEN_INT = 7;
 	public static final String SEVEN_STRING = "7";
 	public static final short EIGHT_SHORT = 8;
 	public static final int EIGHT_INT = 8;
@@ -183,6 +185,10 @@ public final class Constantes implements Serializable {
 			.append(File.separator).append("img").append(File.separator)
 			.append("logo-indeci.png").toString();
 	
+	public static final String IMAGE_INDECI2_REPORT_PATH = new StringBuilder("resources")
+			.append(File.separator).append("img").append(File.separator)
+			.append("logo-indeci2.png").toString();
+	
 	public static final String IMAGE_WFP_REPORT_PATH = new StringBuilder("resources")
 			.append(File.separator).append("img").append(File.separator)
 			.append("logo-wfp.png").toString();
@@ -194,6 +200,14 @@ public final class Constantes implements Serializable {
 	public static final String IMAGE_CHECK_MIN_REPORT_PATH = new StringBuilder("resources")
 			.append(File.separator).append("img").append(File.separator)
 			.append("check-min.png").toString();
+	
+	public static final String IMAGE_INPUT_CHECK_REPORT_PATH = new StringBuilder("resources")
+			.append(File.separator).append("img").append(File.separator)
+			.append("checkbox_unchecked.png").toString();
+	
+	public static final String IMAGE_INPUT_CHECKED_REPORT_PATH = new StringBuilder("resources")
+			.append(File.separator).append("img").append(File.separator)
+			.append("checkbox_checked.png").toString();
 	
 	public static final String UPLOAD_PATH_FILE_TEMP = new StringBuilder("resources")
 			.append(File.separator).append("upload").append(File.separator).toString();

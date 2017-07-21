@@ -43,14 +43,14 @@ import pe.com.sigbah.web.controller.common.BaseController;
 import pe.com.sigbah.web.report.gestion_almacenes.ReporteGuiaRemision;
 
 /**
- * @className: GuiaRemisionController.java
+ * @className: StockAlmacenController.java
  * @description: 
  * @date: 17 de jun. de 2017
  * @author: Junior Huaman Flores.
  */
 @Controller
-@RequestMapping("/gestion-almacenes/guia-remision")
-public class GuiaRemisionController extends BaseController {
+@RequestMapping("/gestion-almacenes/stock-almacen")
+public class StockAlmacenController extends BaseController {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -102,7 +102,7 @@ public class GuiaRemisionController extends BaseController {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "listar_guia_remision";
+        return "listar_stock_almacen";
     }
 	
 	/**
@@ -155,7 +155,7 @@ public class GuiaRemisionController extends BaseController {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "mantenimiento_guia_remision";
+        return "mantenimiento_stock_almacen";
     }
 	
 	/**

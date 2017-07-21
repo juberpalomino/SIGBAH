@@ -97,7 +97,7 @@
 								</a>
 							</li>
 							<li id="li_sto_productos" class="li_men_opcion">
-								<a href="fa.html">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/stock-almacen/inicio/0">
 									<i class="fa fa-caret-right"></i>Stock de Productos
 								</a>
 							</li>

@@ -5,43 +5,38 @@ $(document).ready(function() {
 	inicializarDatos();
 	
 	$('#sel_estado').change(function() {
-		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
-		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
-			var codigo = $(this).val();
-			if (codigo == '0') {		
-				$.SmartMessageBox({
-					title : 'La Anulación Generara números automáticos de Guía de Remisión, Manifiesto de Carga y Acta de Entrega.<br>Está usted seguro ?',
-					content : '',
-					buttons : '[NO][SI]'
-				}, function(ButtonPressed) {
-					if (ButtonPressed === 'SI') {				
-						loadding(true);								
-						var params = { 
-							idSalida : $('#hid_cod_ord_salida').val(),
-							idGuiaRemision : $('#hid_cod_gui_remision').val(),
-							codigoAnio : $('#hid_cod_anio').val(),
-							codigoMes : $('#hid_cod_mes').val(),
-							codigoDdi : $('#hid_cod_ddi').val(),
-							codigoAlmacen : $('#hid_cod_almacen').val(),
-							fechaEmision : $('#txt_fecha').val(),
-							fechaEmision : $('#txt_fecha').val(),
-							idMotivoTraslado : $('#sel_mot_traslado').val(),
-							idEstado : codigo					
-						};						
-						consultarAjax('POST', '/gestion-almacenes/guia-remision/anularGuiaRemision', params, function(respuesta) {
-							if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-								addErrorMessage(null, respuesta.mensajeRespuesta);
-							} else {
-								frm_dat_generales.data('bootstrapValidator').resetForm();
-								cargarDatosGuiaRemision(respuesta);
-								addSuccessMessage(null, respuesta.mensajeRespuesta);							
-							}
-							loadding(false);
-						});							
-					}	
-				});
-			}
+		var codigo = $(this).val();
+		if (codigo == '0') {		
+			$.SmartMessageBox({
+				title : 'La Anulación Generara números automáticos de Guía de Remisión, Manifiesto de Carga y Acta de Entrega.<br>Está usted seguro ?',
+				content : '',
+				buttons : '[NO][SI]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'SI') {				
+					loadding(true);								
+					var params = { 
+						idSalida : $('#hid_cod_ord_salida').val(),
+						idGuiaRemision : $('#hid_cod_gui_remision').val(),
+						codigoAnio : $('#hid_cod_anio').val(),
+						codigoMes : $('#hid_cod_mes').val(),
+						codigoDdi : $('#hid_cod_ddi').val(),
+						codigoAlmacen : $('#hid_cod_almacen').val(),
+						fechaEmision : $('#txt_fecha').val(),
+						fechaEmision : $('#txt_fecha').val(),
+						idEstado : codigo					
+					};						
+					consultarAjax('POST', '/gestion-almacenes/guia-remision/anularGuiaRemision', params, function(respuesta) {
+						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+							addErrorMessage(null, respuesta.mensajeRespuesta);
+						} else {
+							frm_dat_generales.data('bootstrapValidator').resetForm();
+							cargarDatosGuiaRemision(respuesta);
+							addSuccessMessage(null, respuesta.mensajeRespuesta);							
+						}
+						loadding(false);
+					});							
+				}	
+			});
 		}
 	});
 	

@@ -5,7 +5,8 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
 		<li>Gestión de Almacenes</li>
-		<li>Lista Guia de Remisión</li>
+		<li>Stock</li>
+		<li>Lista</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -27,7 +28,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Guia de Remisión</h2>
+						<h2>Búsqueda de Stock de Productos de Almacén</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -41,25 +42,7 @@
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
 								<div class="row">
-									<label class="col-sm-2 control-label">Año:</label>
-									<div class="col-sm-2 form-group">
-										<select id="sel_anio" name="sel_anio" class="form-control">
-											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
-									
-									<label class="col-sm-2 control-label">Mes:</label>
-									<div class="col-sm-2 form-group">
-										<select id="sel_mes" name="sel_mes" class="form-control">
-											<option value="">Todos</option>
-											<c:forEach items="${lista_mes}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
-									
+
 									<label class="col-sm-2 control-label">Almacén:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_almacen" name="sel_almacen" class="form-control">
@@ -111,17 +94,13 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Relación de Guias de Remisión</h2>
+						<h2>Relación de Stock de Productos de Almacén</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Exportar Excel">
 								<i class="fa fa-file-excel-o"></i>
 							</a> 
-							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Imprimir">
-								<i class="fa fa-file-pdf-o"></i>
-							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
@@ -174,71 +153,6 @@
 </div>
 <!-- END MAIN CONTENT -->
 
-<!-- Modal -->
-<div id="div_imp_pdf" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title label-bold">IMPRIMIR</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12">
-						<form class="form-horizontal" role="form">
-							
-							<div class="row">
-								<label class="col-sm-5 control-label">Guia Remision:</label>
-								<div class="col-sm-7 smart-form">
-									<label class="checkbox">
-										<input type="checkbox" name="chk_gui_remision" id="chk_gui_remision"><i></i>
-									</label>
-								</div>
-							</div>
-							
-							<div class="row">
-								<label class="col-sm-5 control-label">Manifiesto Carga:</label>
-								<div class="col-sm-7 smart-form">
-									<label class="checkbox">
-										<input type="checkbox" name="chk_man_carga" id="chk_man_carga"><i></i>
-									</label>
-								</div>
-							</div>
-							
-							<div class="row">
-								<label class="col-sm-5 control-label">Acta Entrega / Recepción:</label>
-								<div class="col-sm-7 smart-form">
-									<label class="checkbox">
-										<input type="checkbox" name="chk_act_ent_recepcion" id="chk_act_ent_recepcion"><i></i>
-									</label>
-								</div>
-							</div>
-							
-						</form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_exportar">
-					<i class="fa fa-file-pdf-o"></i>
-					Exportar
-				</button>
-
-				&nbsp; &nbsp;
-				
-				<button type="button" class="btn btn-default" data-dismiss="modal">
-					<i class="fa fa-mail-forward"></i>
-					Cancelar
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <!-- inline scripts related to this page -->
 <script> var guiaRemision = JSON.parse('${guiaRemision}'); </script>
-<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_guia_remision.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_stock_almacen.js"></script>
