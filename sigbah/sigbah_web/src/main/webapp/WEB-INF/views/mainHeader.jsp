@@ -58,17 +58,3 @@
 
 </header>
 <!-- END HEADER -->
-
-<script type="text/javascript">
-	try { 
-		// Si la session se encuentra inactiva		
-		if (esnulo(usuarioBean)) {
-			if (confirm('Su session se encuentra inactiva, inicie nuevamente !!!')) {
-				window.location.href = '${pageContext.request.contextPath}/login';
-			} else {
-				window.location.href = '${pageContext.request.contextPath}/login';
-			}
-		}
-		
-	} catch(e) {}
-</script>

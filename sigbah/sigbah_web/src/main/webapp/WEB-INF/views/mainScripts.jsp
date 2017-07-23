@@ -1,3 +1,5 @@
+<%@ taglib prefix="ju" uri="JsonUtils"%>
+
 <!-- #PLUGINS -->
 <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
 <script src="${pageContext.request.contextPath}/resources/js/libs/jquery-2.1.1.min.js"></script>
@@ -41,8 +43,20 @@
 
 
 <script type="text/javascript">
+	try { 
+		// Si la session se encuentra inactiva		
+		if ('${usuarioBean}' == null || '${usuarioBean}' == '') {
+			if (confirm('Su session se encuentra inactiva, inicie nuevamente !!!')) {
+				window.location.href = '${pageContext.request.contextPath}/login';
+			} else {
+				window.location.href = '${pageContext.request.contextPath}/login';
+			}
+		}
+		
+	} catch(e) {}
+
+	var usuarioBean = JSON.parse('${ju:toJson(usuarioBean)}');
 	var VAR_CONTEXT = '${pageContext.request.contextPath}';
-	var usuarioBean = '${usuarioBean}';
 	var indicador = '${indicador}';
 	var codigoRespuesta = '${base.codigoRespuesta}';
 	var mensajeRespuesta = '${base.mensajeRespuesta}';

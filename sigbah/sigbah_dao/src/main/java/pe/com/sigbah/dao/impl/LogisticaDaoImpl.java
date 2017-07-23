@@ -3375,7 +3375,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		StockAlmacenBean registroStockAlmacen = new StockAlmacenBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-			input_objParametros.addValue("pi_TIPO_ORIGEN", stockAlmacenBean.getTipoOrigen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_TIPO_ORIGEN", stockAlmacenBean.getTipoOrigen(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FK_IDE_DDI", stockAlmacenBean.getIdDdi(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FK_IDE_ALMACEN", stockAlmacenBean.getIdAlmacen(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FK_IDE_PRODUCTO", stockAlmacenBean.getIdProducto(), Types.NUMERIC);			
@@ -3394,7 +3394,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall.withProcedureName("USP_UPD_REGISTRA_STOCK_ALMACEN");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.NUMERIC));
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
 			output_objParametros.put("pi_FK_IDE_DDI", new SqlParameter("pi_FK_IDE_DDI", Types.NUMERIC));
 			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
 			output_objParametros.put("pi_FK_IDE_PRODUCTO", new SqlParameter("pi_FK_IDE_PRODUCTO", Types.NUMERIC));

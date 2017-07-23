@@ -4,7 +4,7 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Gestion de Almacenes</li>
+		<li>Gestión de Almacenes</li>
 		<li>Salidas</li>
 		<li>Proyecto de Manifiesto</li>
 		<li>Registro</li>

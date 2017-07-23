@@ -25,6 +25,23 @@ $(function() {
                 break;
         }
     });
+    
+    $('.alphaNumeric').keypress(function(event) {
+        var key = (document.all) ? event.keyCode : event.which;
+        switch (key) {
+            case 0:
+                return true;
+                break;
+            case 8:
+                return true;
+                break;
+            default:
+                var patron = /^[A-Za-z\d\s]+$/;
+                var te = String.fromCharCode(key);
+                return patron.test(te);
+                break;
+        }
+    });
 
     $('.onlyAmounts').keypress(function(event) {
         var key = (document.all) ? event.keyCode : event.which;
@@ -91,6 +108,8 @@ $(function() {
     });
     
     formatMontoInput();
+    
+    formatMontoSinDecimalInput();
 
 });
 
@@ -112,8 +131,8 @@ function consultarAjax(metodoEnv, direccionUrl, jsonString, callback) {
 		data : jsonString,
 		async : true,
 		url : VAR_CONTEXT + direccionUrl,
-		timeout : 30000,
-		dataType: 'json',
+		timeout : 30000, // 30 segundos
+		dataType : 'json',
 		success : function(respuesta) {
 			callback(respuesta);
 		},
@@ -153,8 +172,8 @@ function consultarAjaxSincrono(metodoEnv, direccionUrl, jsonString, callback) {
 		data : jsonString,
 		async : false,
 		url : VAR_CONTEXT + direccionUrl,
-		timeout : 30000,
-		dataType: 'json',
+		timeout : 30000, // 30 segundos
+		dataType : 'json',
 		success : function(respuesta) {
 			callback(respuesta);
 		},
@@ -190,18 +209,18 @@ function consultarAjaxSincrono(metodoEnv, direccionUrl, jsonString, callback) {
  */
 function consultarAjaxFile(metodoEnv, direccionUrl, formData, callback) {	
 	$.ajax({
-		type: metodoEnv,
-		url: VAR_CONTEXT + direccionUrl,				
-		dataType: 'text',
-		cache: false,
-		contentType: false,
-		processData: false,
-		data: formData,
+		type : metodoEnv,
+		url : VAR_CONTEXT + direccionUrl,				
+		dataType : 'text',
+		cache : false,
+		contentType : false,
+		processData : false,
+		data : formData,
 		timeout : 30000, // 30 segundos
-		success: function(respuesta) {						
+		success : function(respuesta) {						
 			callback(respuesta);	
 		},
-		error: function(respuesta) {
+		error : function(respuesta) {
 			var resp = null;
 			if (respuesta.status == '404') {
 				resp = {
@@ -861,7 +880,7 @@ function formatMontoInput() {
 				pastedText = e.clipboardData.getData('text/plain');
 			}
 			e.preventDefault();
-			if (fnValidarFormatoWebPymesWithComma(pastedText) || fnValidarFormatoWebPymesWithOutComma(pastedText)) {
+			if (fnValidarFormatoWebPymesWithComma(pastedText) || (pastedText)) {
 				if(/[,]/g.test(pastedText)){
 					pastedText = pastedText.replace(/[,]/g,'');
 				}
@@ -890,7 +909,7 @@ function formatMontoInput() {
 		if (wasPASTE) {
 			
 		} else {
-			if (fnValidarFormatoWebPymesWithOutComma(text)) {
+			if ((text)) {
 				return;
 			}
 			if (/^[.]{1}[0-9]{1,2}$/.test(text)) {
@@ -955,7 +974,7 @@ function fnValidarFormatoWebPymesWithComma(variable){
  * @param {String}variable
  * @returns {Boolean}
  */
-function fnValidarFormatoWebPymesWithOutComma(variable){
+function fnValidarFormatoWithOutComma(variable){
 	var f14d2	= new RegExp(/^(-?[0-9]{1,14})(\.[0-9]{1,2})?$/);
 	
 	if (f14d2.test(variable)) {
@@ -974,7 +993,7 @@ function formatMontoAll(monto) {
 		} else {
 			monto = parseFloat(monto).toFixed(2).toString();
 			var text = monto.trim();
-			if (fnValidarFormatoWebPymesWithOutComma(text)) {
+			if (fnValidarFormatoWithOutComma(text)) {
 				var num = monto.trim().replace(/\,/g,'');
 				if (!isNaN(num)) {
 					num = num.toString().split('').reverse().join('').replace(/(?=\d*\,?)(\d{3})/g,'$1,');
@@ -1002,6 +1021,88 @@ function formatMontoAll(monto) {
 		}
 	}
 	return monto
+}
+
+function formatMontoSinDecimalInput() {
+	$('.only-numbers-format').each(function(e, a) {
+		$(this).css('text-align', 'right');
+	});
+	
+	$('.only-numbers-format').keypress(function(event) {
+        var key = (document.all) ? event.keyCode : event.which;
+        switch (key) {
+            case 0:
+                return true;
+                break;
+            case 8:
+                return true;
+                break;
+            default:
+                var patron = /[0-9]/;
+                var te = String.fromCharCode(key);
+                return patron.test(te);
+                break;
+        }
+    });
+	
+	$(document).on('focusout', '.only-numbers-format', function() {
+		$(this).val(formatMontoSinComas($(this).val()));
+		return;
+	});
+	
+	$(document).on('focus', '.only-numbers-format', function() {
+		var regex = /^-?([0-9]{1,2},?)?([0-9]{3},?){0,2}$/;
+		// 1 a 8 digitos numericos ó   --> llegando a un maximo de 8 digitos
+		// 2 digitos primeros y 3 digitos (se puede repetir 2 veces)  --> llegando a un maximo de 8 digitos
+		var monto = $.trim($(this).val());
+		if (regex.test(monto)) {
+			$(this).val(monto.replace(/\,/g,''));
+		}
+	});
+}
+
+function formatMontoSinComas(monto) {
+	if(monto != null){
+		var textMonto = monto.toString();
+		monto = $.trim(textMonto).replace(/\,/g,'');//Suprimimos las comas antes de parsear el monto
+		if (monto == '') {
+			return "";
+		} else {
+			var regex = /^-?([0-9]{1,2},?)?([0-9]{3},?){0,2}$/;
+			// 1 a 8 digitos numericos ó   --> llegando a un maximo de 8 digitos
+			// 2 digitos primeros y 3 digitos (se puede repetir 2 veces)  --> llegando a un maximo de 8 digitos
+			if (regex.test(monto)) {
+				monto = parseInt(monto).toString();
+			}
+			var text = monto;
+			if ((text)) {
+				var num = monto.replace(/\,/g,'');
+				if(!isNaN(num)){
+					num = num.toString().split('').reverse().join('').replace(/(?=\d*\,?)(\d{3})/g,'$1,');
+					num = num.split('').reverse().join('').replace(/^[\,]/,'');
+					if (num.indexOf('.') == -1 && num.length<=12) {
+						
+					} else {
+						if(num.toString().split('.')[1] != undefined && num.toString().split('.')[1].length == 1){
+							num = num.concat('0');
+						}
+					}
+					monto = num;
+				}
+			}
+		}
+		if (monto.charAt(0) == '-') {
+			monto = monto.substring(1,monto.length);
+			if (monto.charAt(0) == ',') {
+				monto = monto.substring(1,monto.length);
+			}
+			monto = ('-').concat(monto);
+		}
+		if (monto.charAt(0) == ',') {
+			monto = monto.substring(1,monto.length);
+		}
+	}
+	return monto;
 }
 
 function formatMonto(numero) {

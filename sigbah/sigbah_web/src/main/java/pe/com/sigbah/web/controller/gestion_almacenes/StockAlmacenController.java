@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoStockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
@@ -119,10 +120,7 @@ public class StockAlmacenController extends BaseController {
     										Model model) {
         try {
         	StockAlmacenBean stockAlmacen = new StockAlmacenBean();
-        	
-        	// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-        	
+
         	if (!isNullInteger(idProducto)) {
         		StockAlmacenBean params = new StockAlmacenBean();
         		params.setTipoOrigen(tipoOrigen);
@@ -130,7 +128,6 @@ public class StockAlmacenController extends BaseController {
         		params.setIdDdi(idDdi);
         		params.setIdProducto(idProducto);
         		stockAlmacen = logisticaService.obtenerRegistroStockAlmacen(params);
-        		stockAlmacen.setCodigoAlmacen(usuarioBean.getCodigoAlmacen());
         	}
         	
         	model.addAttribute("stockAlmacen", getParserObject(stockAlmacen));
@@ -159,9 +156,12 @@ public class StockAlmacenController extends BaseController {
 			StockAlmacenBean stockAlmacenBean = new StockAlmacenBean();
 			
 			// Convierte los vacios en nulos en los enteros
-			IntegerConverter con_integer = new IntegerConverter(null);
+			IntegerConverter con_integer = new IntegerConverter(null);			
 			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
 			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			// Convierte los vacios en nulos en los decimales
+			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
+			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
 			// Copia los parametros del cliente al objeto
 			beanUtilsBean.populate(stockAlmacenBean, request.getParameterMap());
 
@@ -180,6 +180,28 @@ public class StockAlmacenController extends BaseController {
 		}
 		return stockAlmacen;
 	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/obtenerProductoStockAlmacen", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object obtenerProductoStockAlmacen(HttpServletRequest request, HttpServletResponse response) {
+		ProductoStockAlmacenBean producto = null;
+		try {			
+			StockAlmacenBean stockAlmacen = new StockAlmacenBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(stockAlmacen, request.getParameterMap());
+			stockAlmacen.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+			producto = logisticaService.obtenerProductoStockAlmacen(stockAlmacen);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
 	
 	/**
 	 * @param request
@@ -193,7 +215,8 @@ public class StockAlmacenController extends BaseController {
 		try {			
 			StockAlmacenLoteBean stockAlmacenLote = new StockAlmacenLoteBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(stockAlmacenLote, request.getParameterMap());			
+			BeanUtils.populate(stockAlmacenLote, request.getParameterMap());
+			stockAlmacenLote.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 			lista = logisticaService.listarStockAlmacenLote(stockAlmacenLote);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

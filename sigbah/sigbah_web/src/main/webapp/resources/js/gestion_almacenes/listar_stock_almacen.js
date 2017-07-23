@@ -173,7 +173,7 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-		$('#sel_almacen').val(guiaRemision.idAlmacen);
+		$('#sel_almacen').val(usuarioBean.idAlmacen);
 		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
