@@ -61,7 +61,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		var anio = '';
 		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
@@ -205,6 +205,7 @@ function inicializarDatos() {
 		$('#sel_anio').val(ordenSalida.codigoAnio);
 		$('#sel_mes').val(ordenSalida.codigoMes);
 		$('#sel_almacen').val(ordenSalida.idAlmacen);
+		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {

@@ -36,13 +36,6 @@ public interface GeneralDao {
 	public abstract List<UbigeoBean> listarDistrito(UbigeoBean ubigeoBean) throws Exception;
 	
 	/**
-	 * @param itemBean
-	 * @return Lista de registros.
-	 * @throws Exception
-	 */
-	public abstract List<ItemBean> listarFenomenos(ItemBean itemBean) throws Exception;
-	
-	/**
 	 * @return Lista de registros.
 	 * @throws Exception
 	 */
@@ -245,11 +238,10 @@ public interface GeneralDao {
 	public abstract List<ItemBean> listarEmpresaTransporte(ItemBean itemBean) throws Exception;
 	
 	/**
-	 * @param itemBean
 	 * @return Lista de registros.
 	 * @throws Exception
 	 */
-	public abstract List<ItemBean> listarEjecutora(ItemBean itemBean) throws Exception;
+	public abstract List<ItemBean> listarEjecutora() throws Exception;
 	
 	/**
 	 * @param itemBean
@@ -310,9 +302,18 @@ public interface GeneralDao {
 	 */
 	public abstract List<ItemBean> listarMotivoTraslado() throws Exception;
 	
+	/**
+	 * @param itemBean
+	 * @return Lista de fenomenos.
+	 * @throws Exception
+	 */
 	public abstract List<ItemBean> listarOficinas(ItemBean itemBean) throws Exception;
 	
+	/**
+	 * @param itemBean
+	 * @return Lista de fenomenos.
+	 * @throws Exception
+	 */
 	public abstract List<ItemBean> listarPersonalOficina(ItemBean itemBean) throws Exception;
-
 
 }

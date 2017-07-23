@@ -284,7 +284,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		tbl_det_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
@@ -461,7 +461,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		tbl_det_no_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_no_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
@@ -629,7 +629,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);

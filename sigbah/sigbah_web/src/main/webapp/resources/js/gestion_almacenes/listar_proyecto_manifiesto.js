@@ -15,13 +15,6 @@ $(document).ready(function() {
 						message : 'Debe seleccionar Año.'
 					}
 				}
-			},
-			sel_almacen : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Almacen.'
-					}
-				}
 			}
 		}
 	});
@@ -61,7 +54,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -201,6 +194,7 @@ function inicializarDatos() {
 		$('#sel_anio').val(proyectoManifiesto.codigoAnio);
 		$('#sel_mes').val(proyectoManifiesto.codigoMes);
 		$('#sel_almacen').val(proyectoManifiesto.idAlmacen);
+		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {

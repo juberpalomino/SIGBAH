@@ -36,7 +36,6 @@ import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.ExportarArchivo;
-import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
@@ -73,12 +72,9 @@ public class ControlCalidadController extends BaseController {
 
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	
-        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
-        	model.addAttribute("lista_ddi", listaDdi);
+        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi())));
         	
-        	if (!Utils.isEmpty(listaDdi) && listaDdi.size() == Constantes.ONE_INT) {
-        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
-        	}
+        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
@@ -514,7 +510,7 @@ public class ControlCalidadController extends BaseController {
 	    try {
 			List<DetalleProductoControlCalidadBean> lista = logisticaService.listarDetalleProductoControlCalidad(codigo);
 			if (isEmpty(lista)) {
-				return Constantes.COD_VALIDACION_GENERAL;
+				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 			}			
 			DetalleProductoControlCalidadBean producto = lista.get(0);
 

@@ -1,11 +1,10 @@
 package pe.com.sigbah.web.controller.gestion_almacenes;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Calendar;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +27,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
-import pe.com.sigbah.common.bean.ControlCalidadBean;
-import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
-import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
-import pe.com.sigbah.common.bean.DetalleManifiestoCargaBean;
-import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.StockAlmacenBean;
+import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.ExportarArchivo;
-import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
-import pe.com.sigbah.web.report.gestion_almacenes.ReporteGuiaRemision;
+import pe.com.sigbah.web.report.gestion_almacenes.ReporteStockAlmacen;
 
 /**
  * @className: StockAlmacenController.java
@@ -71,29 +67,9 @@ public class StockAlmacenController extends BaseController {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	model.addAttribute("lista_anio", generalService.listarAnios());
-        	
-        	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
-        	
         	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	        	
-        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
-        	
-        	GuiaRemisionBean guiaRemision = new GuiaRemisionBean();
-        	
-        	ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
-    		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
-    		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
-    		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
-    		if (!isEmpty(listaAlmacenActivo)) {
-    			guiaRemision.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-    			guiaRemision.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-    			guiaRemision.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-    			guiaRemision.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-    			guiaRemision.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
-    		}
-    		
-    		model.addAttribute("guiaRemision", getParserObject(guiaRemision));
+        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.THREE_INT)));
         	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
@@ -110,15 +86,16 @@ public class StockAlmacenController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarGuiaRemision", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarStockAlmacen", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarGuiaRemision(HttpServletRequest request, HttpServletResponse response) {
-		List<GuiaRemisionBean> lista = null;
+	public Object listarStockAlmacen(HttpServletRequest request, HttpServletResponse response) {
+		List<StockAlmacenBean> lista = null;
 		try {			
-			GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();			
+			StockAlmacenBean stockAlmacenBean = new StockAlmacenBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(guiaRemisionBean, request.getParameterMap());			
-			lista = logisticaService.listarGuiaRemision(guiaRemisionBean);
+			BeanUtils.populate(stockAlmacenBean, request.getParameterMap());
+			stockAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+			lista = logisticaService.listarStockAlmacen(stockAlmacenBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -127,27 +104,38 @@ public class StockAlmacenController extends BaseController {
 	}
 	
 	/**
-	 * @param codigo
+	 * @param tipoOrigen 
+	 * @param idAlmacen 
+	 * @param idDdi 
+	 * @param idProducto 
 	 * @param model
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/mantenimientoGuiaRemision/{codigo}", method = RequestMethod.GET)
-    public String mantenimientoGuiaRemision(@PathVariable("codigo") Integer codigo, Model model) {
+	@RequestMapping(value = "/mantenimientoStockAlmacen/{tipoOrigen}/{idAlmacen}/{idDdi}/{idProducto}", method = RequestMethod.GET)
+    public String mantenimientoStockAlmacen(@PathVariable("tipoOrigen") String tipoOrigen,
+    										@PathVariable("idAlmacen") Integer idAlmacen,
+    										@PathVariable("idDdi") Integer idDdi,
+    										@PathVariable("idProducto") Integer idProducto,
+    										Model model) {
         try {
-        	GuiaRemisionBean guiaRemision = new GuiaRemisionBean();
+        	StockAlmacenBean stockAlmacen = new StockAlmacenBean();
         	
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-
-        	if (!isNullInteger(codigo)) {        		
-        		guiaRemision = logisticaService.obtenerRegistroGuiaRemision(codigo);
+        	
+        	if (!isNullInteger(idProducto)) {
+        		StockAlmacenBean params = new StockAlmacenBean();
+        		params.setTipoOrigen(tipoOrigen);
+        		params.setIdAlmacen(idAlmacen);
+        		params.setIdDdi(idDdi);
+        		params.setIdProducto(idProducto);
+        		stockAlmacen = logisticaService.obtenerRegistroStockAlmacen(params);
+        		stockAlmacen.setCodigoAlmacen(usuarioBean.getCodigoAlmacen());
         	}
         	
-        	model.addAttribute("guiaRemision", getParserObject(guiaRemision));
+        	model.addAttribute("stockAlmacen", getParserObject(stockAlmacen));
 
-        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
-        	
-        	model.addAttribute("lista_motivo_traslado", generalService.listarMotivoTraslado());
+        	model.addAttribute("lista_envase", generalService.listarEnvase(new ItemBean()));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
@@ -163,40 +151,34 @@ public class StockAlmacenController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/anularGuiaRemision", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/actualizarStockAlmacen", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object anularGuiaRemision(HttpServletRequest request, HttpServletResponse response) {
-		GuiaRemisionBean guiaRemision = null;
+	public Object actualizarStockAlmacen(HttpServletRequest request, HttpServletResponse response) {
+		StockAlmacenBean stockAlmacen = null;
 		try {			
-			GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();
+			StockAlmacenBean stockAlmacenBean = new StockAlmacenBean();
 			
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);
 			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
 			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(guiaRemisionBean, request.getParameterMap());
+			beanUtilsBean.populate(stockAlmacenBean, request.getParameterMap());
 
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	guiaRemisionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-        	guiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+			stockAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+        	stockAlmacenBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-        	logisticaService.anularGuiaRemision(guiaRemisionBean);
-        	
-        	guiaRemisionBean.setIdEstado(Constantes.ESTADO_ACTIVO);
-        	guiaRemision = logisticaService.insertarGuiaRemision(guiaRemisionBean);
-        	
-        	guiaRemision = logisticaService.obtenerRegistroGuiaRemision(guiaRemision.getIdGuiaRemision());
-        	guiaRemision.setIdEstado(Constantes.ESTADO_ACTIVO);
-        	guiaRemision.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+        	stockAlmacen = logisticaService.actualizarStockAlmacen(stockAlmacenBean);
+        	stockAlmacen.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return guiaRemision;
+		return stockAlmacen;
 	}
 	
 	/**
@@ -204,65 +186,87 @@ public class StockAlmacenController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/actualizarGuiaRemision", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarStockAlmacenLote", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object actualizarGuiaRemision(HttpServletRequest request, HttpServletResponse response) {
-		GuiaRemisionBean guiaRemision = null;
+	public Object listarStockAlmacenLote(HttpServletRequest request, HttpServletResponse response) {
+		List<StockAlmacenLoteBean> lista = null;
 		try {			
-			GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();
-			
-			// Convierte los vacios en nulos en los enteros
-			IntegerConverter con_integer = new IntegerConverter(null);
-			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
-			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			StockAlmacenLoteBean stockAlmacenLote = new StockAlmacenLoteBean();			
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(guiaRemisionBean, request.getParameterMap());
-
-			// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-        	
-			guiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
-        	guiaRemisionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-			
-        	guiaRemision = logisticaService.actualizarGuiaRemision(guiaRemisionBean);
-        	guiaRemision.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
-			
+			BeanUtils.populate(stockAlmacenLote, request.getParameterMap());			
+			lista = logisticaService.listarStockAlmacenLote(stockAlmacenLote);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return guiaRemision;
+		return lista;
 	}
 	
 	/**
-	 * @param codigoAnio 
-	 * @param codigoMes 
-	 * @param idAlmacen
-	 * @param codigoMovimiento 
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/actualizarStockAlmacenLote", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object actualizarStockAlmacenLote(HttpServletRequest request, HttpServletResponse response) {
+		StockAlmacenLoteBean stock = null;
+		try {			
+			StockAlmacenLoteBean stockAlmacenLoteBean = new StockAlmacenLoteBean();
+
+			// Convierte los vacios en nulos en los enteros
+			IntegerConverter con_integer = new IntegerConverter(null);			
+			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
+			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			// Convierte los vacios en nulos en los decimales
+			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
+			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
+			// Copia los parametros del cliente al objeto
+			beanUtilsBean.populate(stockAlmacenLoteBean, request.getParameterMap());
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	stockAlmacenLoteBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+        	stock = logisticaService.actualizarStockAlmacenLote(stockAlmacenLoteBean);
+			
+        	stock.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return stock;
+	}
+	
+	/**
+	 * @param idAlmacen 
+	 * @param codigoCategoria 
+	 * @param nombreProducto
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{idAlmacen}/{codigoMovimiento}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{nombreProducto}", method = RequestMethod.GET)
 	@ResponseBody
-	public String exportarExcel(@PathVariable("codigoAnio") String codigoAnio, 
-								@PathVariable("codigoMes") String codigoMes, 
-								@PathVariable("idAlmacen") Integer idAlmacen,
-								@PathVariable("codigoMovimiento") String codigoMovimiento, 
+	public String exportarExcel(@PathVariable("idAlmacen") Integer idAlmacen, 
+								@PathVariable("codigoMes") String codigoCategoria, 
+								@PathVariable("nombreProducto") String nombreProducto,
 								HttpServletResponse response) {
 	    try {
-	    	GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();
-	    	guiaRemisionBean.setCodigoAnio(verificaParametro(codigoAnio));
-	    	guiaRemisionBean.setCodigoMes(verificaParametro(codigoMes));
-	    	guiaRemisionBean.setIdAlmacen(idAlmacen);
-	    	guiaRemisionBean.setCodigoMovimiento(codigoMovimiento);
+	    	StockAlmacenBean stockAlmacenBean = new StockAlmacenBean();
+	    	stockAlmacenBean.setIdAlmacen(idAlmacen);
+	    	stockAlmacenBean.setCodigoCategoria(verificaParametro(codigoCategoria));
+	    	stockAlmacenBean.setNombreProducto(nombreProducto);
+	    	stockAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    	
-			List<GuiaRemisionBean> lista = logisticaService.listarGuiaRemision(guiaRemisionBean);
+			List<StockAlmacenBean> lista = logisticaService.listarStockAlmacen(stockAlmacenBean);
 	    	
-			String file_name = "GuiaRemision";
+			String file_name = "StockAlmacen";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
 			
-			ReporteGuiaRemision reporte = new ReporteGuiaRemision();
-		    HSSFWorkbook wb = reporte.generaReporteExcelGuiaRemision(lista);
+			ReporteStockAlmacen reporte = new ReporteStockAlmacen();
+		    HSSFWorkbook wb = reporte.generaReporteExcelStockAlmacen(lista);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_XLS);
@@ -287,211 +291,107 @@ public class StockAlmacenController extends BaseController {
 	}
 	
 	/**
-	 * @param codigo
-	 * @param ind_gui 
-	 * @param ind_man 
-	 * @param ind_act 
+	 * @param tipoOrigen 
+	 * @param idAlmacen 
+	 * @param idDdi 
+	 * @param idProducto 
 	 * @param request 
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarPdf/{codigo}/{ind_gui}/{ind_man}/{ind_act}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarPdf/{tipoOrigen}/{idAlmacen}/{idDdi}/{idProducto}", method = RequestMethod.GET)
 	@ResponseBody
-	public String exportarPdf(@PathVariable("codigo") Integer codigo,
-							  @PathVariable("ind_gui") String ind_gui,
-							  @PathVariable("ind_man") String ind_man,
-							  @PathVariable("ind_act") String ind_act,
+	public String exportarPdf(@PathVariable("tipoOrigen") String tipoOrigen,
+							  @PathVariable("idAlmacen") Integer idAlmacen,
+							  @PathVariable("idDdi") Integer idDdi,
+							  @PathVariable("idProducto") Integer idProducto, 
 							  HttpServletRequest request, 
 							  HttpServletResponse response) {
-	    try {
-	    	
-	    	if (ind_gui.equals(Constantes.ONE_STRING)) {
-	    		generarReporteGuiaRemision(codigo, request, response);
-	    	}
-	    	
-	    	if (ind_man.equals(Constantes.ONE_STRING)) {
-	    		generarReporteManifiestoCarga(codigo, request, response);
-	    	}
+		try {
+			StockAlmacenBean params = new StockAlmacenBean();
+    		params.setTipoOrigen(tipoOrigen);
+    		params.setIdAlmacen(idAlmacen);
+    		params.setIdDdi(idDdi);
+    		params.setIdProducto(idProducto);
+    		StockAlmacenBean stockAlmacen = logisticaService.obtenerRegistroStockAlmacen(params);
 
-	    	if (ind_act.equals(Constantes.ONE_STRING)) {
-	    		generarReporteActaEntrega(codigo, request, response);
+    		StockAlmacenLoteBean paramsLote = new StockAlmacenLoteBean();
+    		paramsLote.setTipoOrigen(tipoOrigen);
+    		paramsLote.setIdAlmacen(idAlmacen);
+    		paramsLote.setIdDdi(idDdi);
+    		paramsLote.setIdProducto(idProducto);    		
+    		List<StockAlmacenLoteBean> lista = logisticaService.listarStockAlmacenLote(paramsLote);
+
+			ExportarArchivo printer = new ExportarArchivo();
+			StringBuilder jasperFile = new StringBuilder();
+			jasperFile.append(getPath(request));
+			jasperFile.append(File.separator);
+			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
+			jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
+			
+			Map<String, Object> parameters = new HashMap<String, Object>();
+
+			// Agregando los parámetros del reporte
+			StringBuilder logo_indeci_path = new StringBuilder();
+			logo_indeci_path.append(getPath(request));
+			logo_indeci_path.append(File.separator);
+			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
+			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
+			StringBuilder logo_wfp_path = new StringBuilder();
+			logo_wfp_path.append(getPath(request));
+			logo_wfp_path.append(File.separator);
+			logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
+			parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
+			StringBuilder logo_check_path = new StringBuilder();
+			logo_check_path.append(getPath(request));
+			logo_check_path.append(File.separator);
+			logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+			parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
+			StringBuilder logo_check_min_path = new StringBuilder();
+			logo_check_min_path.append(getPath(request));
+			logo_check_min_path.append(File.separator);
+			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
+			parameters.put("P_NRO_CONTROL_CALIDAD", stockAlmacen.getNroKardex());
+//			parameters.put("P_DDI", stockAlmacen.getNombreDdi());			
+//			parameters.put("P_ALMACEN", stockAlmacen.getNombreAlmacen());
+//			parameters.put("P_FECHA_EMISION", stockAlmacen.getFechaEmision());
+//			parameters.put("P_TIPO_CONTROL", stockAlmacen.getTipoControlCalidad());
+//			parameters.put("P_ALMACEN_ORIGEN_DESTINO", stockAlmacen.getNombreAlmacen());
+//			parameters.put("P_PROVEEDOR", stockAlmacen.getProveedorDestino());
+//			parameters.put("P_NRO_ORDEN_COMPRA", stockAlmacen.getNroOrdenCompra());
+//			parameters.put("P_CONCLUSIONES", stockAlmacen.getConclusiones());
+//			parameters.put("P_RECOMENDACIONES", stockAlmacen.getRecomendaciones());
+
+			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
+			InputStream input = new ByteArrayInputStream(array);
+	        
+	        String file_name = "Reporte_Control_Calidad";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+	    	
+	        response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+			
+			byte[] buffer = new byte[4096];
+	    	int n = 0;
+
+	    	OutputStream output = response.getOutputStream();
+	    	while ((n = input.read(buffer)) != -1) {
+	    	    output.write(buffer, 0, n);
 	    	}
-    		
+	    	output.close();
+
 	    	return Constantes.COD_EXITO_GENERAL;
 	    } catch (Exception e) {
 	    	LOGGER.error(e.getMessage(), e);
 	    	return Constantes.COD_ERROR_GENERAL;
 	    } 
 	}
-	
-	private void generarReporteGuiaRemision(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		List<DetalleGuiaRemisionBean> listaGuiaRemision = logisticaService.listarDetalleGuiaRemision(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
-		
-		DetalleGuiaRemisionBean guiaRemision = null;
-		if (!Utils.isEmpty(listaGuiaRemision)) {
-			guiaRemision = listaGuiaRemision.get(0);
-		} else {
-			guiaRemision = new DetalleGuiaRemisionBean();
-		}
 
-		ExportarArchivo printer = new ExportarArchivo();
-		StringBuilder jasperFile = new StringBuilder();
-		jasperFile.append(getPath(request));
-		jasperFile.append(File.separator);
-		jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-		jasperFile.append("Guia_Remision.jrxml");
-		
-		Map<String, Object> parameters = new HashMap<String, Object>();
-
-		// Agregando los parámetros del reporte
-		StringBuilder logo_indeci_path = new StringBuilder();
-		logo_indeci_path.append(getPath(request));
-		logo_indeci_path.append(File.separator);
-		logo_indeci_path.append(Constantes.IMAGE_INDECI2_REPORT_PATH);
-		parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());		
-		StringBuilder logo_check_path = new StringBuilder();
-		logo_check_path.append(getPath(request));
-		logo_check_path.append(File.separator);
-		logo_check_path.append(Constantes.IMAGE_INPUT_CHECK_REPORT_PATH);
-		parameters.put("P_LOGO_CHECK", logo_check_path.toString());
-		StringBuilder logo_checked_path = new StringBuilder();
-		logo_checked_path.append(getPath(request));
-		logo_checked_path.append(File.separator);
-		logo_checked_path.append(Constantes.IMAGE_INPUT_CHECKED_REPORT_PATH);
-		parameters.put("P_LOGO_CHECKED", logo_checked_path.toString());
-			
-		parameters.put("P_SEDE", getString(guiaRemision.getSede()));
-		parameters.put("P_NRO_GUIA_REMISION", guiaRemision.getNroGuiaEmision());			
-		parameters.put("P_DIRECCION_PARTIDA", guiaRemision.getDireccionPartida());	
-		parameters.put("P_PUNTO_PARTIDA", guiaRemision.getPuntoPartida());	
-		parameters.put("P_PUNTO_LLEGADA", guiaRemision.getPuntoLlegada());	
-		parameters.put("P_FECHA_EMISION", guiaRemision.getFechaEmision());	
-		parameters.put("P_FECHA_INICIO_TRABAJO", guiaRemision.getFechaInicioTraslado());	
-		parameters.put("P_RAZON_SOCIAL_DESTINATARIO", guiaRemision.getRazonSocialDestino());	
-		parameters.put("P_RUC_DESTINATARIO", guiaRemision.getRucDestino());	
-		parameters.put("P_CHOFER", guiaRemision.getNombreChofer());	
-		parameters.put("P_NRO_PLACA", guiaRemision.getNroPlaca());	
-		parameters.put("P_NRO_LICENCIA_CONDUCIR", guiaRemision.getNroLicenciaConducir());	
-		parameters.put("P_RAZON_SOCIAL_TRANSPORTE", guiaRemision.getEmpresaTransporte());	
-		parameters.put("P_RUC_TRANSPORTE", guiaRemision.getRucEmpresaTransporte());	
-		String idMotivoTraslado = Constantes.EMPTY;
-		if (!isNullInteger(guiaRemision.getIdMotivoTraslado())) {
-			idMotivoTraslado = getString(guiaRemision.getIdMotivoTraslado());
-		}
-		parameters.put("P_MOTIVO_TRASLADO", idMotivoTraslado);	
-		parameters.put("P_TIPO_MOVIMIENTO", guiaRemision.getTipoMovimiento());	
-		parameters.put("P_OBSERVACIONES", guiaRemision.getObservacionGuia());	
-
-		byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaGuiaRemision);
-		InputStream input = new ByteArrayInputStream(array);
-        
-        String file_name = "Reporte_Guia_Remision";
-		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-    	
-        response.resetBuffer();
-        response.setContentType(Constantes.MIME_APPLICATION_PDF);
-        response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Cache-Control", "no-store");
-		response.setHeader("Pragma", "private");
-		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-		response.setDateHeader("Expires", 1);
-		
-		byte[] buffer = new byte[4096];
-    	int n = 0;
-
-    	OutputStream output = response.getOutputStream();
-    	while ((n = input.read(buffer)) != -1) {
-    	    output.write(buffer, 0, n);
-    	}
-    	output.close();
-	}
-	
-	private void generarReporteManifiestoCarga(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		StringBuilder file_path = new StringBuilder();
-    	file_path.append(getPath(request));
-    	file_path.append(File.separator);
-    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
-    	file_path.append(File.separator);
-    	file_path.append(Calendar.getInstance().getTime().getTime());
-    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
-    	
-    	String file_name = "Manifiesto_Carga";
-		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-		
-		List<DetalleManifiestoCargaBean> listaManifiestoCarga = logisticaService.listarDetalleManifiestoCarga(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
-		
-		ReporteGuiaRemision reporte = new ReporteGuiaRemision();
-		reporte.generaPDFReporteManifiestoCarga(file_path.toString(), listaManifiestoCarga);
-		
-		response.resetBuffer();
-        response.setContentType(Constantes.MIME_APPLICATION_PDF);
-        response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Cache-Control", "no-store");
-		response.setHeader("Pragma", "private");
-		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-		response.setDateHeader("Expires", 1);
-    	
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		baos = convertPDFToByteArrayOutputStream(file_path.toString());
-		
-		// Captured backflow
-        OutputStream out = response.getOutputStream();
-        baos.writeTo(out); // We write in that flow
-        out.flush(); // We emptied the flow
-    	out.close(); // We close the flow
-    	
-    	File file_temp = new File(file_path.toString());
-		if (file_temp.delete()) {
-			LOGGER.info("[generarReporteManifiestoCarga] "+file_temp.getName()+" se borra el archivo temporal.");
-		} else {
-			LOGGER.info("[generarReporteManifiestoCarga] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
-		}
-	}
-	
-	private void generarReporteActaEntrega(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		StringBuilder file_path = new StringBuilder();
-    	file_path.append(getPath(request));
-    	file_path.append(File.separator);
-    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
-    	file_path.append(File.separator);
-    	file_path.append(Calendar.getInstance().getTime().getTime());
-    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
-    	
-    	String file_name = "Acta_Entrega";
-		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-		
-		List<DetalleActaEntregaBean> listaActaEntrega = logisticaService.listarDetalleActaEntrega(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
-		
-		ReporteGuiaRemision reporte = new ReporteGuiaRemision();
-		reporte.generaPDFReporteActaEntrega(file_path.toString(), listaActaEntrega);
-		
-		response.resetBuffer();
-        response.setContentType(Constantes.MIME_APPLICATION_PDF);
-        response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Cache-Control", "no-store");
-		response.setHeader("Pragma", "private");
-		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-		response.setDateHeader("Expires", 1);
-    	
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		baos = convertPDFToByteArrayOutputStream(file_path.toString());
-		
-		// Captured backflow
-        OutputStream out = response.getOutputStream();
-        baos.writeTo(out); // We write in that flow
-        out.flush(); // We emptied the flow
-    	out.close(); // We close the flow
-    	
-    	File file_temp = new File(file_path.toString());
-		if (file_temp.delete()) {
-			LOGGER.info("[generarReporteActaEntrega] "+file_temp.getName()+" se borra el archivo temporal.");
-		} else {
-			LOGGER.info("[generarReporteActaEntrega] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
-		}
-	}
-	
 }

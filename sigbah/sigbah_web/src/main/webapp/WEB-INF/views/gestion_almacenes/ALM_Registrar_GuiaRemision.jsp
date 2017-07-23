@@ -6,7 +6,7 @@
 	<ol class="breadcrumb">
 		<li>Gestion de Almacenes</li>
 		<li>Salidas</li>
-		<li>Guia de Remisión Edición/li>
+		<li>Guia de Remisión Edición</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>

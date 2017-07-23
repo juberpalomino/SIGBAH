@@ -37,13 +37,13 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_gui_remision" class="form-horizontal">
+							<form id="frm_sto_almacen" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
 								<div class="row">
 
-									<label class="col-sm-2 control-label">Almacén:</label>
+									<label class="col-sm-1 control-label">Almacén:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_almacen" name="sel_almacen" class="form-control">
 											<c:forEach items="${lista_almacen}" var="item">
@@ -51,17 +51,20 @@
 											</c:forEach>
 										</select>
 									</div>
-								</div>
-									
-								<div class="row">
-									<label class="col-sm-2 control-label">Tipo Movimiento:</label>
+					
+									<label class="col-sm-2 control-label">Categoría Producto:</label>
 									<div class="col-sm-2 form-group">
-										<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
+										<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
 											<option value="">Todos</option>
-											<c:forEach items="${lista_tipo_movimiento}" var="item">
+											<c:forEach items="${lista_categoria}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
+									</div>
+									
+									<label class="col-sm-1 control-label">Producto:</label>
+									<div class="col-sm-2 form-group">
+										<input type="text" id="txt_producto" name="txt_producto" class="form-control">
 									</div>
 									
 									<div class="col-sm-2 opc-center">
@@ -100,7 +103,11 @@
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Exportar Excel">
 								<i class="fa fa-file-excel-o"></i>
-							</a> 
+							</a>
+							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Imprimir">
+								<i class="fa fa-file-pdf-o"></i>
+							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
@@ -114,20 +121,18 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_gui_remision" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_sto_almacen" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
 										<th>Nº</th>
-										<th>Año</th>
-										<th>Mes</th>
-										<th>Fecha</th>
-										<th>N° Orden de Salida</th>
-										<th>N° Guia de Remisión</th>
-										<th>N° Manifiesto de Carga</th>
-										<th>N° Acta de Entrega Recepción</th>
-										<th>Tipo de Movimiento</th>										
-										<th>Estado</th>
+										<th>Categoría</th>
+										<th>Código</th>
+										<th>Producto</th>
+										<th>Unidad de Medida</th>
+										<th>Tipo Envase</th>
+										<th>Precio Unitario Promedio</th>
+										<th>Stock</th>
 									</tr>
 								</thead>
 							</table>
@@ -154,5 +159,4 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script> var guiaRemision = JSON.parse('${guiaRemision}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_stock_almacen.js"></script>

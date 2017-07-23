@@ -6,7 +6,7 @@
 	<ol class="breadcrumb">
 		<li>Gestion de Almacenes</li>
 		<li>Salidas</li>
-		<li>Guia de Remisión Edición/li>
+		<li>Guia de Remisión Edición</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -286,6 +286,6 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script> var guiaRemision = JSON.parse('${guiaRemision}'); </script>
+<script> var guiaRemision = JSON.parse('${stockAlmacen}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/mantenimiento_guia_remision.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/validacion_mantenimiento_guia_remision.js"></script>

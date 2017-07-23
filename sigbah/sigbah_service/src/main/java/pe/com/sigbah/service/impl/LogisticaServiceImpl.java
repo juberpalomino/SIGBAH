@@ -25,7 +25,10 @@ import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
+import pe.com.sigbah.common.bean.ProductoStockAlmacenBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.StockAlmacenBean;
+import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -513,6 +516,54 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public List<DetalleActaEntregaBean> listarDetalleActaEntrega(Integer idGuiaRemision, String tipoOrigen) throws Exception {
 		return logisticaDao.listarDetalleActaEntrega(idGuiaRemision, tipoOrigen);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarStockAlmacen(pe.com.sigbah.common.bean.StockAlmacenBean)
+	 */
+	@Override
+	public List<StockAlmacenBean> listarStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception {
+		return logisticaDao.listarStockAlmacen(stockAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroStockAlmacen(pe.com.sigbah.common.bean.StockAlmacenBean)
+	 */
+	@Override
+	public StockAlmacenBean obtenerRegistroStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception {
+		return logisticaDao.obtenerRegistroStockAlmacen(stockAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#actualizarStockAlmacen(pe.com.sigbah.common.bean.StockAlmacenBean)
+	 */
+	@Override
+	public StockAlmacenBean actualizarStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception {
+		return logisticaDao.actualizarStockAlmacen(stockAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerProductoStockAlmacen(pe.com.sigbah.common.bean.StockAlmacenBean)
+	 */
+	@Override
+	public ProductoStockAlmacenBean obtenerProductoStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception {
+		return logisticaDao.obtenerProductoStockAlmacen(stockAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarStockAlmacenLote(pe.com.sigbah.common.bean.StockAlmacenLoteBean)
+	 */
+	@Override
+	public List<StockAlmacenLoteBean> listarStockAlmacenLote(StockAlmacenLoteBean stockAlmacenLoteBean) throws Exception {
+		return logisticaDao.listarStockAlmacenLote(stockAlmacenLoteBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#actualizarStockAlmacenLote(pe.com.sigbah.common.bean.StockAlmacenLoteBean)
+	 */
+	@Override
+	public StockAlmacenLoteBean actualizarStockAlmacenLote(StockAlmacenLoteBean stockAlmacenLoteBean) throws Exception {
+		return logisticaDao.actualizarStockAlmacenLote(stockAlmacenLoteBean);
 	}
 
 }

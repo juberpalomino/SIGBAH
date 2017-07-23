@@ -41,6 +41,20 @@ public class Utils implements Serializable {
 	}
 	
 	/**
+	 * Verifica si la cadena esta vacía.
+	 * @param campo - valor del parámetro a evaluar, tipo Object
+	 * @return si la cadena esta vacía enviar valor porcentaje sino el parametro con ambos porcetajes en ambos lados.
+	 */
+	public static String getParamBusqueda(Object campo) {
+		String parametro = getString(campo);
+		if (Utils.isNullOrEmpty(parametro)) {
+			return Constantes.PORCENTAJE;
+		}
+		String busqueda = Constantes.PORCENTAJE.concat(parametro).concat(Constantes.PORCENTAJE);
+		return busqueda;
+	}
+	
+	/**
 	 * Verifica si la cadena esta vacía
 	 * @param campo - valor del parámetro a evaluar, tipo String
 	 * @return true si es vacío o nulo y false lo contrario

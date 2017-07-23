@@ -136,9 +136,6 @@ public class GuiaRemisionController extends BaseController {
         try {
         	GuiaRemisionBean guiaRemision = new GuiaRemisionBean();
         	
-        	// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-
         	if (!isNullInteger(codigo)) {        		
         		guiaRemision = logisticaService.obtenerRegistroGuiaRemision(codigo);
         	}
@@ -238,23 +235,23 @@ public class GuiaRemisionController extends BaseController {
 	 * @param codigoAnio 
 	 * @param codigoMes 
 	 * @param idAlmacen
-	 * @param codigoMovimiento 
+	 * @param idMovimiento 
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{idAlmacen}/{codigoMovimiento}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{idAlmacen}/{idMovimiento}", method = RequestMethod.GET)
 	@ResponseBody
 	public String exportarExcel(@PathVariable("codigoAnio") String codigoAnio, 
 								@PathVariable("codigoMes") String codigoMes, 
 								@PathVariable("idAlmacen") Integer idAlmacen,
-								@PathVariable("codigoMovimiento") String codigoMovimiento, 
+								@PathVariable("idMovimiento") Integer idMovimiento, 
 								HttpServletResponse response) {
 	    try {
 	    	GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();
 	    	guiaRemisionBean.setCodigoAnio(verificaParametro(codigoAnio));
 	    	guiaRemisionBean.setCodigoMes(verificaParametro(codigoMes));
 	    	guiaRemisionBean.setIdAlmacen(idAlmacen);
-	    	guiaRemisionBean.setCodigoMovimiento(codigoMovimiento);
+	    	guiaRemisionBean.setIdMovimiento(idMovimiento);
 	    	
 			List<GuiaRemisionBean> lista = logisticaService.listarGuiaRemision(guiaRemisionBean);
 	    	
@@ -304,19 +301,28 @@ public class GuiaRemisionController extends BaseController {
 							  HttpServletRequest request, 
 							  HttpServletResponse response) {
 	    try {
-	    	
+	    	List<DetalleGuiaRemisionBean> listaGuiaRemision = null;
+	    	List<DetalleManifiestoCargaBean> listaManifiestoCarga = null;
+	    	List<DetalleActaEntregaBean> listaActaEntrega = null;
 	    	if (ind_gui.equals(Constantes.ONE_STRING)) {
-	    		generarReporteGuiaRemision(codigo, request, response);
-	    	}
-	    	
-	    	if (ind_man.equals(Constantes.ONE_STRING)) {
-	    		generarReporteManifiestoCarga(codigo, request, response);
-	    	}
-
-	    	if (ind_act.equals(Constantes.ONE_STRING)) {
-	    		generarReporteActaEntrega(codigo, request, response);
-	    	}
-    		
+	    		listaGuiaRemision = logisticaService.listarDetalleGuiaRemision(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+	    		if (isEmpty(listaGuiaRemision)) {
+					return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+				}
+	    		generarReporteGuiaRemision(listaGuiaRemision, request, response);
+	    	} else if (ind_man.equals(Constantes.ONE_STRING)) {
+	    		listaManifiestoCarga = logisticaService.listarDetalleManifiestoCarga(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+	    		if (isEmpty(listaManifiestoCarga)) {
+					return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+				}
+	    		generarReporteManifiestoCarga(listaManifiestoCarga, request, response);
+	    	} else if (ind_act.equals(Constantes.ONE_STRING)) {
+	    		listaActaEntrega = logisticaService.listarDetalleActaEntrega(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+	    		if (isEmpty(listaActaEntrega)) {
+					return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+				}
+	    		generarReporteActaEntrega(listaActaEntrega, request, response);
+	    	}    		
 	    	return Constantes.COD_EXITO_GENERAL;
 	    } catch (Exception e) {
 	    	LOGGER.error(e.getMessage(), e);
@@ -324,9 +330,14 @@ public class GuiaRemisionController extends BaseController {
 	    } 
 	}
 	
-	private void generarReporteGuiaRemision(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		List<DetalleGuiaRemisionBean> listaGuiaRemision = logisticaService.listarDetalleGuiaRemision(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+	/**
+	 * @param listaGuiaRemision
+	 * @param request 
+	 * @param response
+	 */
+	private void generarReporteGuiaRemision(List<DetalleGuiaRemisionBean> listaGuiaRemision, 
+											HttpServletRequest request, 
+											HttpServletResponse response) throws Exception {
 		
 		DetalleGuiaRemisionBean guiaRemision = null;
 		if (!Utils.isEmpty(listaGuiaRemision)) {
@@ -408,7 +419,15 @@ public class GuiaRemisionController extends BaseController {
     	output.close();
 	}
 	
-	private void generarReporteManifiestoCarga(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	/**
+	 * @param listaManifiestoCarga
+	 * @param request 
+	 * @param response
+	 */
+	private void generarReporteManifiestoCarga(List<DetalleManifiestoCargaBean> listaManifiestoCarga, 
+											   HttpServletRequest request, 
+											   HttpServletResponse response) throws Exception {
+		
 		StringBuilder file_path = new StringBuilder();
     	file_path.append(getPath(request));
     	file_path.append(File.separator);
@@ -419,8 +438,6 @@ public class GuiaRemisionController extends BaseController {
     	
     	String file_name = "Manifiesto_Carga";
 		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-		
-		List<DetalleManifiestoCargaBean> listaManifiestoCarga = logisticaService.listarDetalleManifiestoCarga(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
 		
 		ReporteGuiaRemision reporte = new ReporteGuiaRemision();
 		reporte.generaPDFReporteManifiestoCarga(file_path.toString(), listaManifiestoCarga);
@@ -451,7 +468,15 @@ public class GuiaRemisionController extends BaseController {
 		}
 	}
 	
-	private void generarReporteActaEntrega(Integer codigo, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	/**
+	 * @param listaActaEntrega
+	 * @param request 
+	 * @param response
+	 */
+	private void generarReporteActaEntrega(List<DetalleActaEntregaBean> listaActaEntrega, 
+										   HttpServletRequest request, 
+										   HttpServletResponse response) throws Exception {
+		
 		StringBuilder file_path = new StringBuilder();
     	file_path.append(getPath(request));
     	file_path.append(File.separator);
@@ -462,9 +487,7 @@ public class GuiaRemisionController extends BaseController {
     	
     	String file_name = "Acta_Entrega";
 		file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-		
-		List<DetalleActaEntregaBean> listaActaEntrega = logisticaService.listarDetalleActaEntrega(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
-		
+
 		ReporteGuiaRemision reporte = new ReporteGuiaRemision();
 		reporte.generaPDFReporteActaEntrega(file_path.toString(), listaActaEntrega);
 		

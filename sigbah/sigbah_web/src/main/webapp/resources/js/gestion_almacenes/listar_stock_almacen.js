@@ -1,58 +1,30 @@
-var listaGuiaRemisionCache = new Object();
+var listaStockAlmacenCache = new Object();
 
-var tbl_mnt_gui_remision = $('#tbl_mnt_gui_remision');
-var frm_gui_remision = $('#frm_gui_remision');
+var tbl_mnt_sto_almacen = $('#tbl_mnt_sto_almacen');
+var frm_sto_almacen = $('#frm_sto_almacen');
 
 $(document).ready(function() {
 	
-	frm_gui_remision.bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_anio : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Año.'
-					}
-				}
-			},
-			sel_almacen : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Almacen.'
-					}
-				}
-			}
-		}
-	});
-	
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
-		
-		var bootstrapValidator = frm_gui_remision.data('bootstrapValidator');
-		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
 
-			var params = { 
-				codigoAnio : $('#sel_anio').val(),
-				codigoMes : $('#sel_mes').val(),
-				idAlmacen : $('#sel_almacen').val(),
-				codigoMovimiento : $('#sel_tip_movimiento').val()
-			};
-			
-			loadding(true);
-			
-			consultarAjax('GET', '/gestion-almacenes/guia-remision/listarGuiaRemision', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarGuiaRemision(respuesta);
-				}
-				loadding(false);
-			});
-			
-		}
+		var params = { 
+			idAlmacen : $('#sel_almacen').val(),
+			codigoCategoria : $('#sel_cat_producto').val(),
+			nombreProducto : $('#txt_producto').val().toUpperCase()
+		};
 		
+		loadding(true);
+		
+		consultarAjax('GET', '/gestion-almacenes/stock-almacen/listarStockAlmacen', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarStockAlmacen(respuesta);
+			}
+			loadding(false);
+		});
+
 	});
 	
 	inicializarDatos();
@@ -61,16 +33,22 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
-		tbl_mnt_gui_remision.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_gui_remision.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		var tipoOrigen = '';
+		var idAlmacen = '';		
+		var idDdi = '';
+		var codigo = '';
+		tbl_mnt_sto_almacen.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_sto_almacen.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idGuiaRemision = listaGuiaRemisionCache[index].idGuiaRemision;
-				codigo = codigo + idGuiaRemision + '_';
+				var idProducto = listaStockAlmacenCache[index].idProducto;
+				codigo = codigo + idProducto + '_';
+				tipoOrigen = listaStockAlmacenCache[index].tipoOrigen;
+				idAlmacen = listaStockAlmacenCache[index].idAlmacen;
+				idDdi = listaStockAlmacenCache[index].idDdi;
 			}
 		});
 		
@@ -84,8 +62,9 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/guia-remision/mantenimientoGuiaRemision/';
-			$(location).attr('href', url + codigo);
+			var url = VAR_CONTEXT + '/gestion-almacenes/stock-almacen/mantenimientoStockAlmacen/';
+			url = url + tipoOrigen + '/' + idAlmacen + '/' + idDdi + '/' + codigo;
+			$(location).attr('href', url);
 		}
 		
 	});
@@ -93,7 +72,7 @@ $(document).ready(function() {
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();
 		
-		var row = $('#tbl_mnt_gui_remision > tbody > tr').length;
+		var row = $('#tbl_mnt_sto_almacen > tbody > tr').length;
 		var empty = null;
 		$('tr.odd').each(function() {		
 			empty = $(this).find('.dataTables_empty').text();
@@ -106,15 +85,13 @@ $(document).ready(function() {
 
 		loadding(true);
 		
-		var codigoAnio = $('#sel_anio').val();
-		var codigoMes = $('#sel_mes').val();
 		var idAlmacen = $('#sel_almacen').val();
-		var codigoMovimiento = $('#sel_tip_movimiento').val();
-		var url = VAR_CONTEXT + '/gestion-almacenes/guia-remision/exportarExcel/';
-		url += verificaParametro(codigoAnio) + '/';
-		url += verificaParametro(codigoMes) + '/';
+		var codigoCategoria = $('#sel_cat_producto').val();
+		var nombreProducto = $('#txt_producto').val().toUpperCase();
+		var url = VAR_CONTEXT + '/gestion-almacenes/stock-almacen/exportarExcel/';
 		url += verificaParametroInt(idAlmacen) + '/';
-		url += verificaParametro(codigoMovimiento);
+		url += verificaParametro(codigoCategoria) + '/';
+		url += verificaParametro(nombreProducto);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
@@ -134,16 +111,22 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
+		var tipoOrigen = '';
+		var idAlmacen = '';		
+		var idDdi = '';
 		var codigo = '';
-		tbl_mnt_gui_remision.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_gui_remision.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_sto_almacen.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_sto_almacen.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idGuiaRemision = listaGuiaRemisionCache[index].idGuiaRemision;
-				codigo = codigo + idGuiaRemision + '_';
+				var idProducto = listaStockAlmacenCache[index].idProducto;
+				codigo = codigo + idProducto + '_';
+				tipoOrigen = listaStockAlmacenCache[index].tipoOrigen;
+				idAlmacen = listaStockAlmacenCache[index].idAlmacen;
+				idDdi = listaStockAlmacenCache[index].idDdi;
 			}
 		});
 		
@@ -156,54 +139,27 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
-			$('#hid_codigo').val(codigo);
-			$('#chk_gui_remision').prop('checked', false);
-			$('#chk_man_carga').prop('checked', false);
-			$('#chk_act_ent_recepcion').prop('checked', false);
-			$('#div_imp_pdf').modal('show');
+			loadding(true);			
+			var url = VAR_CONTEXT + '/gestion-almacenes/stock-almacen/exportarPdf/';
+			url = url + tipoOrigen + '/' + idAlmacen + '/' + idDdi + '/' + codigo;
+			$.fileDownload(url).done(function(respuesta) {
+				loadding(false);	
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+			}).fail(function (respuesta) {
+				loadding(false);
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else if (respuesta == NOTIFICACION_VALIDACION) {
+					addWarnMessage(null, mensajeReporteValidacion);
+				}
+			});
 		}
 	});
-	
-	$('#btn_exportar').click(function(e) {
-		e.preventDefault();
-		
-		var codigo = $('#hid_codigo').val();
-		var ind_gui = $('#chk_gui_remision').is(':checked') ? '1' : '0';
-		var ind_man = $('#chk_man_carga').is(':checked') ? '1' : '0';
-		var ind_act = $('#chk_act_ent_recepcion').is(':checked') ? '1' : '0';
-		var url = VAR_CONTEXT + '/gestion-almacenes/guia-remision/exportarPdf/';
-		url = url + codigo + '/' + ind_gui + '/'+ ind_man + '/' + ind_act;
-				
-		if ((ind_gui == '0' && ind_man == '0' && ind_act == '0') || 
-				(ind_gui == '1' && ind_man == '1' && ind_act == '1') || 
-				(ind_gui == '1' && ind_man == '1' && ind_act == '0') || 
-				(ind_gui == '1' && ind_man == '0' && ind_act == '1') || 
-				(ind_gui == '0' && ind_man == '1' && ind_act == '1') ) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un tipo reporte.');
-			return;
-		}
-		
-		loadding(true);
-		$.fileDownload(url).done(function(respuesta) {
-			$('#div_imp_pdf').modal('hide');
-			loadding(false);	
-			if (respuesta == NOTIFICACION_ERROR) {
-				addErrorMessage(null, mensajeReporteError);
-			} else {
-				addInfoMessage(null, mensajeReporteExito);
-			}
-		}).fail(function (respuesta) {
-			$('#div_imp_pdf').modal('hide');
-			loadding(false);
-			if (respuesta == NOTIFICACION_ERROR) {
-				addErrorMessage(null, mensajeReporteError);
-			} else if (respuesta == NOTIFICACION_VALIDACION) {
-				addWarnMessage(null, mensajeReporteValidacion);
-			}
-		});
 
-	});
-	
 });
 
 function inicializarDatos() {
@@ -217,25 +173,24 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-		$('#sel_anio').val(guiaRemision.codigoAnio);
-		$('#sel_mes').val(guiaRemision.codigoMes);
 		$('#sel_almacen').val(guiaRemision.idAlmacen);
+		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {
-			listarGuiaRemision(new Object());		
+			listarStockAlmacen(new Object());		
 		}
 	}
 }
 
-function listarGuiaRemision(respuesta) {
+function listarStockAlmacen(respuesta) {
 
-	tbl_mnt_gui_remision.dataTable().fnDestroy();
+	tbl_mnt_sto_almacen.dataTable().fnDestroy();
 	
-	tbl_mnt_gui_remision.dataTable({
+	tbl_mnt_sto_almacen.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idGuiaRemision',
+			data : 'codigoProducto',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -247,29 +202,25 @@ function listarGuiaRemision(respuesta) {
 				}											
 			}	
 		}, {	
-			data : 'idGuiaRemision',
+			data : 'codigoProducto',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
 			}
 		}, {
-			data : 'codigoAnio'
+			data : 'nombreCategoria'
 		}, {
-			data : 'nombreMes'
+			data : 'codigoProducto'
 		}, {
-			data : 'fechaEmision'
+			data : 'nombreProducto'
 		}, {
-			data : 'nroOrdenSalida'
+			data : 'nombreUnidadMedida'
 		}, {
-			data : 'nroGuiaRemision'
+			data : 'nombreEnvase'
 		}, {
-			data : 'nroManifiestoCarga'
+			data : 'precioUnitarioPromedio'
 		}, {
-			data : 'nroActaEntregaRecepcion'
-		}, {
-			data : 'nombreMovimiento'
-		}, {
-			data : 'nombreEstado'
+			data : 'cantidad'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -284,14 +235,11 @@ function listarGuiaRemision(respuesta) {
 			[15, 50, 100]
 		],
 		columnDefs : [
-  			{ width : '10%', targets : 3 },
-  			{ width : '15%', targets : 4 },
-			{ width : '15%', targets : 7 },
-			{ width : '15%', targets : 8 }
+  			{ width : '25%', targets : 4 }
   		]
 	});
 	
-	listaGuiaRemisionCache = respuesta;
+	listaStockAlmacenCache = respuesta;
 
 }
 

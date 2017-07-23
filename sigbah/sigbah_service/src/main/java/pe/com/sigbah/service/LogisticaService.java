@@ -21,7 +21,10 @@ import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
+import pe.com.sigbah.common.bean.ProductoStockAlmacenBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
+import pe.com.sigbah.common.bean.StockAlmacenBean;
+import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
 
 /**
  * @className: LogisticaService.java
@@ -446,5 +449,47 @@ public interface LogisticaService {
 	 * @throws Exception 
 	 */
 	public abstract List<DetalleActaEntregaBean> listarDetalleActaEntrega(Integer idGuiaRemision, String tipoOrigen) throws Exception;
+
+	/**
+	 * @param stockAlmacenBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<StockAlmacenBean> listarStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception;
+
+	/**
+	 * @param stockAlmacenBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract StockAlmacenBean obtenerRegistroStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception;
+
+	/**
+	 * @param stockAlmacenBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract StockAlmacenBean actualizarStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception;
+	
+	/**
+	 * @param stockAlmacenBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ProductoStockAlmacenBean obtenerProductoStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception;
+	
+	/**
+	 * @param stockAlmacenLoteBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<StockAlmacenLoteBean> listarStockAlmacenLote(StockAlmacenLoteBean stockAlmacenLoteBean) throws Exception;
+	
+	/**
+	 * @param stockAlmacenLoteBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract StockAlmacenLoteBean actualizarStockAlmacenLote(StockAlmacenLoteBean stockAlmacenLoteBean) throws Exception;
 	
 }

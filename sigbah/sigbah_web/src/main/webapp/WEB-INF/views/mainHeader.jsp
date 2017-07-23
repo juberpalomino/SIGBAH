@@ -62,7 +62,7 @@
 <script type="text/javascript">
 	try { 
 		// Si la session se encuentra inactiva		
-		if ('${usuarioBean}' == null || '${usuarioBean}' == '') {
+		if (esnulo(usuarioBean)) {
 			if (confirm('Su session se encuentra inactiva, inicie nuevamente !!!')) {
 				window.location.href = '${pageContext.request.contextPath}/login';
 			} else {

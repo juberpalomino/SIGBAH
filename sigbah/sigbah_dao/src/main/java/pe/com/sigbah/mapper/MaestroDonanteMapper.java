@@ -9,19 +9,19 @@ import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.util.Constantes;
 
 /**
- * @className: UnidadMedidaMapper.java
+ * @className: MaestroDonanteMapper.java
  * @description: 
  * @date: 22 de jun. de 2017
  * @author: Junior Huaman Flores.
  */
-public class UnidadMedidaMapper implements RowMapper<ItemBean> {
+public class MaestroDonanteMapper implements RowMapper<ItemBean> {
 	
 	private boolean all_records = false; // Obtener todos los registros
 
 	/**
 	 * @param parametro
 	 */
-	public UnidadMedidaMapper(Integer parametro) {
+	public MaestroDonanteMapper(Integer parametro) {
 		if (parametro.equals(Constantes.ZERO_INT)) {
 			all_records = true;
 		}
@@ -34,11 +34,11 @@ public class UnidadMedidaMapper implements RowMapper<ItemBean> {
 	public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		ItemBean itemBean = new ItemBean();
 		if (all_records) {
-			itemBean.setVcodigo(rs.getString("ID_UNID_MEDIDA"));
-			itemBean.setDescripcion(rs.getString("NOMBRE"));
+			itemBean.setIcodigo(rs.getInt("IDE_DONANTE"));
+			itemBean.setDescripcion(rs.getString("NOM_DONANTE"));
 		} else {	
-			itemBean.setVcodigo(rs.getString("IDE_UNID_MEDIDA"));
-			itemBean.setDescripcion(rs.getString("NOM_UNIDAD"));
+			itemBean.setIcodigo(rs.getInt("IDE_DONANTE"));
+			itemBean.setDescripcion(rs.getString("NOM_DONANTE"));
 		}
 		return itemBean;
 	}

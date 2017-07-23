@@ -15,13 +15,6 @@ $(document).ready(function() {
 						message : 'Debe seleccionar Año.'
 					}
 				}
-			},
-			sel_almacen : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Almacen.'
-					}
-				}
 			}
 		}
 	});
@@ -37,7 +30,7 @@ $(document).ready(function() {
 				codigoAnio : $('#sel_anio').val(),
 				codigoMes : $('#sel_mes').val(),
 				idAlmacen : $('#sel_almacen').val(),
-				codigoMovimiento : $('#sel_tip_movimiento').val()
+				idMovimiento : $('#sel_tip_movimiento').val()
 			};
 			
 			loadding(true);
@@ -61,7 +54,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
 		tbl_mnt_gui_remision.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_gui_remision.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -109,12 +102,12 @@ $(document).ready(function() {
 		var codigoAnio = $('#sel_anio').val();
 		var codigoMes = $('#sel_mes').val();
 		var idAlmacen = $('#sel_almacen').val();
-		var codigoMovimiento = $('#sel_tip_movimiento').val();
+		var idMovimiento = $('#sel_tip_movimiento').val();
 		var url = VAR_CONTEXT + '/gestion-almacenes/guia-remision/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
 		url += verificaParametro(codigoMes) + '/';
 		url += verificaParametroInt(idAlmacen) + '/';
-		url += verificaParametro(codigoMovimiento);
+		url += verificaParametroInt(idMovimiento);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
@@ -185,7 +178,7 @@ $(document).ready(function() {
 		
 		loadding(true);
 		$.fileDownload(url).done(function(respuesta) {
-			$('#div_imp_pdf').modal('hide');
+//			$('#div_imp_pdf').modal('hide');
 			loadding(false);	
 			if (respuesta == NOTIFICACION_ERROR) {
 				addErrorMessage(null, mensajeReporteError);
@@ -193,7 +186,7 @@ $(document).ready(function() {
 				addInfoMessage(null, mensajeReporteExito);
 			}
 		}).fail(function (respuesta) {
-			$('#div_imp_pdf').modal('hide');
+//			$('#div_imp_pdf').modal('hide');
 			loadding(false);
 			if (respuesta == NOTIFICACION_ERROR) {
 				addErrorMessage(null, mensajeReporteError);
@@ -220,6 +213,7 @@ function inicializarDatos() {
 		$('#sel_anio').val(guiaRemision.codigoAnio);
 		$('#sel_mes').val(guiaRemision.codigoMes);
 		$('#sel_almacen').val(guiaRemision.idAlmacen);
+		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {
@@ -284,10 +278,10 @@ function listarGuiaRemision(respuesta) {
 			[15, 50, 100]
 		],
 		columnDefs : [
-  			{ width : '10%', targets : 3 },
-  			{ width : '15%', targets : 4 },
+  			{ width : '14%', targets : 5 },
+  			{ width : '14%', targets : 6 },
 			{ width : '15%', targets : 7 },
-			{ width : '15%', targets : 8 }
+			{ width : '14%', targets : 8 }
   		]
 	});
 	

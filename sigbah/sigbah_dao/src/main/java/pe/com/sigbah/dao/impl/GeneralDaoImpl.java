@@ -41,23 +41,30 @@ import pe.com.sigbah.mapper.DdiMapper;
 import pe.com.sigbah.mapper.DepartamentoMapper;
 import pe.com.sigbah.mapper.DistritoMapper;
 import pe.com.sigbah.mapper.EmpresaTransporteMapper;
+import pe.com.sigbah.mapper.EnvaseMapper;
 import pe.com.sigbah.mapper.EstadoDonacionMapper;
 import pe.com.sigbah.mapper.EstadoMapper;
 import pe.com.sigbah.mapper.FenomenoMapper;
+import pe.com.sigbah.mapper.FuenteFinanciamientoMapper;
+import pe.com.sigbah.mapper.MaestroDonanteMapper;
+import pe.com.sigbah.mapper.MarcaMapper;
 import pe.com.sigbah.mapper.MedioTransporteMapper;
 import pe.com.sigbah.mapper.MesMapper;
+import pe.com.sigbah.mapper.ModAlmacenMapper;
 import pe.com.sigbah.mapper.PersonalExternoLocalMapper;
 import pe.com.sigbah.mapper.PersonalExternoRegionMapper;
 import pe.com.sigbah.mapper.PersonalMapper;
 import pe.com.sigbah.mapper.ProveedorMapper;
 import pe.com.sigbah.mapper.ProvinciaMapper;
 import pe.com.sigbah.mapper.RegionMapper;
+import pe.com.sigbah.mapper.TipoCamionMapper;
 import pe.com.sigbah.mapper.TipoControlCalidadMapper;
 import pe.com.sigbah.mapper.TipoDocumentoMapper;
 import pe.com.sigbah.mapper.TipoMovimientoMapper;
 import pe.com.sigbah.mapper.UnidadMedidaMapper;
 import pe.com.sigbah.mapper.DeeMapper;
 import pe.com.sigbah.mapper.PaisMapper;
+import pe.com.sigbah.mapper.ParametroMapper;
 import pe.com.sigbah.mapper.OficinaMapper;
 import pe.com.sigbah.mapper.PersonalOficinaMapper;
 import pe.com.sigbah.mapper.MonedaMapper;
@@ -194,15 +201,6 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 		}		
 		LOGGER.info("[listarDistrito] Fin ");
 		return lista;
-	}
-
-	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.general.GeneralDao#listarFenomenos(pe.com.sigbah.common.bean.ItemBean)
-	 */
-	@Override
-	public List<ItemBean> listarFenomenos(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/* (non-Javadoc)
@@ -418,8 +416,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarEnvase(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarEnvase] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_ENVASE", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_ENVASE");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_ENVASE", new SqlParameter("PI_IDE_ENVASE", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new EnvaseMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarEnvase] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -605,8 +629,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarTipoCamion(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarTipoCamion] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_TIP_CAMION", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_TIP_CAMION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_TIP_CAMION", new SqlParameter("PI_IDE_TIP_CAMION", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new TipoCamionMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarTipoCamion] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -787,8 +837,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarModAlmacen(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarModAlmacen] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_MOD_ALMACEN", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_MOD_ALMACEN");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_MOD_ALMACEN", new SqlParameter("PI_IDE_MOD_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new ModAlmacenMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarModAlmacen] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -796,8 +872,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarFuenteFinanciamiento(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarFuenteFinanciamiento] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_FTE_FINANC", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_FUENTE_FINANC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_FTE_FINANC", new SqlParameter("PI_IDE_FTE_FINANC", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new FuenteFinanciamientoMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarFuenteFinanciamiento] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -805,8 +907,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarMarca(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarMarca] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_MARCA", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_MARCA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_MARCA", new SqlParameter("PI_IDE_MARCA", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new MarcaMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarMarca] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -814,8 +942,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarDonante(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarDonante] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_DONANTE", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_DONANTE");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_DONANTE", new SqlParameter("PI_IDE_DONANTE", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new MaestroDonanteMapper(parametro)));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDonante] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -1069,12 +1223,37 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.general.GeneralDao#listarEjecutora(pe.com.sigbah.common.bean.ItemBean)
+	 * @see pe.com.sigbah.dao.general.GeneralDao#listarEjecutora()
 	 */
 	@Override
-	public List<ItemBean> listarEjecutora(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ItemBean> listarEjecutora() throws Exception {
+		LOGGER.info("[listarEjecutora] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_EJECUTORA");
+
+			Map<String, Object> out = objJdbcCall.withoutProcedureColumnMetaDataAccess()
+					.returningResultSet("PO_LR_RECORDSET", new RowMapper<ItemBean>() {
+						public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+							ItemBean item = new ItemBean();
+							item.setIcodigo(rs.getInt("IDE_EJECUTORA"));
+							item.setDescripcion(rs.getString("NOM_EJECUTORA"));
+							item.setDescripcionCorta(rs.getString("DIRECCION"));
+							return item;
+						}
+					}).execute(objJdbcCall);
+
+			lista = new ArrayList((Collection<ItemBean>) out.get("PO_LR_RECORDSET"));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarEjecutora] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -1119,8 +1298,34 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	 */
 	@Override
 	public List<ItemBean> listarParametro(ItemBean itemBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarParametro] Inicio ");
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			Integer parametro = Utils.getParamInt(itemBean.getIcodigo());
+			input_objParametros.addValue("PI_IDE_PARAMETRO", parametro, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_GENERAL);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_PARAMETRO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PARAMETRO", new SqlParameter("PI_IDE_PARAMETRO", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new ParametroMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+
+			lista = (List<ItemBean>) out.get("PO_LR_RECORDSET");
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarParametro] Fin ");
+		return lista;
 	}
 
 	@Override

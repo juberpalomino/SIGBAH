@@ -51,14 +51,6 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.general.GeneralService#listarFenomenos(pe.com.sigbah.common.bean.ItemBean)
-	 */
-	@Override
-	public List<ItemBean> listarFenomenos(ItemBean itemBean) throws Exception {
-		return generalDao.listarFenomenos(itemBean);
-	}
-
-	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.general.GeneralService#listarAnios()
 	 */
 	@Override
@@ -291,11 +283,11 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.general.GeneralService#listarEjecutora(pe.com.sigbah.common.bean.ItemBean)
+	 * @see pe.com.sigbah.service.general.GeneralService#listarEjecutora()
 	 */
 	@Override
-	public List<ItemBean> listarEjecutora(ItemBean itemBean) throws Exception {
-		return generalDao.listarEjecutora(itemBean);
+	public List<ItemBean> listarEjecutora() throws Exception {
+		return generalDao.listarEjecutora();
 	}
 
 	/* (non-Javadoc)
@@ -370,10 +362,17 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 		return generalDao.listarMotivoTraslado();
 	}
 	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarOficinas(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
 	public List<ItemBean> listarOficinas(ItemBean itemBean) throws Exception {
 		return generalDao.listarOficinas(itemBean);
 	}
 	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarPersonalOficina(pe.com.sigbah.common.bean.ItemBean)
+	 */
 	@Override
 	public List<ItemBean> listarPersonalOficina(ItemBean itemBean) throws Exception {
 		return generalDao.listarPersonalOficina(itemBean);
