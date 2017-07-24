@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
@@ -564,6 +565,38 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public StockAlmacenLoteBean actualizarStockAlmacenLote(StockAlmacenLoteBean stockAlmacenLoteBean) throws Exception {
 		return logisticaDao.actualizarStockAlmacenLote(stockAlmacenLoteBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarCartillaInventario(pe.com.sigbah.common.bean.CartillaInventarioBean)
+	 */
+	@Override
+	public List<CartillaInventarioBean> listarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		return logisticaDao.listarCartillaInventario(cartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroCartillaInventario(java.lang.Integer)
+	 */
+	@Override
+	public CartillaInventarioBean obtenerRegistroCartillaInventario(Integer idCartilla) throws Exception {
+		return logisticaDao.obtenerRegistroCartillaInventario(idCartilla);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerCorrelativoCartillaInventario(pe.com.sigbah.common.bean.CartillaInventarioBean)
+	 */
+	@Override
+	public CartillaInventarioBean obtenerCorrelativoCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		return logisticaDao.obtenerCorrelativoCartillaInventario(cartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarCartillaInventario(pe.com.sigbah.common.bean.CartillaInventarioBean)
+	 */
+	@Override
+	public CartillaInventarioBean grabarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		return logisticaDao.grabarCartillaInventario(cartillaInventarioBean);
 	}
 
 }

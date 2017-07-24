@@ -2,6 +2,7 @@ package pe.com.sigbah.service;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
@@ -491,5 +492,33 @@ public interface LogisticaService {
 	 * @throws Exception 
 	 */
 	public abstract StockAlmacenLoteBean actualizarStockAlmacenLote(StockAlmacenLoteBean stockAlmacenLoteBean) throws Exception;
+
+	/**
+	 * @param cartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract List<CartillaInventarioBean> listarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
+
+	/**
+	 * @param idCartilla
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract CartillaInventarioBean obtenerRegistroCartillaInventario(Integer idCartilla) throws Exception;
+
+	/**
+	 * @param cartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract CartillaInventarioBean obtenerCorrelativoCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
+
+	/**
+	 * @param cartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract CartillaInventarioBean grabarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
 	
 }

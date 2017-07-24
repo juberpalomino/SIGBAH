@@ -87,7 +87,7 @@
 						<a href="#">Inventarios</a>
 						<ul id="ul_alm_inventarios">
 							<li id="li_car_inventario" class="li_men_opcion">
-								<a href="fa.html">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/cartilla-inventario/inicio/0">
 									<i class="fa fa-caret-right"></i>Cartilla de Inventario
 								</a>
 							</li>

@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
+import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
@@ -55,6 +56,7 @@ import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.mapper.AlmacenActivoMapper;
+import pe.com.sigbah.mapper.CartillaInventarioMapper;
 import pe.com.sigbah.mapper.ControlCalidadMapper;
 import pe.com.sigbah.mapper.DetalleActaEntregaMapper;
 import pe.com.sigbah.mapper.DetalleGuiaRemisionMapper;
@@ -77,6 +79,7 @@ import pe.com.sigbah.mapper.ProductoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.ProductoSalidaMapper;
 import pe.com.sigbah.mapper.ProductoStockAlmacenMapper;
 import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
+import pe.com.sigbah.mapper.RegistroCartillaInventarioMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroGuiaRemisionMapper;
 import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
@@ -3603,6 +3606,237 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[actualizarStockAlmacenLote] Fin ");
 		return registroStockAlmacenLote;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarCartillaInventario(pe.com.sigbah.common.bean.CartillaInventarioBean)
+	 */
+	@Override
+	public List<CartillaInventarioBean> listarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		LOGGER.info("[listarCartillaInventario] Inicio ");
+		List<CartillaInventarioBean> lista = new ArrayList<CartillaInventarioBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_COD_ANIO", Utils.getParam(cartillaInventarioBean.getCodigoAnio()), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN", cartillaInventarioBean.getIdAlmacen(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_CARTILLA_INVENTARIO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new CartillaInventarioMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarCartillaInventario] Ocurrio un error en la operacion del USP_LISTAR_CARTILLA_INVENTARIO : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<CartillaInventarioBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarCartillaInventario] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroCartillaInventario(java.lang.Integer)
+	 */
+	@Override
+	public CartillaInventarioBean obtenerRegistroCartillaInventario(Integer idCartilla) throws Exception {
+		LOGGER.info("[obtenerRegistroCartillaInventario] Inicio ");
+		CartillaInventarioBean cartillaInventario = new CartillaInventarioBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_CARTILLA", idCartilla, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_CARTILLA", new SqlParameter("PI_IDE_CARTILLA", Types.NUMERIC));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new RegistroCartillaInventarioMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerRegistroCartillaInventario] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<CartillaInventarioBean> lista = (List<CartillaInventarioBean>) out.get("PO_Lr_Recordset");
+			if (!Utils.isEmpty(lista)) {
+				cartillaInventario = lista.get(0);
+			}
+			
+			cartillaInventario.setCodigoRespuesta(codigoRespuesta);
+			cartillaInventario.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerRegistroCartillaInventario] Fin ");
+		return cartillaInventario;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerCorrelativoCartillaInventario(pe.com.sigbah.common.bean.CartillaInventarioBean)
+	 */
+	@Override
+	public CartillaInventarioBean obtenerCorrelativoCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		LOGGER.info("[obtenerCorrelativoCartillaInventario] Inicio ");
+		CartillaInventarioBean detalleUsuarioBean = new CartillaInventarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", cartillaInventarioBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DDI", cartillaInventarioBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", cartillaInventarioBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", cartillaInventarioBean.getTipoOrigen(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_GEN_NRO_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_NRO_CARTILLA", new SqlOutParameter("PO_NRO_CARTILLA", Types.VARCHAR));
+			output_objParametros.put("PO_COD_CARTILLA", new SqlOutParameter("PO_COD_CARTILLA", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerCorrelativoCartillaInventario] Ocurrio un error en la operacion del USP_SEL_GEN_NRO_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			detalleUsuarioBean.setNroCartilla((String) out.get("PO_NRO_CARTILLA"));
+			detalleUsuarioBean.setCodigoCartilla((String) out.get("PO_COD_CARTILLA"));
+			detalleUsuarioBean.setCodigoRespuesta(codigoRespuesta);
+			detalleUsuarioBean.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerCorrelativoCartillaInventario] Fin ");
+		return detalleUsuarioBean;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarCartillaInventario(pe.com.sigbah.common.bean.CartillaInventarioBean)
+	 */
+	@Override
+	public CartillaInventarioBean grabarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		LOGGER.info("[grabarCartillaInventario] Inicio ");
+		CartillaInventarioBean registroCartillaInventario = new CartillaInventarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+//			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", cartillaInventarioBean.getIdCartillaInventario(), Types.NUMERIC);
+//			input_objParametros.addValue("pi_TIPO_ORIGEN", cartillaInventarioBean.getTipoOrigen(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_COD_ANIO", cartillaInventarioBean.getCodigoAnio(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_COD_DDI", cartillaInventarioBean.getCodigoDdi(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_COD_MES", cartillaInventarioBean.getCodigoMes(), Types.VARCHAR);			
+//			input_objParametros.addValue("pi_COD_ALMACEN", cartillaInventarioBean.getCodigoAlmacen(), Types.VARCHAR);			
+//			input_objParametros.addValue("pi_FK_IDE_ALMACEN", cartillaInventarioBean.getIdAlmacen(), Types.NUMERIC);
+//			input_objParametros.addValue("pi_FK_IDE_ALMACEN_DEST", cartillaInventarioBean.getIdAlmacenDestino(), Types.NUMERIC);		
+//			input_objParametros.addValue("pi_NRO_PROY_MANIFIESTO", cartillaInventarioBean.getNroCartillaInventario(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_FK_IDE_TIP_MOVIMIENTO", cartillaInventarioBean.getIdMovimiento(), Types.NUMERIC);			
+//			input_objParametros.addValue("pi_FEC_EMISION", DateUtil.obtenerFechaHoraParseada(cartillaInventarioBean.getFechaEmision()), Types.DATE);
+//			input_objParametros.addValue("pi_FLG_PROGRAMACION", cartillaInventarioBean.getFlagProgramacion(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_FK_IDE_PROGRAMACION", cartillaInventarioBean.getIdProgramacion(), Types.NUMERIC);			
+//			input_objParametros.addValue("pi_FK_IDE_ESTADO", cartillaInventarioBean.getIdEstado(), Types.NUMERIC);
+//			input_objParametros.addValue("pi_OBSERVACION", cartillaInventarioBean.getObservacion(), Types.VARCHAR);
+//			input_objParametros.addValue("pi_USUARIO", cartillaInventarioBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_REGIS_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));			
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_DDI", new SqlParameter("pi_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ALMACEN", new SqlParameter("pi_COD_ALMACEN", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_ALMACEN_DEST", new SqlParameter("pi_FK_IDE_ALMACEN_DEST", Types.NUMERIC));			
+			output_objParametros.put("pi_NRO_PROY_MANIFIESTO", new SqlParameter("pi_NRO_PROY_MANIFIESTO", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_FK_IDE_TIP_MOVIMIENTO", Types.NUMERIC));			
+			output_objParametros.put("pi_FEC_EMISION", new SqlParameter("pi_FEC_EMISION", Types.DATE));
+			output_objParametros.put("pi_FLG_PROGRAMACION", new SqlParameter("pi_FLG_PROGRAMACION", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_PROGRAMACION", new SqlParameter("pi_FK_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_ESTADO", new SqlParameter("pi_FK_IDE_ESTADO", Types.NUMERIC));
+			output_objParametros.put("pi_OBSERVACION", new SqlParameter("pi_OBSERVACION", Types.VARCHAR));
+			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
+			output_objParametros.put("po_IDE_PROYECTO_MANIF", new SqlOutParameter("po_IDE_PROYECTO_MANIF", Types.NUMERIC));			
+			output_objParametros.put("po_NRO_PROYECTO", new SqlOutParameter("po_NRO_PROYECTO", Types.VARCHAR));
+			output_objParametros.put("po_COD_PROYECTO", new SqlOutParameter("po_COD_PROYECTO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarCartillaInventario] Ocurrio un error en la operacion del USP_INS_UPD_REGIS_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+//			registroCartillaInventario.setIdCartillaInventario(((BigDecimal) out.get("po_IDE_PROYECTO_MANIF")).intValue());
+//			registroCartillaInventario.setNroCartillaInventario((String) out.get("po_NRO_PROYECTO"));
+//			registroCartillaInventario.setCodigoCartillaInventario((String) out.get("po_COD_PROYECTO"));
+			registroCartillaInventario.setCodigoRespuesta(codigoRespuesta);
+			registroCartillaInventario.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarCartillaInventario] Fin ");
+		return registroCartillaInventario;
 	}
 
 }
