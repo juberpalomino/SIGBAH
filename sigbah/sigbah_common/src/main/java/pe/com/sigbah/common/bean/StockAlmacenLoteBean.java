@@ -27,6 +27,7 @@ public class StockAlmacenLoteBean extends BaseOutputBean {
 	private String area;
 	private Integer idMarca;
 	private String nombreMarca;
+	private BigDecimal item;
 	
 	
 	/**
@@ -220,6 +221,18 @@ public class StockAlmacenLoteBean extends BaseOutputBean {
 	 */
 	public void setNombreMarca(String nombreMarca) {
 		this.nombreMarca = nombreMarca;
+	}
+	/**
+	 * @return the item
+	 */
+	public BigDecimal getItem() {
+		return item;
+	}
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(BigDecimal item) {
+		this.item = item;
 	}	
 
 }

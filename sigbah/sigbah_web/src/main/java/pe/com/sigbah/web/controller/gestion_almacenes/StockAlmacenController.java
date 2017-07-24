@@ -134,6 +134,8 @@ public class StockAlmacenController extends BaseController {
 
         	model.addAttribute("lista_envase", generalService.listarEnvase(new ItemBean()));
         	
+        	model.addAttribute("lista_marca", generalService.listarMarca(new ItemBean()));
+        	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
         } catch (Exception e) {
@@ -241,15 +243,13 @@ public class StockAlmacenController extends BaseController {
 			IntegerConverter con_integer = new IntegerConverter(null);			
 			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
 			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
-			// Convierte los vacios en nulos en los decimales
-			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
-			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
 			// Copia los parametros del cliente al objeto
 			beanUtilsBean.populate(stockAlmacenLoteBean, request.getParameterMap());
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
+        	stockAlmacenLoteBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
         	stockAlmacenLoteBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
         	stock = logisticaService.actualizarStockAlmacenLote(stockAlmacenLoteBean);
@@ -270,17 +270,17 @@ public class StockAlmacenController extends BaseController {
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoMes}/{nombreProducto}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarExcel/{idAlmacen}/{codigoCategoria}/{nombreProducto}", method = RequestMethod.GET)
 	@ResponseBody
 	public String exportarExcel(@PathVariable("idAlmacen") Integer idAlmacen, 
-								@PathVariable("codigoMes") String codigoCategoria, 
+								@PathVariable("codigoCategoria") String codigoCategoria, 
 								@PathVariable("nombreProducto") String nombreProducto,
 								HttpServletResponse response) {
 	    try {
 	    	StockAlmacenBean stockAlmacenBean = new StockAlmacenBean();
 	    	stockAlmacenBean.setIdAlmacen(idAlmacen);
 	    	stockAlmacenBean.setCodigoCategoria(verificaParametro(codigoCategoria));
-	    	stockAlmacenBean.setNombreProducto(nombreProducto);
+	    	stockAlmacenBean.setNombreProducto(verificaParametro(nombreProducto));
 	    	stockAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    	
 			List<StockAlmacenBean> lista = logisticaService.listarStockAlmacen(stockAlmacenBean);
@@ -350,7 +350,7 @@ public class StockAlmacenController extends BaseController {
 			jasperFile.append(getPath(request));
 			jasperFile.append(File.separator);
 			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-			jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
+			jasperFile.append("Stock_Almacen.jrxml");
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
@@ -359,37 +359,35 @@ public class StockAlmacenController extends BaseController {
 			logo_indeci_path.append(getPath(request));
 			logo_indeci_path.append(File.separator);
 			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-			StringBuilder logo_wfp_path = new StringBuilder();
-			logo_wfp_path.append(getPath(request));
-			logo_wfp_path.append(File.separator);
-			logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-			parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-			StringBuilder logo_check_path = new StringBuilder();
-			logo_check_path.append(getPath(request));
-			logo_check_path.append(File.separator);
-			logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-			parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-			StringBuilder logo_check_min_path = new StringBuilder();
-			logo_check_min_path.append(getPath(request));
-			logo_check_min_path.append(File.separator);
-			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-			parameters.put("P_NRO_CONTROL_CALIDAD", stockAlmacen.getNroKardex());
-//			parameters.put("P_DDI", stockAlmacen.getNombreDdi());			
-//			parameters.put("P_ALMACEN", stockAlmacen.getNombreAlmacen());
-//			parameters.put("P_FECHA_EMISION", stockAlmacen.getFechaEmision());
-//			parameters.put("P_TIPO_CONTROL", stockAlmacen.getTipoControlCalidad());
-//			parameters.put("P_ALMACEN_ORIGEN_DESTINO", stockAlmacen.getNombreAlmacen());
-//			parameters.put("P_PROVEEDOR", stockAlmacen.getProveedorDestino());
-//			parameters.put("P_NRO_ORDEN_COMPRA", stockAlmacen.getNroOrdenCompra());
-//			parameters.put("P_CONCLUSIONES", stockAlmacen.getConclusiones());
-//			parameters.put("P_RECOMENDACIONES", stockAlmacen.getRecomendaciones());
+			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());
+			parameters.put("P_ALMACEN", stockAlmacen.getNombreAlmacen());
+			parameters.put("P_NRO_KARDEX", stockAlmacen.getNroKardex());			
+			parameters.put("P_NOMBRE_PRODUCTO", stockAlmacen.getNombreAlmacen());
+			parameters.put("P_CODIGO", stockAlmacen.getCodigoProducto());
+			parameters.put("P_CATEGORIA", stockAlmacen.getNombreCategoria());
+			parameters.put("P_CODIGO_SIGA", stockAlmacen.getCodigoSiga());
+			parameters.put("P_UNIDAD_MEDIDA", stockAlmacen.getNombreUnidadMedida());
+			parameters.put("P_ENVASE_PRIMARIO", stockAlmacen.getNombreEnvasePrimario());
+			parameters.put("P_PESO_UNITARIO_NETO", stockAlmacen.getPesoUnitarioNeto());
+			parameters.put("P_PESO_UNITARIO_BRUTO", stockAlmacen.getPesoUnitarioBruto());
+			parameters.put("P_LARGO", stockAlmacen.getDimLargo());
+			parameters.put("P_ANCHO", stockAlmacen.getDimAncho());
+			parameters.put("P_ALTO", stockAlmacen.getDimAlto());
+			parameters.put("P_VOLUMEN_UNITARIO", stockAlmacen.getVolumenUnitario());
+			parameters.put("P_VOLUMEN_TOTAL", stockAlmacen.getVolumenTotal());
+			parameters.put("P_ENVASE_SECUNDARIO", stockAlmacen.getNombreEnvase());
+			parameters.put("P_DESCRIPCION_ENVASE_SECUNDARIO", stockAlmacen.getDescripcionEnvaseSecundario());
+			parameters.put("P_UNIDADES_ENVASE", stockAlmacen.getUnidadesEnvaseSecundario());
+			parameters.put("P_CANTIDAD_ENVASE", stockAlmacen.getCantidadEnvases());
+			parameters.put("P_UNIDADES_SUELTA", stockAlmacen.getUnidadesSueltas());
+			parameters.put("P_STOCK_TOTAL", stockAlmacen.getCantidadStock());
+			parameters.put("P_STOCK_SEGURIDAD", stockAlmacen.getStockSeguridad());
+			parameters.put("P_PRECIO_PROMEDIO", stockAlmacen.getPrecioPromedio());
 
 			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
 			InputStream input = new ByteArrayInputStream(array);
 	        
-	        String file_name = "Reporte_Control_Calidad";
+	        String file_name = "Reporte_Stock_Almacen";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 	    	
 	        response.resetBuffer();

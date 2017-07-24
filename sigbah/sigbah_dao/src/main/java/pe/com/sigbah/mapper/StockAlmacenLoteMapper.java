@@ -36,7 +36,8 @@ public class StockAlmacenLoteMapper implements RowMapper<StockAlmacenLoteBean> {
 		stockAlmacen.setNave(rs.getString("NAVE"));
 		stockAlmacen.setArea(rs.getString("AREA"));
 		stockAlmacen.setIdMarca(rs.getInt("FK_IDE_MARCA"));
-		stockAlmacen.setNombreMarca(rs.getString("NOMBRE_MARCA"));		
+		stockAlmacen.setNombreMarca(rs.getString("NOMBRE_MARCA"));
+		stockAlmacen.setItem(rs.getBigDecimal("ROWNUM"));
 		return stockAlmacen;
 	}
 

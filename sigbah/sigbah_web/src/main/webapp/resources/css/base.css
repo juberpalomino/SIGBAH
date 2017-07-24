@@ -83,6 +83,17 @@ table.dataTable thead .sorting_desc {
 	text-align: center !important;
 }
 
+@media screen and (min-width: 768px) {
+    .modal-90-large {
+        width: 90%;
+        /* either % (e.g. 60%) or px (400px) */
+    }
+    .modal-80-large {
+        width: 80%;
+        /* either % (e.g. 60%) or px (400px) */
+    }
+}
+
 .select2-container {
 	width: 100% !important;
 	padding: 0;

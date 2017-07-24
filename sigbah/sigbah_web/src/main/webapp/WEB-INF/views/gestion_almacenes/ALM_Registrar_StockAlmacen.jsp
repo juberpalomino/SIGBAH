@@ -227,7 +227,9 @@
 													</div>
 													
 													<div class="row">
-														<div class="col-sm-12">	
+														<div class="col-sm-1"></div>
+														
+														<div class="col-sm-11">	
 															<strong>Tipo de Embalaje</strong>
 														</div>
 													</div>
@@ -486,8 +488,8 @@
 <!-- END MAIN CONTENT -->
 
 <!-- Modal -->
-<div id="div_det_lotes" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog modal-lg">
+<div id="div_edi_lotes" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog  modal-80-large">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -502,48 +504,114 @@
 						<form id="frm_det_lotes" class="form-horizontal" role="form">
 
 							<div class="row">																				
-								<label class="col-sm-3 control-label">Categoría de Producto:</label>
-								<div class="col-sm-3 form-group">
-									<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
-										<option value="">Seleccione</option>
-										<c:forEach items="${lista_categoria}" var="item">
-										    <option value="${item.icodigo}">${item.descripcion}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-						
-							<div id="div_pro_det_productos" class="row">																				
-								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 form-group">
-									<select id="sel_producto" name="sel_producto" class="form-control">
-									</select>
+								<label class="col-sm-2 control-label">Fecha de Vencimiento:</label>
+								<div class="col-sm-2 smart-form form-group">
+									<label class="input"> 
+										<i class="icon-append fa fa-calendar"></i>
+										<input type="text" id="txt_fec_vencimiento" class="datepicker" readonly>
+									</label>
 								</div>
 								
-								<label class="col-sm-2 control-label">Lote:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_lote" name="sel_lote" class="form-control">
-									</select>
+								<label class="col-sm-2 control-label">Fecha de Produción:</label>
+								<div class="col-sm-2 smart-form form-group">
+									<label class="input"> 
+										<i class="icon-append fa fa-calendar"></i>
+										<input type="text" id="txt_fec_produccion" class="datepicker" readonly>
+									</label>
+								</div>
+								
+								<label class="col-sm-2 control-label">Fecha de Alta:</label>
+								<div class="col-sm-2 smart-form form-group">
+									<label class="input"> 
+										<i class="icon-append fa fa-calendar"></i>
+										<input type="text" id="txt_fec_alta" class="datepicker" readonly>
+									</label>
 								</div>
 							</div>
 							
-							<div class="row">&nbsp;</div>
-
-							
-							<div class="row">
+							<div class="row"><div class="col-sm-12">&nbsp;</div></div>
+						
+							<div class="row">																				
 								<label class="col-sm-2 control-label">Cantidad:</label>
 								<div class="col-sm-2 form-group">
-									<input type="text" name="txt_cantidad44" id="txt_cantidad44" class="form-control monto-format" maxlength="10">
+									<input type="text" id="txt_lot_cantidad" class="form-control" disabled>
 								</div>
-
+								
 								<label class="col-sm-2 control-label">Precio Unitario (S/.):</label>
 								<div class="col-sm-2 form-group">
-									<input type="text" name="txt_pre_unitario44" id="txt_pre_unitario44" class="form-control monto-format" maxlength="10">
+									<input type="text" id="txt_lot_pre_unitario" class="form-control" disabled>
 								</div>
 								
 								<label class="col-sm-2 control-label">Importe Total (S/.):</label>
 								<div class="col-sm-2 form-group">
-									<input type="text" name="txt_imp_total44" id="txt_imp_total44" class="form-control" disabled>
+									<input type="text" id="txt_lot_imp_total" class="form-control" disabled>
+								</div>
+							</div>
+							
+							<div class="row">																				
+								<label class="col-sm-2 control-label">Lote:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" id="txt_lote" class="form-control" disabled>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-1"></div>
+													
+								<div class="col-sm-4">	
+									<strong>Ubicación</strong>
+								</div>
+								
+								<div class="col-sm-2"></div>
+								
+								<div class="col-sm-5">	
+									<strong>Código de Barras</strong>
+								</div>
+							</div>
+							
+							<div class="row"><div class="col-sm-12">&nbsp;</div></div>
+							
+							<div class="row">
+								<div class="col-sm-8 form-group">
+									<div class="row">
+									 	<label class="col-sm-3 control-label">Planta:</label>
+										<div class="col-sm-3 form-group">
+											<input type="text" id="txt_lot_planta" class="form-control alphaNumeric" maxlength="25">
+										</div>							
+									
+										<label class="col-sm-2 control-label">Marca:</label>
+										<div class="col-sm-3 form-group">
+											<select id="sel_lot_marca" class="form-control">
+												<option value="">Seleccione</option>
+												<c:forEach items="${lista_marca}" var="item">
+												    <option value="${item.icodigo}">${item.descripcion}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+									
+									<div class="row">
+									 	<label class="col-sm-3 control-label">Nave:</label>
+										<div class="col-sm-3 form-group">
+											<input type="text" id="txt_lot_nave" class="form-control alphaNumeric" maxlength="25">
+										</div>
+									</div>
+									
+									<div class="row">
+									 	<label class="col-sm-3 control-label">Área:</label>
+										<div class="col-sm-3 form-group">
+											<input type="text" id="txt_lot_area" class="form-control alphaNumeric" maxlength="25">
+										</div>
+									</div>
+								</div>
+							
+								<div class="col-sm-4 form-group">
+									<div class="row">
+										<div class="col-sm-12">
+										 	<img src='http://barcode.tec-it.com/barcode.ashx?translate-esc=off&data=127010015501&code=EAN13&unit=Fit&dpi=96&imagetype=Gif&rotation=0&color=000000&bgcolor=FFFFFF&qunit=Mm&quiet=0' 
+											alt='Barcode Generator TEC-IT' class="img-responsive" />
+										</div>
+									</div>									
 								</div>
 							</div>
 						</form>

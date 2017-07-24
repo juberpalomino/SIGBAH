@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Guia_Remision" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2c82441b-1dc7-44dd-9279-7ba0678158be">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="400"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="P_LOGO_INDECI" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -89,7 +89,9 @@
 				<textFieldExpression><![CDATA[$P{P_SEDE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="dd8755b8-4272-4c69-9be4-1ac14d377e5f" mode="Opaque" x="90" y="32" width="114" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="dd8755b8-4272-4c69-9be4-1ac14d377e5f" mode="Opaque" x="90" y="32" width="114" height="20" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[!$P{P_SEDE}.equals("")]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>

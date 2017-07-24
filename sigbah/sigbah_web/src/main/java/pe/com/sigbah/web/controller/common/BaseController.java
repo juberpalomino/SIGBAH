@@ -31,11 +31,11 @@ import pe.com.sigbah.common.util.DateUtil;
  * @className: BaseController.java
  * @description: Controlador genérico.
  * @date: 30/04/2015 00:56:36
- * @author: SUMERIO
+ * @author: Junior Huaman Flores.
  */
 public class BaseController implements Serializable {
 
-	private static final long serialVersionUID = 6674829455049670947L;
+	private static final long serialVersionUID = 1L;
 	protected transient final Log LOGGER = LogFactory.getLog(getClass());
 	protected transient UsuarioBean usuarioBean = null;
 

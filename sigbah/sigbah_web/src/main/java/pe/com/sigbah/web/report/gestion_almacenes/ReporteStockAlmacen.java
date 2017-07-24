@@ -41,9 +41,9 @@ public class ReporteStockAlmacen implements Serializable {
 	        HSSFSheet sheet = wb.createSheet("REGISTRO DE STOCK DE ALMACENES");
 	        
 	        sheet.setColumnWidth(1, 1500);
-	        sheet.setColumnWidth(2, 2000);
+	        sheet.setColumnWidth(2, 5000);
 	        sheet.setColumnWidth(3, 5000);
-	        sheet.setColumnWidth(4, 8000);
+	        sheet.setColumnWidth(4, 10000);
 	        sheet.setColumnWidth(5, 5000);
 	        sheet.setColumnWidth(6, 5000);
 			sheet.setColumnWidth(7, 6000);

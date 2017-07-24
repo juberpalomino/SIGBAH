@@ -73,24 +73,22 @@ $(document).ready(function() {
 			
 			var obj = listaLotesCache[indices[0]];
 			
-			$('#h4_tit_productos').html('Actualizar Producto');
-			limpiarFormularioProducto();
+			frm_det_lotes.trigger('reset');
+			$('#txt_fec_vencimiento').val(obj.fechaVencimiento);
+			$('#txt_fec_produccion').val(obj.fechaProduccion);
+			$('#txt_fec_alta').val(obj.fechaAlta);
+			$('#txt_lot_cantidad').val(obj.cantidad);
+			$('#txt_lot_pre_unitario').val(obj.precioUnitario);
+			$('#txt_lot_imp_total').val(obj.importeTotal);			
+			$('#txt_lote').val(obj.nroLote);			
+			$('#txt_lot_planta').val(obj.planta);
+			if (!esnulo(obj.idMarca)) {
+				$('#sel_lot_marca').val(obj.idMarca);
+			}
+			$('#txt_lot_nave').val(obj.nave);
+			$('#txt_lot_area').val(obj.area);
 			
-			$('#hid_cod_producto').val(obj.idDetalleSalida);
-			
-			$('#sel_cat_producto').val(obj.idCategoria);
-			
-			var val_producto = obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.pesoUnitarioNeto+'_'+obj.pesoUnitarioBruto;
-			cargarProducto(obj.idCategoria, val_producto, obj.nroLote);
-
-			$('#txt_uni_medida').val(obj.nombreUnidad);
-			$('#txt_pes_net_unitario').val(obj.pesoUnitarioNeto);
-			$('#txt_pes_bru_unitario').val(obj.pesoUnitarioBruto);
-			$('#txt_cantidad').val(obj.cantidad);
-			$('#txt_pre_unitario').val(obj.precioUnitario);
-			$('#txt_imp_total').val(obj.importeTotal);
-			
-			$('#div_det_lotes').modal('show');
+			$('#div_edi_lotes').modal('show');
 		}
 		
 	});
@@ -98,49 +96,32 @@ $(document).ready(function() {
 	$('#btn_gra_lote').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_det_productos.data('bootstrapValidator');
-		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
-			var idProducto = null;
-			var val_producto = $('#sel_producto').val();
-			if (!esnulo(val_producto)) {
-				var arr = val_producto.split('_');
-				idProducto = arr[0];
-			}
-			var indControl = null;
-			var idDetalleSalida = $('#hid_cod_producto').val();
-			if (esnulo(idDetalleSalida)) {
-				indControl = 'I'; // I= INSERT
-			} else {
-				indControl = 'U'; // U= UPDATE
-			}
-			var params = { 
-				idDetalleSalida : idDetalleSalida,
-				idSalida : $('#hid_cod_ord_salida').val(),
-				idProducto : idProducto,
-				cantidad : formatMonto($('#txt_cantidad').val()),
-				precioUnitario : formatMonto($('#txt_pre_unitario').val()),
-				importeTotal : formatMonto($('#txt_imp_total').val()),
-				nroLote : $('#sel_lote').val(),
-				indControl : indControl
-			};
+		var params = { 
+			idAlmacen : stockAlmacen.idAlmacen,
+			idDdi : stockAlmacen.idDdi,
+			idProducto : stockAlmacen.idProducto,				
+			nroLote : $('#txt_lote').val(),
+			fechaProduccion : $('#txt_fec_produccion').val(),
+			fechaVencimiento : $('#txt_fec_vencimiento').val(),
+			fechaAlta : $('#txt_fec_alta').val(),
+			idMarca : $('#sel_lot_marca').val(),
+			planta : $('#txt_lot_planta').val(),
+			nave : $('#txt_lot_nave').val(),
+			area : $('#txt_lot_area').val()
+		};
 
-			loadding(true);
-			
-			consultarAjax('POST', '/gestion-almacenes/stock-almacen/grabarStockAlmacenLote', params, function(respuesta) {
-				$('#div_det_lotes').modal('hide');
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					loadding(false);
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarStockAlmacenLote(true);					
-					addSuccessMessage(null, respuesta.mensajeRespuesta);					
-				}
-				frm_det_productos.data('bootstrapValidator').resetForm();
-			});
-			
-		}
+		loadding(true);
 		
+		consultarAjax('POST', '/gestion-almacenes/stock-almacen/actualizarStockAlmacenLote', params, function(respuesta) {
+			$('#div_edi_lotes').modal('hide');
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				loadding(false);
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarStockAlmacenLote(true);					
+				addSuccessMessage(null, respuesta.mensajeRespuesta);					
+			}
+		});
 	});
 
 });
@@ -246,7 +227,7 @@ function listarDetalleAlmacenLote(respuesta) {
 		columns : [ {
 			data : 'nroLote',
 			sClass : 'opc-center',
-			render: function(data, type, row) {
+			render : function(data, type, row) {
 				if (data != null) {
 					return '<label class="checkbox">'+
 								'<input type="checkbox"><i></i>'+
