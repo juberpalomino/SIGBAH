@@ -409,7 +409,7 @@
 					<div>
 										
 						<!-- widget content -->
-						<div class="widget-body">
+						<div class="widget-body " >
 
 							<table id="tbl_mnt_emer_act" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
