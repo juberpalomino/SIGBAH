@@ -25,6 +25,8 @@ public final class Constantes implements Serializable {
     public static final String COD_VALIDACION_GENERAL = "02";
 	public static final String COD_EXITO_GENERAL = "01";
 	public static final String COD_ERROR_GENERAL = "00";
+	public static final int COD_GENERADO = 13;
+	public static final String DES_GENERADO = "Generado";
 
 	/* DATOS GENERALES */
 	public static final String EMPTY = "";

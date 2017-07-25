@@ -2,6 +2,7 @@
 var NOTIFICACION_VALIDACION = '02';
 var NOTIFICACION_OK = '01';
 var NOTIFICACION_ERROR = '00';
+var ESTADO_GENERADO = '13';
 
 $(function() {
 

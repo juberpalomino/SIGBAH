@@ -18,6 +18,7 @@ import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
@@ -26,6 +27,8 @@ import pe.com.sigbah.common.bean.ProductoStockAlmacenBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
+import pe.com.sigbah.common.bean.StockAlmacenProductoBean;
+import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
 
 /**
  * @className: LogisticaDao.java
@@ -495,7 +498,7 @@ public interface LogisticaDao {
 	
 	/**
 	 * @param cartillaInventarioBean
-	 * @return Objeto.
+	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
 	public abstract List<CartillaInventarioBean> listarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
@@ -520,5 +523,47 @@ public interface LogisticaDao {
 	 * @throws Exception
 	 */
 	public abstract CartillaInventarioBean grabarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoCartillaInventarioBean> listarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean grabarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean eliminarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+	
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean procesarProductosCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+	
+	/**
+	 * @param stockAlmacenProductoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<StockAlmacenProductoBean> listarStockAlmacenProducto(StockAlmacenProductoBean stockAlmacenProductoBean) throws Exception;
+	
+	/**
+	 * @param stockAlmacenProductoLoteBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<StockAlmacenProductoLoteBean> listarStockAlmacenProductoLote(StockAlmacenProductoLoteBean stockAlmacenProductoLoteBean) throws Exception;
 	
 }

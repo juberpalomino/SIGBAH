@@ -104,7 +104,7 @@
 							</a>
 							<a href="#" id="href_estados" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Estados">
-								<i class="fa fa-file-pdf-o"></i>
+								<i class="fa fa-eye"></i>
 							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">

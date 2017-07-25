@@ -22,6 +22,7 @@ import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
@@ -30,6 +31,8 @@ import pe.com.sigbah.common.bean.ProductoStockAlmacenBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
+import pe.com.sigbah.common.bean.StockAlmacenProductoBean;
+import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -597,6 +600,54 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public CartillaInventarioBean grabarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
 		return logisticaDao.grabarCartillaInventario(cartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProductoCartillaInventario(pe.com.sigbah.common.bean.ProductoCartillaInventarioBean)
+	 */
+	@Override
+	public List<ProductoCartillaInventarioBean> listarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
+		return logisticaDao.listarProductoCartillaInventario(productoCartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarProductoCartillaInventario(pe.com.sigbah.common.bean.ProductoCartillaInventarioBean)
+	 */
+	@Override
+	public ProductoCartillaInventarioBean grabarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
+		return logisticaDao.grabarProductoCartillaInventario(productoCartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#eliminarProductoCartillaInventario(pe.com.sigbah.common.bean.ProductoCartillaInventarioBean)
+	 */
+	@Override
+	public ProductoCartillaInventarioBean eliminarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
+		return logisticaDao.eliminarProductoCartillaInventario(productoCartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#procesarProductosCartillaInventario(pe.com.sigbah.common.bean.ProductoCartillaInventarioBean)
+	 */
+	@Override
+	public ProductoCartillaInventarioBean procesarProductosCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
+		return logisticaDao.procesarProductosCartillaInventario(productoCartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarStockAlmacenProducto(pe.com.sigbah.common.bean.StockAlmacenProductoBean)
+	 */
+	@Override
+	public List<StockAlmacenProductoBean> listarStockAlmacenProducto(StockAlmacenProductoBean stockAlmacenProductoBean) throws Exception {
+		return logisticaDao.listarStockAlmacenProducto(stockAlmacenProductoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarStockAlmacenProductoLote(pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean)
+	 */
+	@Override
+	public List<StockAlmacenProductoLoteBean> listarStockAlmacenProductoLote(StockAlmacenProductoLoteBean stockAlmacenProductoLoteBean) throws Exception {
+		return logisticaDao.listarStockAlmacenProductoLote(stockAlmacenProductoLoteBean);
 	}
 
 }

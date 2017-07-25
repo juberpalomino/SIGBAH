@@ -22,11 +22,15 @@ public class RegistroCartillaInventarioMapper implements RowMapper<CartillaInven
 	public CartillaInventarioBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CartillaInventarioBean cartillaInventario = new CartillaInventarioBean();
 		cartillaInventario.setIdCartilla(rs.getInt("IDE_CARTILLA"));
+		cartillaInventario.setCodigoAnio(rs.getString("COD_ANIO"));
+		cartillaInventario.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
 		cartillaInventario.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
 		cartillaInventario.setCodigoDdi(rs.getString("COD_DDI"));
+		cartillaInventario.setNombreDdi(rs.getString("NOMBRE_DDI"));
 		cartillaInventario.setNroCartilla(rs.getString("NRO_CARTILLA"));		
 		cartillaInventario.setCodigoCartilla(rs.getString("COD_CARTILLA"));
 		cartillaInventario.setFechaCartilla(rs.getString("FEC_CARTILLA"));
+		cartillaInventario.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
 		cartillaInventario.setIdResponsable(rs.getInt("FK_IDE_RESPONSABLE"));		
 		cartillaInventario.setResponsable(rs.getString("RESPONSABLE"));
 		cartillaInventario.setIdEstado(rs.getInt("FK_IDE_ESTADO"));

@@ -175,15 +175,15 @@
 											<h2>Detalle de Productos</h2>
 											
 											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_ali_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_pro_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Nuevo">
 													<i class="fa fa-file-o"></i>
 												</a>
-												<a href="#" id="href_ali_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_pro_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Editar">
 													<i class="fa fa-edit"></i>
 												</a>
-												<a href="#" id="href_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_pro_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Eliminar">
 													<i class="fa fa-trash-o"></i>
 												</a>
@@ -195,6 +195,17 @@
 															
 											<!-- widget content -->
 											<div class="widget-body">
+											
+												<div class="row">
+													<div class="col-sm-9 form-group"></div>
+													
+													<div class="col-sm-3 opc-center">
+														<button class="btn btn-primary" type="button" id="btn_agr_productos">
+															<i class="fa fa-retweet"></i>
+															Agregar todos Productos
+														</button>
+													</div>
+												</div>
 
 												<table id="tbl_det_productos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
@@ -203,9 +214,10 @@
 															<th>Nº</th>
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
-															<th>Lote</th>
+															<th>Nro. Lote</th>
 															<th>Nave</th>
-															<th>Stock</th>
+															<th>Precio Unitario</th>
+															<th>Stock Actual</th>
 														</tr>
 													</thead>
 												</table>
