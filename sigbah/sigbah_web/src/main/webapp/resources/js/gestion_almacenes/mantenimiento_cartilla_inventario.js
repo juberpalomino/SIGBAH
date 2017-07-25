@@ -31,40 +31,18 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			var codigo = $('#hid_cod_cartilla').val();
-			var tipoBien = $('input[name="rb_tip_bien"]:checked').val();
-			var idProveedor = null;
-			var val_proveedor = $('#sel_proveedor').val();
-			if (!esnulo(val_proveedor)) {
-				var arr = val_proveedor.split('_');
-				idProveedor = arr[0];
-			}
-			
-			var val_ord_compra = $('#sel_nro_ord_compra').val();
-			var arr_ord_compra = val_ord_compra.split('_');
 			
 			var params = {
 				idCartilla : codigo,	
-				codigoAnio : $('#txt_anio').val(),
-				codigoMes : cartillaInventario.codigoMes,
+				idAlmacen : $('#txt_anio').val(),
+				codigoAnio : cartillaInventario.codigoAnio,
 				codigoDdi : cartillaInventario.codigoDdi,
 				idDdi : cartillaInventario.idDdi, 
-				idAlmacen : cartillaInventario.idAlmacen,
 				codigoAlmacen : cartillaInventario.codigoAlmacen,
-				fechaEmision : $('#txt_fecha').val(),
-				idEstado : $('#sel_estado').val(),
-				nroOrdenCompra : arr_ord_compra[0],
-				idTipoControl : $('#sel_tip_control').val(),
-				idAlmacenOrigen : $('#sel_ori_almacen').val(),
-				idEncargado : $('#sel_ori_en_almacen').val(),
-				idInspector : $('#sel_inspector').val(),
-				idProveedor : idProveedor,
-				idEmpresaTransporte : $('#sel_emp_transporte').val(),
-				idChofer : $('#sel_chofer').val(),
-				nroPlaca : $('#txt_nro_placa').val(),
-				flagTipoBien : tipoBien,
-				conclusiones : $('#txt_conclusiones').val(),
-				recomendaciones : $('#txt_recomendaciones').val()				
+				nroCartilla : $('#txt_nro_cartilla').val(),
+				idResponsable : $('#sel_res_inventario').val(),
+				fechaCartilla : $('#txt_fec_emision').val(),
+				observacion : $('#txt_observaciones').val()
 			};
 			
 			loadding(true);

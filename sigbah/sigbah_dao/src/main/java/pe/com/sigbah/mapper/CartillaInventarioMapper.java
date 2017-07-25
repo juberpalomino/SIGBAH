@@ -23,7 +23,7 @@ public class CartillaInventarioMapper implements RowMapper<CartillaInventarioBea
 		CartillaInventarioBean cartillaInventario = new CartillaInventarioBean();
 		cartillaInventario.setIdCartilla(rs.getInt("IDE_CARTILLA"));
 		cartillaInventario.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
-//		cartillaInventario.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
+		cartillaInventario.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
 		cartillaInventario.setCodigoAnio(rs.getString("COD_ANIO"));
 		cartillaInventario.setNroCartilla(rs.getString("NRO_CARTILLA"));		
 		cartillaInventario.setFechaCartilla(rs.getString("FEC_CARTILLA"));

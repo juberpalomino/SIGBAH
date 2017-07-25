@@ -3767,22 +3767,16 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		CartillaInventarioBean registroCartillaInventario = new CartillaInventarioBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-//			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", cartillaInventarioBean.getIdCartillaInventario(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_TIPO_ORIGEN", cartillaInventarioBean.getTipoOrigen(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_COD_ANIO", cartillaInventarioBean.getCodigoAnio(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_COD_DDI", cartillaInventarioBean.getCodigoDdi(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_COD_MES", cartillaInventarioBean.getCodigoMes(), Types.VARCHAR);			
-//			input_objParametros.addValue("pi_COD_ALMACEN", cartillaInventarioBean.getCodigoAlmacen(), Types.VARCHAR);			
-//			input_objParametros.addValue("pi_FK_IDE_ALMACEN", cartillaInventarioBean.getIdAlmacen(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_FK_IDE_ALMACEN_DEST", cartillaInventarioBean.getIdAlmacenDestino(), Types.NUMERIC);		
-//			input_objParametros.addValue("pi_NRO_PROY_MANIFIESTO", cartillaInventarioBean.getNroCartillaInventario(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_FK_IDE_TIP_MOVIMIENTO", cartillaInventarioBean.getIdMovimiento(), Types.NUMERIC);			
-//			input_objParametros.addValue("pi_FEC_EMISION", DateUtil.obtenerFechaHoraParseada(cartillaInventarioBean.getFechaEmision()), Types.DATE);
-//			input_objParametros.addValue("pi_FLG_PROGRAMACION", cartillaInventarioBean.getFlagProgramacion(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_FK_IDE_PROGRAMACION", cartillaInventarioBean.getIdProgramacion(), Types.NUMERIC);			
-//			input_objParametros.addValue("pi_FK_IDE_ESTADO", cartillaInventarioBean.getIdEstado(), Types.NUMERIC);
-//			input_objParametros.addValue("pi_OBSERVACION", cartillaInventarioBean.getObservacion(), Types.VARCHAR);
-//			input_objParametros.addValue("pi_USUARIO", cartillaInventarioBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_CARTILLA", cartillaInventarioBean.getIdCartilla(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN", cartillaInventarioBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_COD_ANIO", cartillaInventarioBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_DDI", cartillaInventarioBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_ALMACEN", cartillaInventarioBean.getCodigoAlmacen(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_NRO_CARTILLA", cartillaInventarioBean.getNroCartilla(), Types.VARCHAR);			
+			input_objParametros.addValue("pi_FK_IDE_RESPONSABLE", cartillaInventarioBean.getIdResponsable(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FEC_CARTILLA", DateUtil.obtenerFechaHoraParseada(cartillaInventarioBean.getFechaCartilla()), Types.DATE);
+			input_objParametros.addValue("pi_OBSERVACION_CARTILLA", cartillaInventarioBean.getObservacion(), Types.VARCHAR);
+			input_objParametros.addValue("pi_USUARIO", cartillaInventarioBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -3791,25 +3785,18 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			objJdbcCall.withProcedureName("USP_INS_UPD_REGIS_CARTILLA_INV");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));			
-			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_CARTILLA", new SqlParameter("pi_IDE_CARTILLA", Types.NUMERIC));			
+			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
 			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("pi_COD_DDI", new SqlParameter("pi_COD_DDI", Types.VARCHAR));
-			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
 			output_objParametros.put("pi_COD_ALMACEN", new SqlParameter("pi_COD_ALMACEN", Types.VARCHAR));
-			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_ALMACEN_DEST", new SqlParameter("pi_FK_IDE_ALMACEN_DEST", Types.NUMERIC));			
-			output_objParametros.put("pi_NRO_PROY_MANIFIESTO", new SqlParameter("pi_NRO_PROY_MANIFIESTO", Types.VARCHAR));
-			output_objParametros.put("pi_FK_IDE_TIP_MOVIMIENTO", new SqlParameter("pi_FK_IDE_TIP_MOVIMIENTO", Types.NUMERIC));			
-			output_objParametros.put("pi_FEC_EMISION", new SqlParameter("pi_FEC_EMISION", Types.DATE));
-			output_objParametros.put("pi_FLG_PROGRAMACION", new SqlParameter("pi_FLG_PROGRAMACION", Types.VARCHAR));
-			output_objParametros.put("pi_FK_IDE_PROGRAMACION", new SqlParameter("pi_FK_IDE_PROGRAMACION", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_ESTADO", new SqlParameter("pi_FK_IDE_ESTADO", Types.NUMERIC));
-			output_objParametros.put("pi_OBSERVACION", new SqlParameter("pi_OBSERVACION", Types.VARCHAR));
+			output_objParametros.put("pi_NRO_CARTILLA", new SqlParameter("pi_NRO_CARTILLA", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_RESPONSABLE", new SqlParameter("pi_FK_IDE_RESPONSABLE", Types.NUMERIC));
+			output_objParametros.put("pi_FEC_CARTILLA", new SqlParameter("pi_FEC_CARTILLA", Types.DATE));			
+			output_objParametros.put("pi_OBSERVACION_CARTILLA", new SqlParameter("pi_OBSERVACION_CARTILLA", Types.VARCHAR));
 			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
-			output_objParametros.put("po_IDE_PROYECTO_MANIF", new SqlOutParameter("po_IDE_PROYECTO_MANIF", Types.NUMERIC));			
-			output_objParametros.put("po_NRO_PROYECTO", new SqlOutParameter("po_NRO_PROYECTO", Types.VARCHAR));
-			output_objParametros.put("po_COD_PROYECTO", new SqlOutParameter("po_COD_PROYECTO", Types.VARCHAR));
+			output_objParametros.put("PO_IDE_CARTILLA", new SqlOutParameter("PO_IDE_CARTILLA", Types.NUMERIC));			
+//			output_objParametros.put("po_NRO_CARTILLA", new SqlOutParameter("po_NRO_CARTILLA", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -3825,9 +3812,8 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
     			throw new Exception();
     		}
 		
-//			registroCartillaInventario.setIdCartillaInventario(((BigDecimal) out.get("po_IDE_PROYECTO_MANIF")).intValue());
-//			registroCartillaInventario.setNroCartillaInventario((String) out.get("po_NRO_PROYECTO"));
-//			registroCartillaInventario.setCodigoCartillaInventario((String) out.get("po_COD_PROYECTO"));
+			registroCartillaInventario.setIdCartilla(((BigDecimal) out.get("PO_IDE_CARTILLA")).intValue());
+//			registroCartillaInventario.setNroCartilla((String) out.get("po_NRO_PROYECTO"));
 			registroCartillaInventario.setCodigoRespuesta(codigoRespuesta);
 			registroCartillaInventario.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
 	

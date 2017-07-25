@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
@@ -130,17 +131,16 @@ public class CartillaInventarioController extends BaseController {
         		
         		cartillaInventario.setNroCartilla(correlativo.toString());        		
         		
-//        		CartillaInventarioBean parametroAlmacenActivo = new CartillaInventarioBean();
-//        		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
-//        		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
-//        		List<CartillaInventarioBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
-//        		if (!isEmpty(listaAlmacenActivo)) {
-//        			cartillaInventario.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-//        			cartillaInventario.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-//        			cartillaInventario.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-//        			cartillaInventario.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-//        			cartillaInventario.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
-//        		}
+        		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
+        		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
+        		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
+        		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
+        		if (!isEmpty(listaAlmacenActivo)) {
+        			cartillaInventario.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+        			cartillaInventario.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+        			cartillaInventario.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+        			cartillaInventario.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+        		}
         		
             	cartillaInventario.setIdDdi(usuarioBean.getIdDdi());
         		cartillaInventario.setCodigoDdi(usuarioBean.getCodigoDdi());
