@@ -117,6 +117,9 @@
 	<definition name="requerimiento-edan" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RequerimientoEDAN.jsp" />
 	</definition>
+	<definition name="mantenimiento_requerimiento" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Registrar_RequerimientoEDAN.jsp" />
+	</definition>
 	<definition name="racion-operativa" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RacionOperativa.jsp" />
 	</definition>

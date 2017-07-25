@@ -104,7 +104,6 @@
 														<table id="tbl_det_localidades" class="table table-bordered table-hover tbl-responsive">
 															<thead>			                
 																<tr>
-																	<th></th>
 																	<th>Nº</th>
 																	<th>Region</th>
 																	<th>Provincia</th>
@@ -133,7 +132,6 @@
 														<table id="tbl_det_alimentarios" class="table table-bordered table-hover tbl-responsive">
 															<thead>			                
 																<tr>
-																	<th></th>
 																	<th>Nº</th>
 																	<th>Producto</th>
 																	<th>Nro. de raciones</th>
@@ -155,7 +153,6 @@
 														<table id="tbl_det_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
 															<thead>			                
 																<tr>
-																	<th></th>
 																	<th>Nº</th>
 																	<th>Categoria de Producto</th>
 																	<th>Producto</th>

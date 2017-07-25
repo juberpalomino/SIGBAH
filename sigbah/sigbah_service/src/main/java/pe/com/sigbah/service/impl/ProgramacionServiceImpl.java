@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.dao.ProgramacionDao;
 import pe.com.sigbah.service.ProgramacionService;
 
@@ -41,6 +42,49 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	public ListaRespuestaEmergenciaBean obtenerRegistroEmergencia(Integer idEmergencia, String codAnio) throws Exception {
 		return programacionDao.obtenerRegistroEmergencia(idEmergencia,  codAnio);
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarRequerimiento(pe.com.sigbah.common.bean.RequerimientoBean)
+	 */
+	@Override
+	public List<RequerimientoBean> listarRequerimiento(RequerimientoBean requerimientoBean) throws Exception {
+		return programacionDao.listarRequerimiento(requerimientoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerRequerimiento(java.lang.Integer, java.lang.String)
+	 */
+	@Override
+	public RequerimientoBean obtenerRequerimiento( Integer codigo) throws Exception {
+		return programacionDao.obtenerRequerimiento(codigo );
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerCorrelativoRequerimiento(pe.com.sigbah.common.bean.RequerimientoBean)
+	 */
+	@Override
+	public RequerimientoBean obtenerCorrelativoRequerimiento(RequerimientoBean parametros) throws Exception {
+		return programacionDao.obtenerCorrelativoRequerimiento(parametros );
+	}
 	
-	
+	@Override
+	public RequerimientoBean insertarRegistroRequerimiento(RequerimientoBean requerimiento) throws Exception {
+		return programacionDao.insertarRegistroRequerimiento(requerimiento);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#actualizarRegistroControlCalidad(pe.com.sigbah.common.bean.ControlCalidadBean)
+	 */
+	@Override
+	public RequerimientoBean actualizarRegistroRequerimiento(RequerimientoBean requerimiento) throws Exception {
+		return programacionDao.actualizarRegistroRequerimiento(requerimiento);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarEmergenciasActivas(pe.com.sigbah.common.bean.RequerimientoBean)
+	 */
+	@Override
+	public List<EmergenciaBean> listarEmergenciasActivas(RequerimientoBean requerimientoBean) throws Exception {
+		return programacionDao.listarEmergenciasActivas(requerimientoBean);
+	}
 }

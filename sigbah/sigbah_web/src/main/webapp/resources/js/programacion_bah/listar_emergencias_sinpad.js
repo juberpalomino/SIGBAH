@@ -193,7 +193,7 @@ function inicializarDatos() {
 	$('#li_pro_bah').addClass('active');
 	$('#ul_pro_bah').css('display', 'block');
 	$('#li_emer_sinpad').attr('class', 'active');
-//	$('#li_emer_sinpad').closest('li').children('a').attr('href', '#');
+	$('#li_emer_sinpad').closest('li').children('a').attr('href', '#');
 	
 
 	if (codigoRespuesta == NOTIFICACION_ERROR) {

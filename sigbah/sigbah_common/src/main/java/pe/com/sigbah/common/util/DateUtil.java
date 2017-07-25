@@ -167,4 +167,12 @@ public class DateUtil implements Serializable {
 		return null;
 	}
 	
+	/**
+	 * Obtiene el mes asociado a la fecha actual.
+	 * @return mes asociado a la fecha actual, tipo int.
+	 */
+	public static int getMesActual(){
+		return Calendar.getInstance().get(Calendar.MONTH);
+	}
+	
 }

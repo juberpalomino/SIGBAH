@@ -14,17 +14,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
-import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
+import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.util.DateUtil;
 
-/**
- * @className: ReporteControlCalidad.java
- * @description: 
- * @date: 20 de jul. de 2017
- * @author: Junior Huaman Flores.
- */
-public class ReporteEmergencia implements Serializable {
+
+public class ReporteRequerimiento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
@@ -34,10 +29,10 @@ public class ReporteEmergencia implements Serializable {
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
-	public HSSFWorkbook generaReporteExcelEmergencia(List<EmergenciaBean> lista) throws Exception {
+	public HSSFWorkbook generaReporteExcelRequerimiento(List<RequerimientoBean> lista) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
-	        HSSFSheet sheet = wb.createSheet("REGISTRO DE EMERGENCIA");
+	        HSSFSheet sheet = wb.createSheet("REGISTRO DE REQUERIMIENTO");
 	        
 	        sheet.setColumnWidth(1, 1500);
 	        sheet.setColumnWidth(2, 2000);
@@ -47,15 +42,6 @@ public class ReporteEmergencia implements Serializable {
 	        sheet.setColumnWidth(6, 5000);
 			sheet.setColumnWidth(7, 6000);
 			sheet.setColumnWidth(8, 4000);
-			sheet.setColumnWidth(9, 1500);
-	        sheet.setColumnWidth(10, 2000);
-	        sheet.setColumnWidth(11, 5000);
-	        sheet.setColumnWidth(12, 5000);
-	        sheet.setColumnWidth(13, 8000);
-	        sheet.setColumnWidth(14, 5000);
-			sheet.setColumnWidth(15, 6000);
-			sheet.setColumnWidth(16, 4000);
-//			sheet.setColumnWidth(17, 4000);
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
@@ -90,45 +76,18 @@ public class ReporteEmergencia implements Serializable {
 	        row1.createCell(4).setCellValue("Fecha");
 	        row1.getCell(4).setCellStyle(style_header);
 	        
-	        row1.createCell(5).setCellValue("Código SINPAD");
+	        row1.createCell(5).setCellValue("Nro. Requerimiento");
 	        row1.getCell(5).setCellStyle(style_header);
 	        
-	        row1.createCell(6).setCellValue("Fenómeno");
+	        row1.createCell(6).setCellValue("Descripción");
 	        row1.getCell(6).setCellStyle(style_header);
 	        
-	        row1.createCell(7).setCellValue("Nombre emergencia");
+	        row1.createCell(7).setCellValue("Fenómeno");
 	        row1.getCell(7).setCellStyle(style_header);
 	        
-	        row1.createCell(8).setCellValue("Región");
+	        row1.createCell(8).setCellValue("Región Destino");
 	        row1.getCell(8).setCellStyle(style_header);
 	        
-	        row1.createCell(9).setCellValue("Provincia");
-	        row1.getCell(9).setCellStyle(style_header);
-	        
-	        row1.createCell(10).setCellValue("Distrito");
-	        row1.getCell(10).setCellStyle(style_header);
-	        
-//	        row1.createCell(11).setCellValue("Población INEI");
-//	        row1.getCell(11).setCellStyle(style_header);
-	        
-	        row1.createCell(11).setCellValue("Fam. Afec.");
-	        row1.getCell(11).setCellStyle(style_header);
-	        
-	        row1.createCell(12).setCellValue("Fam. damnif.");
-	        row1.getCell(12).setCellStyle(style_header);
-	        
-	        row1.createCell(13).setCellValue("Total fam.");
-	        row1.getCell(13).setCellStyle(style_header);
-	        
-	        row1.createCell(14).setCellValue("Pers. afec.");
-	        row1.getCell(14).setCellStyle(style_header);
-	        
-	        row1.createCell(15).setCellValue("Pers. damn.");
-	        row1.getCell(15).setCellStyle(style_header);
-	        
-	        row1.createCell(16).setCellValue("Total");
-	        row1.getCell(16).setCellStyle(style_header);
-	       
 	        int row = 1;
 
 	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
@@ -139,62 +98,35 @@ public class ReporteEmergencia implements Serializable {
 	        style_cell.setBorderRight((short) 1);
 	        style_cell.setBorderTop((short) 1);
 	        
-	        for (EmergenciaBean emergencia : lista) {
+	        for (RequerimientoBean requerimiento : lista) {
 	        	
 	        	HSSFRow rows  = sheet.createRow((short) row + 1);
 	        	
 	        	rows.createCell(1).setCellValue(row);
 		        rows.getCell(1).setCellStyle(style_cell);
 
-		        rows.createCell(2).setCellValue(emergencia.getCodAnio());
+		        rows.createCell(2).setCellValue(requerimiento.getCodAnio());
 		        rows.getCell(2).setCellStyle(style_cell);
 		        
-		        rows.createCell(3).setCellValue(emergencia.getNombreMes());
+		        rows.createCell(3).setCellValue(requerimiento.getNomMes());
 		        rows.getCell(3).setCellStyle(style_cell);
 		        
-		        rows.createCell(4).setCellValue(emergencia.getFecha());
+		        rows.createCell(4).setCellValue(requerimiento.getFechaRequerimiento());
 		        rows.getCell(4).setCellStyle(style_cell);
 		        
-		        rows.createCell(5).setCellValue(emergencia.getIdEmergencia());
+		        rows.createCell(5).setCellValue(requerimiento.getNumRequerimiento());
 		        rows.getCell(5).setCellStyle(style_cell);
 		        
-		        rows.createCell(6).setCellValue(emergencia.getDescFenomeno());
+		        rows.createCell(6).setCellValue(requerimiento.getNomRequerimiento());
 		        rows.getCell(6).setCellStyle(style_cell);
 		        
-		        rows.createCell(7).setCellValue(emergencia.getNombreEmergencia());
+		        rows.createCell(7).setCellValue(requerimiento.getDescFenomeno());
 		        rows.getCell(7).setCellStyle(style_cell);
 		        
-		        rows.createCell(8).setCellValue(emergencia.getDesDepartamento());
+		        rows.createCell(8).setCellValue(requerimiento.getNomRegion());
 		        rows.getCell(8).setCellStyle(style_cell);
 		        
-		        rows.createCell(9).setCellValue(emergencia.getDesProvincia());
-		        rows.getCell(9).setCellStyle(style_cell);
-		        
-		        rows.createCell(10).setCellValue(emergencia.getDesDistrito());
-		        rows.getCell(10).setCellStyle(style_cell);
-		        
-//		        rows.createCell(11).setCellValue(emergencia.getPoblacionINEI());
-//		        rows.getCell(11).setCellStyle(style_cell);
-		        
-		        rows.createCell(11).setCellValue(emergencia.getFamAfectado());
-		        rows.getCell(11).setCellStyle(style_cell);
-		        
-		        rows.createCell(12).setCellValue(emergencia.getFamDamnificado());
-		        rows.getCell(12).setCellStyle(style_cell);
-		        
-		        rows.createCell(13).setCellValue(emergencia.getTotalFam());
-		        rows.getCell(13).setCellStyle(style_cell);
-		        
-		        rows.createCell(14).setCellValue(emergencia.getPersoAfectado());
-		        rows.getCell(14).setCellStyle(style_cell);
-		        
-		        rows.createCell(15).setCellValue(emergencia.getPersoDamnificado());
-		        rows.getCell(15).setCellStyle(style_cell);
-		        
-		        rows.createCell(16).setCellValue(emergencia.getTotalPerso());
-		        rows.getCell(16).setCellStyle(style_cell);
-	            
-	            row++;	
+		        row++;	
 	        }
 			
     	} catch(Exception e) {

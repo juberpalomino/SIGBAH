@@ -2,8 +2,10 @@ package pe.com.sigbah.service;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.RequerimientoBean;
 
 /**
  * @className: ProgramacionService.java
@@ -29,4 +31,47 @@ public interface ProgramacionService {
 	 */
 	public abstract ListaRespuestaEmergenciaBean obtenerRegistroEmergencia(Integer idEmergencia, String codAnio) throws Exception;
 
+	
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<RequerimientoBean> listarRequerimiento(RequerimientoBean requerimientoBean) throws Exception;
+	
+	/**
+	 * @param codAnio
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract RequerimientoBean obtenerRequerimiento(Integer codigo) throws Exception;
+	
+	/**
+	 * @param parametros
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract RequerimientoBean obtenerCorrelativoRequerimiento(RequerimientoBean parametros ) throws Exception;
+	
+	
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract RequerimientoBean insertarRegistroRequerimiento(RequerimientoBean requerimientoBean) throws Exception;
+	
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract RequerimientoBean actualizarRegistroRequerimiento(RequerimientoBean requerimientoBean) throws Exception;
+	
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<EmergenciaBean> listarEmergenciasActivas(RequerimientoBean requerimientoBean) throws Exception;
 }

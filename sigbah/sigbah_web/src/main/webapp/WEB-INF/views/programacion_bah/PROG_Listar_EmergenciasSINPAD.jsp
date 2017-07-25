@@ -53,7 +53,7 @@
 									<label class="col-sm-1 control-label">Mes:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_mes" name="sel_mes" class="form-control">
-											<option value="0">Todos</option>
+											<option value="">Todos</option>
 											<c:forEach items="${lista_mes}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -72,6 +72,7 @@
 									<label class="col-sm-1 control-label">Fenómeno:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
+											<option value="0">Todos</option>
 											<c:forEach items="${lista_fenomeno}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>

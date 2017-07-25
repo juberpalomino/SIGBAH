@@ -36,7 +36,7 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_emer_sinpad" class="form-horizontal">
+							<form id="frm_req_edan" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -60,9 +60,12 @@
 										</select>
 									</div>
 									
+									
+									
 									<label class="col-sm-1 control-label">Fenómeno:</label>
 									<div class="col-sm-2 form-group">
-										<select id="sel_almacen" name="sel_almacen" class="form-control">
+										<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
+											<option value="0">Todos</option>
 											<c:forEach items="${lista_fenomeno}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -129,7 +132,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_req_edan" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
@@ -167,4 +170,4 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_emergencias_sinpad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_requerimientos_edan.js"></script>

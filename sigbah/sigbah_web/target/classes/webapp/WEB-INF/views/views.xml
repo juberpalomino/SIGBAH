@@ -64,6 +64,22 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_GuiaRemision.jsp" />
 	</definition>
 	
+	<definition name="listar_stock_almacen" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_Stock.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_stock_almacen" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_StockAlmacen.jsp" />
+	</definition>
+	
+	<definition name="listar_cartilla_inventario" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_CartillaInventario.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_cartilla_inventario" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_CartillaInventario.jsp" />
+	</definition>
+	
 	<definition name="listar-donaciones" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
 	</definition>
@@ -76,6 +92,21 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Orden_Ingreso.jsp" />
 	</definition>
 	
+	<definition name="registrar-donaciones-ingreso" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registro_Orden_Ingreso.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones-salida" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Orden_Salida.jsp" />
+	</definition>
+	
+	<definition name="registrar-donaciones-salida" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registro_Orden_Salida.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones-guia" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Guia_Remision.jsp" />
+	</definition>
 	
 	<definition name="emergencias-sinpad" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_EmergenciasSINPAD.jsp" />
@@ -85,6 +116,9 @@
 	</definition>
 	<definition name="requerimiento-edan" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RequerimientoEDAN.jsp" />
+	</definition>
+	<definition name="mantenimiento_requerimiento" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Registrar_RequerimientoEDAN.jsp" />
 	</definition>
 	<definition name="racion-operativa" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RacionOperativa.jsp" />

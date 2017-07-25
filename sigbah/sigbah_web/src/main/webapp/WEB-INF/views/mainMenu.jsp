@@ -15,19 +15,19 @@
 					<li class="li_emer_sinpad">
 						<a href="${pageContext.request.contextPath}/programacion-bath/emergencia/inicio/0">Emergencias en SINPAD</a>
 					</li>
-					<li class="li_men_opcion">
+					<li class="li_req_edan">
 						<a href="${pageContext.request.contextPath}/programacion-bath/requerimiento/inicio/0"> Requerimientos EDAN</a>
 					</li>
-					<li class="li_men_opcion">
+					<li class="li_rac_ope">
 						<a href="${pageContext.request.contextPath}/programacion-bath/racion/inicio/0">Raciones Operativas</a>
 					</li>
-					<li class="li_men_opcion">
+					<li class="li_prog">
 						<a href="${pageContext.request.contextPath}/programacion-bath/programacion/inicio/0">Programación</a>
 					</li>
-					<li class="li_men_opcion">
+					<li class="li_ped_compra">
 						<a href="${pageContext.request.contextPath}/programacion-bath/pedido/inicio/0">Pedidos de Compra</a>
 					</li>
-					<li class="li_men_opcion">
+					<li class="li_dec_emer">
 						<a href="${pageContext.request.contextPath}/programacion-bath/decreto/inicio/0">Decretos de emergencia</a>
 					</li>
 					<li>

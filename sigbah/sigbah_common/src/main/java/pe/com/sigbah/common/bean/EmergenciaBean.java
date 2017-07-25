@@ -36,6 +36,8 @@ public class EmergenciaBean extends BaseOutputBean {
 	private Integer poblacionINEI;
 	private Integer totalFam;
 	private Integer totalPerso;
+	
+	private String codSinpad;
 	/**
 	 * 
 	 */
@@ -391,6 +393,20 @@ public class EmergenciaBean extends BaseOutputBean {
 	 */
 	public void setTotalPerso(Integer totalPerso) {
 		this.totalPerso = totalPerso;
+	}
+
+	/**
+	 * @return the codSinpad
+	 */
+	public String getCodSinpad() {
+		return codSinpad;
+	}
+
+	/**
+	 * @param codSinpad the codSinpad to set
+	 */
+	public void setCodSinpad(String codSinpad) {
+		this.codSinpad = codSinpad;
 	}
 
 	
