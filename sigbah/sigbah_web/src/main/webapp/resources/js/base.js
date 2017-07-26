@@ -3,6 +3,8 @@ var NOTIFICACION_VALIDACION = '02';
 var NOTIFICACION_OK = '01';
 var NOTIFICACION_ERROR = '00';
 var ESTADO_GENERADO = '13';
+var ESTADO_APROBADO = '3';
+var ESTADO_AJUSTE = '14';
 
 $(function() {
 
@@ -1123,6 +1125,13 @@ function verificaParametro(campo) {
 function verificaParametroInt(campo) {
 	if (esnulo(campo)) {
 		return 0;
+	}
+	return campo;
+}
+
+function obtieneParametro(campo) {
+	if (esnulo(campo)) {
+		return '';
 	}
 	return campo;
 }

@@ -27,15 +27,20 @@ public class ProductoCartillaInventarioMapper implements RowMapper<ProductoCarti
 		producto.setTipoOrigen(rs.getString("TIPO_ORIGEN"));		
 		producto.setIdDdi(rs.getInt("FK_IDE_DDI"));
 		producto.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));		
-		producto.setIdProducto(rs.getInt("FK_IDE_PRODUCTO"));
-//		producto.setCodigoProducto(rs.getString("NOM_PRODUCTO"));
-		producto.setNombreProducto(rs.getString("NOM_PRODUCTO"));
-		producto.setNombreUnidad(rs.getString("NOMBRE_UNID_MEDIDA"));
+		producto.setIdProducto(rs.getInt("FK_IDE_PRODUCTO"));		
+		producto.setNombreProducto(rs.getString("NOMBRE_PRODUCTO"));
+		producto.setCodigoProducto(rs.getString("COD_PRODUCTO"));
+		producto.setNombreUnidad(rs.getString("NOMBRE_UNIDAD"));
 		producto.setNombreEnvase(rs.getString("NOMBRE_ENVASE"));
 		producto.setNroLote(rs.getString("NRO_LOTE"));
-		producto.setNave(rs.getString("NAVE"));
-		producto.setCantidadStock(rs.getBigDecimal("CANTIDAD_STOCK"));
+		producto.setNave(rs.getString("NAVE"));		
+		producto.setCantidadStock(rs.getBigDecimal("CANTIDAD_STOCK"));		
+		producto.setStockFisico(rs.getBigDecimal("STOCK_FISICO"));
+		producto.setStockSistema(rs.getBigDecimal("STOCK_SISTEMA"));
+		producto.setDiferencia(rs.getBigDecimal("DIFERENCIA"));
 		producto.setPrecioUnitario(rs.getBigDecimal("PREC_UNITARIO"));
+		producto.setTipo(rs.getString("TIPO"));	
+		producto.setDocumentoAjuste(rs.getString("DOCUMENTO_AJUSTE"));	
 		return producto;
 	}
 

@@ -163,11 +163,7 @@ public class CartillaInventarioController extends BaseController {
         	stockAlmacenProductoBean.setIdDdi(usuarioBean.getIdDdi());
         	stockAlmacenProductoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
         	model.addAttribute("lista_producto", logisticaService.listarStockAlmacenProducto(stockAlmacenProductoBean));
-        	
-//        	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
-//     
-//        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.TWO_INT)));
-        	
+
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
         } catch (Exception e) {
@@ -257,6 +253,7 @@ public class CartillaInventarioController extends BaseController {
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
+        	productoCartillaInventarioBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
         	productoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
 			producto = logisticaService.grabarProductoCartillaInventario(productoCartillaInventarioBean);
@@ -281,16 +278,48 @@ public class CartillaInventarioController extends BaseController {
 		ProductoCartillaInventarioBean producto = null;
 		try {			
 			String[] arrIdDetalleCartillaInventario = request.getParameter("arrIdDetalleCartillaInventario").split(Constantes.UNDERLINE);
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
 			for (String codigo : arrIdDetalleCartillaInventario) {				
 				ProductoCartillaInventarioBean productoCartillaInventarioBean = new ProductoCartillaInventarioBean(getInteger(codigo));
 
-				// Retorno los datos de session
-	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-	        	
 	        	productoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
 				producto = logisticaService.eliminarProductoCartillaInventario(productoCartillaInventarioBean);				
 			}
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/procesarProductosCartillaInventario", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object procesarProductosCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
+		ProductoCartillaInventarioBean producto = null;
+		try {
+			ProductoCartillaInventarioBean productoCartillaInventarioBean = new ProductoCartillaInventarioBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(productoCartillaInventarioBean, request.getParameterMap());	
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+
+        	productoCartillaInventarioBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+	        productoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+			producto = logisticaService.procesarProductosCartillaInventario(productoCartillaInventarioBean);				
 
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
 
@@ -323,89 +352,69 @@ public class CartillaInventarioController extends BaseController {
 		return lista;
 	}
 	
-//	/**
-//	 * @param request
-//	 * @param response
-//	 * @return objeto en formato json
-//	 */
-//	@RequestMapping(value = "/listarDocumentoCartillaInventario", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	public Object listarDocumentoCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
-//		List<DocumentoCartillaInventarioBean> lista = null;
-//		try {			
-//			DocumentoCartillaInventarioBean documento = new DocumentoCartillaInventarioBean();			
-//			// Copia los parametros del cliente al objeto
-//			BeanUtils.populate(documento, request.getParameterMap());			
-//			lista = logisticaService.listarDocumentoCartillaInventario(documento);
-//		} catch (Exception e) {
-//			LOGGER.error(e.getMessage(), e);
-//			return getBaseRespuesta(null);
-//		}
-//		return lista;
-//	}
-//	
-//	/**
-//	 * @param request
-//	 * @param response
-//	 * @return objeto en formato json
-//	 */
-//	@RequestMapping(value = "/grabarDocumentoCartillaInventario", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	public Object grabarDocumentoCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
-//		DocumentoCartillaInventarioBean documento = null;
-//		try {			
-//			DocumentoCartillaInventarioBean documentoCartillaInventarioBean = new DocumentoCartillaInventarioBean();
-//			
-//			// Copia los parametros del cliente al objeto
-//			BeanUtils.populate(documentoCartillaInventarioBean, request.getParameterMap());
-//			
-//			// Retorno los datos de session
-//        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-//        	
-//        	documentoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
-//			
-//        	documento = logisticaService.grabarDocumentoCartillaInventario(documentoCartillaInventarioBean);
-//			
-//        	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
-//
-//		} catch (Exception e) {
-//			LOGGER.error(e.getMessage(), e);
-//			return getBaseRespuesta(null);
-//		}
-//		return documento;
-//	}
-//	
-//	/**
-//	 * @param request
-//	 * @param response
-//	 * @return objeto en formato json
-//	 */
-//	@RequestMapping(value = "/eliminarDocumentoCartillaInventario", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@ResponseBody
-//	public Object eliminarDocumentoCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
-//		DocumentoCartillaInventarioBean documento = null;
-//		try {			
-//			String[] arrIdDetalleCartillaInventario = request.getParameter("arrIdDocumentoCartillaInventario").split(Constantes.UNDERLINE);
-//			
-//			// Retorno los datos de session
-//        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-//        	
-//			for (String codigo : arrIdDetalleCartillaInventario) {				
-//				DocumentoCartillaInventarioBean documentoCartillaInventarioBean = new DocumentoCartillaInventarioBean(getInteger(codigo));
-//
-//	        	documentoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
-//				
-//	        	documento = logisticaService.eliminarDocumentoCartillaInventario(documentoCartillaInventarioBean);				
-//			}
-//
-//			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
-//
-//		} catch (Exception e) {
-//			LOGGER.error(e.getMessage(), e);
-//			return getBaseRespuesta(null);
-//		}
-//		return documento;
-//	}
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/actualizarAjusteProductoCartillaInventario", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object actualizarAjusteProductoCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
+		ProductoCartillaInventarioBean producto = null;
+		try {
+			ProductoCartillaInventarioBean productoCartillaInventarioBean = new ProductoCartillaInventarioBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(productoCartillaInventarioBean, request.getParameterMap());	
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+
+        	productoCartillaInventarioBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+	        productoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+			producto = logisticaService.actualizarAjusteProductoCartillaInventario(productoCartillaInventarioBean);				
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/procesarAjusteProductoCartillaInventario", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object procesarAjusteProductoCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
+		ProductoCartillaInventarioBean producto = null;
+		try {
+			ProductoCartillaInventarioBean productoCartillaInventarioBean = new ProductoCartillaInventarioBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(productoCartillaInventarioBean, request.getParameterMap());	
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+
+        	productoCartillaInventarioBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+	        productoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+			producto = logisticaService.procesarProductosCartillaInventario(productoCartillaInventarioBean);				
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
 	
 	/**
 	 * @param codigoAnio 

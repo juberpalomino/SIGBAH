@@ -566,4 +566,18 @@ public interface LogisticaService {
 	 */
 	public abstract List<StockAlmacenProductoLoteBean> listarStockAlmacenProductoLote(StockAlmacenProductoLoteBean stockAlmacenProductoLoteBean) throws Exception;
 	
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean actualizarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+	
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean procesarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+	
 }

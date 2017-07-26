@@ -3818,10 +3818,12 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 				LOGGER.info("[grabarCartillaInventario] Ocurrio un error en la operacion del USP_INS_UPD_REGIS_CARTILLA_INV : "+mensajeRespuesta);
     			throw new Exception();
     		}
-		
-			registroCartillaInventario.setIdCartilla(((BigDecimal) out.get("PO_IDE_CARTILLA")).intValue());
-			registroCartillaInventario.setNroCartilla((String) out.get("po_NRO_CARTILLA"));
-			registroCartillaInventario.setCodigoCartilla((String) out.get("po_COD_CARTILLA"));
+			
+			if (Utils.isNullInteger(cartillaInventarioBean.getIdCartilla())) { // Nuevo Registro
+				registroCartillaInventario.setIdCartilla(((BigDecimal) out.get("PO_IDE_CARTILLA")).intValue());
+				registroCartillaInventario.setNroCartilla((String) out.get("po_NRO_CARTILLA"));
+				registroCartillaInventario.setCodigoCartilla((String) out.get("po_COD_CARTILLA"));
+			}
 			registroCartillaInventario.setCodigoRespuesta(codigoRespuesta);
 			registroCartillaInventario.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
 	
@@ -4014,7 +4016,6 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_FK_IDE_DDI", new SqlParameter("pi_FK_IDE_DDI", Types.NUMERIC));
 			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
 			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
-			output_objParametros.put("po_IDE_DET_CARTILLA", new SqlOutParameter("po_IDE_DET_CARTILLA", Types.NUMERIC));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -4139,6 +4140,102 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[listarStockAlmacenProductoLote] Fin ");
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#actualizarAjusteProductoCartillaInventario(pe.com.sigbah.common.bean.ProductoCartillaInventarioBean)
+	 */
+	@Override
+	public ProductoCartillaInventarioBean actualizarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
+		LOGGER.info("[actualizarAjusteProductoCartillaInventario] Inicio ");
+		ProductoCartillaInventarioBean registroProductoCartillaInventario = new ProductoCartillaInventarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DET_CARTILLA", productoCartillaInventarioBean.getIdDetalleCartilla(), Types.NUMERIC);
+			input_objParametros.addValue("pi_STOCK_FISICO", productoCartillaInventarioBean.getStockFisico(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USUARIO", productoCartillaInventarioBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_UPD_CARTILLA_PROD_AJUSTE");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DET_CARTILLA", new SqlParameter("pi_IDE_DET_CARTILLA", Types.NUMERIC));
+			output_objParametros.put("pi_STOCK_FISICO", new SqlParameter("pi_STOCK_FISICO", Types.NUMERIC));
+			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[actualizarAjusteProductoCartillaInventario] Ocurrio un error en la operacion del USP_UPD_CARTILLA_PROD_AJUSTE : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoCartillaInventario.setCodigoRespuesta(codigoRespuesta);
+			registroProductoCartillaInventario.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[actualizarAjusteProductoCartillaInventario] Fin ");
+		return registroProductoCartillaInventario;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#procesarAjusteProductoCartillaInventario(pe.com.sigbah.common.bean.ProductoCartillaInventarioBean)
+	 */
+	@Override
+	public ProductoCartillaInventarioBean procesarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
+		LOGGER.info("[procesarAjusteProductoCartillaInventario] Inicio ");
+		ProductoCartillaInventarioBean registroProductoCartillaInventario = new ProductoCartillaInventarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_DET_CARTILLA", productoCartillaInventarioBean.getIdDetalleCartilla(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USUARIO", productoCartillaInventarioBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_PROC_AJUSTE_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_DET_CARTILLA", new SqlParameter("pi_IDE_DET_CARTILLA", Types.NUMERIC));
+			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[procesarAjusteProductoCartillaInventario] Ocurrio un error en la operacion del USP_PROC_AJUSTE_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoCartillaInventario.setCodigoRespuesta(codigoRespuesta);
+			registroProductoCartillaInventario.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[procesarAjusteProductoCartillaInventario] Fin ");
+		return registroProductoCartillaInventario;
 	}
 
 }

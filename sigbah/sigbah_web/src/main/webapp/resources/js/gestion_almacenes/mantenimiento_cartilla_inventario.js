@@ -94,11 +94,11 @@ $(document).ready(function() {
 		
 		$('#sel_producto').select2().trigger('change');
 		$('#sel_producto').select2({
-			  dropdownParent: $('#div_pro_det_alimentarios')
+			  dropdownParent: $('#div_pro_det_productos')
 		});
 		
 		$('#hid_cod_producto').val('');
-		$('#div_det_alimentarios').modal('show');
+		$('#div_det_productos').modal('show');
 		
 	});
 	
@@ -125,25 +125,24 @@ $(document).ready(function() {
 			
 			$('#hid_cod_producto').val(obj.idDetalleCartilla);
 			
-			$('#sel_producto').val(obj.idProducto+'_'+obj.nombreUnidad);
+			var val_producto = obj.idProducto+'_'+obj.codigoProducto+'_'+obj.nombreUnidad+'_'+obtieneParametro(obj.nombreEnvase);
+			$('#sel_producto').val(val_producto);
 
 			$('#sel_producto').select2().trigger('change');
 			$('#sel_producto').select2({
-				  dropdownParent: $('#div_pro_det_alimentarios')
+				  dropdownParent: $('#div_pro_det_productos')
 			});
 			
-			$('#sel_uni_medida').val(obj.nombreUnidad);
-			$('#txt_fec_vencimiento').val(obj.fechaVencimiento);
-			$('#txt_can_lote').val(obj.cantidadLote);
-			$('#txt_can_muestra').val(obj.cantidadMuestra);
-			$('#sel_primario').val(obj.primario);
-			$('#sel_olor').val(obj.parOlor);
-			$('#sel_textura').val(obj.parTextura);
-			$('#sel_secundario').val(obj.secundario);
-			$('#sel_color').val(obj.parColor);
-			$('#sel_sabor').val(obj.parSabor);
+			$('#txt_pro_codigo').val(obj.codigoProducto);
+			$('#txt_pro_uni_medida').val(obj.nombreUnidad);
+			$('#txt_pro_envase').val(obj.nombreEnvase);
 			
-			$('#div_det_alimentarios').modal('show');
+			cargarLoteProducto(obj.idProducto, obj.nroLote+'_'+obj.cantidadStock+'_'+obj.precioUnitario);
+			
+			$('#txt_pro_can_stock').val(obj.cantidadStock);
+			$('#txt_pro_pre_unitario').val(obj.precioUnitario);
+			
+			$('#div_det_productos').modal('show');
 		}
 		
 	});
@@ -205,7 +204,7 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_gra_alimentario').click(function(e) {
+	$('#btn_gra_producto').click(function(e) {
 		e.preventDefault();
 		
 		var bootstrapValidator = frm_det_productos.data('bootstrapValidator');
@@ -216,26 +215,29 @@ $(document).ready(function() {
 			if (!esnulo(val_producto)) {
 				var arr = val_producto.split('_');
 				idProducto = arr[0];
-			}			
+			}
+			
+			var nroLote = null;
+			var val_lote = $('#sel_pro_lote').val();
+			if (!esnulo(val_lote)) {
+				var arr_lote = val_lote.split('_');
+				nroLote = arr_lote[0];
+			}
+			
 			var params = { 
 				idDetalleCartilla : $('#hid_cod_producto').val(),
 				idCartilla : $('#hid_cod_cartilla').val(),
+				idDdi : cartillaInventario.idDdi,
+				idAlmacen : cartillaInventario.idAlmacen,
 				idProducto : idProducto,
-				fechaVencimiento : $('#txt_fec_vencimiento').val(),
-				cantidadLote : formatMonto($('#txt_can_lote').val()),
-				cantidadMuestra : formatMonto($('#txt_can_muestra').val()),
-				primario : $('#sel_primario').val(),
-				parOlor : $('#sel_olor').val(),
-				parTextura : $('#sel_textura').val(),
-				secundario : $('#sel_secundario').val(),
-				parColor : $('#sel_color').val(),
-				parSabor : $('#sel_sabor').val()
+				nroLote : nroLote,
+				cantidadStock : formatMonto($('#txt_pro_can_stock').val())
 			};
 
 			loadding(true);
 			
 			consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/grabarProductoCartillaInventario', params, function(respuesta) {
-				$('#div_det_alimentarios').modal('hide');
+				$('#div_det_productos').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -250,7 +252,7 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_can_alimentario').click(function(e) {
+	$('#btn_can_producto, #btn_clo_productos').click(function(e) {
 		e.preventDefault();
 		frm_det_productos.data('bootstrapValidator').resetForm();
 	});
@@ -260,33 +262,79 @@ $(document).ready(function() {
 		if (!esnulo(codigo)) {
 			var arr = codigo.split('_');
 			if (arr.length > 1) {
-				$('#txt_uni_medida').val(arr[1]);
+				$('#txt_pro_codigo').val(arr[1]);
+				$('#txt_pro_uni_medida').val(arr[2]);
+				$('#txt_pro_envase').val(arr[3]);
+				$('#txt_pro_can_stock').val('');
+				$('#txt_pro_pre_unitario').val('');
 			} else {
-				$('#txt_uni_medida').val('');
-			}			
+				$('#txt_pro_codigo').val('');
+				$('#txt_pro_uni_medida').val('');
+				$('#txt_pro_envase').val('');
+				$('#txt_pro_can_stock').val('');
+				$('#txt_pro_pre_unitario').val('');
+			}
+			cargarLoteProducto(arr[0], null);
 		} else {
-			$('#txt_uni_medida').val('');
+			$('#txt_pro_codigo').val('');
+			$('#txt_pro_uni_medida').val('');
+			$('#txt_pro_envase').val('');
+			$('#txt_pro_can_stock').val('');
+			$('#txt_pro_pre_unitario').val('');
 		}
 	});
 	
-	$('#href_no_ali_nuevo').click(function(e) {
-		e.preventDefault();
-
-		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
-		frm_det_ajustes.trigger('reset');
-		
-		$('#sel_no_producto').html('');
-		$('#sel_no_producto').select2().trigger('change');
-		$('#sel_no_producto').select2({
-			  dropdownParent: $('#div_pro_det_no_alimentarios')
-		});
-		
-		$('#hid_cod_no_producto').val('');
-		$('#div_det_no_alimentarios').modal('show');
-		
+	$('#sel_pro_lote').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {
+			var arr = codigo.split('_');
+			if (arr.length > 1) {
+				$('#txt_pro_can_stock').val(arr[1]);
+				$('#txt_pro_pre_unitario').val(arr[2]);
+			} else {
+				$('#txt_pro_can_stock').val('');
+				$('#txt_pro_pre_unitario').val('');
+			}			
+		} else {
+			$('#txt_pro_can_stock').val('');
+			$('#txt_pro_pre_unitario').val('');
+		}
 	});
 	
-	$('#href_no_ali_editar').click(function(e) {
+	$('#btn_agr_productos').click(function(e) {
+		e.preventDefault();
+
+		$.SmartMessageBox({
+			title : 'Está usted seguro ?',
+			content : '',
+			buttons : '[No][Si]'
+		}, function(ButtonPressed) {
+			if (ButtonPressed === 'Si') {
+
+				loadding(true);
+				
+				var params = { 
+					idCartilla : $('#hid_cod_cartilla').val(),
+					idDdi : cartillaInventario.idDdi,
+					idAlmacen : cartillaInventario.idAlmacen,
+				};
+		
+				consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/procesarProductosCartillaInventario', params, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						loadding(false);
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						listarProductoCartillaInventario(true);
+						addSuccessMessage(null, respuesta.mensajeRespuesta);							
+					}
+				});
+				
+			}	
+		});
+
+	});
+	
+	$('#href_aju_editar').click(function(e) {
 		e.preventDefault();
 
 		var indices = [];
@@ -304,119 +352,45 @@ $(document).ready(function() {
 			
 			var obj = listaAjustesCache[indices[0]];
 			
-			$('#h4_tit_no_alimentarios').html('Actualizar Producto');
 			frm_det_ajustes.trigger('reset');
 			
-			$('#hid_cod_no_producto').val(obj.idDetalleCartilla);
+			$('#hid_aju_cod_producto').val(obj.idDetalleCartilla);
 			
-			$('#sel_no_cat_producto').val(obj.idCategoria);
-			cargarProductoNoAlimentario(obj.idCategoria, obj.idProducto+'_'+obj.nombreUnidad);			
-			$('#sel_no_uni_medida').val(obj.nombreUnidad);
-			$('#txt_no_fec_vencimiento').val(obj.fechaVencimiento);
-			$('#txt_no_can_lote').val(obj.cantidadLote);
-			$('#txt_no_can_muestra').val(obj.cantidadMuestra);
-			$('#sel_no_primario').val(obj.primario);
-			$('#sel_no_tecnicas').val(obj.flagEspecTecnicas);
-			$('#sel_no_secundario').val(obj.secundario);
-			$('#sel_no_conformidad').val(obj.flagConforProducto);
+			$('#txt_producto').val(obj.nombreProducto);
+			$('#txt_aju_codigo').val(obj.codigoProducto);
+			$('#txt_aju_uni_medida').val(obj.nombreUnidad);
+			$('#txt_aju_envase').val(obj.nombreEnvase);			
+			$('#txt_lote').val(obj.nroLote);
+			$('#txt_aju_sto_sistema').val(obj.stockSistema);
+			$('#txt_aju_sto_fisico').val(obj.stockFisico);
+			$('#txt_aju_diferencia').val(obj.diferencia);
 			
-			$('#div_det_no_alimentarios').modal('show');
+			$('#div_det_ajustes').modal('show');
 		}
 		
 	});
 	
-	$('#href_no_ali_eliminar').click(function(e) {
-		e.preventDefault();
-		
-		var indices = [];
-		var codigo = '';
-		tbl_det_ajustes.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_ajustes.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-				indices.push(index);
-				var idDetalleCartilla = listaAjustesCache[index].idDetalleCartilla;
-				codigo = codigo + idDetalleCartilla + '_';
-			}
-		});
-		
-		if (!esnulo(codigo)) {
-			codigo = codigo.substring(0, codigo.length - 1);
-		}
-		
-		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-		} else {
-			var msg = '';
-			if (indices.length > 1) {
-				msg = 'Está seguro de eliminar los siguientes registros ?';
-			} else {
-				msg = 'Está seguro de eliminar el registro ?';
-			}
-			
-			$.SmartMessageBox({
-				title : msg,
-				content : '',
-				buttons : '[Cancelar][Aceptar]'
-			}, function(ButtonPressed) {
-				if (ButtonPressed === 'Aceptar') {
-	
-					loadding(true);
-					
-					var params = { 
-						arrIdDetalleCartillaInventario : codigo
-					};
-			
-					consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/eliminarProductoCartillaInventario', params, function(respuesta) {
-						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-							loadding(false);
-							addErrorMessage(null, respuesta.mensajeRespuesta);
-						} else {
-							listarProductoCartillaInventario(true);
-							addSuccessMessage(null, respuesta.mensajeRespuesta);
-						}		
-					});
-					
-				}	
-			});
-			
-		}
-		
-	});
-	
-	$('#btn_gra_no_alimentario').click(function(e) {
+	$('#btn_gra_ajuste').click(function(e) {
 		e.preventDefault();
 		
 		var bootstrapValidator = frm_det_ajustes.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			var idProducto = null;
-			var val_producto = $('#sel_no_producto').val();
-			if (!esnulo(val_producto)) {
-				var arr = val_producto.split('_');
-				idProducto = arr[0];
-			}
 			var params = { 
-				idDetalleCartilla : $('#hid_cod_no_producto').val(),
-				idCartilla : $('#hid_cod_cartilla').val(),
-				idProducto : idProducto,
-				fechaVencimiento : $('#txt_no_fec_vencimiento').val(),
-				cantidadLote : formatMonto($('#txt_no_can_lote').val()),
-				cantidadMuestra : formatMonto($('#txt_no_can_muestra').val()),
-				primario : $('#sel_no_primario').val(),
-				flagEspecTecnicas : $('#sel_no_tecnicas').val(),
-				secundario : $('#sel_no_secundario').val(),
-				flagConforProducto : $('#sel_no_conformidad').val()
+				idDetalleCartilla : $('#hid_aju_cod_producto').val(),
+				stockFisico : formatMonto($('#txt_aju_sto_fisico').val())
 			};
-			
+
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/grabarProductoCartillaInventario', params, function(respuesta) {
-				$('#div_det_no_alimentarios').modal('hide');
+			consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/actualizarAjusteProductoCartillaInventario', params, function(respuesta) {
+				$('#div_det_ajustes').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					listarProductoCartillaInventario(true);
-					addSuccessMessage(null, respuesta.mensajeRespuesta);	
+					listarAjusteProductoCartillaInventario(true);					
+					addSuccessMessage(null, respuesta.mensajeRespuesta);					
 				}
 				frm_det_ajustes.data('bootstrapValidator').resetForm();
 			});
@@ -425,23 +399,96 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_can_no_alimentario').click(function(e) {
+	$('#btn_can_ajuste, #btn_clo_ajustes').click(function(e) {
 		e.preventDefault();
 		frm_det_ajustes.data('bootstrapValidator').resetForm();
 	});
 	
-	$('#sel_no_producto').change(function() {
-		var codigo = $(this).val();		
-		if (!esnulo(codigo)) {
-			var arr = codigo.split('_');
-			if (arr.length > 1) {
-				$('#txt_no_uni_medida').val(arr[1]);
-			} else {
-				$('#txt_no_uni_medida').val('');
-			}			
+	$('#txt_aju_sto_fisico').change(function() {
+		var sto_fisico = $(this).val();
+		var sto_sistema = $('#txt_aju_sto_sistema').val();
+		if (!esnulo(sto_fisico) && !esnulo(sto_sistema)) {
+			var diferencia = parseInt(sto_fisico) - parseInt(sto_sistema);
+			$('#txt_aju_diferencia').val(formatMontoSinComas(diferencia));
 		} else {
-			$('#txt_no_uni_medida').val('');
+			$('#txt_aju_diferencia').val('');
 		}
+	});
+	
+	$('#href_pro_ajuste').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		tbl_det_ajustes.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_ajustes.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+			}
+		});
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			
+			var obj = listaAjustesCache[indices[0]];
+			var msj = '';
+			
+			if (!esnulo(obj.diferencia)) {
+				if (parseInt(obj.diferencia) == 0) {
+					msj = msj + 'No se puede efectuar ajuste, debido a que la Diferencia es cero.<br>';
+				}				
+			} else {
+				msj = msj + 'No se puede efectuar ajuste, debido a que no dispone Diferencia.<br>';
+			}
+			
+			if (!esnulo(obj.stockFisico)) {
+				if (parseFloat(obj.stockFisico) < 0) {
+					msj = msj + 'No se puede efectuar ajuste, debido a que el Stock Físico es menor a cero.<br>';
+				}				
+			} else {
+				msj = msj + 'No se puede efectuar ajuste, debido a que no dispone Stock Físico.<br>';
+			}
+			
+			if (!esnulo(obj.documentoAjuste)) {
+				msj = msj + 'No se puede efectuar ajuste, debido a que ya dispone de un Nro. Documento Ajuste.<br>';			
+			}
+			
+			if (!esnulo(msj)) {
+				addWarnMessage(null, msj);
+				return;
+			}
+			
+			$.SmartMessageBox({
+				title : 'Está usted seguro de efectuar el Ajuste ?',
+				content : '',
+				buttons : '[No][Si]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'Si') {
+
+					loadding(true);
+					
+					var params = { 
+						idCartilla : $('#hid_cod_cartilla').val(),
+						idDdi : cartillaInventario.idDdi,
+						idAlmacen : cartillaInventario.idAlmacen,
+					};
+			
+					consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/procesarAjusteProductoCartillaInventario', params, function(respuesta) {
+						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+							loadding(false);
+							addErrorMessage(null, respuesta.mensajeRespuesta);
+						} else {
+							listarProductoCartillaInventario(true);
+							addSuccessMessage(null, respuesta.mensajeRespuesta);							
+						}
+					});
+					
+				}	
+			});
+			
+		}
+		
 	});
 	
 });
@@ -477,6 +524,14 @@ function inicializarDatos() {
 				$('#href_pro_nuevo').attr('id', 'href_nuevo');
 			}
 			
+			if (cartillaInventario.idEstado == ESTADO_APROBADO || 
+					cartillaInventario.idEstado == ESTADO_AJUSTE) {
+				listarAjusteProductoCartillaInventario(false);
+			} else {
+				$('#li_ajustes').addClass('disabled');
+				$('#ul_man_car_inventario li.disabled a').removeAttr('data-toggle');
+			}
+			
 			listarProductoCartillaInventario(false);		
 //			listarDocumentoCartillaInventario(false);
 			
@@ -491,7 +546,6 @@ function inicializarDatos() {
 			$('#txt_fecha').datepicker('setDate', new Date());
 
 			listarProductoCartillaInventario(new Object());
-//			listarDetalleNoAlimentarios(new Object());
 //			listarDetalleDocumentos(new Object());
 
 		}
@@ -535,7 +589,11 @@ function listarDetalleProducto(respuesta) {
 				}											
 			}
 		}, {
-			data : 'item'
+			data : 'idDetalleCartilla',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
 		}, {
 			data : 'nombreProducto'
 		}, {
@@ -562,7 +620,23 @@ function listarDetalleProducto(respuesta) {
 
 }
 
-function listarDetalleNoAlimentarios(respuesta) {
+function listarAjusteProductoCartillaInventario(indicador) {
+	var params = { 
+		idCartilla : $('#hid_cod_cartilla').val()
+	};			
+	consultarAjaxSincrono('GET', '/gestion-almacenes/cartilla-inventario/listarProductoCartillaInventario', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarAjusteDetalleProducto(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}
+	});
+}
+
+function listarAjusteDetalleProducto(respuesta) {
 
 	tbl_det_ajustes.dataTable().fnDestroy();
 	
@@ -580,7 +654,7 @@ function listarDetalleNoAlimentarios(respuesta) {
 					return '';	
 				}											
 			}
-		}, {	
+		}, {
 			data : 'idDetalleCartilla',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
@@ -591,19 +665,17 @@ function listarDetalleNoAlimentarios(respuesta) {
 		}, {
 			data : 'nombreUnidad'
 		}, {
-			data : 'cantidadLote'
+			data : 'nroLote'
 		}, {
-			data : 'fechaVencimiento'
+			data : 'stockSistema'
 		}, {
-			data : 'cantidadLote'
+			data : 'stockFisico'
 		}, {
-			data : 'cantidadMuestra'
+			data : 'diferencia'
 		}, {
-			data : 'valorPrimario'
+			data : 'tipo'
 		}, {
-			data : 'valorEspecTecnicas'
-		}, {
-			data : 'valorConforProducto'
+			data : 'documentoAjuste'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -618,29 +690,26 @@ function listarDetalleNoAlimentarios(respuesta) {
 
 }
 
-function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
-	var params = { 
-		idCategoria : idCategoria
+function cargarLoteProducto(idProducto, nroLote) {
+	var params = {
+		idDdi : cartillaInventario.idDdi,
+		idAlmacen : cartillaInventario.idAlmacen,
+		idProducto : idProducto
 	};			
 	loadding(true);
-	consultarAjax('GET', '/gestion-almacenes/cartilla-inventario/listarProductoXCategoria', params, function(respuesta) {
+	consultarAjax('GET', '/gestion-almacenes/cartilla-inventario/listarStockAlmacenProductoLote', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
-			var options = '';
+			var options = '<option value="">Seleccione</option>';
 	        $.each(respuesta, function(i, item) {
-	            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
+	            options += '<option value="'+item.nroLote+'_'+item.cantidadStock+'_'+item.precioUnitario+'">'+item.nroLote+'</option>';
 	        });
-	        $('#sel_no_producto').html(options);
-	        if (codigoProducto != null) {
-	        	$('#sel_no_producto').val(codigoProducto);
-				$('#sel_no_producto').select2().trigger('change');
-				$('#sel_no_producto').select2({
-					  dropdownParent: $('#div_pro_det_no_alimentarios')
-				});	        	
-	        } else {
-	        	frm_det_ajustes.bootstrapValidator('revalidateField', 'sel_no_producto');
+	        $('#sel_pro_lote').html(options);
+	        if (nroLote != null) {
+	        	$('#sel_pro_lote').val(nroLote);
 	        }
+	        frm_det_productos.bootstrapValidator('revalidateField', 'sel_pro_lote');
 		}
 		loadding(false);		
 	});

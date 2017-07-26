@@ -26,7 +26,12 @@ public class ProductoCartillaInventarioBean extends BaseOutputBean {
 	private BigDecimal cantidadStock;
 	private BigDecimal precioUnitario;
 	private BigDecimal item;
-	private String arrIdDetalleCartillaInventario;
+	private String arrIdDetalleCartillaInventario;	
+	private BigDecimal stockFisico;
+	private BigDecimal stockSistema;
+	private BigDecimal diferencia;
+	private String tipo;
+	private String documentoAjuste;
 	
 	
 	/**
@@ -266,6 +271,76 @@ public class ProductoCartillaInventarioBean extends BaseOutputBean {
 	 */
 	public void setArrIdDetalleCartillaInventario(String arrIdDetalleCartillaInventario) {
 		this.arrIdDetalleCartillaInventario = arrIdDetalleCartillaInventario;
+	}
+
+	/**
+	 * @return the stockFisico
+	 */
+	public BigDecimal getStockFisico() {
+		return stockFisico;
+	}
+
+	/**
+	 * @param stockFisico the stockFisico to set
+	 */
+	public void setStockFisico(BigDecimal stockFisico) {
+		this.stockFisico = stockFisico;
+	}
+
+	/**
+	 * @return the stockSistema
+	 */
+	public BigDecimal getStockSistema() {
+		return stockSistema;
+	}
+
+	/**
+	 * @param stockSistema the stockSistema to set
+	 */
+	public void setStockSistema(BigDecimal stockSistema) {
+		this.stockSistema = stockSistema;
+	}
+
+	/**
+	 * @return the tipo
+	 */
+	public String getTipo() {
+		return tipo;
+	}
+
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	/**
+	 * @return the documentoAjuste
+	 */
+	public String getDocumentoAjuste() {
+		return documentoAjuste;
+	}
+
+	/**
+	 * @param documentoAjuste the documentoAjuste to set
+	 */
+	public void setDocumentoAjuste(String documentoAjuste) {
+		this.documentoAjuste = documentoAjuste;
+	}
+
+	/**
+	 * @return the diferencia
+	 */
+	public BigDecimal getDiferencia() {
+		return diferencia;
+	}
+
+	/**
+	 * @param diferencia the diferencia to set
+	 */
+	public void setDiferencia(BigDecimal diferencia) {
+		this.diferencia = diferencia;
 	}
 
 }

@@ -355,12 +355,13 @@ public class ProyectoManifiestoController extends BaseController {
 		ProductoProyectoManifiestoBean producto = null;
 		try {			
 			String[] arrIdDetalleProyectoManifiesto = request.getParameter("arrIdDetalleProyectoManifiesto").split(Constantes.UNDERLINE);
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			
 			for (String codigo : arrIdDetalleProyectoManifiesto) {				
 				ProductoProyectoManifiestoBean productoControlCalidadBean = new ProductoProyectoManifiestoBean(getInteger(codigo));
 
-				// Retorno los datos de session
-	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-	        	
 	        	productoControlCalidadBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
 				producto = logisticaService.eliminarProductoProyectoManifiesto(productoControlCalidadBean);				

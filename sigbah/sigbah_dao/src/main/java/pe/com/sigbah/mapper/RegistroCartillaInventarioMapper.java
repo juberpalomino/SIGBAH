@@ -25,6 +25,7 @@ public class RegistroCartillaInventarioMapper implements RowMapper<CartillaInven
 		cartillaInventario.setCodigoAnio(rs.getString("COD_ANIO"));
 		cartillaInventario.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
 		cartillaInventario.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
+		cartillaInventario.setIdDdi(rs.getInt("FK_IDE_DDI"));
 		cartillaInventario.setCodigoDdi(rs.getString("COD_DDI"));
 		cartillaInventario.setNombreDdi(rs.getString("NOMBRE_DDI"));
 		cartillaInventario.setNroCartilla(rs.getString("NRO_CARTILLA"));		
