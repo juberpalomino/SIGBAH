@@ -41,7 +41,7 @@ public class PrincipalController extends BaseController {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
             
-            System.out.println(usuarioBean);
+        	LOGGER.info("[PrincipalController] "+usuarioBean);
 
         	model.addAttribute("base", new BaseOutputBean(Constantes.COD_EXITO_GENERAL));
 

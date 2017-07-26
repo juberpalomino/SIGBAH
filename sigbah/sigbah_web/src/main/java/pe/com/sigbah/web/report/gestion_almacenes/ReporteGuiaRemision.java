@@ -50,6 +50,13 @@ public class ReporteGuiaRemision implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
 	
+	/**
+	 * @param workbook
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @return
+	 */
 	private HSSFColor setColor(HSSFWorkbook workbook, byte r, byte g, byte b) {
 		HSSFPalette palette = workbook.getCustomPalette();
 		HSSFColor hssfColor = null;

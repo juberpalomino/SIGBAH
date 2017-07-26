@@ -92,7 +92,7 @@
 								</a>
 							</li>
 							<li id="li_cie_mensual" class="li_men_opcion">
-								<a href="fa.html">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/cierre-stock/inicio/0">
 									<i class="fa fa-caret-right"></i>Cierre Mensual
 								</a>
 							</li>

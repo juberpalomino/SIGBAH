@@ -15,17 +15,17 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
-import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 
 /**
- * @className: ReporteCartillaInventario.java
+ * @className: ReporteCierreStock.java
  * @description: 
  * @date: 20 de jul. de 2017
  * @author: Junior Huaman Flores.
  */
-public class ReporteCartillaInventario implements Serializable {
+public class ReporteCierreStock implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
@@ -35,7 +35,7 @@ public class ReporteCartillaInventario implements Serializable {
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
-	public HSSFWorkbook generaReporteExcelCartillaInventario(List<CartillaInventarioBean> lista) throws Exception {
+	public HSSFWorkbook generaReporteExcelCierreStock(List<CierreStockBean> lista) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
 	        HSSFSheet sheet = wb.createSheet("REGISTRO DE CARTILLA INVENTARIO");
@@ -100,29 +100,29 @@ public class ReporteCartillaInventario implements Serializable {
 	        style_cell.setBorderRight((short) 1);
 	        style_cell.setBorderTop((short) 1);
 	        
-	        for (CartillaInventarioBean cartilla : lista) {
+	        for (CierreStockBean cierre : lista) {
 	        	
 	        	HSSFRow rows  = sheet.createRow((short) row + 1);
 	        	
 	        	rows.createCell(1).setCellValue(row);
 		        rows.getCell(1).setCellStyle(style_cell);
 
-		        rows.createCell(2).setCellValue(cartilla.getNombreAlmacen());
+		        rows.createCell(2).setCellValue(cierre.getNombreAlmacen());
 		        rows.getCell(2).setCellStyle(style_cell);
 		        
-		        rows.createCell(3).setCellValue(cartilla.getNroCartilla());
+		        rows.createCell(3).setCellValue(cierre.getNroCartilla());
 		        rows.getCell(3).setCellStyle(style_cell);
 		        
-		        rows.createCell(4).setCellValue(cartilla.getFechaCartilla());
+		        rows.createCell(4).setCellValue(cierre.getFechaCartilla());
 		        rows.getCell(4).setCellStyle(style_cell);
 		        
-		        rows.createCell(5).setCellValue(cartilla.getResponsable());
+		        rows.createCell(5).setCellValue(cierre.getResponsable());
 		        rows.getCell(5).setCellStyle(style_cell);
 		        
-		        rows.createCell(6).setCellValue(getString(cartilla.getItemInventariados()));
+		        rows.createCell(6).setCellValue(getString(cierre.getItemInventariados()));
 		        rows.getCell(6).setCellStyle(style_cell);
 		        
-		        rows.createCell(7).setCellValue(cartilla.getNombreEstado());
+		        rows.createCell(7).setCellValue(cierre.getNombreEstado());
 		        rows.getCell(7).setCellStyle(style_cell);
 	            
 	            row++;	

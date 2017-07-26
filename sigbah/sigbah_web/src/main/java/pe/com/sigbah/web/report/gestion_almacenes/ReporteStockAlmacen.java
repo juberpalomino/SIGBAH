@@ -142,6 +142,13 @@ public class ReporteStockAlmacen implements Serializable {
 		return wb;
 	}
 	
+	/**
+	 * @param workbook
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @return
+	 */
 	private HSSFColor setColor(HSSFWorkbook workbook, byte r, byte g, byte b) {
 		HSSFPalette palette = workbook.getCustomPalette();
 		HSSFColor hssfColor = null;

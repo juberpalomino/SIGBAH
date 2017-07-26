@@ -499,7 +499,7 @@ $(document).ready(function() {
 		$('#hid_cod_documento').val('');
 		$('#hid_cod_act_alfresco').val('');
 		$('#hid_cod_ind_alfresco').val('');
-		$('#txt_sub_archivo').val(null);
+		$('#fil_sub_archivo').val(null);
 		$('#div_det_documentos').modal('show');
 		
 	});
@@ -532,7 +532,7 @@ $(document).ready(function() {
 			$('#hid_cod_act_alfresco').val(obj.codigoArchivoAlfresco);
 			$('#hid_cod_ind_alfresco').val('');
 			$('#txt_lee_sub_archivo').val(obj.nombreArchivo);
-			$('#txt_sub_archivo').val(null);
+			$('#fil_sub_archivo').val(null);
 			
 			$('#div_det_documentos').modal('show');
 		}
@@ -615,10 +615,10 @@ $(document).ready(function() {
 			
 			var cod_ind_alfresco = $('#hid_cod_ind_alfresco').val();
 			if (cod_ind_alfresco == '1' || cod_ind_alfresco == '2') { // Archivo cargado
-				var file_name = $('#txt_sub_archivo').val();
+				var file_name = $('#fil_sub_archivo').val();
 				var file_data = null;
 				if (!esnulo(file_name) && typeof file_name !== 'undefined') {
-					file_data = $('#txt_sub_archivo').prop('files')[0];
+					file_data = $('#fil_sub_archivo').prop('files')[0];
 				}
 				
 				var formData = new FormData();
@@ -655,7 +655,7 @@ $(document).ready(function() {
 		frm_det_documentos.data('bootstrapValidator').resetForm();
 	});
 	
-	$('#txt_sub_archivo').change(function(e) {
+	$('#fil_sub_archivo').change(function(e) {
 		e.preventDefault();
 	    var file_name = $(this).val();
 	    var file_read = file_name.split('\\').pop();
@@ -666,6 +666,16 @@ $(document).ready(function() {
 	    	$('#hid_cod_ind_alfresco').val('2'); // Registro modificado
 	    }
 	    frm_det_documentos.bootstrapValidator('revalidateField', 'txt_lee_sub_archivo');	    
+	});
+	
+	$('#href_eli_archivo').click(function(e) {
+		e.preventDefault();
+
+		$('#hid_cod_act_alfresco').val('');
+		$('#hid_cod_ind_alfresco').val('');
+		$('#fil_sub_archivo').val(null);
+		$('#txt_lee_sub_archivo').val('');
+		
 	});
 	
 	tbl_det_documentos.on('click', '.btn_exp_doc', function(e) {

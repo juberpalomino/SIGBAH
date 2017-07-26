@@ -272,14 +272,14 @@ $(document).ready(function() {
 						message : 'Debe ingresar Fecha.'
 					}
 				}
-			},
-			txt_lee_sub_archivo : {
-				validators : {
-					notEmpty : {
-						message : 'Debe cargar el Archivo.'
-					}
-				}
 			}
+//			txt_lee_sub_archivo : {
+//				validators : {
+//					notEmpty : {
+//						message : 'Debe cargar el Archivo.'
+//					}
+//				}
+//			}
 		}
 	});
 	

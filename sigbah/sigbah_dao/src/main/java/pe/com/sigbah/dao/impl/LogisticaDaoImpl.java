@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
@@ -4236,6 +4237,33 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[procesarAjusteProductoCartillaInventario] Fin ");
 		return registroProductoCartillaInventario;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarCierreStock(pe.com.sigbah.common.bean.CierreStockBean)
+	 */
+	@Override
+	public List<CierreStockBean> listarCierreStock(CierreStockBean cierreStockBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroCierreStock(java.lang.Integer)
+	 */
+	@Override
+	public CierreStockBean obtenerRegistroCierreStock(Integer codigo) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarCierreStock(pe.com.sigbah.common.bean.CierreStockBean)
+	 */
+	@Override
+	public CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,58 +1,27 @@
-var listaOrdenIngresoCache = new Object();
+var listaCierreStockCache = new Object();
 
-var tbl_mnt_ord_ingreso = $('#tbl_mnt_ord_ingreso');
-var frm_ord_ingreso = $('#frm_ord_ingreso');
+var tbl_mnt_cie_stock = $('#tbl_mnt_cie_stock');
 
 $(document).ready(function() {
-	
-	frm_ord_ingreso.bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_anio : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Año.'
-					}
-				}
-			},
-			sel_ddi : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar DDI.'
-					}
-				}
-			}
-		}
-	});
-	
+
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_ord_ingreso.data('bootstrapValidator');
-		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
-
-			var params = { 
-				codigoAnio : $('#sel_anio').val(),
-				codigoDdi : $('#sel_ddi').val(),
-				codigoAlmacen : $('#sel_almacen').val(),
-				codigoMovimiento : $('#sel_tip_movimiento').val()
-			};
-			
-			loadding(true);
-			
-			consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarOrdenIngreso', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarOrdenIngreso(respuesta);
-				}
-				loadding(false);
-			});
-			
-		}
+		var params = { 
+			codigoAnio : $('#sel_anio').val(),
+			idAlmacen : $('#sel_almacen').val()
+		};
 		
+		loadding(true);
+		
+		consultarAjax('GET', '/gestion-almacenes/cierre-stock/listarCierreStock', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarCierreStock(respuesta);
+			}
+			loadding(false);
+		});
 	});
 	
 	inicializarDatos();
@@ -62,15 +31,15 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
-		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
-				codigo = codigo + idIngreso + '_';
+				var idCartilla = listaCierreStockCache[index].idCartilla;
+				codigo = codigo + idCartilla + '_';
 			}
 		});
 		
@@ -84,7 +53,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/';
+			var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/mantenimientoCierreStock/';
 			$(location).attr('href', url + codigo);
 		}
 		
@@ -94,7 +63,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/0';
+		var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/mantenimientoCierreStock/0';
 		$(location).attr('href', url);
 		
 	});
@@ -102,7 +71,7 @@ $(document).ready(function() {
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();
 		
-		var row = $('#tbl_mnt_ord_ingreso > tbody > tr').length;
+		var row = $('#tbl_mnt_cie_stock > tbody > tr').length;
 		var empty = null;
 		$('tr.odd').each(function() {		
 			empty = $(this).find('.dataTables_empty').text();
@@ -116,14 +85,10 @@ $(document).ready(function() {
 		loadding(true);
 		
 		var codigoAnio = $('#sel_anio').val();
-		var codigoDdi = $('#sel_ddi').val();
-		var codigoAlmacen = $('#sel_almacen').val();
-		var codigoMovimiento = $('#sel_tip_movimiento').val();
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarExcel/';
+		var idAlmacen = $('#sel_almacen').val();
+		var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
-		url += verificaParametro(codigoDdi) + '/';
-		url += verificaParametro(codigoAlmacen) + '/';
-		url += verificaParametro(codigoMovimiento);
+		url += verificaParametroInt(idAlmacen);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
@@ -144,15 +109,15 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
-		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
-				codigo = codigo + idIngreso + '_';
+				var idCartilla = listaCierreStockCache[index].idCartilla;
+				codigo = codigo + idCartilla + '_';
 			}
 		});
 		
@@ -166,7 +131,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarPdf/'+codigo;
+			var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/exportarPdf/'+codigo;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {
@@ -191,33 +156,32 @@ function inicializarDatos() {
 	
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
-	$('#ul_ord_ingreso').css('display', 'block');	
-	$('#li_ord_ingreso').attr('class', 'active');
-	$('#li_ord_ingreso').closest('li').children('a').attr('href', '#');
+	$('#ul_alm_inventarios').css('display', 'block');	
+	$('#li_cie_mensual').attr('class', 'active');
+	$('#li_cie_mensual').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		$('#sel_anio').val(usuarioBean.codigoAnio);
-		$('#sel_ddi').val(usuarioBean.idDdi);
 		$('#sel_almacen').val(usuarioBean.idAlmacen);
 		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {
-			listarOrdenIngreso(new Object());		
+			listarCierreStock(new Object());
 		}
 	}
 }
 
-function listarOrdenIngreso(respuesta) {
+function listarCierreStock(respuesta) {
 
-	tbl_mnt_ord_ingreso.dataTable().fnDestroy();
+	tbl_mnt_cie_stock.dataTable().fnDestroy();
 	
-	tbl_mnt_ord_ingreso.dataTable({
+	tbl_mnt_cie_stock.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idIngreso',
+			data : 'idCartilla',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -229,23 +193,17 @@ function listarOrdenIngreso(respuesta) {
 				}											
 			}	
 		}, {	
-			data : 'idIngreso',
+			data : 'idCartilla',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
 			}
 		}, {
-			data : 'codigoAnio'
-		}, {
-			data : 'nombreDdi'
+			data : 'nombreAlmacen'
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroOrdenIngreso'
-		}, {
-			data : 'fechaEmision'
-		}, {
-			data : 'nombreMovimiento'
+			data : 'responsable'
 		}, {
 			data : 'nombreEstado'
 		} ],
@@ -262,13 +220,13 @@ function listarOrdenIngreso(respuesta) {
 			[15, 50, 100]
 		],
 		columnDefs : [
-  			{ width : '15%', targets : 3 },
-			{ width : '15%', targets : 4 },
-			{ width : '15%', targets : 7 }
-  		]
+			{ width : '20%', targets : 2 },
+			{ width : '15%', targets : 3 },
+			{ width : '30%', targets : 4 },
+			{ width : '20%', targets : 5 }
+		]
 	});
 	
-	listaOrdenIngresoCache = respuesta;
+	listaCierreStockCache = respuesta;
 
 }
-

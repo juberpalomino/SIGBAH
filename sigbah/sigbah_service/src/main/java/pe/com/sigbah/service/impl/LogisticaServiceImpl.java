@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
@@ -664,6 +665,30 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public ProductoCartillaInventarioBean procesarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
 		return logisticaDao.procesarAjusteProductoCartillaInventario(productoCartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarCierreStock(pe.com.sigbah.common.bean.CierreStockBean)
+	 */
+	@Override
+	public List<CierreStockBean> listarCierreStock(CierreStockBean cierreStockBean) throws Exception {
+		return logisticaDao.listarCierreStock(cierreStockBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroCierreStock(java.lang.Integer)
+	 */
+	@Override
+	public CierreStockBean obtenerRegistroCierreStock(Integer codigo) throws Exception {
+		return logisticaDao.obtenerRegistroCierreStock(codigo);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarCierreStock(pe.com.sigbah.common.bean.CierreStockBean)
+	 */
+	@Override
+	public CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception {
+		return logisticaDao.grabarCierreStock(cierreStockBean);
 	}
 
 }

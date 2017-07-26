@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,7 @@ import pe.com.sigbah.common.bean.AlmacenBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
+import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.service.AdministracionService;
 import pe.com.sigbah.web.controller.common.BaseController;
 
@@ -89,12 +89,14 @@ public class LoginController extends BaseController {
 	            			usuario.setIdAlmacen(almacenBean.getIdAlmacen());
 	            			usuario.setCodigoAlmacen(almacenBean.getCodigoAlmacen());
 	            			usuario.setNombreAlmacen(almacenBean.getNombreAlmacen());
+	            			usuario.setCodigoAnio(String.valueOf(DateUtil.getAnioActual()));
 	            			context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
 		            		indicador = Constantes.ONE_STRING;
 	            		} else {
 	            			return listaAlmacenUsuario;
 	            		}
 	            	} else {
+	            		usuario.setCodigoAnio(String.valueOf(DateUtil.getAnioActual()));
 	            		context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
 	            		indicador = Constantes.ONE_STRING;
 	            	}

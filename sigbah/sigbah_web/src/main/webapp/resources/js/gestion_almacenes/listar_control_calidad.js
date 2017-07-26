@@ -194,7 +194,7 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-//		$('#sel_anio').val(usuarioBean.codigoAnio);
+		$('#sel_anio').val(usuarioBean.codigoAnio);
 		$('#sel_ddi').val(usuarioBean.idDdi);
 		$('#sel_almacen').val(usuarioBean.idAlmacen);
 		$('#sel_almacen').prop('disabled', true);

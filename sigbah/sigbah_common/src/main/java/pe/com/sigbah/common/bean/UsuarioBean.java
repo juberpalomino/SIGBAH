@@ -23,6 +23,7 @@ public class UsuarioBean implements Serializable {
 	private String nombreAlmacen;
 	private String password;
 	private String sessionId;
+	private String codigoAnio;
 	
 	
 	/**
@@ -234,6 +235,20 @@ public class UsuarioBean implements Serializable {
 		this.sessionId = sessionId;
 	}
 
+	/**
+	 * @return the codigoAnio
+	 */
+	public String getCodigoAnio() {
+		return codigoAnio;
+	}
+
+	/**
+	 * @param codigoAnio the codigoAnio to set
+	 */
+	public void setCodigoAnio(String codigoAnio) {
+		this.codigoAnio = codigoAnio;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -242,7 +257,7 @@ public class UsuarioBean implements Serializable {
 		return "UsuarioBean [idUsuario=" + idUsuario + ", usuario=" + usuario + ", cargo=" + cargo + ", nombreUsuario="
 				+ nombreUsuario + ", idDdi=" + idDdi + ", codigoDdi=" + codigoDdi + ", nombreDdi=" + nombreDdi
 				+ ", idAlmacen=" + idAlmacen + ", codigoAlmacen=" + codigoAlmacen + ", nombreAlmacen=" + nombreAlmacen
-				+ ", password=" + password + "]";
+				+ ", password=" + password + ", sessionId=" + sessionId + ", codigoAnio=" + codigoAnio + "]";
 	}
 	
 }

@@ -3,6 +3,7 @@ package pe.com.sigbah.dao;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleActaEntregaBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
@@ -579,5 +580,26 @@ public interface LogisticaDao {
 	 * @throws Exception
 	 */
 	public abstract ProductoCartillaInventarioBean procesarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+	
+	/**
+	 * @param cierreStockBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<CierreStockBean> listarCierreStock(CierreStockBean cierreStockBean) throws Exception;
+
+	/**
+	 * @param codigo
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract CierreStockBean obtenerRegistroCierreStock(Integer codigo) throws Exception;
+
+	/**
+	 * @param cierreStockBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception;
 	
 }

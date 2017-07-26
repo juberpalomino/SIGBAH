@@ -80,6 +80,14 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_CartillaInventario.jsp" />
 	</definition>
 	
+	<definition name="listar_cierre_stock" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Listar_Cierre_Stock.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento_cierre_stock" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/gestion_almacenes/ALM_Registrar_Cierre_Stock.jsp" />
+	</definition>
+	
 	<definition name="listar-donaciones" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_PropuestaDonaciones.jsp" />
 	</definition>

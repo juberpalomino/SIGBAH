@@ -34,11 +34,11 @@ $(document).ready(function() {
 			var codigo = $('#hid_cod_cartilla').val();
 			var params = {
 				idCartilla : codigo,	
-				idAlmacen : cartillaInventario.idAlmacen,
-				codigoAnio : cartillaInventario.codigoAnio,
-				codigoDdi : cartillaInventario.codigoDdi,
-				idDdi : cartillaInventario.idDdi, 
-				codigoAlmacen : cartillaInventario.codigoAlmacen,
+				idAlmacen : cierreStock.idAlmacen,
+				codigoAnio : cierreStock.codigoAnio,
+				codigoDdi : cierreStock.codigoDdi,
+				idDdi : cierreStock.idDdi, 
+				codigoAlmacen : cierreStock.codigoAlmacen,
 				nroCartilla : $('#txt_nro_cartilla').val(),
 				idResponsable : $('#sel_res_inventario').val(),
 				fechaCartilla : $('#txt_fec_emision').val(),
@@ -47,7 +47,7 @@ $(document).ready(function() {
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/grabarCartillaInventario', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/cierre-stock/grabarCartillaInventario', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -81,7 +81,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/cartilla-inventario/inicio/1';
+		var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/inicio/1';
 		$(location).attr('href', url);
 		
 	});
@@ -187,7 +187,7 @@ $(document).ready(function() {
 						arrIdDetalleCartillaInventario : codigo
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/eliminarProductoCartillaInventario', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/cierre-stock/eliminarProductoCartillaInventario', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -227,8 +227,8 @@ $(document).ready(function() {
 			var params = { 
 				idDetalleCartilla : $('#hid_cod_producto').val(),
 				idCartilla : $('#hid_cod_cartilla').val(),
-				idDdi : cartillaInventario.idDdi,
-				idAlmacen : cartillaInventario.idAlmacen,
+				idDdi : cierreStock.idDdi,
+				idAlmacen : cierreStock.idAlmacen,
 				idProducto : idProducto,
 				nroLote : nroLote,
 				cantidadStock : formatMonto($('#txt_pro_can_stock').val())
@@ -236,7 +236,7 @@ $(document).ready(function() {
 
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/grabarProductoCartillaInventario', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/cierre-stock/grabarProductoCartillaInventario', params, function(respuesta) {
 				$('#div_det_productos').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
@@ -315,11 +315,11 @@ $(document).ready(function() {
 				
 				var params = { 
 					idCartilla : $('#hid_cod_cartilla').val(),
-					idDdi : cartillaInventario.idDdi,
-					idAlmacen : cartillaInventario.idAlmacen,
+					idDdi : cierreStock.idDdi,
+					idAlmacen : cierreStock.idAlmacen,
 				};
 		
-				consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/procesarProductosCartillaInventario', params, function(respuesta) {
+				consultarAjax('POST', '/gestion-almacenes/cierre-stock/procesarProductosCartillaInventario', params, function(respuesta) {
 					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 						loadding(false);
 						addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -383,7 +383,7 @@ $(document).ready(function() {
 
 			loadding(true);
 			
-			consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/actualizarAjusteProductoCartillaInventario', params, function(respuesta) {
+			consultarAjax('POST', '/gestion-almacenes/cierre-stock/actualizarAjusteProductoCartillaInventario', params, function(respuesta) {
 				$('#div_det_ajustes').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
@@ -470,11 +470,11 @@ $(document).ready(function() {
 					
 					var params = { 
 						idCartilla : $('#hid_cod_cartilla').val(),
-						idDdi : cartillaInventario.idDdi,
-						idAlmacen : cartillaInventario.idAlmacen,
+						idDdi : cierreStock.idDdi,
+						idAlmacen : cierreStock.idAlmacen,
 					};
 			
-					consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/procesarAjusteProductoCartillaInventario', params, function(respuesta) {
+					consultarAjax('POST', '/gestion-almacenes/cierre-stock/procesarAjusteProductoCartillaInventario', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -498,38 +498,38 @@ function inicializarDatos() {
 	$('#li_ges_almacenes').addClass('active');
 	$('#ul_ges_almacenes').css('display', 'block');
 	$('#ul_alm_inventarios').css('display', 'block');	
-	$('#li_car_inventario').attr('class', 'active');
-	$('#li_car_inventario').closest('li').children('a').attr('href', '#');
+	$('#li_cie_mensual').attr('class', 'active');
+	$('#li_cie_mensual').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {		
 		
-		$('#txt_ddi').val(cartillaInventario.nombreDdi);
-		$('#txt_almacen').val(cartillaInventario.nombreAlmacen);
-		$('#txt_estado').val(cartillaInventario.nombreEstado);
+		$('#txt_ddi').val(cierreStock.nombreDdi);
+		$('#txt_almacen').val(cierreStock.nombreAlmacen);
+		$('#txt_estado').val(cierreStock.nombreEstado);
 		
-		if (!esnulo(cartillaInventario.idCartilla)) {
+		if (!esnulo(cierreStock.idCartilla)) {
 			
-			$('#hid_cod_cartilla').val(cartillaInventario.idCartilla);
+			$('#hid_cod_cartilla').val(cierreStock.idCartilla);
 			
-			$('#txt_nro_cartilla').val(cartillaInventario.codigoCartilla);
-			$('#txt_fec_emision').val(cartillaInventario.fechaCartilla);
-			$('#sel_res_inventario').val(cartillaInventario.idResponsable);
-			$('#txt_observaciones').val(cartillaInventario.observacion);
+			$('#txt_nro_cartilla').val(cierreStock.codigoCartilla);
+			$('#txt_fec_emision').val(cierreStock.fechaCartilla);
+			$('#sel_res_inventario').val(cierreStock.idResponsable);
+			$('#txt_observaciones').val(cierreStock.observacion);
 					
-			if (cartillaInventario.idEstado != ESTADO_GENERADO) {
+			if (cierreStock.idEstado != ESTADO_GENERADO) {
 				$('#btn_agr_productos').prop('disabled', true);
 				$('#href_pro_nuevo').attr('data-original-title', '');
 				$('#href_pro_nuevo').attr('id', 'href_nuevo');
 			}
 			
-			if (cartillaInventario.idEstado == ESTADO_APROBADO || 
-					cartillaInventario.idEstado == ESTADO_AJUSTE) {
+			if (cierreStock.idEstado == ESTADO_APROBADO || 
+					cierreStock.idEstado == ESTADO_AJUSTE) {
 				listarAjusteProductoCartillaInventario(false);
 			} else {
 				$('#li_ajustes').addClass('disabled');
-				$('#ul_man_car_inventario li.disabled a').removeAttr('data-toggle');
+				$('#ul_man_cie_stock li.disabled a').removeAttr('data-toggle');
 			}
 			
 			listarProductoCartillaInventario(false);		
@@ -540,9 +540,9 @@ function inicializarDatos() {
 			$('#li_productos').addClass('disabled');
 			$('#li_ajustes').addClass('disabled');
 			$('#li_estados').addClass('disabled');
-			$('#ul_man_car_inventario li.disabled a').removeAttr('data-toggle');
+			$('#ul_man_cie_stock li.disabled a').removeAttr('data-toggle');
 			
-			$('#txt_nro_cartilla').val(cartillaInventario.nroCartilla);
+			$('#txt_nro_cartilla').val(cierreStock.nroCartilla);
 			$('#txt_fec_emision').datepicker('setDate', new Date());
 
 			listarProductoCartillaInventario(new Object());
@@ -558,7 +558,7 @@ function listarProductoCartillaInventario(indicador) {
 	var params = { 
 		idCartilla : $('#hid_cod_cartilla').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/cartilla-inventario/listarProductoCartillaInventario', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/cierre-stock/listarProductoCartillaInventario', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -624,7 +624,7 @@ function listarAjusteProductoCartillaInventario(indicador) {
 	var params = { 
 		idCartilla : $('#hid_cod_cartilla').val()
 	};			
-	consultarAjaxSincrono('GET', '/gestion-almacenes/cartilla-inventario/listarProductoCartillaInventario', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/gestion-almacenes/cierre-stock/listarProductoCartillaInventario', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -692,12 +692,12 @@ function listarAjusteDetalleProducto(respuesta) {
 
 function cargarLoteProducto(idProducto, nroLote) {
 	var params = {
-		idDdi : cartillaInventario.idDdi,
-		idAlmacen : cartillaInventario.idAlmacen,
+		idDdi : cierreStock.idDdi,
+		idAlmacen : cierreStock.idAlmacen,
 		idProducto : idProducto
 	};			
 	loadding(true);
-	consultarAjax('GET', '/gestion-almacenes/cartilla-inventario/listarStockAlmacenProductoLote', params, function(respuesta) {
+	consultarAjax('GET', '/gestion-almacenes/cierre-stock/listarStockAlmacenProductoLote', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {

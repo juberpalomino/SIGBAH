@@ -721,15 +721,21 @@
 							
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Subir Archivo:</label>
-								<div class="col-sm-8 smart-form">
+								<div class="col-sm-7 smart-form">
 									<div class="input input-file">
 										<span id="sp_sub_archivo" class="button">
-											<input type="file" id="txt_sub_archivo" name="txt_sub_archivo">
+											<input type="file" id="fil_sub_archivo" name="fil_sub_archivo">
 											Cargar
 										</span>
 										<input type="text" id="txt_lee_sub_archivo" name="txt_lee_sub_archivo" readonly>
 									</div>
-								</div>								
+								</div>
+								<div class="col-sm-2">
+									<a href="#" id="href_eli_archivo" class="btn btn-default txt-color-red" rel="tooltip" 
+										data-placement="right" data-original-title="Eliminar Archivo" data-html="true">
+										<i class="fa fa-eraser fa-lg"></i>
+									</a>
+								</div>							
 							</div>
 							
 						</form>
