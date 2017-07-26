@@ -26,6 +26,7 @@ import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
+import pe.com.sigbah.common.bean.UbigeoIneiBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
@@ -382,5 +383,77 @@ private static final long serialVersionUID = 1L;
 	    	return Constantes.COD_ERROR_GENERAL;
 	    } 
 	}
+	
+	
+	/**
+	 * @param codigo
+	 * @param codigoAnio
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/pasarDistritos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object pasarDistritos(HttpServletRequest request, HttpServletResponse response) {
+		EmergenciaBean emergencia = null;
+		try {			
+			EmergenciaBean emergenciaBean = new EmergenciaBean();
+
+			BeanUtils.populate(emergenciaBean, request.getParameterMap());			
+        	emergencia = programacionService.pasarDistritos(emergenciaBean); 
+
+			emergencia.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return emergencia;
+    }
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/listarUbigeoInei", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarUbigeoInei(HttpServletRequest request, HttpServletResponse response) {
+		List<UbigeoIneiBean> lista = null;
+		try {			
+			UbigeoIneiBean ubigeoBean = new UbigeoIneiBean();	
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(ubigeoBean, request.getParameterMap());			
+			lista = programacionService.listarUbigeoInei(ubigeoBean); 
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/pasarDistritosUbigeo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object pasarDistritosUbigeo(HttpServletRequest request, HttpServletResponse response) {
+		EmergenciaBean ubigeo = null;
+		try {			
+			EmergenciaBean ubigeoBean = new EmergenciaBean();
+
+			BeanUtils.populate(ubigeoBean, request.getParameterMap());			
+			ubigeo = programacionService.pasarDistritosUbigeo(ubigeoBean); 
+
+			ubigeo.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return ubigeo;
+    }
+	
 	
 }

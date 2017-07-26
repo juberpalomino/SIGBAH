@@ -1,5 +1,6 @@
 var listaDamnificadosCache = new Object();
 var listaEmergenciasActivosCache = new Object();
+var listaUbigeosIneiCache = new Object();
 
 var frm_dat_generales = $('#frm_dat_generales');
 var tbl_det_afectados = $('#tbl_det_afectados'); 
@@ -7,6 +8,9 @@ var tbl_det_afectados = $('#tbl_det_afectados');
 
 var frm_det_prog_ubigeo = $('#frm_det_alimentarios');
 var tbl_mnt_emer_act = $('#tbl_mnt_emer_act');
+
+var tbl_mnt_ubigeo_inei = $('#tbl_mnt_ubigeo_inei');
+
 
 $(document).ready(function() {
 	
@@ -19,119 +23,23 @@ $(document).ready(function() {
 	
 	inicializarDatos();
 	
-	$('#sel_departamento_ubi').change(function() {
+	$('#sel_departamento_emer').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {						
 			cargarProvincia(codigo, null);
 		} else {
+			$('#sel_provincia_emer').html('');
+		}
+	});
+	$('#sel_departamento_ubi').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			cargarProvinciaUbi(codigo, null);
+		} else {
 			$('#sel_provincia_ubi').html('');
 		}
 	});
-//	$('#txt_fecha').datepicker().on('changeDate', function(e) {
-//		e.preventDefault();
-//		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
-//	});
-//	
-//	$('#txt_fec_vencimiento').datepicker().on('changeDate', function(e) {
-//		e.preventDefault();
-//		frm_det_alimentarios.bootstrapValidator('revalidateField', $(this).attr('id'));	
-//	});
-//	
-//	$('#txt_no_fec_vencimiento').datepicker().on('changeDate', function(e) {
-//		e.preventDefault();
-//		frm_det_no_alimentarios.bootstrapValidator('revalidateField', $(this).attr('id'));	
-//	});
-//	
-//	$('#txt_doc_fecha').datepicker().on('changeDate', function(e) {
-//		e.preventDefault();
-//		frm_det_documentos.bootstrapValidator('revalidateField', $(this).attr('id'));	
-//	});
-//	
-//	$('#sel_nro_ord_compra').change(function() {
-//		var codigo = $(this).val();
-//		var arr = codigo.split('_');
-//		if (arr.length > 1) {
-//			$('#txt_det_ord_compra').val(arr[1]);
-//		} else {
-//			$('#txt_det_ord_compra').val('');
-//		}
-//	});
-//	
-//	$('#sel_tip_control').change(function() {
-//		var val_tip_control = $(this).val();		
-//		if (!esnulo(val_tip_control)) {
-//			
-//			frm_dat_generales.data('bootstrapValidator').resetForm();
-//			
-//			cargarTipoControl(val_tip_control);
-//			
-//			$('#sel_ori_almacen').val('');
-//			$('#sel_ori_en_almacen').val('');
-//			$('#sel_inspector').val('');
-//			$('#sel_proveedor').val('');
-//			$('#txt_representante').val('');
-//			$('#sel_emp_transporte').val('');
-//			$('#sel_chofer').val('');
-//			$('#txt_nro_placa').val('');
-//			
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_almacen');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_proveedor');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
-//			
-//		}
-//	});
-//	
-//	$('#sel_proveedor').change(function() {
-//		var codigo = $(this).val();		
-//		if (!esnulo(codigo)) {
-//			var arr = codigo.split('_');
-//			if (arr.length > 1) {
-//				$('#txt_representante').val(arr[1]);
-//			} else {
-//				$('#txt_representante').val('');
-//			}			
-//		} else {
-//			$('#txt_representante').val('');
-//		}
-//	});
-//	
-//	$('#sel_emp_transporte').change(function() {
-//		var codigo = $(this).val();		
-//		if (!esnulo(codigo)) {						
-//			var params = { 
-//				icodigo : codigo
-//			};			
-//			loadding(true);
-//			consultarAjax('GET', '/gestion-almacenes/control-calidad/listarChofer', params, function(respuesta) {
-//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, respuesta.mensajeRespuesta);
-//				} else {
-//					var options = '<option value="">Seleccione</option>';
-//			        $.each(respuesta, function(i, item) {
-//			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-//			        });
-//			        $('#sel_chofer').html(options);
-//				}
-//				loadding(false);
-//				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-//			});
-//		} else {
-//			$('#sel_chofer').html('');
-//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
-//		}
-//	});
-//	
-//	$('#sel_no_cat_producto').change(function() {
-//		var idCategoria = $(this).val();		
-//		if (!esnulo(idCategoria)) {					
-//			cargarProductoNoAlimentario(idCategoria, null);
-//		} else {
-//			$('#sel_no_producto').html('');
-//			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
-//		}
-//	});
+
 	
 	$('#btn_grabar_dat_gen').click(function(e) {
 		e.preventDefault();
@@ -182,21 +90,18 @@ $(document).ready(function() {
 						addSuccessMessage(null, respuesta.mensajeRespuesta);
 						
 					} else {
-						
-//						$('#hid_cod_con_calidad').val(respuesta.idControlCalidad);
-//						$('#txt_nro_con_calidad').val(respuesta.nroControlCalidad);
-//						
-//						if (tipoBien == '1') {					
-//							$('#li_alimentarios').attr('class', '');
-//							$('#li_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
-//						} else {							
-//							$('#li_no_alimentarios').attr('class', '');
-//							$('#li_no_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
-//						}
-//						$('#li_documentos').attr('class', '');
-//						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
 
 						addSuccessMessage(null, 'Se genero el N° Requerimiento ');
+						$('#li_damnificados').attr('class', '');
+						$('#li_damnificados').closest('li').children('a').attr('data-toggle', 'tab');
+						
+						$('#txt_nro_req').val(requerimiento.numRequerimiento); 
+						$('#txt_des_req').val($('#txt_descripcion').val());
+						if($('input:radio[name=rb_req_sinpad]:checked').val()==2){ 
+							$('#btn_agregar_emergencia').attr("disabled", true);
+						}else{
+							$('#btn_agregar_emergencia').attr("disabled", false);
+						}
 						
 					}
 					
@@ -207,18 +112,14 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_aceptar_ubigeo').click(function(e) {
+	$('#btn_aceptar_emer').click(function(e) {
 		e.preventDefault();
-		
-//		var bootstrapValidator = frm_det_prog_ubigeo.data('bootstrapValidator');
-//		bootstrapValidator.validate();
-//		if (bootstrapValidator.isValid()) {
-			var params = { 
-				codAnio : $('#sel_anio_ubi').val(),
-				codMes : $('#sel_mes_ubi').val(),
-				codDpto: $('#sel_departamento_ubi').val(),
-				codProvincia : $('#sel_provincia_ubi').val(),
-				idFenomeno : $('#sel_fenomeno_ubi').val()
+		var params = { 
+				codAnio : $('#sel_anio_emer').val(),
+				codMes : $('#sel_mes_emer').val(),
+				codDpto: $('#sel_departamento_emer').val(),
+				codProvincia : $('#sel_provincia_emer').val(),
+				idFenomeno : $('#sel_fenomeno_emer').val()
 			};
 			
 			loadding(true);
@@ -231,9 +132,6 @@ $(document).ready(function() {
 				}
 				loadding(false);
 			});
-			
-//		}
-		
 	});
 	
 	$('#href_emer_acti_exp_excel').click(function(e) {
@@ -251,11 +149,11 @@ $(document).ready(function() {
 
 		loadding(true);
 		
-		var codAnio = $('#sel_anio_ubi').val();
-		var codMes = $('#sel_mes_ubi').val();
-		var codDpto = $('#sel_departamento_ubi').val();
-		var codProvincia = $('#sel_provincia_ubi').val();
-		var idFenomeno = $('#sel_fenomeno_ubi').val();
+		var codAnio = $('#sel_anio_emer').val();
+		var codMes = $('#sel_mes_emer').val();
+		var codDpto = $('#sel_departamento_emer').val();
+		var codProvincia = $('#sel_provincia_emer').val();
+		var idFenomeno = $('#sel_fenomeno_emer').val();
 		
 		var url = VAR_CONTEXT + '/programacion-bath/requerimiento/exportarExcelEmergenciasActivas/';
 		url += verificaParametro(codAnio) + '/';
@@ -286,22 +184,152 @@ $(document).ready(function() {
 //		
 //	});
 	
-	$('#btn_agregar_ubigeo').click(function(e) {
-	e.preventDefault();
-
-//	$('#h4_tit_alimentarios').html('Nuevo Producto');
-//	frm_det_alimentarios.trigger('reset');
-//	
-//	$('#sel_producto').select2().trigger('change');
-//	$('#sel_producto').select2({
-//		  dropdownParent: $('#div_pro_det_alimentarios')
-//	});
+	$('#btn_agregar_emergencia').click(function(e) {
+		e.preventDefault(); 
+		$('#div_det_prog_emerg').modal('show');
+		
+	});
 	
-	$('#hid_cod_producto').val('');
+	$('#btn_pasar_distrito').click(function(e) {
+		e.preventDefault();
+		var indices = [];
+		var codigo = '';
+		var codigoAnio = '';
+		tbl_mnt_emer_act.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_emer_act.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idEmergencia = listaEmergenciasActivosCache[index].idEmergencia;
+				codigo = codigo + idEmergencia + '_';
+				
+			}
+		});
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else {
+			loadding(true);
+			
+			for (var i = 0; i < indices.length; i++) {
+				var params = { 
+						fkIdRequerimiento : requerimiento.codRequerimiento,
+						idEmergencia : listaEmergenciasActivosCache[indices[i]].idEmergencia,
+						codDistrito : listaEmergenciasActivosCache[indices[i]].codDistrito,
+						famAfectado : listaEmergenciasActivosCache[indices[i]].famAfectado,
+						famDamnificado : listaEmergenciasActivosCache[indices[i]].famDamnificado,
+						persoAfectado :listaEmergenciasActivosCache[indices[i]].persoAfectado,
+						persoDamnificado : listaEmergenciasActivosCache[indices[i]].persoDamnificado
+//						famAfectadoReal : listaEmergenciasActivosCache[index].codAnio,
+//						famDamnificadoReal : listaEmergenciasActivosCache[index].codAnio,
+//						persoAfectadoReal : listaEmergenciasActivosCache[index].codAnio,
+//						persoDamnificadoReal : listaEmergenciasActivosCache[index].codAnio
+					};
+				
+				consultarAjax('GET', '/programacion-bath/requerimiento/pasarDistritos', params, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						addSuccessMessage(null, respuesta.mensajeRespuesta);	
+					}
+					loadding(false);
+				});
+			}
+		}
+});
+	
+	$('#btn_pasar_distrito_ubigeo').click(function(e) {
+		e.preventDefault();
+		var indices = [];
+		var codigo = '';
+		tbl_mnt_ubigeo_inei.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_ubigeo_inei.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var coddpto = listaUbigeosIneiCache[index].coddpto;
+				codigo = codigo + coddpto + '_';
+				
+			}
+		});
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else {
+			loadding(true);
+			
+			for (var i = 0; i < indices.length; i++) {
+				var params = { 
+						fkIdRequerimiento : requerimiento.codRequerimiento,
+						codDistrito : listaUbigeosIneiCache[indices[i]].coddist, 
+						poblacionINEI : listaUbigeosIneiCache[indices[i]].poblacionInei
+			
+					};
+				
+				consultarAjax('GET', '/programacion-bath/requerimiento/pasarDistritosUbigeo', params, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						addSuccessMessage(null, respuesta.mensajeRespuesta);	
+					}
+					loadding(false);
+				});
+			}
+		}
+});	
+		
+		
+tbl_mnt_emer_act.on('click', '.checkbox', function(e) {//Contador
+	var indices = [];
+	tbl_mnt_emer_act.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+		if (tbl_mnt_emer_act.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+			indices.push(index);
+		}
+	});
+	
+	$('#txt_nro_selec').val(indices.length);
+});
+
+tbl_mnt_ubigeo_inei.on('click', '.checkbox', function(e) {//Contador
+	var indices = [];
+	tbl_mnt_ubigeo_inei.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+		if (tbl_mnt_ubigeo_inei.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+			indices.push(index);
+		}
+	});
+	
+	$('#txt_nro_selec_ubi').val(indices.length);
+});
+
+$('#btn_agregar_ubigeo').click(function(e) {
+	e.preventDefault();
 	$('#div_det_prog_ubigeo').modal('show');
 	
 });
-	
+
+$('#btn_aceptar_ubigeo').click(function(e) { 
+	e.preventDefault();
+	var params = { 
+			codAnio : $('#sel_anio_ubi').val(),
+			coddpto: $('#sel_departamento_ubi').val(),
+			codprov : $('#sel_provincia_ubi').val()
+		};
+		
+		loadding(true);
+		
+		consultarAjax('GET', '/programacion-bath/requerimiento/listarUbigeoInei', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarUbigeoInei(respuesta);
+			}
+			loadding(false);
+		});
+});
 //	$('#href_ali_nuevo').click(function(e) {
 //		e.preventDefault();
 //
@@ -420,245 +448,9 @@ $(document).ready(function() {
 //		}
 //		
 //	});
-//	
-//	$('#btn_gra_alimentario').click(function(e) {
-//		e.preventDefault();
-//		
-//		var bootstrapValidator = frm_det_alimentarios.data('bootstrapValidator');
-//		bootstrapValidator.validate();
-//		if (bootstrapValidator.isValid()) {
-//			var idProducto = null;
-//			var val_producto = $('#sel_producto').val();
-//			if (!esnulo(val_producto)) {
-//				var arr = val_producto.split('_');
-//				idProducto = arr[0];
-//			}			
-//			var params = { 
-//				idDetalleControlCalidad : $('#hid_cod_producto').val(),
-//				idControlCalidad : $('#hid_cod_con_calidad').val(),
-//				idProducto : idProducto,
-//				fechaVencimiento : $('#txt_fec_vencimiento').val(),
-//				cantidadLote : formatMonto($('#txt_can_lote').val()),
-//				cantidadMuestra : formatMonto($('#txt_can_muestra').val()),
-//				primario : $('#sel_primario').val(),
-//				parOlor : $('#sel_olor').val(),
-//				parTextura : $('#sel_textura').val(),
-//				secundario : $('#sel_secundario').val(),
-//				parColor : $('#sel_color').val(),
-//				parSabor : $('#sel_sabor').val()
-//			};
-//
-//			loadding(true);
-//			
-//			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
-//				$('#div_det_alimentarios').modal('hide');
-//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//					loadding(false);
-//					addErrorMessage(null, respuesta.mensajeRespuesta);
-//				} else {
-//					listarProductoControlCalidad(true);					
-//					addSuccessMessage(null, respuesta.mensajeRespuesta);					
-//				}
-//				frm_det_alimentarios.data('bootstrapValidator').resetForm();
-//			});
-//			
-//		}
-//		
-//	});
-//	
-//	$('#btn_can_alimentario').click(function(e) {
-//		e.preventDefault();
-//		frm_det_alimentarios.data('bootstrapValidator').resetForm();
-//	});
-//	
-//	$('#sel_producto').change(function() {
-//		var codigo = $(this).val();		
-//		if (!esnulo(codigo)) {
-//			var arr = codigo.split('_');
-//			if (arr.length > 1) {
-//				$('#txt_uni_medida').val(arr[1]);
-//			} else {
-//				$('#txt_uni_medida').val('');
-//			}			
-//		} else {
-//			$('#txt_uni_medida').val('');
-//		}
-//	});
-//	
-//	$('#href_no_ali_nuevo').click(function(e) {
-//		e.preventDefault();
-//
-//		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
-//		frm_det_no_alimentarios.trigger('reset');
-//		
-//		$('#sel_no_producto').html('');
-//		$('#sel_no_producto').select2().trigger('change');
-//		$('#sel_no_producto').select2({
-//			  dropdownParent: $('#div_pro_det_no_alimentarios')
-//		});
-//		
-//		$('#hid_cod_no_producto').val('');
-//		$('#div_det_no_alimentarios').modal('show');
-//		
-//	});
-//	
-//	$('#href_no_ali_editar').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		tbl_det_no_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_det_no_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);
-//			}
-//		});
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-//		} else {
-//			
-//			var obj = listaNoAlimentariosCache[indices[0]];
-//			
-//			$('#h4_tit_no_alimentarios').html('Actualizar Producto');
-//			frm_det_no_alimentarios.trigger('reset');
-//			
-//			$('#hid_cod_no_producto').val(obj.idDetalleControlCalidad);
-//			
-//			$('#sel_no_cat_producto').val(obj.idCategoria);
-//			cargarProductoNoAlimentario(obj.idCategoria, obj.idProducto+'_'+obj.nombreUnidad);			
-//			$('#sel_no_uni_medida').val(obj.nombreUnidad);
-//			$('#txt_no_fec_vencimiento').val(obj.fechaVencimiento);
-//			$('#txt_no_can_lote').val(obj.cantidadLote);
-//			$('#txt_no_can_muestra').val(obj.cantidadMuestra);
-//			$('#sel_no_primario').val(obj.primario);
-//			$('#sel_no_tecnicas').val(obj.flagEspecTecnicas);
-//			$('#sel_no_secundario').val(obj.secundario);
-//			$('#sel_no_conformidad').val(obj.flagConforProducto);
-//			
-//			$('#div_det_no_alimentarios').modal('show');
-//		}
-//		
-//	});
-//	
-//	$('#href_no_ali_eliminar').click(function(e) {
-//		e.preventDefault();
-//		
-//		var indices = [];
-//		var codigo = ''
-//		tbl_det_no_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_det_no_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);
-//				var idDetalleControlCalidad = listaNoAlimentariosCache[index].idDetalleControlCalidad;
-//				codigo = codigo + idDetalleControlCalidad + '_';
-//			}
-//		});
-//		
-//		if (!esnulo(codigo)) {
-//			codigo = codigo.substring(0, codigo.length - 1);
-//		}
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else {
-//			var msg = '';
-//			if (indices.length > 1) {
-//				msg = 'Está seguro de eliminar los siguientes registros ?';
-//			} else {
-//				msg = 'Está seguro de eliminar el registro ?';
-//			}
-//			
-//			$.SmartMessageBox({
-//				title : msg,
-//				content : '',
-//				buttons : '[Cancelar][Aceptar]'
-//			}, function(ButtonPressed) {
-//				if (ButtonPressed === 'Aceptar') {
-//	
-//					loadding(true);
-//					
-//					var params = { 
-//						arrIdDetalleControlCalidad : codigo
-//					};
-//			
-//					consultarAjax('POST', '/gestion-almacenes/control-calidad/eliminarProductoControlCalidad', params, function(respuesta) {
-//						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//							loadding(false);
-//							addErrorMessage(null, respuesta.mensajeRespuesta);
-//						} else {
-//							listarProductoControlCalidad(true);
-//							addSuccessMessage(null, respuesta.mensajeRespuesta);
-//						}		
-//					});
-//					
-//				}	
-//			});
-//			
-//		}
-//		
-//	});
-//	
-//	$('#btn_gra_no_alimentario').click(function(e) {
-//		e.preventDefault();
-//		
-//		var bootstrapValidator = frm_det_no_alimentarios.data('bootstrapValidator');
-//		bootstrapValidator.validate();
-//		if (bootstrapValidator.isValid()) {
-//			var idProducto = null;
-//			var val_producto = $('#sel_no_producto').val();
-//			if (!esnulo(val_producto)) {
-//				var arr = val_producto.split('_');
-//				idProducto = arr[0];
-//			}
-//			var params = { 
-//				idDetalleControlCalidad : $('#hid_cod_no_producto').val(),
-//				idControlCalidad : $('#hid_cod_con_calidad').val(),
-//				idProducto : idProducto,
-//				fechaVencimiento : $('#txt_no_fec_vencimiento').val(),
-//				cantidadLote : formatMonto($('#txt_no_can_lote').val()),
-//				cantidadMuestra : formatMonto($('#txt_no_can_muestra').val()),
-//				primario : $('#sel_no_primario').val(),
-//				flagEspecTecnicas : $('#sel_no_tecnicas').val(),
-//				secundario : $('#sel_no_secundario').val(),
-//				flagConforProducto : $('#sel_no_conformidad').val()
-//			};
-//			
-//			loadding(true);
-//			
-//			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
-//				$('#div_det_no_alimentarios').modal('hide');
-//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//					loadding(false);
-//					addErrorMessage(null, respuesta.mensajeRespuesta);
-//				} else {
-//					listarProductoControlCalidad(true);
-//					addSuccessMessage(null, respuesta.mensajeRespuesta);	
-//				}
-//				frm_det_no_alimentarios.data('bootstrapValidator').resetForm();
-//			});
-//			
-//		}
-//		
-//	});
-//	
-//	$('#btn_can_no_alimentario').click(function(e) {
-//		e.preventDefault();
-//		frm_det_no_alimentarios.data('bootstrapValidator').resetForm();
-//	});
-//	
-//	$('#sel_no_producto').change(function() {
-//		var codigo = $(this).val();		
-//		if (!esnulo(codigo)) {
-//			var arr = codigo.split('_');
-//			if (arr.length > 1) {
-//				$('#txt_no_uni_medida').val(arr[1]);
-//			} else {
-//				$('#txt_no_uni_medida').val('');
-//			}			
-//		} else {
-//			$('#txt_no_uni_medida').val('');
-//		}
-//	});
+
+
+
 //	
 //	$('#href_doc_nuevo').click(function(e) {
 //		e.preventDefault();
@@ -868,88 +660,36 @@ function inicializarDatos() {
 		$('#txt_anio').val(requerimiento.codAnio);
 		$('#txt_fecha_requerimiento').val(requerimiento.fechaRequerimiento);
 		
-		
-//		if (!esnulo(controlCalidad.idControlCalidad)) {
-//			
-//			$('#hid_cod_con_calidad').val(controlCalidad.idControlCalidad);		
-//			if (controlCalidad.flagTipoBien == '1') {
-//				$('#li_no_alimentarios').addClass('disabled');
-//				$('#li_no_alimentarios').closest('li').children('a').removeAttr('data-toggle');
-//			} else {
-//				$('#li_alimentarios').addClass('disabled');
-//				$('#li_alimentarios').closest('li').children('a').removeAttr('data-toggle');
-//			}
-//			
-//			$('#txt_fecha').val(controlCalidad.fechaEmision);
-//			$('#sel_estado').val(controlCalidad.idEstado);
-//			$('#sel_nro_ord_compra').val(controlCalidad.nroOrdenCompra+'_'+controlCalidad.concepto);			
-//			$('#txt_det_ord_compra').val(controlCalidad.concepto);
-//			
-//			$('#sel_tip_control').val(controlCalidad.idTipoControl);
-//			cargarTipoControl(controlCalidad.idTipoControl);
-//			$('#sel_ori_almacen').val(controlCalidad.idAlmacenOrigen);
-//			$('#sel_ori_en_almacen').val(controlCalidad.idEncargado);
-//			$('#sel_inspector').val(controlCalidad.idInspector);			
-//			var val_idProveedor = controlCalidad.provRep;
-//			$('#sel_proveedor').val(val_idProveedor);
-//			var arr = val_idProveedor.split('_');
-//			if (arr.length > 1) {
-//				$('#txt_representante').val(arr[1]);
-//			}
-//			$('#sel_emp_transporte').val(controlCalidad.idEmpresaTransporte);
-//			$('#sel_chofer').val(controlCalidad.idChofer);
-//			$('#txt_nro_placa').val(controlCalidad.nroPlaca);
-//			$('input[name=rb_tip_bien][value="'+controlCalidad.flagTipoBien+'"]').prop('checked', true);
-//			$('#txt_conclusiones').val(controlCalidad.conclusiones);
-//			$('#txt_recomendaciones').val(controlCalidad.recomendaciones);
-//			
-//			$('input[name=rb_tip_bien]').prop('disabled', true);
-//			
-//			
-//			
-//			listarProductoControlCalidad(false);
-//			
-//			listarDocumentoControlCalidad(false);
-//			
-//		} else {
-//			
-//			$('#li_alimentarios').addClass('disabled');
-//			$('#li_no_alimentarios').addClass('disabled');
-//			$('#li_documentos').addClass('disabled');
-//			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
-//			
-//			$('#txt_fecha').datepicker('setDate', new Date());
-//			
-//			var arr = $('#sel_nro_ord_compra').val().split('_');
-//			if (arr.length > 1) {
-//				$('#txt_det_ord_compra').val(arr[1]);
-//			}
-//			
-//			var val_proveedor = $('#sel_proveedor').val();		
-//			if (!esnulo(val_proveedor)) {
-//				var arr = val_proveedor.split('_');
-//				if (arr.length > 1) {
-//					$('#txt_representante').val(arr[1]);
-//				} else {
-//					$('#txt_representante').val('');
-//				}			
-//			}
-//			
-//			cargarTipoControl($('#sel_tip_control').val());
-//			
-//			listarDetalleAlimentarios(new Object());
-//			listarDetalleNoAlimentarios(new Object());
-//			listarDetalleDocumentos(new Object());
-//
-//		}
-		
-//		$('#sel_nro_ord_compra').select2().trigger('change');
+		$('#li_damnificados').addClass('disabled'); //whr descomentar de abajo para activar bloqueo de tab
+//		$('#li_damnificados').closest('li').children('a').removeAttr('data-toggle'); 
 
 	}
 	
 }
 
 function cargarProvincia(codigo, codigoProvincia) {
+	var params = { 
+		coddpto : codigo
+	};			
+	loadding(true);
+	consultarAjax('GET', '/programacion-bath/requerimiento/listarProvincia', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.codprov+'">'+item.nombre+'</option>';
+			});
+			$('#sel_provincia_emer').html(options);
+			if (codigoProvincia != null) {
+				$('#sel_provincia_emer').val(codigoProvincia);       	
+			}
+		}
+		loadding(false);
+	});
+}
+
+function cargarProvinciaUbi(codigo, codigoProvincia) {
 	var params = { 
 		coddpto : codigo
 	};			
@@ -1049,5 +789,56 @@ function listarEmergenciasActivas(respuesta) {
 		});
 		
 	listaEmergenciasActivosCache = respuesta;
+
+	}
+
+function listarUbigeoInei(respuesta) {
+
+	tbl_mnt_ubigeo_inei.dataTable().fnDestroy();
+	tbl_mnt_ubigeo_inei.dataTable({
+			data : respuesta,
+			columns : [ {
+					data : 'coddpto',
+					sClass : 'opc-center',
+					render: function(data, type, row) {
+						if (data != null) {
+							return '<label class="checkbox">'+
+										'<input type="checkbox"><i></i>'+
+									'</label>';	
+						} else {
+							return '';	
+						}											
+					}	
+				}, {	
+					data : 'coddpto',
+					render : function(data, type, full, meta) {
+						var row = meta.row + 1;
+						return row;											
+					}
+				}, {data : 'coddist'}, 
+				{data : 'desprov'}, 
+				{data : 'desdist'}, 
+				{data : 'poblacionInei'} 
+			],
+			language : {
+				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+			},
+			bFilter : false,
+			paging : true,
+			ordering : false,
+			info : true,
+			iDisplayLength : 15,
+			aLengthMenu : [
+				[15, 50, 100],
+				[15, 50, 100]
+			],
+			columnDefs : [
+				{ width : '15%', targets : 3 },
+				{ width : '15%', targets : 4 },
+				{ width : '15%', targets : 5 }
+			]
+		});
+		
+	listaUbigeosIneiCache = respuesta;
 
 	}

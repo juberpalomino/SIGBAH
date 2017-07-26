@@ -2,10 +2,10 @@ package pe.com.sigbah.service;
 
 import java.util.List;
 
-import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.UbigeoIneiBean;
 
 /**
  * @className: ProgramacionService.java
@@ -74,4 +74,27 @@ public interface ProgramacionService {
 	 * @throws Exception
 	 */
 	public abstract List<EmergenciaBean> listarEmergenciasActivas(RequerimientoBean requerimientoBean) throws Exception;
+	
+	
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract EmergenciaBean pasarDistritos(EmergenciaBean emergenciaBean) throws Exception;
+	
+	/**
+	 * @param ubigeoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<UbigeoIneiBean> listarUbigeoInei(UbigeoIneiBean ubigeoBean) throws Exception;
+	
+	
+	/**
+	 * @param ubigeoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract EmergenciaBean pasarDistritosUbigeo(EmergenciaBean emergenciaBean) throws Exception;
 }

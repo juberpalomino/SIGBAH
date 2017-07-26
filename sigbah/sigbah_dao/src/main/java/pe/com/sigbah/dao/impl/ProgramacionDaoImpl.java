@@ -1,17 +1,14 @@
 package pe.com.sigbah.dao.impl;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +22,12 @@ import org.springframework.stereotype.Repository;
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.AlimentariaEmergenciaBean;
 import pe.com.sigbah.common.bean.CabeceraEmergenciaBean;
-import pe.com.sigbah.common.bean.RequerimientoBean;
-import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.LocalidadEmergenciaBean;
 import pe.com.sigbah.common.bean.NoAlimentariaEmergenciaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.UbigeoIneiBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -44,6 +40,7 @@ import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroLocalidadEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroNoAlimentariaEmergenciaMapper;
 import pe.com.sigbah.mapper.RequerimientoMapper;
+import pe.com.sigbah.mapper.UbigeoIneiMapper;
 
 /**
  * @className: ProgramacionDaoImpl.java
@@ -463,6 +460,176 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		}		
 		LOGGER.info("[listarEmergenciasActivas] Fin ");
 		return lista;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#pasarDistritos(pe.com.sigbah.common.bean.EmergenciaBean)
+	 */
+	@Override
+	public EmergenciaBean pasarDistritos(EmergenciaBean emergenciaBean) throws Exception {
+		LOGGER.info("[pasarDistritos] Inicio ");
+		EmergenciaBean emergenciaRequerimiento = new EmergenciaBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_REQUERIMIENTO", emergenciaBean.getFkIdRequerimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_EMERGENCIA", emergenciaBean.getIdEmergencia(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_DISTRITO", emergenciaBean.getCodDistrito(), Types.VARCHAR);
+			input_objParametros.addValue("PI_NUM_FAM_AFECTADAS", emergenciaBean.getFamAfectado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_FAM_DAMNIFICADAS", emergenciaBean.getFamDamnificado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_PER_AFECTADAS", emergenciaBean.getPersoAfectado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_PER_DAMNIFICADAS", emergenciaBean.getPersoDamnificado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_FAM_AFECTADAS_REAL", emergenciaBean.getFamAfectadoReal(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_FAM_DAMNIFICADAS_REAL", emergenciaBean.getFamDamnificadoReal(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_PER_AFECTADAS_REAL", emergenciaBean.getPersoAfectadoReal(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_PER_DAMNIFICADAS_REAL", emergenciaBean.getPersoDamnificadoReal(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", emergenciaBean.getUsuarioRegistro(), Types.VARCHAR);
+			
+			 
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_DISTRITOEMERGENCIA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_REQUERIMIENTO", new SqlParameter("PI_FK_IDE_REQUERIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_EMERGENCIA", new SqlParameter("PI_IDE_EMERGENCIA", Types.NUMERIC));
+			output_objParametros.put("PI_COD_DISTRITO", new SqlParameter("PI_COD_DISTRITO", Types.VARCHAR));
+			output_objParametros.put("PI_NUM_FAM_AFECTADAS", new SqlParameter("PI_NUM_FAM_AFECTADAS", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_FAM_DAMNIFICADAS", new SqlParameter("PI_NUM_FAM_DAMNIFICADAS", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_PER_AFECTADAS", new SqlParameter("PI_NUM_PER_AFECTADAS", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_PER_DAMNIFICADAS", new SqlParameter("PI_NUM_PER_DAMNIFICADAS", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_FAM_AFECTADAS_REAL", new SqlParameter("PI_NUM_FAM_AFECTADAS_REAL", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_FAM_DAMNIFICADAS_REAL", new SqlParameter("PI_NUM_FAM_DAMNIFICADAS_REAL", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_PER_AFECTADAS_REAL", new SqlParameter("PI_NUM_PER_AFECTADAS_REAL", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_PER_DAMNIFICADAS_REAL", new SqlParameter("PI_NUM_PER_DAMNIFICADAS_REAL", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[pasarDistritos] Ocurrio un error en la operacion del USP_INS_UPD_DISTRITOEMERGENCIA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			
+			emergenciaRequerimiento.setCodigoRespuesta(codigoRespuesta);
+			emergenciaRequerimiento.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[pasarDistritos] Fin ");
+		return emergenciaRequerimiento;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#listarUbigeoInei(pe.com.sigbah.common.bean.UbigeoIneiBean)
+	 */
+	@Override
+	public List<UbigeoIneiBean> listarUbigeoInei(UbigeoIneiBean ubigeoBean) throws Exception {
+		LOGGER.info("[listarUbigeoInei] Inicio ");
+		List<UbigeoIneiBean> lista = new ArrayList<UbigeoIneiBean>();
+		try {				
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", ubigeoBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DEPARTAMENTO", ubigeoBean.getCoddpto(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_PROVINCIA", Utils.getParam(ubigeoBean.getCodprov()), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_UBIGEO_INEI");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DEPARTAMENTO", new SqlParameter("PI_COD_DEPARTAMENTO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_PROVINCIA", new SqlParameter("PI_COD_PROVINCIA", Types.VARCHAR));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new UbigeoIneiMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarUbigeoInei] Ocurrio un error en la operacion del USP_SEL_LISTAR_UBIGEO_INEI : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<UbigeoIneiBean>) out.get("PO_LR_RECORDSET");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarUbigeoInei] Fin ");
+		return lista;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#pasarDistritosUbigeo(pe.com.sigbah.common.bean.UbigeoIneiBean)
+	 */
+	@Override
+	public EmergenciaBean pasarDistritosUbigeo(EmergenciaBean emergenciaBean) throws Exception {
+		LOGGER.info("[pasarDistritosUbigeo] Inicio ");
+		EmergenciaBean emergenciaRequerimiento = new EmergenciaBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_REQUERIMIENTO", emergenciaBean.getFkIdRequerimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_DISTRITO", emergenciaBean.getCodDistrito(), Types.VARCHAR);
+			input_objParametros.addValue("PI_NUM_POBLACION_INEI", emergenciaBean.getFamAfectado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", emergenciaBean.getUsuarioRegistro(), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_DISTRITOEMERG_INEI");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_REQUERIMIENTO", new SqlParameter("PI_FK_IDE_REQUERIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_COD_DISTRITO", new SqlParameter("PI_COD_DISTRITO", Types.VARCHAR));
+			output_objParametros.put("PI_NUM_POBLACION_INEI", new SqlParameter("PI_NUM_POBLACION_INEI", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[pasarDistritosUbigeo] Ocurrio un error en la operacion del USP_INS_DISTRITOEMERG_INEI : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			
+			emergenciaRequerimiento.setCodigoRespuesta(codigoRespuesta);
+			emergenciaRequerimiento.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[pasarDistritosUbigeo] Fin ");
+		return emergenciaRequerimiento;
 	}
 
 

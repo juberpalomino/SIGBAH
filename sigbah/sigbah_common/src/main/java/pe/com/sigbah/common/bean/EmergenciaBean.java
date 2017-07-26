@@ -38,6 +38,12 @@ public class EmergenciaBean extends BaseOutputBean {
 	private Integer totalPerso;
 	
 	private String codSinpad;
+	private Integer famAfectadoReal;
+	private Integer famDamnificadoReal;
+	private Integer persoAfectadoReal;
+	private Integer persoDamnificadoReal;
+	private Integer fkIdRequerimiento;
+	
 	/**
 	 * 
 	 */
@@ -407,6 +413,76 @@ public class EmergenciaBean extends BaseOutputBean {
 	 */
 	public void setCodSinpad(String codSinpad) {
 		this.codSinpad = codSinpad;
+	}
+
+	/**
+	 * @return the famAfectadoReal
+	 */
+	public Integer getFamAfectadoReal() {
+		return famAfectadoReal;
+	}
+
+	/**
+	 * @param famAfectadoReal the famAfectadoReal to set
+	 */
+	public void setFamAfectadoReal(Integer famAfectadoReal) {
+		this.famAfectadoReal = famAfectadoReal;
+	}
+
+	/**
+	 * @return the famDamnificadoReal
+	 */
+	public Integer getFamDamnificadoReal() {
+		return famDamnificadoReal;
+	}
+
+	/**
+	 * @param famDamnificadoReal the famDamnificadoReal to set
+	 */
+	public void setFamDamnificadoReal(Integer famDamnificadoReal) {
+		this.famDamnificadoReal = famDamnificadoReal;
+	}
+
+	/**
+	 * @return the persoAfectadoReal
+	 */
+	public Integer getPersoAfectadoReal() {
+		return persoAfectadoReal;
+	}
+
+	/**
+	 * @param persoAfectadoReal the persoAfectadoReal to set
+	 */
+	public void setPersoAfectadoReal(Integer persoAfectadoReal) {
+		this.persoAfectadoReal = persoAfectadoReal;
+	}
+
+	/**
+	 * @return the persoDamnificadoReal
+	 */
+	public Integer getPersoDamnificadoReal() {
+		return persoDamnificadoReal;
+	}
+
+	/**
+	 * @param persoDamnificadoReal the persoDamnificadoReal to set
+	 */
+	public void setPersoDamnificadoReal(Integer persoDamnificadoReal) {
+		this.persoDamnificadoReal = persoDamnificadoReal;
+	}
+
+	/**
+	 * @return the fkIdRequerimiento
+	 */
+	public Integer getFkIdRequerimiento() {
+		return fkIdRequerimiento;
+	}
+
+	/**
+	 * @param fkIdRequerimiento the fkIdRequerimiento to set
+	 */
+	public void setFkIdRequerimiento(Integer fkIdRequerimiento) {
+		this.fkIdRequerimiento = fkIdRequerimiento;
 	}
 
 	

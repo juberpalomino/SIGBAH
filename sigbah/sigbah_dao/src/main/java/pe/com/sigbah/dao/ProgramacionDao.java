@@ -6,6 +6,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.UbigeoIneiBean;
 
 /**
  * @className: ProgramacionDao.java
@@ -73,5 +74,23 @@ public interface ProgramacionDao {
 	 * @throws Exception 
 	 */
 	public abstract List<EmergenciaBean> listarEmergenciasActivas(RequerimientoBean requerimientoBean) throws Exception;
+
+	/**
+	 * @param emergenciaBean
+	 * @return
+	 */
+	public abstract EmergenciaBean pasarDistritos(EmergenciaBean emergenciaBean)throws Exception;
+
+	/**
+	 * @param ubigeoBean
+	 * @return
+	 */
+	public abstract List<UbigeoIneiBean> listarUbigeoInei(UbigeoIneiBean ubigeoBean)throws Exception;
+
+	/**
+	 * @param ubigeoBean
+	 * @return
+	 */
+	public abstract EmergenciaBean pasarDistritosUbigeo(EmergenciaBean emergenciaBean)throws Exception;
 
 }

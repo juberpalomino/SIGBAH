@@ -10,6 +10,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.UbigeoIneiBean;
 import pe.com.sigbah.dao.ProgramacionDao;
 import pe.com.sigbah.service.ProgramacionService;
 
@@ -86,5 +87,29 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	@Override
 	public List<EmergenciaBean> listarEmergenciasActivas(RequerimientoBean requerimientoBean) throws Exception {
 		return programacionDao.listarEmergenciasActivas(requerimientoBean);
+	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#pasarDistritos(pe.com.sigbah.common.bean.EmergenciaBean)
+	 */
+	@Override
+	public EmergenciaBean pasarDistritos(EmergenciaBean emergenciaBean) throws Exception {
+		return programacionDao.pasarDistritos(emergenciaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarUbigeoInei(pe.com.sigbah.common.bean.UbigeoIneiBean)
+	 */
+	@Override
+	public List<UbigeoIneiBean> listarUbigeoInei(UbigeoIneiBean ubigeoBean) throws Exception {
+		return programacionDao.listarUbigeoInei(ubigeoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#pasarDistritosUbigeo(pe.com.sigbah.common.bean.UbigeoIneiBean)
+	 */
+	@Override
+	public EmergenciaBean pasarDistritosUbigeo(EmergenciaBean emergenciaBean) throws Exception {
+		return programacionDao.pasarDistritosUbigeo(emergenciaBean);
 	}
 }

@@ -38,7 +38,7 @@
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Datos Generales</a>
 								</li>
-								<li id="li_alimentarios">
+								<li id="li_damnificados">
 									<a href="#div_damnificados" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Damnificados</a>
 								</li>
@@ -320,7 +320,7 @@
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Emergencias</h4>
+				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Seleccionar distritos según INEI</h4>
 			</div>
 			
 			<div class="modal-body">
@@ -331,20 +331,10 @@
 							<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
 						
 							<div class="row">
-								<label class="col-sm-2 control-label">Año:</label>
-								<div class="col-sm-2 form-group">
+								<label class="col-sm-1 control-label">Año:</label>
+								<div class="col-sm-2 ">
 									<select id="sel_anio_ubi" name="sel_anio_ubi" class="form-control">
 										<c:forEach items="${lista_anio}" var="item">
-										    <option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Mes:</label>
-								<div class="col-sm-2">
-									<select id="sel_mes_ubi" name="sel_mes_ubi" class="form-control">
-										<option value="">Todos</option>
-										<c:forEach items="${lista_mes}" var="item">
 										    <option value="${item.vcodigo}">${item.descripcion}</option>
 										</c:forEach>
 									</select>
@@ -358,17 +348,148 @@
 										</c:forEach>
 									</select>
 								</div>
+								  <label class="col-sm-1 control-label">Provincia:</label>	
+								<div class="col-sm-2 ">
+									<select id="sel_provincia_ubi" name="sel_provincia_ubi" class="form-control">
+										<option value="">Todos</option>
+									</select>
+								</div>																		
+								
+								<div class="col-sm-2">
+									<button class="btn btn-primary" type="button" id="btn_aceptar_ubigeo">
+										<i class="fa fa-search"></i>
+										Aceptar
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>	
+				
+				<div class="row">&nbsp;</div>	
+				<!-- NEW WIDGET START -->
+			<article class="col-xs-12 col-sm-12">
+	
+				<!-- Widget ID (each widget will need unique ID)-->
+				<div class="jarviswidget jarviswidget-color-blueLight">
+				
+					<header>
+						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+						<h2>Distritos de la provincia</h2>
+					</header>
+	
+					<!-- widget div-->
+					<div>
+										
+						<!-- widget content -->
+						<div class="widget-body " >
+
+							<table id="tbl_mnt_ubigeo_inei" class="table table-bordered table-hover tbl-responsive">
+								<thead>			                
+									<tr>
+										<th></th>
+										<th>Nº</th>
+										<th>Ubigeo</th>
+										<th>Provincia</th>
+										<th>Distrito</th>
+										<th>Población INEI</th>
+									</tr>
+								</thead>
+							</table>
+
+						</div>
+						<!-- end widget content -->
+	
+					</div>
+					<!-- end widget div -->
+	
+				</div>
+				<!-- end widget -->
+
+			</article>
+			<!-- WIDGET END -->
+			</div>
+			
+			<div class="modal-footer">
+				<div class="form-group">
+					<label class="col-sm-3 control-label label-bold">Total seleccionado:</label>
+					<div class="col-sm-2">
+						<input type="text" id="txt_nro_selec_ubi" class="form-control" disabled>
+					</div>
+				</div>		
+				<button type="button" class="btn btn-primary" id="btn_pasar_distrito_ubigeo">
+					<i class="fa fa-floppy-o"></i>
+					Pasar Distritos Seleccionados al  Requerimiento
+				</button>
+				
+				&nbsp; &nbsp;
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_distrito_ubigeo">
+					<i class="fa fa-mail-forward"></i>
+					Cancelar
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal  Agregar EMERGENCIAS ACTIVAS-->
+<div id="div_det_prog_emerg" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Emergencias</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<form id="frm_det_prog_ubigeo" class="form-horizontal" role="form">
+							
+							<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
+						
+							<div class="row">
+								<label class="col-sm-2 control-label">Año:</label>
+								<div class="col-sm-2 form-group">
+									<select id="sel_anio_emer" name="sel_anio_emer" class="form-control">
+										<c:forEach items="${lista_anio}" var="item">
+										    <option value="${item.vcodigo}">${item.descripcion}</option>
+										</c:forEach>
+									</select>
+								</div>
+								
+								<label class="col-sm-2 control-label">Mes:</label>
+								<div class="col-sm-2">
+									<select id="sel_mes_emer" name="sel_mes_emer" class="form-control">
+										<option value="">Todos</option>
+										<c:forEach items="${lista_mes}" var="item">
+										    <option value="${item.vcodigo}">${item.descripcion}</option>
+										</c:forEach>
+									</select>
+								</div>
+								
+								<label class="col-sm-2 control-label">Departamento:</label>
+								<div class="col-sm-2">
+									<select id="sel_departamento_emer" name="sel_departamento_emer" class="form-control">
+										<c:forEach items="${lista_departamento}" var="item">
+										    <option value="${item.coddpto}">${item.nombre}</option>
+										</c:forEach>
+									</select>
+								</div>
 							</div>
 							<div  class="row">	
 							    <label class="col-sm-2 control-label">Provincia:</label>	
 								<div class="col-sm-2 form-group">
-									<select id="sel_provincia_ubi" name="sel_provincia_ubi" class="form-control">
+									<select id="sel_provincia_emer" name="sel_provincia_emer" class="form-control">
 										<option value="">Todos</option>
 									</select>
 								</div>																		
 								<label class="col-sm-2 control-label">Fenomeno:</label>
 								<div class="col-sm-2">
-									<select id="sel_fenomeno_ubi" name="sel_fenomeno_ubi" class="form-control">
+									<select id="sel_fenomeno_emer" name="sel_fenomeno_emer" class="form-control">
 										<option value="0">Todos</option>
 										<c:forEach items="${lista_fenomeno}" var="item">
 										    <option value="${item.icodigo}">${item.descripcion}</option>
@@ -376,7 +497,7 @@
 									</select>
 								</div>
 								<div class="col-sm-2">
-								<button class="btn btn-primary" type="button" id="btn_aceptar_ubigeo">
+								<button class="btn btn-primary" type="button" id="btn_aceptar_emer">
 									<i class="fa fa-search"></i>
 									Aceptar
 								</button>
@@ -449,14 +570,20 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_gra_alimentario">
+				<div class="form-group">
+					<label class="col-sm-3 control-label label-bold">Total seleccionado:</label>
+					<div class="col-sm-2">
+						<input type="text" id="txt_nro_selec" class="form-control" disabled>
+					</div>
+				</div>		
+				<button type="button" class="btn btn-primary" id="btn_pasar_distrito">
 					<i class="fa fa-floppy-o"></i>
 					Pasar Distritos Seleccionados al  Requerimiento
 				</button>
 				
 				&nbsp; &nbsp;
 				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_alimentario">
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_emer">
 					<i class="fa fa-mail-forward"></i>
 					Cancelar
 				</button>
@@ -465,89 +592,7 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- Modal -->
-<div id="div_det_documentos" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="h4_tit_documentos">Nuevo Documento</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12">
-						<form id="frm_det_documentos" class="form-horizontal" role="form">
-							
-							<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
-							<input type="hidden" id="hid_cod_act_alfresco" name="hid_cod_act_alfresco">
-							<input type="hidden" id="hid_cod_ind_alfresco" name="hid_cod_ind_alfresco">
-						
-							<div class="form-group">																				
-								<label class="col-sm-3 control-label">Tipo Documento:</label>
-								<div class="col-sm-8">
-									<select id="sel_tip_producto" name="sel_tip_producto" class="form-control">
-										<option value="">Seleccione</option>
-										<c:forEach items="${lista_tipo_documento}" var="item">
-											<option value="${item.vcodigo}">${item.descripcion}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>								
 
-							<div class="form-group">
-								<label class="col-sm-3 control-label">N° Documento:</label>
-								<div class="col-sm-4">
-									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control upperValue" maxlength="18">
-								</div>								
-							</div>										
-
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Fecha:</label>
-								<div class="col-sm-4 smart-form">
-									<label class="input"> 
-										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_doc_fecha" id="txt_doc_fecha" class="datepicker" readonly>
-									</label>
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Subir Archivo:</label>
-								<div class="col-sm-8 smart-form">
-									<div class="input input-file">
-										<span id="sp_sub_archivo" class="button">
-											<input type="file" id="txt_sub_archivo" name="txt_sub_archivo">
-											Cargar
-										</span>
-										<input type="text" id="txt_lee_sub_archivo" name="txt_lee_sub_archivo" readonly>
-									</div>
-								</div>								
-							</div>
-							
-						</form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_gra_documento">
-					<i class="fa fa-floppy-o"></i>
-					Grabar
-				</button>
-				
-				&nbsp; &nbsp;
-				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_documento">
-					<i class="fa fa-mail-forward"></i>
-					Cancelar
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
 <script> var requerimiento = JSON.parse('${requerimiento}'); </script>
