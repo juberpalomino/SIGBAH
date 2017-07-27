@@ -456,11 +456,39 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-
-
-		
+	listarTablaDonaciones();
+	
 		
 	}
+}
+
+function listarTablaDonaciones() {
+
+	console.log($('#sel_anio').val());
+	console.log($('#txt_cod_ddi').val());
+	console.log($('#sel_mes').val());
+	console.log($('#sel_estado').val());
+	
+	var params = { 
+		codigoAnio : $('#sel_anio').val(),
+		codigoDdi : $('#txt_cod_ddi').val(),
+		codigoMes : $('#sel_mes').val(),
+		codigoEstado : $('#sel_estado').val()
+	};
+	
+	loadding(true);
+
+	consultarAjax('GET', '/donaciones/registro-donaciones/listarDonaciones', params, function(respuesta) {
+	
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarControlCalidad(respuesta);
+		}
+		loadding(false);
+	});
+		
+	
 }
 
 function listarControlCalidad(respuesta) {
@@ -483,6 +511,8 @@ function listarControlCalidad(respuesta) {
 			}
 		}, {
 			data : 'codigoAnio'
+		}, {
+			data : 'codigoMes'
 		}, {
 			data : 'codigoDdi'
 		}, {

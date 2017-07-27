@@ -7,6 +7,7 @@ import pe.com.sigbah.common.bean.DocumentoDonacionBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
 import pe.com.sigbah.common.bean.DonacionesIngresoBean;
+import pe.com.sigbah.common.bean.DonacionesSalidaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoDonacionBean;
 import pe.com.sigbah.common.bean.ProductoDonacionIngresoBean;
@@ -86,6 +87,8 @@ public interface DonacionService {
 	public abstract ProductoDonacionBean eliminarProductoDonacion(ProductoDonacionBean productoDonacionBean) throws Exception;
 	
 	public abstract DocumentoDonacionBean insertarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception;
+	
+	public abstract DocumentoDonacionBean actualizarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception;
 	
 	public abstract List<DocumentoDonacionBean> listarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception;
 	
@@ -192,6 +195,62 @@ public interface DonacionService {
 	 * @throws Exception
 	 */
 	public abstract DocumentoIngresoBean eliminarDocumentoIngresoDonacion(DocumentoIngresoBean documentoIngresoBean) throws Exception;
+
+
+	/**
+	 * @param itemBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionBean> listarProductosDonacion(DonacionesIngresoBean itemBean) throws Exception;
+
+
+	/**
+	 * @param donacionesIngresoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DonacionesIngresoBean actualizarRegistroDonacionIngreso(DonacionesIngresoBean donacionesIngresoBean) throws Exception;
+
+
+	/**
+	 * @param documentoIngresoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentoIngresoBean actualizarDocumentoDonacionIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception;
+
+
+	/**
+	 * @param productoDonacionIngresoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoDonacionIngresoBean actualizarProductoDonacionIngreso(ProductoDonacionIngresoBean productoDonacionIngresoBean) throws Exception;
+
+
+	/**
+	 * @param itemBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarSalida(ItemBean itemBean) throws Exception;
+
+
+	/**
+	 * @param donacionesSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DonacionesSalidaBean> listarSalidaDonaciones(DonacionesSalidaBean donacionesSalidaBean) throws Exception;
+
+
+	/**
+	 * @param donacionesSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DonacionesSalidaBean obtenerCorrelativoOrdenSalida(DonacionesSalidaBean donacionesSalidaBean) throws Exception;
 
 
 

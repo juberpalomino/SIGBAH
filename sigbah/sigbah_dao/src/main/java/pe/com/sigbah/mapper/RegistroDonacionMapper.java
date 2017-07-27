@@ -25,7 +25,7 @@ public class RegistroDonacionMapper implements RowMapper<DonacionesBean> {
 		DonacionesBean donacionesBean = new DonacionesBean();
 		donacionesBean.setIdDonacion(rs.getInt("IDE_DONACION"));
 		donacionesBean.setCodigoDonacion(rs.getString("COD_DONACION"));
-		donacionesBean.setFechaEmision(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, rs.getDate("FEC_EMISION")));
+		donacionesBean.setFechaEmision(rs.getString("FEC_EMISION"));
 		donacionesBean.setIdEstado(rs.getInt("FK_IDE_ESTADO"));
 		donacionesBean.setCodigoAnio(rs.getString("COD_ANIO"));
 		donacionesBean.setIdDee(rs.getInt("IDE_DEE"));
@@ -44,6 +44,7 @@ public class RegistroDonacionMapper implements RowMapper<DonacionesBean> {
 		donacionesBean.setIdPersonal(rs.getInt("FK_IDE_PERSONAL"));
 		donacionesBean.setTextoa(rs.getString("BLOQUE_TEXTO1"));
 		donacionesBean.setTextob(rs.getString("BLOQUE_TEXTO2"));
+		donacionesBean.setTextoCodigo(rs.getString("COD_DONACION_CONCATENADO"));
 
 		return donacionesBean;
 	}

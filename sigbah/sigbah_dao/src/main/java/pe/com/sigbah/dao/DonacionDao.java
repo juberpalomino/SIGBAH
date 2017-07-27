@@ -7,6 +7,7 @@ import pe.com.sigbah.common.bean.DocumentoDonacionBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
 import pe.com.sigbah.common.bean.DonacionesIngresoBean;
+import pe.com.sigbah.common.bean.DonacionesSalidaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoDonacionBean;
 import pe.com.sigbah.common.bean.ProductoDonacionIngresoBean;
@@ -78,6 +79,8 @@ public interface DonacionDao {
 	
 	public abstract DocumentoDonacionBean insertarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception;
 	
+	public abstract DocumentoDonacionBean actualizarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception;
+	
 	public abstract List<DocumentoDonacionBean> listarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception;
 	
 	public abstract DocumentoDonacionBean eliminarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception;
@@ -142,7 +145,7 @@ public interface DonacionDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract List<ProductoDonacionBean> listarProductosDonacion(ItemBean itemBean) throws Exception;
+	public abstract List<ProductoDonacionBean> listarProductosDonacion(DonacionesIngresoBean itemBean) throws Exception;
 
 
 	/**
@@ -191,6 +194,54 @@ public interface DonacionDao {
 	 * @throws Exception
 	 */
 	public abstract DocumentoIngresoBean eliminarDocumentoIngresoDonacion(DocumentoIngresoBean documentoDonacionBean) throws Exception;
+
+
+	/**
+	 * @param donacionesIngresoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DonacionesIngresoBean actualizarRegistroDonacionIngreso(DonacionesIngresoBean donacionesIngresoBean) throws Exception;
+
+
+	/**
+	 * @param documentoDonacionBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentoIngresoBean actualizarDocumentoDonacionIngreso(DocumentoIngresoBean documentoDonacionBean) throws Exception;
+
+
+	/**
+	 * @param productoDonacionIngresoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoDonacionIngresoBean actualizarProductoDonacionIngreso(ProductoDonacionIngresoBean productoDonacionIngresoBean) throws Exception;
+
+
+	/**
+	 * @param itemBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarSalida(ItemBean itemBean) throws Exception;
+
+
+	/**
+	 * @param donacionesSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DonacionesSalidaBean> listarSalidaDonaciones(DonacionesSalidaBean donacionesSalidaBean) throws Exception;
+
+
+	/**
+	 * @param donacionesIngresoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DonacionesSalidaBean obtenerCorrelativoOrdenSalida(DonacionesSalidaBean donacionesIngresoBean) throws Exception;
 	
 	
 	

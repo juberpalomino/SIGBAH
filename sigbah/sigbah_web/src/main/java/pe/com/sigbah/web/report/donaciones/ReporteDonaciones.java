@@ -41,12 +41,13 @@ public class ReporteDonaciones implements Serializable {
 	        
 	        sheet.setColumnWidth(1, 1500);
 	        sheet.setColumnWidth(2, 2000);
-	        sheet.setColumnWidth(3, 5000);
+	        sheet.setColumnWidth(3, 2000);
 	        sheet.setColumnWidth(4, 5000);
-	        sheet.setColumnWidth(5, 8000);
-	        sheet.setColumnWidth(6, 5000);
-			sheet.setColumnWidth(7, 6000);
-			sheet.setColumnWidth(8, 4000);
+	        sheet.setColumnWidth(5, 5000);
+	        sheet.setColumnWidth(6, 8000);
+	        sheet.setColumnWidth(7, 5000);
+			sheet.setColumnWidth(8, 6000);
+			sheet.setColumnWidth(9, 4000);
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
@@ -75,23 +76,26 @@ public class ReporteDonaciones implements Serializable {
 	        row1.createCell(2).setCellValue("Año");
 	        row1.getCell(2).setCellStyle(style_header);
 	        
-	        row1.createCell(3).setCellValue("DDI");
+	        row1.createCell(3).setCellValue("Mes");
 	        row1.getCell(3).setCellStyle(style_header);
 	        
-	        row1.createCell(4).setCellValue("Nro Donación");
+	        row1.createCell(4).setCellValue("DDI");
 	        row1.getCell(4).setCellStyle(style_header);
 	        
-	        row1.createCell(5).setCellValue("Fecha");
-	        row1.getCell(5).setCellStyle(style_header);
-	        
-	        row1.createCell(6).setCellValue("Pais Origen");
+	        row1.createCell(5).setCellValue("Nro Donación");
 	        row1.getCell(6).setCellStyle(style_header);
 	        
-	        row1.createCell(7).setCellValue("Donante");
+	        row1.createCell(6).setCellValue("Fecha");
+	        row1.getCell(6).setCellStyle(style_header);
+	        
+	        row1.createCell(7).setCellValue("Pais Origen");
 	        row1.getCell(7).setCellStyle(style_header);
 	        
-	        row1.createCell(8).setCellValue("Estado");
+	        row1.createCell(8).setCellValue("Donante");
 	        row1.getCell(8).setCellStyle(style_header);
+	        
+	        row1.createCell(9).setCellValue("Estado");
+	        row1.getCell(9).setCellStyle(style_header);
 	       
 	        int row = 1;
 
@@ -113,23 +117,26 @@ public class ReporteDonaciones implements Serializable {
 		        rows.createCell(2).setCellValue(donacion.getCodigoAnio());
 		        rows.getCell(2).setCellStyle(style_cell);
 		        
-		        rows.createCell(3).setCellValue(donacion.getCodigoDdi());
+		        rows.createCell(3).setCellValue(donacion.getCodigoMes());
 		        rows.getCell(3).setCellStyle(style_cell);
 		        
-		        rows.createCell(4).setCellValue(donacion.getCodigoDonacion());
+		        rows.createCell(4).setCellValue(donacion.getCodigoDdi());
 		        rows.getCell(4).setCellStyle(style_cell);
 		        
-		        rows.createCell(5).setCellValue(donacion.getFechaEmision());
+		        rows.createCell(5).setCellValue(donacion.getCodigoDonacion());
 		        rows.getCell(5).setCellStyle(style_cell);
 		        
-		        rows.createCell(6).setCellValue(donacion.getNombrePais());
+		        rows.createCell(6).setCellValue(donacion.getFechaEmision());
 		        rows.getCell(6).setCellStyle(style_cell);
 		        
-		        rows.createCell(7).setCellValue(donacion.getNombreDonante());
+		        rows.createCell(7).setCellValue(donacion.getNombrePais());
 		        rows.getCell(7).setCellStyle(style_cell);
 		        
-		        rows.createCell(8).setCellValue(donacion.getNombreEstado());
+		        rows.createCell(8).setCellValue(donacion.getNombreDonante());
 		        rows.getCell(8).setCellStyle(style_cell);
+		        
+		        rows.createCell(9).setCellValue(donacion.getNombreEstado());
+		        rows.getCell(9).setCellStyle(style_cell);
 	            
 	            row++;	
 	        }

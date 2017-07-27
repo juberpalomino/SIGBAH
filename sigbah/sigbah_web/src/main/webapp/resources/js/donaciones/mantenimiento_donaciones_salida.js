@@ -42,7 +42,7 @@ $(document).ready(function() {
 			
 			frm_dat_generales.data('bootstrapValidator').resetForm();
 			
-			cargarTipoMovimiento(val_tip_movimiento, true);
+			//cargarTipoMovimiento(val_tip_movimiento, true);
 			
 			$('#sel_cod_donacion').val('');
 			$('#txt_tipo_donacion').val('');
@@ -57,21 +57,54 @@ $(document).ready(function() {
 			$('#txt_nro_placa').val('');
 			$('#sel_responsable').val('');
 			
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_cod_donacion');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_tipo_donacion');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_donante');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_representante');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_control_calidad');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_almacen');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_cod_donacion');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_tipo_donacion');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_donante');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_representante');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_control_calidad');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_almacen');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_med_transporte');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_llegada');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
+//			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_responsable');
+			
+			frm_dat_generales.data('bootstrapValidator').resetForm();
+			
+			cargarTipoMovimiento(val_tip_movimiento);
+			
+			$('#sel_ddi').val('');
+			$('input[name=rb_tie_ate_gobierno]').prop('checked', false);
+			$('#sel_gore').val('');
+			$('#sel_departamento').val('');
+			
+			$('#sel_provincia').html('');
+			$('#sel_distrito').html('');
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
+			
+			$('#sel_med_transporte').val('');
+			$('#sel_emp_transporte').html('');
+			$('#txt_nro_placa').val('');
+			$('#txt_fec_entrega').val('');
+			$('#sel_chofer').val('');
+			
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ddi');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'rb_tie_ate_gobierno');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_gore');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_departamento');
+			
 			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_med_transporte');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_llegada');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
 			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_nro_placa');
-			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_responsable');
-
+			frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fec_entrega');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
 		}
 	});
+	
+	$('input[type=radio][name=rb_tie_ate_gobierno]').change(function() {
+		cargarTipoAtencion(this.value);
+    });
 	
 	$('#btn_grabar').click(function(e) {
 		e.preventDefault();
@@ -553,6 +586,54 @@ $(document).ready(function() {
 //		});
 //	}
 	
+	$('#sel_ddi').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			cargarDatosDdiDestino(codigo, null, null);
+		} else {
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
+		}
+	});
+	
+	$('#sel_gore').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			cargarDatosRegionalDestino(codigo, null, null);
+		} else {
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
+		}
+	});
+	
+	$('#sel_departamento').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			cargarProvincia(codigo, null);
+		} else {
+			$('#sel_provincia').html('');
+		}
+	});
+	
+	$('#sel_provincia').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {						
+			cargarDistrito(codigo, null);
+		} else {
+			$('#sel_distrito').html('');
+		}
+	});
+	
+	$('#sel_distrito').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {
+			cargarDatosLocalDestino(codigo, null, null);
+		} else {
+			$('#sel_alm_destino').html('');
+			$('#sel_res_recepcion').html('');
+		}
+	});
+	
 	$('#sel_cod_donacion').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {
@@ -750,17 +831,18 @@ $(document).ready(function() {
 
 function inicializarDatos() {
 		
-  	$('#li_reg_donaciones_ingresos').addClass('active');
+	$('#li_reg_donaciones_salidas').addClass('active');
 	$('#ul_donaciones').css('display', 'block');
-	$('#li_reg_orden_ingresos').attr('class', 'active');
-	$('#li_reg_orden_ingresos').closest('li').children('a').attr('href', '#');
+	$('#ul_don_salidas').css('display', 'block');
+	$('#li_reg_donaciones_salidas').attr('class', 'active');
+	$('#li_reg_donaciones_salidas').closest('li').children('a').attr('href', '#');
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		
-		$('#txt_cod_ingreso').val(donaciones.codIngreso);
-		$('#txt_nro_ingreso').val(donaciones.nroOrdenIngreso);
+		$('#txt_cod_ingreso').val(donaciones.codSalida);
+		$('#txt_nro_salida').val(donaciones.nroOrdenSalida);
 		$('#txt_cod_id').val(donaciones.codigoDonacion);
 		$('#txt_anio').val(donaciones.codigoAnio);
 		$('#txt_ddi').val(donaciones.nombreDdi);
@@ -902,6 +984,7 @@ function inicializarDatos() {
 			$('#li_alimentarios').addClass('disabled');
 			$('#li_no_alimentarios').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
+			$('#li_productos').addClass('disabled');
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
 			
 			$('#txt_fecha').datepicker('setDate', new Date());
@@ -931,7 +1014,7 @@ function inicializarDatos() {
 					$('#txt_representante').val('');
 				}			
 			}
-			
+			cargarTipoMovimiento($('#sel_movimiento').val());
  
 			
 	//		listarDetalleDocumentos(new Object());
@@ -1383,105 +1466,310 @@ function listarOpcionSalida(idAlmacenProcedencia, idsalida ){
 	}
 }
 
-function cargarTipoMovimiento(val_tip_movimiento, indicador) {
-	
-	$('#div_det_nro_ord_compra').hide();
-	
-	$('#txt_det_ord_compra').val('');
-	//DONACIONES
-	if (val_tip_movimiento == '11' || val_tip_movimiento == '12' || val_tip_movimiento == '13') {
-		
-		$('#sel_cod_donacion').prop('disabled', false);
-		$('#txt_tipo_donacion').prop('disabled', false);
-		$('#txt_donante').prop('disabled', false);
-		$('#txt_representante').prop('disabled', false);
-		
-		$('#sel_control_calidad').prop('disabled', false);
-		
-		$('#sel_almacen').prop('disabled', true);
-		$('#sel_salida').prop('disabled', true);
-		
-		$('#sel_med_transporte').prop('disabled', false);
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_fec_llegada').prop('disabled', false);
-		$('#sel_chofer').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
-		
-		$('#sel_responsable').prop('disabled', false);
-		
-		
-		//TRANSFERENCIA INTERNA, TRANSFERENCIA ENTRE ALMACENES
-	} else if (val_tip_movimiento == '4' || val_tip_movimiento == '3') {
-		$('#sel_cod_donacion').prop('disabled', true);
-		$('#txt_tipo_donacion').prop('disabled', true);
-		$('#txt_tipo_donacion').prop('readonly', true);
-		$('#txt_donante').prop('disabled', true);
-		$('#txt_donante').prop('readonly', true);
-		$('#txt_representante').prop('disabled', true);
-		$('#txt_representante').prop('readonly', true);
-		
-		$('#sel_control_calidad').prop('disabled', false);
-		
-		$('#sel_almacen').prop('disabled', false);
-		$('#sel_salida').prop('disabled', false);
-		
-		$('#sel_med_transporte').prop('disabled', false);
-		$('#sel_emp_transporte').prop('disabled', false);
-		$('#txt_fec_llegada').prop('disabled', false);
-		$('#sel_chofer').prop('disabled', false);
-		$('#txt_nro_placa').prop('disabled', false);
-		
-		$('#sel_responsable').prop('disabled', false);
-		
-		//INVENTARIO INICIAL
-	} else if (val_tip_movimiento == '7') {
-		$('#sel_cod_donacion').prop('disabled', false);
-		$('#txt_tipo_donacion').prop('disabled', false);
-		$('#txt_donante').prop('disabled', false);
-		$('#txt_representante').prop('disabled', false);
-		
-		$('#sel_control_calidad').prop('disabled', true);
-		
-		$('#sel_almacen').prop('disabled', true);
-		$('#sel_salida').prop('disabled', true);
-		
-		$('#sel_med_transporte').prop('disabled', true);
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_fec_llegada').prop('disabled', true);
-		if (!$('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').addClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-		
-		$('#sel_responsable').prop('disabled', true);
-		
-		//AJUSTES POR INVENTARIO, AJUSTES POR IMPORTE 
-	} else if (val_tip_movimiento == '1' || val_tip_movimiento == '9') {
-		
-		$('#sel_cod_donacion').prop('disabled', true);
-		$('#txt_tipo_donacion').prop('disabled', true);
-		$('#txt_donante').prop('disabled', true);
-		$('#txt_representante').prop('disabled', true);
-		
-		$('#sel_control_calidad').prop('disabled', true);
-		
-		$('#sel_almacen').prop('disabled', true);
-		$('#sel_salida').prop('disabled', true);
-		
-		$('#sel_med_transporte').prop('disabled', true);
-		$('#sel_emp_transporte').prop('disabled', true);
-		$('#txt_fec_llegada').prop('disabled', true);
-		if (!$('#txt_fec_llegada').hasClass('mod-readonly')) {
-			$('#txt_fec_llegada').addClass('mod-readonly');
-		}
-		$('#sel_chofer').prop('disabled', true);
-		$('#txt_nro_placa').prop('disabled', true);
-		
-		$('#sel_responsable').prop('disabled', true);
+//function cargarTipoMovimiento(val_tip_movimiento, indicador) {
+//	
+//	$('#div_det_nro_ord_compra').hide();
+//	
+//	$('#txt_det_ord_compra').val('');
+//	//DONACIONES
+//	if (val_tip_movimiento == '11' || val_tip_movimiento == '12' || val_tip_movimiento == '13') {
+//		
+//		$('#sel_cod_donacion').prop('disabled', false);
+//		$('#txt_tipo_donacion').prop('disabled', false);
+//		$('#txt_donante').prop('disabled', false);
+//		$('#txt_representante').prop('disabled', false);
+//		
+//		$('#sel_control_calidad').prop('disabled', false);
+//		
+//		$('#sel_almacen').prop('disabled', true);
+//		$('#sel_salida').prop('disabled', true);
+//		
+//		$('#sel_med_transporte').prop('disabled', false);
+//		$('#sel_emp_transporte').prop('disabled', false);
+//		$('#txt_fec_llegada').prop('disabled', false);
+//		$('#sel_chofer').prop('disabled', false);
+//		$('#txt_nro_placa').prop('disabled', false);
+//		
+//		$('#sel_responsable').prop('disabled', false);
+//		
+//		
+//		//TRANSFERENCIA INTERNA, TRANSFERENCIA ENTRE ALMACENES
+//	} else if (val_tip_movimiento == '4' || val_tip_movimiento == '3') {
+//		$('#sel_cod_donacion').prop('disabled', true);
+//		$('#txt_tipo_donacion').prop('disabled', true);
+//		$('#txt_tipo_donacion').prop('readonly', true);
+//		$('#txt_donante').prop('disabled', true);
+//		$('#txt_donante').prop('readonly', true);
+//		$('#txt_representante').prop('disabled', true);
+//		$('#txt_representante').prop('readonly', true);
+//		
+//		$('#sel_control_calidad').prop('disabled', false);
+//		
+//		$('#sel_almacen').prop('disabled', false);
+//		$('#sel_salida').prop('disabled', false);
+//		
+//		$('#sel_med_transporte').prop('disabled', false);
+//		$('#sel_emp_transporte').prop('disabled', false);
+//		$('#txt_fec_llegada').prop('disabled', false);
+//		$('#sel_chofer').prop('disabled', false);
+//		$('#txt_nro_placa').prop('disabled', false);
+//		
+//		$('#sel_responsable').prop('disabled', false);
+//		
+//		//INVENTARIO INICIAL
+//	} else if (val_tip_movimiento == '7') {
+//		$('#sel_cod_donacion').prop('disabled', false);
+//		$('#txt_tipo_donacion').prop('disabled', false);
+//		$('#txt_donante').prop('disabled', false);
+//		$('#txt_representante').prop('disabled', false);
+//		
+//		$('#sel_control_calidad').prop('disabled', true);
+//		
+//		$('#sel_almacen').prop('disabled', true);
+//		$('#sel_salida').prop('disabled', true);
+//		
+//		$('#sel_med_transporte').prop('disabled', true);
+//		$('#sel_emp_transporte').prop('disabled', true);
+//		$('#txt_fec_llegada').prop('disabled', true);
+//		if (!$('#txt_fec_llegada').hasClass('mod-readonly')) {
+//			$('#txt_fec_llegada').addClass('mod-readonly');
+//		}
+//		$('#sel_chofer').prop('disabled', true);
+//		$('#txt_nro_placa').prop('disabled', true);
+//		
+//		$('#sel_responsable').prop('disabled', true);
+//		
+//		//AJUSTES POR INVENTARIO, AJUSTES POR IMPORTE 
+//	} else if (val_tip_movimiento == '1' || val_tip_movimiento == '9') {
+//		
+//		$('#sel_cod_donacion').prop('disabled', true);
+//		$('#txt_tipo_donacion').prop('disabled', true);
+//		$('#txt_donante').prop('disabled', true);
+//		$('#txt_representante').prop('disabled', true);
+//		
+//		$('#sel_control_calidad').prop('disabled', true);
+//		
+//		$('#sel_almacen').prop('disabled', true);
+//		$('#sel_salida').prop('disabled', true);
+//		
+//		$('#sel_med_transporte').prop('disabled', true);
+//		$('#sel_emp_transporte').prop('disabled', true);
+//		$('#txt_fec_llegada').prop('disabled', true);
+//		if (!$('#txt_fec_llegada').hasClass('mod-readonly')) {
+//			$('#txt_fec_llegada').addClass('mod-readonly');
+//		}
+//		$('#sel_chofer').prop('disabled', true);
+//		$('#txt_nro_placa').prop('disabled', true);
+//		
+//		$('#sel_responsable').prop('disabled', true);
+//
+//	}
+//	$('#txt_tipo_donacion').prop('readonly', true);
+//	$('#txt_donante').prop('readonly', true);
+//	$('#txt_representante').prop('readonly', true);
+//}
 
+function cargarTipoMovimiento(val_tip_movimiento) {
+	if (val_tip_movimiento == '3') { // Transferencia entre Almacenes 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		$('#div_destino_general').show();
+		
+		$('#sel_ddi').prop('disabled', false);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
+		$('#sel_alm_destino').prop('disabled', false);
+		$('#sel_res_recepcion').prop('disabled', false);
+		
+		$('#sel_med_transporte').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+		$('#txt_fec_entrega').prop('disabled', false);
+		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').removeClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', false);
+		
+	} else if (val_tip_movimiento == '4') { // Transferencia Interna
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		$('#div_destino_general').show();
+
+		$('#sel_ddi').prop('disabled', false);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
+		$('#sel_alm_destino').prop('disabled', false);
+		$('#sel_res_recepcion').prop('disabled', false);
+		
+		$('#sel_med_transporte').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+		$('#txt_fec_entrega').prop('disabled', false);
+		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').removeClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', false);
+		
+	} else if (val_tip_movimiento == '5') { // Atención de Emergencias 
+		$('#div_ddi_destino').hide();
+		$('#div_gob_destino').show();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		$('#div_destino_general').show();
+
+		$('#sel_ddi').prop('disabled', false);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', false);	
+		$('#sel_alm_destino').prop('disabled', false);
+		$('#sel_res_recepcion').prop('disabled', false);
+		
+		$('#sel_med_transporte').prop('disabled', false);
+		$('#sel_emp_transporte').prop('disabled', false);
+		$('#txt_nro_placa').prop('disabled', false);
+		$('#txt_fec_entrega').prop('disabled', false);
+		if ($('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').removeClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', false);		
+		
+	} else if (val_tip_movimiento == '1') { // Ajustes por inventario 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		$('#div_destino_general').show();
+
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
+		
+	} else if (val_tip_movimiento == '9') { // Ajuste por Importe 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		$('#div_destino_general').show();
+
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
+		
+	} else if (val_tip_movimiento == '2') { // Baja de Bienes 
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		$('#div_destino_general').show();
+
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
+		
+	} else if (val_tip_movimiento == '10') { // Muestras
+		$('#div_ddi_destino').show();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		$('#div_destino_general').show();
+
+		$('#sel_ddi').prop('disabled', true);
+		$('input[name=rb_tie_ate_gobierno]').prop('disabled', true);	
+		$('#sel_alm_destino').prop('disabled', true);
+		$('#sel_res_recepcion').prop('disabled', true);
+		
+		$('#sel_med_transporte').prop('disabled', true);
+		$('#sel_emp_transporte').prop('disabled', true);
+		$('#txt_nro_placa').prop('disabled', true);
+		$('#txt_fec_entrega').prop('disabled', true);
+		if (!$('#txt_fec_entrega').hasClass('mod-readonly')) {
+			$('#txt_fec_entrega').addClass('mod-readonly');
+		}
+		$('#sel_chofer').prop('disabled', true);
+	}else if(val_tip_movimiento == ''){
+		$('#div_destino_general').hide();
+		$('#div_ddi_destino').hide();
+		$('#div_gob_destino').hide();
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').hide();
+		
 	}
-	$('#txt_tipo_donacion').prop('readonly', true);
-	$('#txt_donante').prop('readonly', true);
-	$('#txt_representante').prop('readonly', true);
+}
+
+function cargarTipoAtencion(valor) {
+	if (valor == 'R') {
+		$('#div_gore_destino').show();
+		$('#div_ubi_destino').hide();
+	} else if (valor == 'L') {
+		$('#div_gore_destino').hide();
+		$('#div_ubi_destino').show();
+	}
+}
+
+function cargarDatosDdiDestino(codigo, codigoAlmacen, codigoResponsable) {
+	var params = { 
+		icodigo : codigo
+	};			
+	loadding(true);
+	consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarAlmacenDestino', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			});
+			$('#sel_alm_destino').html(options);
+			if (codigoAlmacen != null) {
+	        	$('#sel_alm_destino').val(codigoAlmacen);       	
+	        }
+		}
+		loadding(false);
+		
+		consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarResponsableRecepcion', {icodigo : codigo}, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+				$.each(respuesta, function(i, item) {
+					options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				});
+				$('#sel_res_recepcion').html(options);
+				if (codigoResponsable != null) {
+					$('#sel_res_recepcion').val(codigoResponsable);       	
+				}
+			}
+		});
+		
+	});
 }

@@ -25,11 +25,11 @@ public class RegistroDonacionIngresoMapper implements RowMapper<DonacionesIngres
 		DonacionesIngresoBean donacionesBean = new DonacionesIngresoBean();
 		donacionesBean.setIdIngreso(rs.getInt("IDE_INGRESO"));
 		donacionesBean.setNroOrdenIngreso(rs.getString("NRO_ORDEN_INGRESO"));
-		donacionesBean.setFechaEmision(rs.getString("FEC_EMISION"));
+		donacionesBean.setFechaEmision(rs.getString("FECHA"));
 		donacionesBean.setIdTipoMovimiento(rs.getInt("FK_IDE_TIP_MOVIMIENTO"));
 		donacionesBean.setIdEstado(rs.getInt("FK_IDE_ESTADO"));
-		donacionesBean.setCodigoAnio(rs.getString("COD_ANIO"));
-		donacionesBean.setIdDdi(rs.getInt("IDE_DDI"));
+		donacionesBean.setCodigoAnio(rs.getString("ANIO"));
+		donacionesBean.setIdDdi(rs.getInt("DDI"));
 		donacionesBean.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
 		donacionesBean.setIdDonacion(rs.getInt("FK_IDE_DONACION"));		
 		donacionesBean.setTipoDonacion(rs.getString("TIPO_DONACION"));		
@@ -45,7 +45,9 @@ public class RegistroDonacionIngresoMapper implements RowMapper<DonacionesIngres
 		donacionesBean.setFechaLlegada(rs.getString("FECHA_LLEGADA"));
 		donacionesBean.setIdResponsable(rs.getInt("FK_IDE_RESPONSABLE"));
 		donacionesBean.setObservacion(rs.getString("OBSERVACION"));
-
+//		donacionesBean.setTextoCodigo(rs.getString("COD_DONACION_CONCATENADO"));
+		donacionesBean.setIdSalida(rs.getInt("FK_IDE_SALIDA"));
+		
 		return donacionesBean;
 	}
 

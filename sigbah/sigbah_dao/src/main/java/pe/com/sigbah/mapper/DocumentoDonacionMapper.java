@@ -27,7 +27,7 @@ public class DocumentoDonacionMapper implements RowMapper<DocumentoDonacionBean>
 		documento.setIdTipoDocumento(rs.getInt("IDE_TIP_DOCUMENTO"));
 		documento.setNroDocumento(rs.getString("NRO_DOCUMENTO"));
 		documento.setFecha(rs.getString("FEC_REGISTRO"));
-		documento.setDescripcion(rs.getString("OBSERVACION"));
+		documento.setObservacion(rs.getString("OBSERVACION"));
 		documento.setNombreArchivo(rs.getString("NOM_ARCHIVO"));
 		documento.setCodAlfresco(rs.getString("COD_ALFRESCO"));
 		return documento;

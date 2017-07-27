@@ -32,11 +32,13 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
+import pe.com.sigbah.common.bean.DocumentoDonacionIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoDonacionBean;
+import pe.com.sigbah.common.bean.ProductoDonacionIngresoBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.RegionDonacionBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
@@ -139,6 +141,7 @@ public class DonacionesIngresoController extends BaseController {
 	@RequestMapping(value = "/mantenimientoDonaciones/{codigo}", method = RequestMethod.GET)
     public String mantenimientoDonaciones(@PathVariable("codigo") Integer codigo,@PathVariable("codigo") Integer dato, Model model) {
         try {
+        	
         	DonacionesIngresoBean donacionesBean = new DonacionesIngresoBean();
         	List<ItemBean> listaDee1=null;
         	DonacionesIngresoBean datoDonaciones=new DonacionesIngresoBean();
@@ -152,9 +155,16 @@ public class DonacionesIngresoController extends BaseController {
         	if (!isNullInteger(codigo)) {
         	
         		donacionesBean = donacionService.obtenerDonacionIngresoXIdIngreso(codigo);
+        		donacionesBean.setNombreTipoDonacion(donacionesBean.getNombreTipoDonacion()==null?null:donacionesBean.getNombreTipoDonacion().trim());
         		donacionesBean.setNombreDdi(usuarioBean.getNombreDdi());
         		donacionesBean.setIdDdi(usuarioBean.getIdDdi());
             	donacionesBean.setCodigoDdi(usuarioBean.getCodigoDdi());
+            	donacionesBean.setTextoCodigo(usuarioBean.getIdDdi()+"-"+usuarioBean.getCodigoAlmacen()+"-"+donacionesBean.getNroOrdenIngreso());
+            	System.out.println("Almacen: "+donacionesBean.getIdAlmacen());
+            	System.out.println("DOnacion: "+donacionesBean.getIdDonacion());
+            	System.out.println("Movimiento: "+donacionesBean.getIdTipoMovimiento());
+            	model.addAttribute("lista_productos_donacion", donacionService.listarProductosDonacion(donacionesBean));
+            	
 //            	donacionesBean.setTextoCodigo(usuarioBean.getIdDdi()+"-"+donacionesBean.getCodigoDonacion());
 //        		//model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
 //            	
@@ -188,9 +198,9 @@ public class DonacionesIngresoController extends BaseController {
             	donacionesBean.setTextoCodigo(datosDonacion.getCodIngreso());
             	donacionesBean.setCodigoAnio(anioActual);
             	donacionesBean.setNombreDdi(usuarioBean.getNombreDdi());
-            	donacionesBean.setNroOrdenIngreso(datosDonacion.getNroOrdenIngreso());
+            	donacionesBean.setNroOrdenIngreso("");
             	donacionesBean.setCodIngreso(datosDonacion.getCodIngreso());
-            	
+           
             	//enviar 0 para listar dee
 
             	//model.addAttribute("lista_dee", generalService.listarDee(new ItemBean(Constantes.ZERO_INT)));
@@ -261,11 +271,15 @@ public class DonacionesIngresoController extends BaseController {
         	
         	model.addAttribute("lista_control_calidad", donacionService.listarControCalidad(new ItemBean(anioActual,codDdi)));
         	
-        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(idDdi)));
+        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(0)));
         	
         	model.addAttribute("lista_medio_transporte", generalService.listarMedioTransporte(new ItemBean()));
         	
         	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(idDdi)));
+        	
+        	model.addAttribute("lista_salida", donacionService.listarSalida(new ItemBean(idAlmacen)));
+        	
+        	
         	
         	/////////////////
         	
@@ -280,7 +294,7 @@ public class DonacionesIngresoController extends BaseController {
         	
         	model.addAttribute("lista_oficinas", generalService.listarOficinas(new ItemBean(Constantes.ZERO_INT)));
         	
-        	model.addAttribute("nombreDee", listaDee1.get(0).getDescripcion());
+        	//model.addAttribute("nombreDee", listaDee1.get(0).getDescripcion());
         	
         	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.THREE_INT)));
         	//falta pintar
@@ -363,16 +377,17 @@ public class DonacionesIngresoController extends BaseController {
 		}
 		return lista;
 	}
-	
-	@RequestMapping(value = "/listarPersonalOficina", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@RequestMapping(value = "/listarIngresoSalidas", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object listarPersonalOficina(HttpServletRequest request, HttpServletResponse response) {
+	public Object listarSalidas(HttpServletRequest request, HttpServletResponse response) {
 		List<ItemBean> lista = null;
 		try {			
 			ItemBean item = new ItemBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(item, request.getParameterMap());			
-			lista = generalService.listarPersonalOficina(item);
+			BeanUtils.populate(item, request.getParameterMap());	
+			//model.addAttribute("lista_salida", donacionService.listarSalida(new ItemBean(idAlmacen)));
+			lista = donacionService.listarSalida(new ItemBean(item.getIcodigo()));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -409,7 +424,7 @@ public class DonacionesIngresoController extends BaseController {
         	donacionesIngresoBean.setTipoOrigen("D");
 			if (!isNullInteger(donacionesIngresoBean.getIdIngreso())) {
 				//donacionesBean =donacionService.obtenerDonacionXIdDonacion(donacionesBean.getIdDonacion());
-				//donaciones = donacionService.actualizarRegistroDonacion(donacionesIngresoBean);
+				donaciones = donacionService.actualizarRegistroDonacionIngreso(donacionesIngresoBean);
 				donaciones.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 			} else {			
 				donaciones = donacionService.insertarRegistroDonacionIngreso(donacionesIngresoBean);			
@@ -756,12 +771,12 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarProductoDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarProductoDonacionIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		ProductoDonacionBean productoDonacion = null;
+		ProductoDonacionIngresoBean productoDonacion = null;
 		try {			
-			ProductoDonacionBean productoDonacionBean = new ProductoDonacionBean();
+			ProductoDonacionIngresoBean productoDonacionBean = new ProductoDonacionIngresoBean();
 
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);			
@@ -777,8 +792,17 @@ public class DonacionesIngresoController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	productoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-			
-        	productoDonacion = donacionService.insertarProductoDonacion(productoDonacionBean);
+        	productoDonacionBean.setIdDdi(usuarioBean.getIdDdi());
+        	productoDonacionBean.setCodDdi(usuarioBean.getCodigoDdi());
+        	productoDonacionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+        	productoDonacionBean.setCodAlmacen(usuarioBean.getCodigoAlmacen());
+        	System.out.println("IDINGRESODET: "+productoDonacionBean.getIdIngresoDet());
+        	if(productoDonacionBean.getIdIngresoDet().equals("") || productoDonacionBean.getIdIngresoDet()==0){
+        		productoDonacion = donacionService.insertarProductoDonacionIngreso(productoDonacionBean);
+        	}else{
+        		productoDonacion = donacionService.actualizarProductoDonacionIngreso(productoDonacionBean);
+        	}
+        	
 			
         	productoDonacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -798,12 +822,12 @@ public class DonacionesIngresoController extends BaseController {
 	@RequestMapping(value = "/listarProductoDonacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoDonacionBean> lista = null;
+		List<ProductoDonacionIngresoBean> lista = null;
 		try {			
-			ProductoDonacionBean producto = new ProductoDonacionBean();			
+			ProductoDonacionIngresoBean producto = new ProductoDonacionIngresoBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(producto, request.getParameterMap());			
-			lista = donacionService.listarProductoDonacion(producto);
+			lista = donacionService.listarProductoDonacionIngreso(producto);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -816,22 +840,22 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarProductoDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object eliminarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		ProductoDonacionBean producto = null;
+		ProductoDonacionIngresoBean producto = null;
 		try {			
-			System.out.println("PARAMETRO : "+request.getParameter("IdDetDonacion"));
-			String[] arrIdDetalleControlCalidad = request.getParameter("IdDetDonacion").split(Constantes.UNDERLINE);
+			System.out.println("PARAMETRO : "+request.getParameter("idIngresoDet"));
+			String[] arrIdDetalleControlCalidad = request.getParameter("idIngresoDet").split(Constantes.UNDERLINE);
 			for (String codigo : arrIdDetalleControlCalidad) {				
-				ProductoDonacionBean productoDonacionBean = new ProductoDonacionBean(getInteger(codigo));
-
+				ProductoDonacionIngresoBean productoDonacionBean = new ProductoDonacionIngresoBean();
+				productoDonacionBean.setIdIngresoDet(Integer.parseInt(codigo));
 				// Retorno los datos de session
 	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-	        	
+	        	System.out.println("PARAMETROrrrr : "+productoDonacionBean.getIdIngresoDet());
 	        	productoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-				producto = donacionService.eliminarProductoDonacion(productoDonacionBean);				
+				producto = donacionService.eliminarProductoDonacionIngreso(productoDonacionBean);				
 			}
 
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -848,15 +872,15 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarDocumentoDonacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarDocumentoDonacionIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarDocumentoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		List<DocumentoDonacionBean> lista = null;
+		List<DocumentoIngresoBean> lista = null;
 		try {			
-			DocumentoDonacionBean documento = new DocumentoDonacionBean();			
+			DocumentoIngresoBean documento = new DocumentoIngresoBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documento, request.getParameterMap());			
-			lista = donacionService.listarDocumentoDonacion(documento);
+			lista = donacionService.listarDocumentoDonacionIngreso(documento);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -891,12 +915,12 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarDocumentoDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarDocumentoDonacionIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarDocumentoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoDonacionBean documento = null;
+		DocumentoIngresoBean documento = null;
 		try {			
-			DocumentoDonacionBean documentoDonacionBean = new DocumentoDonacionBean();
+			DocumentoIngresoBean documentoDonacionBean = new DocumentoIngresoBean();
 			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documentoDonacionBean, request.getParameterMap());
@@ -905,10 +929,16 @@ public class DonacionesIngresoController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	documentoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-			
-        	documento = donacionService.insertarDocumentoDonacion(documentoDonacionBean);
-			
-        	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+        	System.out.println("IDDOCUMENTO: "+documentoDonacionBean.getIdDocumentoIngreso());
+        	if(documentoDonacionBean.getIdDocumentoIngreso().equals("") || documentoDonacionBean.getIdDocumentoIngreso()==0){
+        		documento = donacionService.insertarDocumentoDonacionIngreso(documentoDonacionBean);
+
+        	}else{
+        		documento = donacionService.actualizarDocumentoDonacionIngreso(documentoDonacionBean);
+
+        	}
+        	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));	
+        				
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -922,23 +952,24 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarDocumentoDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarDocumentoDonacionIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object eliminarDocumentoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoDonacionBean documento = null;
+		DocumentoIngresoBean documento = null;
 		try {			
 			String[] arrIdDocumentoDonacion = request.getParameter("arrIdDocumentoDonacion").split(Constantes.UNDERLINE);
-			Integer idDonacion = Integer.parseInt(request.getParameter("idDonacion"));
+			Integer idIngreso = Integer.parseInt(request.getParameter("idIngreso"));
 			System.out.println("ARRAY: "+request.getParameter("arrIdDocumentoDonacion"));
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
 			for (String codigo : arrIdDocumentoDonacion) {				
-				DocumentoDonacionBean documentoDonacionBean = new DocumentoDonacionBean();
-				System.out.println("ARRAYddd: "+idDonacion+"--"+codigo);
-				documentoDonacionBean.setIdDonacion(idDonacion);
-				documentoDonacionBean.setIdDocumentoDonacion(getInteger(codigo));
-	        	documento = donacionService.eliminarDocumentoDonacion(documentoDonacionBean);				
+				DocumentoIngresoBean documentoDonacionBean = new DocumentoIngresoBean();
+				System.out.println("ARRAYddd: "+idIngreso+"--"+codigo);
+				documentoDonacionBean.setIdIngreso(idIngreso);
+				documentoDonacionBean.setIdDocumentoIngreso(getInteger(codigo));
+				documentoDonacionBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
+	        	documento = donacionService.eliminarDocumentoIngresoDonacion(documentoDonacionBean);				
 			}
 
 			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -1047,19 +1078,19 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoDdi}/{codigoMes}/{codigoEstado}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarExcel/{codigoAnio}/{codigoDdi}/{codigoMes}/{codigoMov}", method = RequestMethod.GET)
 	@ResponseBody
 	public String exportarExcel(@PathVariable("codigoAnio") String codigoAnio, 
 								@PathVariable("codigoDdi") String codigoDdi, 
 								@PathVariable("codigoMes") String codigoMes, 
-								@PathVariable("codigoEstado") String codigoEstado, 
+								@PathVariable("codigoMov") String codigoMov, 
 								HttpServletResponse response) {
 	    try {
 	    	DonacionesBean donacionesBean = new DonacionesBean();
 	    	donacionesBean.setCodigoAnio(verificaParametro(codigoAnio));
 	    	donacionesBean.setCodigoDdi(verificaParametro(codigoDdi));
 	    	donacionesBean.setCodigoMes(verificaParametro(codigoMes));
-	    	donacionesBean.setCodigoEstado(verificaParametro(codigoEstado));
+	    	donacionesBean.setCodigoEstado(verificaParametro(codigoMov));
 			List<DonacionesBean> lista = donacionService.listarDonaciones(donacionesBean);
 	    	
 			String file_name = "Reporte_Donaciones";

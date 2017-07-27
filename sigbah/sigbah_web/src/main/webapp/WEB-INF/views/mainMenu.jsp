@@ -155,25 +155,27 @@
 					<li id="li_reg_donaciones" class="li_men_opcion">
 						<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/inicio">Registro de Donaciones</a>
 					</li>
-					<li id="li_reg_donaciones_ingresos" >
-						<a href="#">Ingresos</a>
-						<ul id="ul_reg_donaciones_ingresos">
-							<li id="li_reg_orden_ingresos" class="li_men_opcion">							
-								<a href="${pageContext.request.contextPath}/donacionesIngreso/registro-donacionesIngreso/inicio"><i class="fa fa-caret-right"></i>Orden de Ingreso - Donaciones</a>
-							</li>
-						</ul>
+					
+					<li id="li_reg_donaciones_ingresos" class="li_men_opcion">
+						<a href="${pageContext.request.contextPath}/donacionesIngreso/registro-donacionesIngreso/inicio">Orden de Ingreso</a>
 					</li>
+					
 					<li>
 						<a href="#">Salidas</a>
-						<ul>
-							<li class="li_men_opcion">
-								<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/salida"><i class="fa fa-caret-right"></i>Orden Salida - Donaciones</a>
+						<ul id="ul_don_salidas">
+							<li id="li_reg_donaciones_salidas" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/donacionesSalida/registro-donacionesSalida/inicio">
+									<i class="fa fa-caret-right"></i>Orden de Salida
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="${pageContext.request.contextPath}/donaciones/registro-donaciones/guiaRemision"><i class="fa fa-caret-right"></i>Guia de Remisión - Donaciones</a>
+							<li id="li_gui_remision" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/guia-remision/inicio/0">
+									<i class="fa fa-caret-right"></i>Guia de Remision
+								</a>
 							</li>
 						</ul>
 					</li>
+					
 					<li>
 						<a href="#">Reportes</a>
 						<ul>

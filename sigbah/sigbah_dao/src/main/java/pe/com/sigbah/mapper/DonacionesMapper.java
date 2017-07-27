@@ -28,6 +28,8 @@ public class DonacionesMapper implements RowMapper<DonacionesBean> {
 		donaciones.setFechaEmision(rs.getString("FECHA"));
 		donaciones.setNombrePais(rs.getString("PAIS"));
 		donaciones.setNombreEstado(rs.getString("ESTADO"));
+		donaciones.setNombreDonante(rs.getString("DONANTE"));
+		donaciones.setCodigoMes(rs.getString("Mes"));
 		return donaciones;
 	}
 

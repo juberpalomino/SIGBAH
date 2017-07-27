@@ -19,81 +19,49 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_nro_ord_compra : {
+			sel_ori_donacion : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Nº orden Compra.'
+						message : 'Debe seleccionar Procedencia de Donación.'
 					}
 				}
 			},
-			sel_tip_control : {
+			sel_dee : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Tipo de Control.'
+						message : 'Debe seleccionar El N° Dee.'
 					}
 				}
 			},
 			
-			// Datos del Origen / Destino - Reponsables
-			sel_ori_almacen : {
+
+			sel_ori_pais : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Almacén.'
+						message : 'Debe seleccionar País de Procedencia.'
 					}
 				}
 			},
-			sel_ori_en_almacen : {
+			sel_donante : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Encargado de Almacén.'
+						message : 'Debe seleccionar Donante.'
 					}
 				}
 			},
-			sel_inspector : {
+			sel_oficina : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Inspector.'
+						message : 'Debe seleccionar Oficina.'
 					}
 				}
 			},
 			
 			// Datos de Proveedor
-			sel_proveedor : {
+			sel_personal_oficina : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Proveedor.'
-					}
-				}
-			},
-			
-			// Datos del Transporte
-			sel_emp_transporte : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Empresa de Transporte.'
-					}
-				}
-			},
-			sel_chofer : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Chofer.'
-					}
-				}
-			},
-			txt_nro_placa : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar N° de Placa.'
-					}
-				}
-			},
-			
-			// Productos
-			rb_tip_bien : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Tipo de Bien.'
+						message : 'Debe seleccionar Personal Oficina.'
 					}
 				}
 			}
@@ -178,75 +146,61 @@ $(document).ready(function() {
 //		}
 //	});
 	
-//	frm_det_no_alimentarios.bootstrapValidator({
-//		framework : 'bootstrap',
-//		excluded : [':disabled', ':hidden'],
-//		fields : {
-//			sel_no_cat_producto : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Categoria de Producto.'
-//					}
-//				}
-//			},
-//			sel_no_producto : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Producto.'
-//					}
-//				}
-//			},
-//			txt_no_fec_vencimiento : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe ingresar Fecha Vencimiento.'
-//					}
-//				}
-//			},
-//			txt_no_can_lote : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe ingresar Cantidad de Lote.'
-//					}
-//				}
-//			},
-//			txt_no_can_muestra : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe ingresar Cantidad de Muestra.'
-//					}
-//				}
-//			},
-//			sel_no_primario : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Primario.'
-//					}
-//				}
-//			},
-//			sel_no_tecnicas : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Técnicas.'
-//					}
-//				}
-//			},
-//			sel_no_secundario : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Secundario.'
-//					}
-//				}
-//			},
-//			sel_no_conformidad : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Conformidad.'
-//					}
-//				}
-//			}
-//		}
-//	});
+	frm_det_productos.bootstrapValidator({
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			sel_cat_producto : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Categoria de Producto.'
+					}
+				}
+			},
+			sel_lis_producto : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Producto.'
+					}
+				}
+			},
+			txt_cantidad : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Cantidad.'
+					}
+				}
+			},
+			sel_monedas : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Tipo de Moneda.'
+					}
+				}
+			},
+			txt_imp_origen : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Importe Origen.'
+					}
+				}
+			},
+			txt_imp_soles : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Importe en Soles.'
+					}
+				}
+			},
+			txt_imp_dolares : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Importe en Dolares.'
+					}
+				}
+			}
+		}
+	});
 //	
 	frm_det_documentos.bootstrapValidator({
 		framework : 'bootstrap',

@@ -1,12 +1,12 @@
 package pe.com.sigbah.common.bean;
 
 /**
- * @className: DonacionesIngresoBean.java
+ * @className: DonacionesSalidaBean.java
  * @description: 
- * @date: 20 de jul. de 2017
+ * @date: 27 de jul. de 2017
  * @author: ARCHY.
  */
-public class DonacionesIngresoBean extends BaseOutputBean {
+public class DonacionesSalidaBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	private String codigoAnio;
@@ -22,10 +22,10 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 	private String nombreAlmacen;
 	private Integer idDonacion;
 	private String nombreDonante;
-	private String nroOrdenIngreso;
+	private String nroOrdenSalida;
 	private String nombreMovimiento;
 	private Integer idMovimiento;
-	private String codIngreso;
+	private String codSalida;
 	private Integer idMedTransporte;
 	private Integer idTipoTransporte;
 	private Integer idControlCalidad;
@@ -41,22 +41,23 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 	private String nombreTipoDonacion;
 	private Integer idSalida;
 	
-	private String codigoEstado;
-	private Integer idPaisDonante;
-	private String tipoDonante;
-	private String tipoOrigenDonante;
-	private Integer idOficina;
-	private Integer idPersonal;
-	private Integer idDonante;
-	private String finalidad;
-	private String observacion;
-	private String textoa;
-	private String textob;
-	private String tipoDonacion;
-	private Integer idDee;
-	private String textoCodigo;  
-	private String nombreDeclaratoria;
-	private String representante;
+//	private String codigoEstado;
+//	private Integer idPaisDonante;
+//	private String tipoDonante;
+//	private String tipoOrigenDonante;
+//	private Integer idOficina;
+//	private Integer idPersonal;
+//	private Integer idDonante;
+//	private String finalidad;
+//	private String observacion;
+//	private String textoa;
+//	private String textob;
+//	private String tipoDonacion;
+//	private Integer idDee;
+//	private String textoCodigo;  
+//	private String nombreDeclaratoria;
+//	private String representante;
+	private String nroGuiaRemision;
 	private String nombreEstado;
 	/**
 	 * @return the codigoAnio
@@ -193,195 +194,195 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 	/**
 	 * @return the codigoEstado
 	 */
-	public String getCodigoEstado() {
-		return codigoEstado;
+//	public String getCodigoEstado() {
+//		return codigoEstado;
+//	}
+//	/**
+//	 * @param codigoEstado the codigoAlmacen to set
+//	 */
+//	public void setCodigoEstado(String codigoEstado) {
+//		this.codigoEstado = codigoEstado;
+//	}
+//	/**
+//	 * @param idPaisDonante the idPaisDonante to set
+//	 */
+//	public void setIdPaisDonante(Integer idPaisDonante) {
+//		this.idPaisDonante = idPaisDonante;
+//	}
+//	/**
+//	 * @return the idPaisDonante
+//	 */
+//	public Integer getIdPaisDonante() {
+//		return idPaisDonante;
+//	}
+//	/**
+//	 * @param tipoDonante the tipoDonante to set
+//	 */
+//	public void setTipoDonante(String tipoDonante) {
+//		this.tipoDonante = tipoDonante;
+//	}
+//	/**
+//	 * @return the tipoDonante
+//	 */
+//	public String getTipoDonante() {
+//		return tipoDonante;
+//	}
+//	/**
+//	 * @param tipoOrigenDonante the tipoOrigenDonante to set
+//	 */
+//	public void setTipoOrigenDonante(String tipoOrigenDonante) {
+//		this.tipoOrigenDonante = tipoOrigenDonante;
+//	}
+//	/**
+//	 * @return the tipoOrigenDonante
+//	 */
+//	public String getTipoOrigenDonante() {
+//		return tipoOrigenDonante;
+//	}
+//	/**
+//	 * @param idOficina the idOficina to set
+//	 */
+//	public void setIdOficina(Integer idOficina) {
+//		this.idOficina = idOficina;
+//	}
+//	/**
+//	 * @return the idOficina
+//	 */
+//	public Integer getIdOficina() {
+//		return idOficina;
+//	}
+//	/**
+//	 * @param idPersonal the idPersonal to set
+//	 */
+//	public void setIdPersonal(Integer idPersonal) {
+//		this.idPersonal = idPersonal;
+//	}
+//	/**
+//	 * @return the idPersonal
+//	 */
+//	public Integer getIdPersonal() {
+//		return idPersonal;
+//	}
+//	/**
+//	 * @param idDonante the idDonante to set
+//	 */
+//	public void setIdDonante(Integer idDonante) {
+//		this.idDonante = idDonante;
+//	}
+//	/**
+//	 * @return the idDonante
+//	 */
+//	public Integer getIdDonante() {
+//		return idDonante;
+//	}
+//	/**
+//	 * @return the finalidad
+//	 */
+//	public String getFinalidad() {
+//		return finalidad;
+//	}
+//	/**
+//	 * @param finalidad the finalidad to set
+//	 */
+//	public void setFinalidad(String finalidad) {
+//		this.finalidad = finalidad;
+//	}
+//	/**
+//	 * @return the observacion
+//	 */
+//	public String getObservacion() {
+//		return observacion;
+//	}
+//	/**
+//	 * @param observacion the observacion to set
+//	 */
+//	public void setObservacion(String observacion) {
+//		this.observacion = observacion;
+//	}
+//	/**
+//	 * @return the textoa
+//	 */
+//	public String getTextoa() {
+//		return textoa;
+//	}
+//	/**
+//	 * @param textoa the textoa to set
+//	 */
+//	public void setTextoa(String textoa) {
+//		this.textoa = textoa;
+//	}
+	/**
+	 * @return the nroGuiaRemision
+	 */
+	public String getNroGuiaRemision() {
+		return nroGuiaRemision;
 	}
 	/**
-	 * @param codigoEstado the codigoAlmacen to set
+	 * @param nroGuiaRemision the nroGuiaRemision to set
 	 */
-	public void setCodigoEstado(String codigoEstado) {
-		this.codigoEstado = codigoEstado;
+	public void setNroGuiaRemision(String nroGuiaRemision) {
+		this.nroGuiaRemision = nroGuiaRemision;
 	}
-	/**
-	 * @param idPaisDonante the idPaisDonante to set
-	 */
-	public void setIdPaisDonante(Integer idPaisDonante) {
-		this.idPaisDonante = idPaisDonante;
-	}
-	/**
-	 * @return the idPaisDonante
-	 */
-	public Integer getIdPaisDonante() {
-		return idPaisDonante;
-	}
-	/**
-	 * @param tipoDonante the tipoDonante to set
-	 */
-	public void setTipoDonante(String tipoDonante) {
-		this.tipoDonante = tipoDonante;
-	}
-	/**
-	 * @return the tipoDonante
-	 */
-	public String getTipoDonante() {
-		return tipoDonante;
-	}
-	/**
-	 * @param tipoOrigenDonante the tipoOrigenDonante to set
-	 */
-	public void setTipoOrigenDonante(String tipoOrigenDonante) {
-		this.tipoOrigenDonante = tipoOrigenDonante;
-	}
-	/**
-	 * @return the tipoOrigenDonante
-	 */
-	public String getTipoOrigenDonante() {
-		return tipoOrigenDonante;
-	}
-	/**
-	 * @param idOficina the idOficina to set
-	 */
-	public void setIdOficina(Integer idOficina) {
-		this.idOficina = idOficina;
-	}
-	/**
-	 * @return the idOficina
-	 */
-	public Integer getIdOficina() {
-		return idOficina;
-	}
-	/**
-	 * @param idPersonal the idPersonal to set
-	 */
-	public void setIdPersonal(Integer idPersonal) {
-		this.idPersonal = idPersonal;
-	}
-	/**
-	 * @return the idPersonal
-	 */
-	public Integer getIdPersonal() {
-		return idPersonal;
-	}
-	/**
-	 * @param idDonante the idDonante to set
-	 */
-	public void setIdDonante(Integer idDonante) {
-		this.idDonante = idDonante;
-	}
-	/**
-	 * @return the idDonante
-	 */
-	public Integer getIdDonante() {
-		return idDonante;
-	}
-	/**
-	 * @return the finalidad
-	 */
-	public String getFinalidad() {
-		return finalidad;
-	}
-	/**
-	 * @param finalidad the finalidad to set
-	 */
-	public void setFinalidad(String finalidad) {
-		this.finalidad = finalidad;
-	}
-	/**
-	 * @return the observacion
-	 */
-	public String getObservacion() {
-		return observacion;
-	}
-	/**
-	 * @param observacion the observacion to set
-	 */
-	public void setObservacion(String observacion) {
-		this.observacion = observacion;
-	}
-	/**
-	 * @return the textoa
-	 */
-	public String getTextoa() {
-		return textoa;
-	}
-	/**
-	 * @param textoa the textoa to set
-	 */
-	public void setTextoa(String textoa) {
-		this.textoa = textoa;
-	}
-	/**
-	 * @return the textob
-	 */
-	public String getTextob() {
-		return textob;
-	}
-	/**
-	 * @param textob the textob to set
-	 */
-	public void setTextob(String textob) {
-		this.textob = textob;
-	}
-	/**
-	 * @param tipoDonacion the tipoDonacion to set
-	 */
-	public void setTipoDonacion(String tipoDonacion) {
-		this.tipoDonacion = tipoDonacion;
-	}
-	/**
-	 * @return the tipoDonacion
-	 */
-	public String getTipoDonacion() {
-		return tipoDonacion;
-	}
-	/**
-	 * @param idDee the idDee to set
-	 */
-	public void setIdDee(Integer idDee) {
-		this.idDee = idDee;
-	}
-	/**
-	 * @return the idDee
-	 */
-	public Integer getIdDee() {
-		return idDee;
-	}
-	/**
-	 * @return the textoCodigo
-	 */
-	public String getTextoCodigo() {
-		return textoCodigo;
-	}
-	/**
-	 * @param textoCodigo the textoCodigo to set
-	 */
-	public void setTextoCodigo(String textoCodigo) {
-		this.textoCodigo = textoCodigo;
-	}
-	/**
-	 * @return the nombreDeclaratoria
-	 */
-	public String getNombreDeclaratoria() {
-		return nombreDeclaratoria;
-	}
-	/**
-	 * @param nombreDeclaratoria the nombreDeclaratoria to set
-	 */
-	public void setNombreDeclaratoria(String nombreDeclaratoria) {
-		this.nombreDeclaratoria = nombreDeclaratoria;
-	}
-	/**
-	 * @return the nombreDeclaratoria
-	 */
-	public String getRepresentante() {
-		return representante;
-	}
-	/**
-	 * @param nombreDeclaratoria the nombreDeclaratoria to set
-	 */
-	public void setRepresentante(String representante) {
-		this.representante = representante;
-	}
+//	/**
+//	 * @param tipoDonacion the tipoDonacion to set
+//	 */
+//	public void setTipoDonacion(String tipoDonacion) {
+//		this.tipoDonacion = tipoDonacion;
+//	}
+//	/**
+//	 * @return the tipoDonacion
+//	 */
+//	public String getTipoDonacion() {
+//		return tipoDonacion;
+//	}
+//	/**
+//	 * @param idDee the idDee to set
+//	 */
+//	public void setIdDee(Integer idDee) {
+//		this.idDee = idDee;
+//	}
+//	/**
+//	 * @return the idDee
+//	 */
+//	public Integer getIdDee() {
+//		return idDee;
+//	}
+//	/**
+//	 * @return the textoCodigo
+//	 */
+//	public String getTextoCodigo() {
+//		return textoCodigo;
+//	}
+//	/**
+//	 * @param textoCodigo the textoCodigo to set
+//	 */
+//	public void setTextoCodigo(String textoCodigo) {
+//		this.textoCodigo = textoCodigo;
+//	}
+//	/**
+//	 * @return the nombreDeclaratoria
+//	 */
+//	public String getNombreDeclaratoria() {
+//		return nombreDeclaratoria;
+//	}
+//	/**
+//	 * @param nombreDeclaratoria the nombreDeclaratoria to set
+//	 */
+//	public void setNombreDeclaratoria(String nombreDeclaratoria) {
+//		this.nombreDeclaratoria = nombreDeclaratoria;
+//	}
+//	/**
+//	 * @return the nombreDeclaratoria
+//	 */
+//	public String getRepresentante() {
+//		return representante;
+//	}
+//	/**
+//	 * @param nombreDeclaratoria the nombreDeclaratoria to set
+//	 */
+//	public void setRepresentante(String representante) {
+//		this.representante = representante;
+//	}
 	 
 	
 	public void setIdIngreso(Integer idIngreso) {
@@ -416,12 +417,12 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 		this.nombreAlmacen = nombreAlmacen;
 	}
 	
-	public String getNroOrdenIngreso() {
-		return nroOrdenIngreso;
+	public String getNroOrdenSalida() {
+		return nroOrdenSalida;
 	}
 
-	public void setNroOrdenIngreso(String nroOrdenIngreso) {
-		this.nroOrdenIngreso = nroOrdenIngreso;
+	public void setNroOrdenSalida(String nroOrdenSalida) {
+		this.nroOrdenSalida = nroOrdenSalida;
 	}
 	
 	public String getNombreMovimiento() {
@@ -440,12 +441,12 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 		return idMovimiento;
 	}
 	
-	public String getCodIngreso() {
-		return codIngreso;
+	public String getCodSalida() {
+		return codSalida;
 	}
 
-	public void setCodIngreso(String codIngreso) {
-		this.codIngreso = codIngreso;
+	public void setCodSalida(String codSalida) {
+		this.codSalida = codSalida;
 	}
 	
 	public void setIdMedTransporte(Integer idMedTransporte) {

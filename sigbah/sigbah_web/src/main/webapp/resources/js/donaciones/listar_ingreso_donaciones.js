@@ -87,8 +87,8 @@ $(document).ready(function() {
 					return false;
 				}
 				 estado = listaDonacionesCache[index].idEstado;
-				var idDonacion = listaDonacionesCache[index].idDonacion;
-				codigo = codigo + idDonacion + '_';
+				var idIngreso = listaDonacionesCache[index].idIngreso;
+				codigo = codigo + idIngreso + '_';
 			}
 		});
 		
@@ -164,12 +164,12 @@ $(document).ready(function() {
 		var codigoAnio = $('#sel_anio').val();
 		var codigoDdi = $('#txt_cod_ddi').val();
 		var codigoMes = $('#sel_mes').val();
-		var codigoEstado = $('#sel_estado').val();
-		var url = VAR_CONTEXT + '/donaciones/registro-donaciones/exportarExcel/';
+		var codigoMov = $('#sel_movimiento').val();
+		var url = VAR_CONTEXT + '/donacionesIngreso/registro-donacionesIngreso/exportarExcel/';
 		url += verificaParametro(codigoAnio) + '/';
 		url += verificaParametro(codigoDdi) + '/';
 		url += verificaParametro(codigoMes) + '/';
-		url += verificaParametro(codigoEstado);
+		url += verificaParametro(codigoMov);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
@@ -449,17 +449,37 @@ function inicializarDatos() {
 	
   	$('#li_reg_donaciones_ingresos').addClass('active');
 	$('#ul_donaciones').css('display', 'block');
-	$('#li_donaciones').attr('class', 'active');
-	$('#li_donaciones').closest('li').children('a').attr('href', '#');
+	$('#li_reg_orden_ingresos').attr('class', 'active');
+	$('#li_reg_orden_ingresos').closest('li').children('a').attr('href', '#');
 	$('#divRegiones').hide();
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-
-
-		
+		listarTablaDonaciones();	
 		
 	}
+}
+
+function listarTablaDonaciones() {
+
+	var params = { 
+		codigoAnio : $('#sel_anio').val(),
+		codigoMes : $('#sel_mes').val(),
+		idMovimiento : $('#sel_movimiento').val() 
+	};
+	
+	loadding(true);
+
+	consultarAjax('GET', '/donacionesIngreso/registro-donacionesIngreso/listarDonaciones', params, function(respuesta) {
+	
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDonacionIngreso(respuesta);
+		}
+		loadding(false);
+	});
+
 }
 
 function listarDonacionIngreso(respuesta) {

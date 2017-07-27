@@ -1,6 +1,7 @@
 var listaAlimentariosCache = new Object();
 var listaProductosCache = new Object();
 var listaDocumentosCache = new Object();
+var listaEstadosCache = new Object();
 
 var tbl_det_productos = $('#tbl_det_productos');
 var tbl_det_documentos = $('#tbl_det_documentos');
@@ -36,86 +37,7 @@ $(document).ready(function() {
 		frm_det_productos.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
-	$('#frm_dat_generales').bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			txt_fecha : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Fecha.'
-					}
-				}
-			},
-			sel_estado : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Estado.'
-					}
-				}
-			}
-			
-			
-		}
-	});
-	
-	 
-	
-	$('#frm_det_documentos').bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_tip_producto : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Tipo Documento.'
-					}
-				}
-			},
-			txt_nro_documento : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar N° Documento.'
-					}
-				}
-			},
-			txt_doc_fecha : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha.'
-					}
-				}
-			},
-			txt_sub_archivo : {
-				validators : {
-					notEmpty : {
-						message : 'Debe cargar el Archivo.'
-					}
-				}
-			}
-		}
-	});
-	
-	$('#frm_det_productos').bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_cat_producto : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Tipo Documento.'
-					}
-				}
-			},
-			sel_producto : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar N° Documento.'
-					}
-				}
-			}
-		}
-	});
+
 	
 	$('#btn_grabar').click(function(e) {
 		e.preventDefault();
@@ -147,10 +69,10 @@ $(document).ready(function() {
 					idDonacion : $('#hid_id_donacion').val(),
 					fechaEmision : $('#txt_fecha').val(),
 					idPaisDonante : $('#sel_ori_pais').val(), 
-					tipoDonante : $('#sel_tip_donacion').val(), 
+					tipoDonante : $('#sel_tip_persona').val(), 
 					tipoOrigenDonante : $('#sel_ori_donacion').val(),
 					idOficina :  $('#sel_oficina').val(), 
-					idPersonal :  $('#sel_tip_persona').val(), 
+					idPersonal :  $('#sel_personal_oficina').val(), 
 					idDonante :  idDonante, 
 					finalidad :  $('#txt_finalidad').val(), 
 					observacion :  $('#sel_ori_donacion').val(), 
@@ -199,8 +121,8 @@ $(document).ready(function() {
 //						}
 //						$('#li_documentos').attr('class', '');
 //						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
-
-						addSuccessMessage(null, 'Se genero el N° de Donación: '+respuesta.idDonacion);
+						actualizarCampos(respuesta.textoCodigo, respuesta.idDonacion);
+						addSuccessMessage(null, 'Se genero el N° de Donación: '+respuesta.textoCodigo);
 						
 					}
 					
@@ -280,7 +202,9 @@ $(document).ready(function() {
 		$('#frm_det_documentos').trigger('reset');
 		
 		$('#txt_doc_fecha').datepicker('setDate', new Date());
+		$('#txt_codigo_cod_pro').val('');
 		$('#hid_cod_documento').val('');
+		$('#txt_descripcion_pro').val('');
 		$('#hid_cod_act_alfresco').val('');
 		$('#hid_cod_ind_alfresco').val('');
 		$('#txt_sub_archivo').val(null);
@@ -316,6 +240,7 @@ $(document).ready(function() {
 			$('#txt_doc_fecha').val(obj.fecha);
 			$('#hid_cod_act_alfresco').val(obj.codAlfresco);
 			$('#hid_cod_ind_alfresco').val('');
+			$('#txt_descripcion_pro').val(obj.observacion);
 			$('#txt_lee_sub_archivo').val(obj.nombreArchivo);
 			$('#txt_sub_archivo').val(null);
 			
@@ -495,6 +420,7 @@ $(document).ready(function() {
 		
 		var bootstrapValidator = frm_det_productos.data('bootstrapValidator');
 		bootstrapValidator.validate();
+
 		if (bootstrapValidator.isValid()) {
 			var idProducto = null;
 			var val_producto = $('#sel_lis_producto').val();
@@ -582,6 +508,13 @@ $(document).ready(function() {
 		} else {
 			$('#txt_dee').val('');
 		}
+	});
+	
+	$('#sel_tip_persona').change(function() {
+		var codigo = $(this).val();		
+		$('#txt_representante').val('');
+		listarDonadores(codigo, null);
+		
 	});
 	
 	$('#sel_donante').change(function() {
@@ -673,8 +606,6 @@ $(document).ready(function() {
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
 			        });
-			        console.log("NO EERROR");
-			        console.log("NO EERRORee  "+options);
 			        $('#sel_lis_producto').html(options);
 				}
 				loadding(false);
@@ -683,6 +614,34 @@ $(document).ready(function() {
 		} else {
 			$('#sel_lis_producto').html('');
 			frm_det_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
+		}
+	});
+	
+	$('#sel_ori_donacion').change(function() {
+		var codigo = $(this).val();		
+		if(codigo==1){
+			$('#sel_ori_pais').val(179);
+			$('#sel_ori_pais').prop('disabled', true);
+			
+		}else{
+			$('#sel_ori_pais').val('');
+			$('#sel_ori_pais').prop('disabled', false);
+		}
+		frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_pais');
+	});
+	
+	$('#sel_lis_producto').change(function() {
+		var codigo = $(this).val();	
+		console.log(codigo);
+		if (!esnulo(codigo)) {
+			var arr = codigo.split('_');
+			if (arr.length > 1) {
+				$('#txt_uni_medida_pro').val(arr[1]);
+			} else {
+				$('#txt_uni_medida_pro').val('');
+			}			
+		} else {
+			$('#txt_uni_medida_pro').val('');
 		}
 	});
 	
@@ -698,16 +657,19 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-	
-		$('#txt_cod_donacion').val(donaciones.textoCodigo);
-		$('#txt_cod_id').val(donaciones.codigoDonacion);
-		$('#txt_anio').val(donaciones.codigoAnio);
-		$('#txt_ddi').val(donaciones.nombreDdi);
-		$('#txt_codDdi').val(donaciones.codigoDdi);
-		$('#txt_idDdi').val(donaciones.idDdi);
+		
 		//$('#txt_dee').val(donaciones.nombreDdi);
 
 		if (!esnulo(donaciones.idDonacion)) {
+			console.log("TEXTO !"+donaciones.textoa);
+			$('#txt_cod_donacion').val(donaciones.textoCodigo);
+			$('#txt_cod_id').val(donaciones.codigoDonacion);
+			$('#txt_anio').val(donaciones.codigoAnio);
+			$('#txt_ddi').val(donaciones.nombreDdi);
+			$('#txt_codDdi').val(donaciones.codigoDdi);
+			$('#txt_idDdi').val(donaciones.idDdi);
+			
+			
 			
 			$('#hid_id_donacion').val(donaciones.idDonacion);	
 			$('#txt_fecha').val(donaciones.fechaEmision);
@@ -715,23 +677,27 @@ function inicializarDatos() {
 			$('#txt_finalidad').val(donaciones.finalidad);
 			$('#txt_a').val(donaciones.textoa);
 			$('#txt_b').val(donaciones.textob);
+			$('#txt_dee').val(donaciones.nombreDeclaratoria);
 			
 			
 			
-			$('#txt_estado_donacion').val(donaciones.textoCodigo);
-
-			$('#sel_dee').val(donaciones.idDee);
-			$('#sel_tip_donacion').val(donaciones.tipoDonante);
+			$('#txt_codigo_cod_pro').val(donaciones.textoCodigo);
+			$('#txt_codigo_cod_doc').val(donaciones.textoCodigo);
+			$('#txt_codigo_cod_est').val(donaciones.textoCodigo);
+			
+			$('#sel_dee').val(donaciones.idDee+"_"+donaciones.nombreDeclaratoria);
+			$('#sel_tip_donacion').val(donaciones.tipoDonacion);
 			$('#sel_ori_donacion').val(donaciones.tipoOrigenDonante);
 			$('#sel_ori_pais').val(donaciones.idPaisDonante);
-			$('#sel_tip_persona').val(donaciones.idDonante);
-			$('#sel_donante').val(donaciones.idDonante);
+			$('#sel_tip_persona').val(donaciones.tipoDonante);
 			$('#sel_oficina').val(donaciones.idOficina);
 			$('#sel_personal_oficina').val(donaciones.idPersonal);
+			listarDonadores(donaciones.tipoDonante,donaciones.idDonante+"_"+donaciones.representante);
+			listarPersonalOficina(donaciones.idOficina, donaciones.idPersonal);
 			
 			listarProductoDonacion(false);
 			listarDocumentoDonacion(false);
-			listarEstadosDonacion(new Object());
+			listarEstadoDonacion(false);
 //			if (controlCalidad.flagTipoBien == '1') {
 //				$('#li_no_alimentarios').addClass('disabled');
 //				$('#li_no_alimentarios').closest('li').children('a').removeAttr('data-toggle');
@@ -768,6 +734,14 @@ function inicializarDatos() {
 			
 		} else {
 			
+			console.log("TEXTO !"+donaciones.textoa);
+			$('#txt_cod_donacion').val(donaciones.textoCodigo);
+			$('#txt_cod_id').val(donaciones.codigoDonacion);
+			$('#txt_anio').val(donaciones.codigoAnio);
+			$('#txt_ddi').val(donaciones.nombreDdi);
+			$('#txt_codDdi').val(donaciones.codigoDdi);
+			$('#txt_idDdi').val(donaciones.idDdi);
+			
 			$('#li_alimentarios').addClass('disabled');
 			$('#li_no_alimentarios').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
@@ -790,6 +764,9 @@ function inicializarDatos() {
 	//		listarDetalleDocumentos(new Object());
 
 		}
+		
+
+		
 		$('.btn_retornar').click(function(e) {
 			e.preventDefault();
 
@@ -798,6 +775,8 @@ function inicializarDatos() {
 			$(location).attr('href', url);
 			
 		});
+		
+		
 		
 		
 		$('#sel_nro_ord_compra').select2().trigger('change');
@@ -830,7 +809,6 @@ function inicializarDatos() {
 	    } else {
 	    	$('#hid_cod_ind_alfresco').val('2'); // Registro modificado
 	    }
-	    console.log("ALFRESCO: "+$('#hid_cod_ind_alfresco').val());
 	    frm_det_documentos.bootstrapValidator('revalidateField', 'txt_lee_sub_archivo');	    
 	});
 	
@@ -849,6 +827,8 @@ function inicializarDatos() {
 
 }
 
+
+
 function descargarDocumento(codigo, nombre) {	
 	loadding(true);
 	var url = VAR_CONTEXT + '/common/archivo/exportarArchivo/'+codigo+'/'+nombre+'/';	
@@ -865,67 +845,6 @@ function descargarDocumento(codigo, nombre) {
 	});	
 }
 
-function listarEstadosDonacion(respuesta) {
-
-	tbl_det_estados.dataTable().fnDestroy();
-	
-	tbl_det_estados.dataTable({
-		data : respuesta,
-		columns : [ {
-			data : 'idDonacion',
-			sClass : 'opc-center',
-			render: function(data, type, row) {
-				if (data != null) {
-					return '<label class="checkbox">'+
-								'<input type="checkbox"><i></i>'+
-						   '</label>';	
-				} else {
-					return '';	
-				}											
-			}
-		}, {	
-			data : 'idDetalleControlCalidad',
-			render : function(data, type, full, meta) {
-				var row = meta.row + 1;
-				return row;											
-			}
-		}, {
-			data : 'nombreProducto'
-		}, {
-			data : 'nombreUnidad'
-		}, {
-			data : 'cantidadLote'
-		}, {
-			data : 'fechaVencimiento'
-		}, {
-			data : 'cantidadLote'
-		}, {
-			data : 'cantidadMuestra'
-		}, {
-			data : 'valorPrimario'
-		}, {
-			data : 'valorSecundario'
-		}, {
-			data : 'valorOlor'
-		}, {
-			data : 'valorColor'
-		}, {
-			data : 'valorTextura'
-		}, {
-			data : 'valorSabor'
-		} ],
-		language : {
-			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
-		},
-		bFilter : false,
-		paging : false,
-		ordering : false,
-		info : true
-	});
-	
-	listaAlimentariosCache = respuesta;
-
-}
 
 function listarProductoDonacion(indicador) {
 	var params = { 
@@ -1098,7 +1017,7 @@ function listarDetalleDocumentos(respuesta) {
 		}, {
 			data : 'fecha'
 		}, {
-			data : 'descripcion'
+			data : 'observacion'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1110,6 +1029,59 @@ function listarDetalleDocumentos(respuesta) {
 	});
 	
 	listaDocumentosCache = respuesta;
+
+}
+
+function listarEstadoDonacion(indicador) {
+	var params = { 
+		idDonacion : $('#hid_id_donacion').val()
+	};			
+	consultarAjaxSincrono('GET', '/donaciones/registro-donaciones/listarEstadoDonacion', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleEstados(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+			if (respuesta != null && respuesta.length > 0) {
+				$('#sel_tip_movimiento').prop('disabled', true);
+			} else {
+				$('#sel_tip_movimiento').prop('disabled', false);
+			}
+		}
+	});
+}
+
+function listarDetalleEstados(respuesta) {
+
+	tbl_det_estados.dataTable().fnDestroy();
+	
+	tbl_det_estados.dataTable({
+		data : respuesta,
+		columns : [  {	
+			data : 'icodigo',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'vcodigoParam2'
+		}, {
+			data : 'vcodigoParam3'
+		}, {
+			data : 'vcodigoParam4'
+		}],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : false,
+		paging : false,
+		ordering : false,
+		info : true
+	});
+	
+	listaEstadosCache = respuesta;
 
 }
 
@@ -1128,6 +1100,7 @@ $('#btn_gra_documento').click(function(e) {
 			nroDocumento : $('#txt_nro_documento').val(),
 			fecha : $('#txt_doc_fecha').val(),
 			nombreArchivo : $('#txt_lee_sub_archivo').val(),
+			observacion : $('#txt_descripcion_pro').val(),
 		};
 		
 		var cod_ind_alfresco = $('#hid_cod_ind_alfresco').val();
@@ -1148,7 +1121,7 @@ $('#btn_gra_documento').click(function(e) {
 				if (resArchivo == NOTIFICACION_ERROR) {
 					console.log("ARCHIVO2: "+resArchivo);
 					$('#div_det_documentos').modal('hide');
-					frm_det_documentos.data('bootstrapValidator').resetForm();
+					//frm_det_documentos.data('bootstrapValidator').resetForm();
 					loadding(false);
 					addErrorMessage(null, mensajeCargaArchivoError);						
 				} else {
@@ -1179,6 +1152,91 @@ function grabarDetalleDocumento(params) {
 			listarDocumentoDonacion(true);
 			addSuccessMessage(null, respuesta.mensajeRespuesta);	
 		}
-		frm_det_documentos.data('bootstrapValidator').resetForm();
+		//frm_det_documentos.data('bootstrapValidator').resetForm();
 	});
 }
+
+function listarDonadores(indicador, idDonante) {
+	var params = { 
+		tipoDonante : indicador
+	};			
+	loadding(true);
+	consultarAjax('GET', '/donaciones/registro-donaciones/listarDonadores', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+	        $.each(respuesta, function(i, item) {
+	            options += '<option value="'+item.icodigo+'_'+item.descripcion+'">'+item.descripcionCorta+'</option>';
+	        });
+	        $('#sel_donante').html(options);
+	        if (idDonante != null) {
+	        	$('#sel_donante').val(idDonante);		
+	        } else {
+	        	$('#sel_donante').val('');	
+	        }
+//	        	var arr = $('#sel_donante').val().split('_');
+//				if (arr.length > 1) {
+//					$('#txt_uni_medida').val(arr[1]);
+//					
+//				} else {
+//					$('#txt_uni_medida').val('');
+//	
+//				}
+//				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+//	        }
+//	        $('#sel_donante').select2().trigger('change');
+//			$('#sel_donante').select2({
+//				  dropdownParent: $('#div_pro_det_productos')
+//			});
+		}
+		loadding(false);		
+	});
+}
+
+function listarPersonalOficina(codigo,dato) {
+	var codigo = codigo;		
+	var ddi = $(txt_codDdi).val();
+	if (!esnulo(codigo)) {						
+		var params = { 
+			icodigo : codigo,
+			icodigoParam2 : ddi
+		};			
+		loadding(true);
+		consultarAjax('GET', '/donaciones/registro-donaciones/listarPersonalOficina', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '<option value="">Seleccione</option>';
+		        $.each(respuesta, function(i, item) {
+		            options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
+		        });
+		        $('#sel_personal_oficina').html(options);
+		        if (dato != null) {
+		        	$('#sel_personal_oficina').val(dato);		
+		        } else {
+		        	$('#sel_personal_oficina').val('');	
+		        }
+			}
+			loadding(false);
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_personal_oficina');
+		});
+	} else {
+		$('#sel_personal_oficina').html('');
+		frm_dat_generales.bootstrapValidator('revalidateField', 'sel_personal_oficina');
+	}
+}
+
+function actualizarCampos(concatenado, idDonacion){
+	
+	$('#hid_id_donacion').val(idDonacion);
+	$('#txt_cod_donacion').val(concatenado);
+	$('#txt_codigo_cod_doc').val(concatenado);
+	$('#txt_codigo_cod_pro').val(concatenado);
+	$('#txt_codigo_cod_est').val(concatenado);
+	listarProductoDonacion(false);
+	listarDocumentoDonacion(false);
+	listarEstadoDonacion(new Object());
+	
+}
+

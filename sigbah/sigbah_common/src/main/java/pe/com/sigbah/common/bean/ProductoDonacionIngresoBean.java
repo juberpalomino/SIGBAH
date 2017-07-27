@@ -21,6 +21,11 @@ public class ProductoDonacionIngresoBean extends BaseOutputBean {
 	private Double importeTotal;
 	private String fecVencimiento;
 	private Integer idDonacion;
+	
+	private Integer idDdi;
+	private String codDdi;
+	private Integer idAlmacen;
+	private String codAlmacen;
 
 	/**
 	 * 
@@ -110,6 +115,38 @@ public class ProductoDonacionIngresoBean extends BaseOutputBean {
 
 	public void setUnidadMedida(String unidadMedida) {
 		this.unidadMedida = unidadMedida;
+	}
+	
+	public Integer getIdDdi() {
+		return idDdi;
+	}
+
+	public void setIdDdi(Integer idDdi) {
+		this.idDdi = idDdi;
+	}
+	
+	public String getCodDdi() {
+		return codDdi;
+	}
+
+	public void setCodDdi(String codDdi) {
+		this.codDdi = codDdi;
+	}
+	
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+	
+	public String getCodAlmacen() {
+		return codAlmacen;
+	}
+
+	public void setCodAlmacen(String codAlmacen) {
+		this.codAlmacen = codAlmacen;
 	}
 
 

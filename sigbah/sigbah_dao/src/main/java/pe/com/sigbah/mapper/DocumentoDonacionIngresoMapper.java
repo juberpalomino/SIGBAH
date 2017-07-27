@@ -26,9 +26,10 @@ public class DocumentoDonacionIngresoMapper implements RowMapper<DocumentoIngres
 		documento.setNroDocumento(rs.getString("NRO_DOCUMENTO"));
 		documento.setNombreDocumento(rs.getString("NOM_DOCUMENTO"));
 		documento.setIdTipoDocumento(rs.getInt("FK_IDE_TIP_DOCUMENTO"));
-		documento.setObservacion(rs.getString("OBSERVACION"));
+		//documento.setObservacion(rs.getString("OBSERVACION"));
 		documento.setCodigoArchivoAlfresco(rs.getString("COD_ALFRESCO"));
 		documento.setNombreArchivo(rs.getString("NOM_ARCHIVO"));
+		documento.setFechaDocumento(rs.getString("FECHA_DOCUMENTO"));
 		return documento;
 	}
 

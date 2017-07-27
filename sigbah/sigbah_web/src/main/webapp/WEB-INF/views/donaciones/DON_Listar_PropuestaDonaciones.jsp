@@ -120,7 +120,7 @@
 							</a>
 							<a href="#" id="href_estado" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Estado">
-								<i class="fa fa-book"></i>
+								<i class="fa fa-gear"></i>
 							</a>
 						</div>
 					</header>
@@ -136,11 +136,12 @@
 									<tr>
 										<th></th>
 										<th>Año</th>
+										<th>Mes</th>
 										<th>DDI</th>
-										<th>Nro Donacion</th>
+										<th>Código Donación</th>
 										<th>Fecha</th>
-										<th>Pais de Origen</th>
-										<th>Dontante</th>
+										<th>País de Origen</th>
+										<th>Donante</th>
 										<th>Estado</th>
 									</tr>
 								</thead>

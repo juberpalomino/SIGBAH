@@ -11,6 +11,7 @@ import pe.com.sigbah.common.bean.DocumentoDonacionBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
 import pe.com.sigbah.common.bean.DonacionesIngresoBean;
+import pe.com.sigbah.common.bean.DonacionesSalidaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoDonacionBean;
 import pe.com.sigbah.common.bean.ProductoDonacionIngresoBean;
@@ -117,9 +118,15 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	public ProductoDonacionBean eliminarProductoDonacion(ProductoDonacionBean productoDonacionBean) throws Exception {
 		return donacionDao.eliminarProductoDonacion(productoDonacionBean);
 	}
+	
 	@Override
 	public DocumentoDonacionBean insertarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception {
 		return donacionDao.insertarDocumentoDonacion(documentoDonacionBean);
+	}
+	
+	@Override
+	public DocumentoDonacionBean actualizarDocumentoDonacion(DocumentoDonacionBean documentoDonacionBean) throws Exception {
+		return donacionDao.actualizarDocumentoDonacion(documentoDonacionBean);
 	}
 	
 	@Override
@@ -156,7 +163,7 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	public DonacionesBean actualizarEstadoDonacion(DonacionesBean donacionesBean) throws Exception {
 		return donacionDao.actualizarEstadoDonacion(donacionesBean);
 	}
-	
+	///////INGRESO
 	@Override
 	public List<DonacionesIngresoBean> listarIngresoDonaciones(DonacionesIngresoBean donacionesIngresoBean) throws Exception {
 		return donacionDao.listarIngresoDonaciones(donacionesIngresoBean);
@@ -198,6 +205,11 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	}
 	
 	@Override
+	public ProductoDonacionIngresoBean actualizarProductoDonacionIngreso(ProductoDonacionIngresoBean productoDonacionIngresoBean) throws Exception {
+		return donacionDao.actualizarProductoDonacionIngreso(productoDonacionIngresoBean);
+	}
+	
+	@Override
 	public ProductoDonacionIngresoBean eliminarProductoDonacionIngreso(ProductoDonacionIngresoBean productoDonacionIngresoBean) throws Exception {
 		return donacionDao.eliminarProductoDonacionIngreso(productoDonacionIngresoBean);
 	}
@@ -205,6 +217,11 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	@Override
 	public DocumentoIngresoBean insertarDocumentoDonacionIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception {
 		return donacionDao.insertarDocumentoDonacionIngreso(documentoIngresoBean);
+	}
+	
+	@Override
+	public DocumentoIngresoBean actualizarDocumentoDonacionIngreso(DocumentoIngresoBean documentoIngresoBean) throws Exception {
+		return donacionDao.actualizarDocumentoDonacionIngreso(documentoIngresoBean);
 	}
 	
 	@Override
@@ -216,4 +233,33 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	public DocumentoIngresoBean eliminarDocumentoIngresoDonacion(DocumentoIngresoBean documentoIngresoBean) throws Exception {
 		return donacionDao.eliminarDocumentoIngresoDonacion(documentoIngresoBean);
 	}
+	
+	@Override
+	public List<ProductoDonacionBean> listarProductosDonacion(DonacionesIngresoBean itemBean) throws Exception {
+		return donacionDao.listarProductosDonacion(itemBean);
+	}
+	
+	@Override
+	public DonacionesIngresoBean actualizarRegistroDonacionIngreso(DonacionesIngresoBean donacionesIngresoBean) throws Exception {
+		return donacionDao.actualizarRegistroDonacionIngreso(donacionesIngresoBean);
+	}
+	
+	@Override
+	public List<ItemBean> listarSalida(ItemBean itemBean) throws Exception {
+		return donacionDao.listarSalida(itemBean);
+	}
+	
+	///////////SALIDA////////////
+	
+	
+	@Override
+	public List<DonacionesSalidaBean> listarSalidaDonaciones(DonacionesSalidaBean donacionesSalidaBean) throws Exception {
+		return donacionDao.listarSalidaDonaciones(donacionesSalidaBean);
+	}
+	
+	@Override
+	public DonacionesSalidaBean obtenerCorrelativoOrdenSalida(DonacionesSalidaBean donacionesSalidaBean) throws Exception {
+		return donacionDao.obtenerCorrelativoOrdenSalida(donacionesSalidaBean);
+	}
+	
 }

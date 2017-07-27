@@ -37,21 +37,17 @@
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Datos Generales</a>
 								</li>
-								
-								<li id="li_documentos">
-									<a href="#div_documentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
-									Documentos</a>
-								</li>
-								
+
 								<li id="li_productos">
 									<a href="#div_productos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Productos</a>
 								</li>
 								
-								<li id="li_estados">
-									<a href="#div_estados" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
-									Estados</a>
+								<li id="li_documentos">
+									<a href="#div_documentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
+									Documentos</a>
 								</li>
+
 							</ul>
 	
 							<div id="div_tab_content" class="tab-content padding-10">
@@ -60,7 +56,7 @@
 									<form id="frm_dat_generales" class="form-horizontal">
 									
 										<input type="hidden" id="hid_id_ingreso" name="hid_id_ingreso">
-										
+										<input type="hidden" id="hid_id_donacion" name="hid_id_donacion">
 										<div class="header-form opc-center">	
 											<strong>Orden Ingreso</strong>
 										</div>
@@ -94,9 +90,9 @@
 															<input type="text" id="txt_anio" class="form-control" disabled>
 														</div>
 
-														<label class="col-sm-1 control-label">DDI:</label>
+<!-- 														<label class="col-sm-1 control-label">DDI:</label> -->
 														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_ddi" class="form-control" disabled>
+<!-- 															<input type="text" id="txt_ddi" class="form-control" disabled> -->
 															<input type="hidden" id="txt_codDdi" name="txt_codDdi">
 															<input type="hidden" id="txt_idDdi" name="txt_idDdi">
 														</div>
@@ -109,9 +105,9 @@
 															</label>
 														</div>
 														
-														<label class="col-sm-2 control-label">Estado de la Donación:</label>
+														<label class="col-sm-2 control-label">Estado:</label>
 														<div class="col-sm-2 form-group">
-															<select id="sel_estado" name="sel_estado" class="form-control" disabled>
+															<select id="sel_estado" name="sel_estado" class="form-control">
 																<option value="1">Activo</option>
 																<option value="0">Anulado</option>
 																<c:forEach items="${lista_estado}" var="item">
@@ -125,7 +121,7 @@
 														<label class="col-sm-2 control-label">Tipo de Movimiento:</label>
 														<div class="col-sm-4">
 															<select id="sel_movimiento" name="sel_movimiento" class="form-control">
-																<option value="0">Todos</option>
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_movimiento}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -156,9 +152,10 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Datos de la Donación:</label>
+														<label class="col-sm-3 control-label">Código de la Donación:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_cod_donacion" name="sel_cod_donacion" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_codigo_donacion}" var="item">
 																    <option value="${item.idDonacion}_${item.tipoDonante}_${item.nombreDonante}_${item.representante}">${item.codigoDonacion}</option>
 																</c:forEach>
@@ -215,13 +212,46 @@
 																</c:forEach>
 															</select>
 														</div> 
-													    <label class="col-sm-3 control-label">Almacén de Precedencia:</label>
+													
+													</div>
+								
+												</div>
+												<!-- end widget content -->
+								
+											</div>
+											<!-- end widget div -->
+								
+										</div>
+										<!-- end widget -->
+										
+										<div class="jarviswidget">
+											<header>
+												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
+												<h2>Datos de la Procedencia</h2>
+											</header>
+								
+											<!-- widget div-->
+											<div>
+								
+												<!-- widget content -->
+												<div class="widget-body">
+								
+													<div class="row">
+
+													    <label class="col-sm-3 control-label">Almacén de Procedencia:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_almacen" name="sel_almacen" class="form-control">
 																<option value="">Seleccione</option>
 																<c:forEach items="${lista_almacen}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
+															</select>
+														</div>
+														
+														<label class="col-sm-3 control-label">N° Orden Salida:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_salida" name="sel_salida" class="form-control">
+																
 															</select>
 														</div>
 													
@@ -411,7 +441,7 @@
 															<th>Tipo Documento</th>
 															<th>Nro Documento</th>
 															<th>Fecha</th>
-															<th>Descripción</th>
+															<th>Nombre Archivo</th>
 														</tr>
 													</thead>
 												</table>
@@ -477,9 +507,8 @@
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
 															<th>Cantidad</th>
-															<th>Moneda Origen</th>
-															<th>Importe Origen</th>
-															<th>Importe Soles</th>
+															<th>Precio Unitario</th>
+															<th>Importe Total</th>
 															<th>Fecha Vencimiento</th>
 														</tr>
 													</thead>
@@ -506,195 +535,7 @@
 									</div>
 									
 								</div>
-								
-								<div class="tab-pane fade" id="div_estados">
-									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Estados</h2>
 
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-												<label class="col-sm-3 control-label">ESTADOS DE LA DONACIÖN:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_estado_donacion" class="form-control" disabled>
-														</div>
-												<div id="contTablaEstados">
-													${tabla_estados}
-												</div>
-
-											</div>
-											<!-- end widget content -->
-						
-										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<div class="form-actions">
-										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-								
-								<div class="tab-pane fade" id="div_alimentarios">
-									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Detalle de Productos</h2>
-											
-											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_ali_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Nuevo">
-													<i class="fa fa-file-o"></i>
-												</a>
-												<a href="#" id="href_ali_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Editar">
-													<i class="fa fa-edit"></i>
-												</a>
-												<a href="#" id="href_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
-												</a>
-											</div>
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-
-												<table id="tbl_det_alimentarios" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th></th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Lote</th>
-															<th>Fecha Vencimiento</th>
-															<th>Cantidad de Lote</th>
-															<th>Cantidad para la Muestra</th>
-															<th>Envase Primario</th>
-															<th>Envase Secundario</th>
-															<th>Olor</th>
-															<th>Color</th>
-															<th>Textura</th>
-															<th>Sabor</th>
-														</tr>
-													</thead>
-												</table>
-
-											</div>
-											<!-- end widget content -->
-						
-										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<div class="form-actions">
-										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-								
-								<div class="tab-pane fade" id="div_no_alimentarios">
-									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Detalle de Productos</h2>
-											
-											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_no_ali_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Nuevo">
-													<i class="fa fa-file-o"></i>
-												</a>
-												<a href="#" id="href_no_ali_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Editar">
-													<i class="fa fa-edit"></i>
-												</a>
-												<a href="#" id="href_no_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
-												</a>
-											</div>
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-
-												<table id="tbl_det_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th></th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Lote</th>
-															<th>Fecha Vencimiento</th>
-															<th>Cantidad de Lote</th>
-															<th>Cantidad para la Muestra</th>
-															<th>Envase Primario</th>
-															<th>Especif. Técnicas</th>
-															<th>Conformidad</th>
-														</tr>
-													</thead>
-												</table>
-
-											</div>
-											<!-- end widget content -->
-						
-										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<div class="form-actions">
-										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
-											</div>
-										</div>
-									</div>
-									
-								</div>
 								
 								<div class="tab-pane fade" id="div_documentos">
 									
@@ -780,278 +621,6 @@
 	
 </div>
 <!-- END MAIN CONTENT -->
-
-<!-- Modal -->
-<div id="div_det_alimentarios" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Nuevo Producto</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12">
-						<form id="frm_det_alimentarios" class="form-horizontal" role="form">
-							
-							<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
-						
-							<div id="div_pro_det_alimentarios" class="row">																				
-								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 smart-form form-group">
-									<select id="sel_producto" name="sel_producto" class="select2 form-control ">
-										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-							
-							<div class="row">&nbsp;</div>
-
-							<div class="row">
-								<label class="col-sm-3 control-label">Unidad Medida:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" id="txt_uni_medida" class="form-control" disabled>
-								</div>
-
-								<label class="col-sm-3 control-label">Fecha Vencimiento:</label>
-								<div class="col-sm-3 smart-form form-group">
-									<label class="input"> 
-										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_fec_vencimiento" id="txt_fec_vencimiento" class="datepicker" readonly>
-									</label>
-								</div>
-							</div>
-							
-							<div class="row">
-								<label class="col-sm-3 control-label">Cantidad de Lote:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_can_lote" id="txt_can_lote" class="form-control monto-format" maxlength="10">
-								</div>
-
-								<label class="col-sm-3 control-label">Cantidad de Muestra:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_can_muestra" id="txt_can_muestra" class="form-control monto-format" maxlength="10">
-								</div>
-							</div>
-							
-							<div class="header-form opc-center">	
-								<strong>Verificacion Fisica del Envase</strong>
-							</div>
-							
-							<div class="form-group"></div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Primario:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_primario" name="sel_primario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Olor:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_olor" name="sel_olor" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Textura:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_textura" name="sel_textura" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-							</div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Secundario:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_secundario" name="sel_secundario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Color:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_color" name="sel_color" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Sabor:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_sabor" name="sel_sabor" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-							</div>
-							
-						</form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_gra_alimentario">
-					<i class="fa fa-floppy-o"></i>
-					Grabar
-				</button>
-				
-				&nbsp; &nbsp;
-				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_alimentario">
-					<i class="fa fa-mail-forward"></i>
-					Cancelar
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<!-- Modal -->
-<div id="div_det_no_alimentarios" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" id="btn_clo_no_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_no_alimentarios">Nuevo Producto</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12">
-						<form id="frm_det_no_alimentarios" class="form-horizontal" role="form">
-							
-							<input type="hidden" id="hid_cod_no_producto" name="hid_cod_no_producto">
-						
-							<div id="div_pro_det_no_alimentarios" class="row">																				
-								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-6 smart-form form-group">
-									<select id="sel_no_producto" name="sel_no_producto" class="select2 form-control">
-										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-							
-							<div class="row">&nbsp;</div>									
-
-							<div class="row">
-								<label class="col-sm-3 control-label">Unidad Medida:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" id="txt_no_uni_medida" class="form-control" disabled>
-								</div>
-
-								<label class="col-sm-3 control-label">Fecha Vencimiento:</label>
-								<div class="col-sm-3 smart-form form-group">
-									<label class="input"> 
-										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_no_fec_vencimiento" id="txt_no_fec_vencimiento" class="datepicker" readonly>
-									</label>
-								</div>
-							</div>
-							
-							<div class="row">
-								<label class="col-sm-3 control-label">Cantidad de Lote:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_no_can_lote" id="txt_no_can_lote" class="form-control monto-format" maxlength="10">
-								</div>
-
-								<label class="col-sm-3 control-label">Cantidad de Muestra:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_no_can_muestra" id="txt_no_can_muestra" class="form-control monto-format" maxlength="10">
-								</div>
-							</div>
-							
-							<div class="header-form opc-center">	
-								<strong>Verificacion Fisica del Envase</strong>
-							</div>
-							
-							<div class="form-group"></div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Primario:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_primario" name="sel_no_primario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Técnicas:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_tecnicas" name="sel_no_tecnicas" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Cumple</option>
-										<option value="2">No Cumple</option>
-										<option value="3">No Aplica</option>
-									</select>
-								</div>
-							</div>
-							
-							<div class="row">																				
-								<label class="col-sm-2 control-label">Secundario:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_secundario" name="sel_no_secundario" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Bueno</option>
-										<option value="2">Malo</option>
-									</select>
-								</div>
-								
-								<label class="col-sm-2 control-label">Conformidad:</label>
-								<div class="col-sm-2 form-group">
-									<select id="sel_no_conformidad" name="sel_no_conformidad" class="form-control">
-										<option value="">Seleccione</option>
-										<option value="1">Cumple</option>
-										<option value="2">No Cumple</option>
-										<option value="3">No Aplica</option>
-									</select>
-								</div>
-							</div>
-							
-						</form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_gra_no_alimentario">
-					<i class="fa fa-floppy-o"></i>
-					Grabar
-				</button>
-				
-				&nbsp; &nbsp;
-				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_no_alimentario">
-					<i class="fa fa-mail-forward"></i>
-					Cancelar
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 <!-- Modal -->
 <div id="div_det_documentos" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
@@ -1156,24 +725,15 @@
 							
 							
 							<div class="row">																				
-								<label class="col-sm-3 control-label">Categoría de Producto:</label>
+								<label class="col-sm-3 control-label">Producto:</label>
 								<div class="col-sm-3 form-group">
 									<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
 										<option value="">Seleccione</option>
-										<c:forEach items="${lista_categoria}" var="item">
-										    <option value="${item.icodigo}">${item.descripcion}</option>
+										<c:forEach items="${lista_productos_donacion}" var="item">
+										    <option value="${item.idProducto}_${item.unidadMedida}_${item.precio}">${item.nombreProducto}</option>
 										</c:forEach>
 									</select>
 								</div>
-							</div>
-						
-							<div id="div_pro_det_productos" class="row">																				
-								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 form-group">
-									<select id="sel_lis_producto" name="sel_lis_producto" class="form-control">
-									</select>
-								</div>
-
 							</div>
 							
 							<div class="row">&nbsp;</div>
@@ -1202,32 +762,14 @@
 							
 							<div class="row">
 
-								<label class="col-sm-3 control-label">Moneda Origen:</label>
+								<label class="col-sm-3 control-label">Precio:</label>
 								<div class="col-sm-3 form-group">
-									<select id="sel_monedas" name="sel_monedas" class="form-control">
-										<option value="">Seleccione</option>
-										<c:forEach items="${lista_monedas}" var="item">
-										    <option value="${item.icodigo}">${item.descripcion}</option>
-										</c:forEach>
-									</select>
+									<input type="text" id="txt_precio" class="form-control" disabled>
 								</div>
 								
-								<label class="col-sm-3 control-label">Importe en Moneda Origen:</label>
+								<label class="col-sm-3 control-label">Importe Total:</label>
 								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_imp_origen" id="txt_imp_origen" class="form-control">
-								</div>
-							</div>
-							
-							<div class="row">
-
-								<label class="col-sm-3 control-label">Importe en Soles:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_imp_soles" id="txt_imp_soles" class="form-control monto-format" maxlength="10">
-								</div>
-								
-								<label class="col-sm-3 control-label">Importe en Dolares:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_imp_dolares" id="txt_imp_dolares" class="form-control">
+									<input type="text" name="txt_imp_total" id="txt_imp_total" class="form-control" disabled>
 								</div>
 							</div>
 							

@@ -72,7 +72,7 @@
 												<!-- widget content -->
 												<div class="widget-body">				
 													<div class="row">
-														<label class="col-sm-2 control-label">Codigo de Donacion:</label>
+														<label class="col-sm-2 control-label">Código de Donacion:</label>
 														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_cod_donacion" class="form-control"  disabled>
 															<input type="hidden" id="txt_cod_id" name="txt_cod_id">
@@ -114,6 +114,7 @@
 														<label class="col-sm-2 control-label">Nº DEE:</label>
 														<div class="col-sm-3 smart-form form-group">
 															<select id="sel_dee" name="sel_dee" class="select2 form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_dee}" var="item">
 																    <option value="${item.icodigo}_${item.descripcion}">${item.descripcionCorta}</option>
 																</c:forEach>
@@ -121,7 +122,7 @@
 														</div>
 														<div class="col-sm-1 form-group"></div> 
 														<div class="col-sm-6 form-group">
-															<input type="text" id="txt_dee" class="form-control" value="${nombreDee}" disabled>
+															<textarea rows="3" name="txt_dee" id="txt_dee" class="form-control" disabled></textarea>
 														</div> 
 													</div>
 													
@@ -158,9 +159,10 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Procedemcia Donacion:</label>
+														<label class="col-sm-3 control-label">Procedencia Donación:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_ori_donacion" name="sel_ori_donacion" class="form-control">
+																<option value="">Seleccione</option>
 																<option value="1">Nacional</option>
 																<option value="2">Internacional</option> 
 															</select>
@@ -169,6 +171,7 @@
 														<label class="col-sm-3 control-label">Pais Procedencia:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_ori_pais" name="sel_ori_pais" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_proce_pais}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -190,13 +193,14 @@
 														<label class="col-sm-3 control-label">Donante:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_donante" name="sel_donante" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_donadores}" var="item">
 																    <option value="${item.icodigo}_${item.descripcion}">${item.descripcionCorta}</option>
 																</c:forEach>
 															</select>
 														</div>
 														<label class="col-sm-2 control-label">Representante:</label>
-														<div class="col-sm-2 form-group">
+														<div class="col-sm-4 form-group">
 															<input type="text" id="txt_representante" class="form-control" disabled>
 														</div>
 													</div>
@@ -227,7 +231,7 @@
 															
 														</div>
 														<div class="col-sm-11 form-group">
-															<input type="text" name="txt_finalidad" id="txt_finalidad" class="form-control">
+															<textarea rows="3" name="txt_finalidad" id="txt_finalidad" class="form-control"></textarea>
 														</div>
 													</div>
 								
@@ -287,7 +291,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos para la solicitud de Aprobacion</h2>
+												<h2>Datos para la solicitud de Aprobación</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -300,7 +304,7 @@
 															
 														</div>
 														<div class="col-sm-11 form-group">
-															<input type="text" name="txt_a" id="txt_a" class="form-control">
+															<textarea rows="5" name="txt_a" id="txt_a" class="form-control"></textarea>
 														</div>
 													</div>
 													<div class="row">
@@ -308,7 +312,7 @@
 															
 														</div>
 														<div class="col-sm-11 form-group">
-															<input type="text" name="txt_b" id="txt_b" class="form-control">
+															<textarea rows="5" name="txt_b" id="txt_b" class="form-control"></textarea>
 														</div>
 													</div>
 
@@ -374,7 +378,10 @@
 															
 											<!-- widget content -->
 											<div class="widget-body">
-
+												<label class="col-sm-3 control-label">Documentos de la Donación:</label>
+												<div class="col-sm-2 form-group">
+													<input type="text" id="txt_codigo_cod_pro" class="form-control" disabled>
+												</div>
 												<table id="tbl_det_documentos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
@@ -440,7 +447,10 @@
 															
 											<!-- widget content -->
 											<div class="widget-body">
-
+												<label class="col-sm-3 control-label">Productos de la Donación:</label>
+												<div class="col-sm-2 form-group">
+													<input type="text" id="txt_codigo_cod_doc" class="form-control" disabled>
+												</div>
 												<table id="tbl_det_productos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
@@ -450,7 +460,7 @@
 															<th>Unidad de Medida</th>
 															<th>Cantidad</th>
 															<th>Moneda Origen</th>
-															<th>Importe Origen</th>
+															<th>Importe Moneda Origen</th>
 															<th>Importe Soles</th>
 															<th>Fecha Vencimiento</th>
 														</tr>
@@ -495,13 +505,24 @@
 															
 											<!-- widget content -->
 											<div class="widget-body">
-												<label class="col-sm-3 control-label">ESTADOS DE LA DONACIÖN:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_estado_donacion" class="form-control" disabled>
-														</div>
-												<div id="contTablaEstados">
-													${tabla_estados}
+												<label class="col-sm-3 control-label">Estados de la Donación:</label>
+												<div class="col-sm-2 form-group">
+													<input type="text" id="txt_codigo_cod_est" class="form-control" disabled>
 												</div>
+<!-- 												<div id="contTablaEstados"> -->
+<%-- 													${tabla_estados} --%>
+<!-- 												</div> -->
+												<table id="tbl_det_estados" class="table table-bordered table-hover tbl-responsive">
+													<thead>			                
+														<tr>
+															<th>Nº</th>
+															<th>Estado</th>
+															<th>Fecha</th>
+															<th>Usuario</th>
+
+														</tr>
+													</thead>
+												</table>
 
 											</div>
 											<!-- end widget content -->
@@ -1074,6 +1095,13 @@
 							</div>
 							
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Descripción:</label>
+								<div class="col-sm-8">
+										<textarea rows="3" name="txt_descripcion_pro" id="txt_descripcion_pro" class="form-control"></textarea>
+								</div>
+							</div>
+							
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Subir Archivo:</label>
 								<div class="col-sm-8 smart-form">
 									<div class="input input-file">
@@ -1153,7 +1181,7 @@
 							<div class="row">
 								<label class="col-sm-3 control-label">Unidad Medida:</label>
 								<div class="col-sm-3 form-group">
-									<input type="text" id="txt_uni_medida" class="form-control" disabled>
+									<input type="text" id="txt_uni_medida_pro" class="form-control" disabled>
 								</div>
 
 								<label class="col-sm-3 control-label">Fecha Vencimiento:</label>
@@ -1186,7 +1214,7 @@
 								
 								<label class="col-sm-3 control-label">Importe en Moneda Origen:</label>
 								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_imp_origen" id="txt_imp_origen" class="form-control">
+									<input type="text" name="txt_imp_origen" id="txt_imp_origen" class="form-control monto-format" maxlength="10">
 								</div>
 							</div>
 							
@@ -1199,7 +1227,7 @@
 								
 								<label class="col-sm-3 control-label">Importe en Dolares:</label>
 								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_imp_dolares" id="txt_imp_dolares" class="form-control">
+									<input type="text" name="txt_imp_dolares" id="txt_imp_dolares" class="form-control monto-format" maxlength="10">
 								</div>
 							</div>
 							

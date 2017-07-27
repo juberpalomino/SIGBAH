@@ -28,7 +28,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Donantes</h2>
+						<h2>Búsqueda de Órdenes de Ingreso</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -100,7 +100,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Lista de Donantes</h2>
+						<h2>Lista de Órdenes de Ingreso</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
