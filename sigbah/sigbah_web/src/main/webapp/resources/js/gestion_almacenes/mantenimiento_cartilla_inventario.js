@@ -9,6 +9,8 @@ var frm_det_productos = $('#frm_det_productos');
 var tbl_det_ajustes = $('#tbl_det_ajustes');
 var frm_det_ajustes = $('#frm_det_ajustes');
 
+var tbl_det_estados = $('#tbl_det_estados');
+
 $(document).ready(function() {
 	
 	$('.datepicker').datepicker({
@@ -65,7 +67,9 @@ $(document).ready(function() {
 						$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
 						$('#li_estados').attr('class', '');
 						$('#li_estados').closest('li').children('a').attr('data-toggle', 'tab');
-
+						
+						$('#h2_det_estados').html('Estados de la Cartilla N° '+respuesta.codigoCartilla);
+						
 						addSuccessMessage(null, 'Se genero el N° Cartilla: '+respuesta.codigoCartilla);
 						
 					}
@@ -532,8 +536,10 @@ function inicializarDatos() {
 				$('#ul_man_car_inventario li.disabled a').removeAttr('data-toggle');
 			}
 			
-			listarProductoCartillaInventario(false);		
-//			listarDocumentoCartillaInventario(false);
+			$('#h2_det_estados').html('Estados de la Cartilla N° '+cartillaInventario.codigoCartilla);
+			
+			listarProductoCartillaInventario(false);
+			listarEstadosCartillaInventario(false);
 			
 		} else {
 			
@@ -546,7 +552,7 @@ function inicializarDatos() {
 			$('#txt_fec_emision').datepicker('setDate', new Date());
 
 			listarProductoCartillaInventario(new Object());
-//			listarDetalleDocumentos(new Object());
+			listarEstadosCartillaInventario(new Object());
 
 		}
 		
@@ -713,4 +719,50 @@ function cargarLoteProducto(idProducto, nroLote) {
 		}
 		loadding(false);		
 	});
+}
+
+function listarEstadosCartillaInventario(indicador) {
+	var params = { 
+		idCartilla : $('#hid_cod_cartilla').val()
+	};			
+	consultarAjaxSincrono('GET', '/gestion-almacenes/cartilla-inventario/listarEstadoCartillaInventario', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleEstadoCartilla(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}
+	});
+}
+
+function listarDetalleEstadoCartilla(respuesta) {
+
+	tbl_det_estados.dataTable().fnDestroy();
+	
+	tbl_det_estados.dataTable({
+		data : respuesta,
+		columns : [ {
+			data : 'item',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'nombreEstado'
+		}, {
+			data : 'fechaEstado'
+		}, {
+			data : 'usuario'
+		} ],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : false,
+		paging : false,
+		ordering : false,
+		info : true
+	});
+
 }

@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
-import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.common.util.DateUtil;
 
 /**
  * @className: ControlCalidadMapper.java
@@ -33,7 +31,7 @@ public class RegistroControlCalidadMapper implements RowMapper<ControlCalidadBea
 		controlCalidad.setCodigoDdi(rs.getString("COD_DDI"));
 		controlCalidad.setNombreDdi(rs.getString("NOM_DDI"));		
 		controlCalidad.setNroControlCalidad(rs.getString("NRO_REP_CONTROL_CALIDAD"));		
-		controlCalidad.setFechaEmision(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, rs.getDate("FEC_EMISION")));		
+		controlCalidad.setFechaEmision(rs.getString("FEC_EMISION"));		
 		controlCalidad.setIdTipoControl(rs.getInt("COD_TIPO_CONTROL_CALIDAD"));
 		controlCalidad.setIdEstado(rs.getInt("COD_ESTADO"));
 		controlCalidad.setNroOrdenCompra(rs.getString("NRO_ORDEN_COMPRA"));

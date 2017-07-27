@@ -5,6 +5,7 @@ var NOTIFICACION_ERROR = '00';
 var ESTADO_GENERADO = '13';
 var ESTADO_APROBADO = '3';
 var ESTADO_AJUSTE = '14';
+var ESTADO_ANULADO = '0';
 
 $(function() {
 
@@ -836,6 +837,20 @@ function get_for_date(fecha) {
 	var anio = fecha.substring(6, 10);
 	var fec_form = anio + '-' + mes + '-' + dia;
 	return new Date(fec_form);
+}
+
+function get_date_form() {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1;
+	var yyyy = today.getFullYear();
+	if (dd < 10) {
+	    dd = '0' + dd;
+	}
+	if (mm < 10) {
+	    mm = '0' + mm;
+	} 
+	return dd + '/' + mm + '/' + yyyy;
 }
 
 function formatMontoInput() {

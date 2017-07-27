@@ -650,7 +650,7 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_can_documento').click(function(e) {
+	$('#btn_can_documento, #btn_clo_documentos').click(function(e) {
 		e.preventDefault();
 		frm_det_documentos.data('bootstrapValidator').resetForm();
 	});

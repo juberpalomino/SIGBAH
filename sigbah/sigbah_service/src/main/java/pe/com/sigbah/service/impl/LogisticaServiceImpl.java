@@ -17,6 +17,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
@@ -665,6 +666,30 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public ProductoCartillaInventarioBean procesarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception {
 		return logisticaDao.procesarAjusteProductoCartillaInventario(productoCartillaInventarioBean);
+	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarEstadoCartillaInventario(pe.com.sigbah.common.bean.EstadoCartillaInventarioBean)
+	 */
+	@Override
+	public List<EstadoCartillaInventarioBean> listarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception {
+		return logisticaDao.listarEstadoCartillaInventario(estadoCartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerEstadosCartillaInventario(pe.com.sigbah.common.bean.EstadoCartillaInventarioBean)
+	 */
+	@Override
+	public List<EstadoCartillaInventarioBean> obtenerEstadosCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception {
+		return logisticaDao.obtenerEstadosCartillaInventario(estadoCartillaInventarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarEstadoCartillaInventario(pe.com.sigbah.common.bean.EstadoCartillaInventarioBean)
+	 */
+	@Override
+	public EstadoCartillaInventarioBean grabarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception {
+		return logisticaDao.grabarEstadoCartillaInventario(estadoCartillaInventarioBean);
 	}
 
 	/* (non-Javadoc)

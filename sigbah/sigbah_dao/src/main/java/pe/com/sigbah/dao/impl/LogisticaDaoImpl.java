@@ -37,6 +37,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
@@ -63,6 +64,7 @@ import pe.com.sigbah.mapper.AlmacenActivoMapper;
 import pe.com.sigbah.mapper.CartillaInventarioMapper;
 import pe.com.sigbah.mapper.ControlCalidadMapper;
 import pe.com.sigbah.mapper.DetalleActaEntregaMapper;
+import pe.com.sigbah.mapper.DetalleEstadoCartillaInventarioMapper;
 import pe.com.sigbah.mapper.DetalleGuiaRemisionMapper;
 import pe.com.sigbah.mapper.DetalleManifiestoCargaMapper;
 import pe.com.sigbah.mapper.DetalleProductoControlCalidadMapper;
@@ -70,6 +72,7 @@ import pe.com.sigbah.mapper.DocumentoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoIngresoMapper;
 import pe.com.sigbah.mapper.DocumentoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.DocumentoSalidaMapper;
+import pe.com.sigbah.mapper.EstadoCartillaInventarioMapper;
 import pe.com.sigbah.mapper.GuiaRemisionMapper;
 import pe.com.sigbah.mapper.LoteProductoMapper;
 import pe.com.sigbah.mapper.ManifiestoMapper;
@@ -4237,6 +4240,152 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[procesarAjusteProductoCartillaInventario] Fin ");
 		return registroProductoCartillaInventario;
+	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarEstadoCartillaInventario(pe.com.sigbah.common.bean.EstadoCartillaInventarioBean)
+	 */
+	@Override
+	public List<EstadoCartillaInventarioBean> listarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception {
+		LOGGER.info("[listarEstadoCartillaInventario] Inicio ");
+		List<EstadoCartillaInventarioBean> lista = new ArrayList<EstadoCartillaInventarioBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_CARTILLA", estadoCartillaInventarioBean.getIdCartilla(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_ESTADO_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_CARTILLA", new SqlParameter("pi_IDE_CARTILLA", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new DetalleEstadoCartillaInventarioMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarEstadoCartillaInventario] Ocurrio un error en la operacion del USP_LISTAR_ESTADO_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<EstadoCartillaInventarioBean>) out.get("PO_Lr_Recordset");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarEstadoCartillaInventario] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerEstadosCartillaInventario(pe.com.sigbah.common.bean.EstadoCartillaInventarioBean)
+	 */
+	@Override
+	public List<EstadoCartillaInventarioBean> obtenerEstadosCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception {
+		LOGGER.info("[obtenerEstadosCartillaInventario] Inicio ");
+		List<EstadoCartillaInventarioBean> lista = new ArrayList<EstadoCartillaInventarioBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_CARTILLA", estadoCartillaInventarioBean.getIdCartilla(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_USUARIO", estadoCartillaInventarioBean.getIdUsuario(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_ESTAD_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_CARTILLA", new SqlParameter("pi_IDE_CARTILLA", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_USUARIO", new SqlParameter("pi_IDE_USUARIO", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new EstadoCartillaInventarioMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerEstadosCartillaInventario] Ocurrio un error en la operacion del USP_SEL_TAB_ESTAD_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<EstadoCartillaInventarioBean>) out.get("PO_Lr_Recordset");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerEstadosCartillaInventario] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarEstadoCartillaInventario(pe.com.sigbah.common.bean.EstadoCartillaInventarioBean)
+	 */
+	@Override
+	public EstadoCartillaInventarioBean grabarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception {
+		LOGGER.info("[grabarEstadoCartillaInventario] Inicio ");
+		EstadoCartillaInventarioBean registroEstadoCartillaInventario = new EstadoCartillaInventarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_IDE_CARTILLA", estadoCartillaInventarioBean.getIdCartilla(), Types.NUMERIC);
+			input_objParametros.addValue("pi_USERNAME", estadoCartillaInventarioBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_ESTADO", estadoCartillaInventarioBean.getIdEstado(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FEC_ESTADO", DateUtil.obtenerFechaHoraParseada(estadoCartillaInventarioBean.getFechaEstado()), Types.DATE);
+			input_objParametros.addValue("PI_OBSERVACION", estadoCartillaInventarioBean.getObservacion(), Types.VARCHAR);
+			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_ESTADO_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_CARTILLA", new SqlParameter("pi_IDE_CARTILLA", Types.NUMERIC));
+			output_objParametros.put("pi_USERNAME", new SqlParameter("pi_USERNAME", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_ESTADO", new SqlParameter("pi_FK_IDE_ESTADO", Types.NUMERIC));
+			output_objParametros.put("pi_FEC_ESTADO", new SqlParameter("pi_FEC_ESTADO", Types.DATE));			
+			output_objParametros.put("PI_OBSERVACION", new SqlParameter("PI_OBSERVACION", Types.VARCHAR));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarEstadoCartillaInventario] Ocurrio un error en la operacion del USP_INS_ESTADO_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			registroEstadoCartillaInventario.setCodigoRespuesta(codigoRespuesta);
+			registroEstadoCartillaInventario.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarEstadoCartillaInventario] Fin ");
+		return registroEstadoCartillaInventario;
 	}
 
 	/* (non-Javadoc)

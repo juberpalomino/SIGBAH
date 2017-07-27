@@ -317,7 +317,7 @@
 									
 										<header>
 											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Historia de Estados</h2>
+											<h2 id="h2_det_estados"></h2>
 										</header>
 						
 										<!-- widget div-->

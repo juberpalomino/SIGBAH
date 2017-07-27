@@ -24,6 +24,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoBean;
@@ -406,6 +407,85 @@ public class CartillaInventarioController extends BaseController {
 	        productoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
 			producto = logisticaService.procesarProductosCartillaInventario(productoCartillaInventarioBean);				
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarEstadoCartillaInventario", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarEstadoCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
+		List<EstadoCartillaInventarioBean> lista = null;
+		try {			
+			EstadoCartillaInventarioBean estado = new EstadoCartillaInventarioBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(estado, request.getParameterMap());			
+			lista = logisticaService.listarEstadoCartillaInventario(estado);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/obtenerEstadosCartillaInventario", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object obtenerEstadosCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
+		List<EstadoCartillaInventarioBean> lista = null;
+		try {			
+			EstadoCartillaInventarioBean estado = new EstadoCartillaInventarioBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(estado, request.getParameterMap());
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	estado.setIdUsuario(usuarioBean.getIdUsuario());
+			lista = logisticaService.obtenerEstadosCartillaInventario(estado);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarEstadoCartillaInventario", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarEstadoCartillaInventario(HttpServletRequest request, HttpServletResponse response) {
+		EstadoCartillaInventarioBean producto = null;
+		try {
+			EstadoCartillaInventarioBean estadoCartillaInventarioBean = new EstadoCartillaInventarioBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(estadoCartillaInventarioBean, request.getParameterMap());	
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+
+        	estadoCartillaInventarioBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+			producto = logisticaService.grabarEstadoCartillaInventario(estadoCartillaInventarioBean);				
 
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
 

@@ -13,6 +13,7 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
@@ -580,6 +581,27 @@ public interface LogisticaService {
 	 * @throws Exception
 	 */
 	public abstract ProductoCartillaInventarioBean procesarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+	
+	/**
+	 * @param estadoCartillaInventarioBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<EstadoCartillaInventarioBean> listarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception;
+	
+	/**
+	 * @param estadoCartillaInventarioBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<EstadoCartillaInventarioBean> obtenerEstadosCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception;
+	
+	/**
+	 * @param estadoCartillaInventarioBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract EstadoCartillaInventarioBean grabarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception;
 
 	/**
 	 * @param cierreStockBean

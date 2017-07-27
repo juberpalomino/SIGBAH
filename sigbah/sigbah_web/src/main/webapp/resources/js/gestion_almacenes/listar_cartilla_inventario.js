@@ -6,22 +6,8 @@ $(document).ready(function() {
 
 	$('#btn_buscar').click(function(e) {
 		e.preventDefault();
-		
-		var params = { 
-			codigoAnio : $('#sel_anio').val(),
-			idAlmacen : $('#sel_almacen').val()
-		};
-		
-		loadding(true);
-		
-		consultarAjax('GET', '/gestion-almacenes/cartilla-inventario/listarCartillaInventario', params, function(respuesta) {
-			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-				addErrorMessage(null, respuesta.mensajeRespuesta);
-			} else {
-				listarCartillaInventario(respuesta);
-			}
-			loadding(false);
-		});
+	
+		listarCartillaInventario(true);
 	});
 	
 	inicializarDatos();
@@ -153,7 +139,76 @@ $(document).ready(function() {
 	$('#href_estados').click(function(e) {
 		e.preventDefault();
 
+		var indices = [];
+		var codigo = '';
+		tbl_mnt_car_inventario.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_car_inventario.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idCartilla = listaCartillaInventarioCache[index].idCartilla;
+				codigo = codigo + idCartilla + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			loadding(true);			
+			var params = { 
+				idCartilla : codigo
+			};			
+			consultarAjax('GET', '/gestion-almacenes/cartilla-inventario/obtenerEstadosCartillaInventario', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					$('#hid_cod_cartilla').val(codigo);
+					$('#txt_observacion').val('');
+					var options = '';
+			        $.each(respuesta, function(i, item) {
+			            options += '<option value="'+item.idEstado+'">'+item.nombreEstado+'</option>';
+			        });
+			        $('#sel_estado').html(options);
+					$('#div_gra_estado').modal('show');
+				}
+				loadding(false);
+			});
+		}
 
+	});
+	
+	$('#btn_gra_estado').click(function(e) {
+		e.preventDefault();
+		
+		var idEstado = $('#sel_estado').val();
+		
+		if (idEstado == ESTADO_ANULADO) {
+			
+			$.SmartMessageBox({
+				title : 'Está usted seguro ?',
+				content : '',
+				buttons : '[No][Si]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'Si') {
+
+					cambiarEstado();
+					
+				}	
+			});
+			
+		} else {
+			
+			cambiarEstado();
+			
+		}	
 	});
 	
 });
@@ -172,15 +227,36 @@ function inicializarDatos() {
 		$('#sel_anio').val(usuarioBean.codigoAnio);
 		$('#sel_almacen').val(usuarioBean.idAlmacen);
 		$('#sel_almacen').prop('disabled', true);
+		$('#txt_fecha').val(get_date_form()); // Fecha actual del sistema
 		if (indicador == '1') { // Retorno
-			$('#btn_buscar').click();
+			listarCartillaInventario(true);
 		} else {
 			listarCartillaInventario(new Object());
 		}
 	}
 }
 
-function listarCartillaInventario(respuesta) {
+function listarCartillaInventario(indicador) {
+	var params = { 
+		codigoAnio : $('#sel_anio').val(),
+		idAlmacen : $('#sel_almacen').val()
+	};
+	if (indicador) {
+		loadding(true);
+	}
+	consultarAjaxSincrono('GET', '/gestion-almacenes/cartilla-inventario/listarCartillaInventario', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleCartillaInventario(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}
+	});
+}
+
+function listarDetalleCartillaInventario(respuesta) {
 
 	tbl_mnt_car_inventario.dataTable().fnDestroy();
 	
@@ -238,4 +314,26 @@ function listarCartillaInventario(respuesta) {
 	
 	listaCartillaInventarioCache = respuesta;
 
+}
+
+function cambiarEstado() {
+	var params = { 
+		idCartilla : $('#hid_cod_cartilla').val(),
+		idEstado : $('#sel_estado').val(),
+		fechaEstado : $('#txt_fecha').val(),
+		observacion : $('#txt_observacion').val()
+	};
+	
+	loadding(true);
+	
+	consultarAjax('POST', '/gestion-almacenes/cartilla-inventario/grabarEstadoCartillaInventario', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {				
+			listarCartillaInventario(false);
+			addSuccessMessage(null, respuesta.mensajeRespuesta);
+		}
+		$('#div_gra_estado').modal('hide');
+		loadding(false);
+	});
 }

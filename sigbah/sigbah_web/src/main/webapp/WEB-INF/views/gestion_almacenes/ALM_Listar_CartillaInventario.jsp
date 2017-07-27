@@ -103,8 +103,8 @@
 								<i class="fa fa-file-pdf-o"></i>
 							</a>
 							<a href="#" id="href_estados" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Estados">
-								<i class="fa fa-eye"></i>
+								data-original-title="Cambiar Estado">
+								<i class="fa fa-cog"></i>
 							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
@@ -158,6 +158,73 @@
 	
 </div>
 <!-- END MAIN CONTENT -->
+
+<!-- Modal -->
+<div id="div_gra_estado" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title label-bold">Cambiar Estado de la Cartilla</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<form id="frm_gra_estado" class="form-horizontal" role="form">
+							
+							<input type="hidden" id="hid_cod_cartilla" name="hid_cod_cartilla">
+						
+							<div class="form-group">																				
+								<label class="col-sm-3 control-label">Estado:</label>
+								<div class="col-sm-8">
+									<select id="sel_estado" name="sel_estado" class="form-control">
+									</select>
+								</div>
+							</div>																		
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Fecha:</label>
+								<div class="col-sm-4 smart-form">
+									<input type="text" id="txt_fecha" class="form-control" disabled>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Observación:</label>
+								<div class="col-sm-9 smart-form">
+									<section>														
+										<label class="textarea textarea-resizable"> 										
+											<textarea rows="3" name="txt_observacion" id="txt_observacion" 
+												maxlength="500" class="custom-scroll"></textarea> 
+										</label>
+									</section>
+								</div>				
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_gra_estado">
+					<i class="fa fa-floppy-o"></i>
+					Grabar
+				</button>
+				
+				&nbsp; &nbsp;
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					<i class="fa fa-mail-forward"></i>
+					Cancelar
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_cartilla_inventario.js"></script>
