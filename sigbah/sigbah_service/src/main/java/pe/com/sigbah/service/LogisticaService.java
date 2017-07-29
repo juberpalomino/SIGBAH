@@ -611,11 +611,11 @@ public interface LogisticaService {
 	public abstract List<CierreStockBean> listarCierreStock(CierreStockBean cierreStockBean) throws Exception;
 
 	/**
-	 * @param codigo
+	 * @param cierreStockBean
 	 * @return Objeto.
 	 * @throws Exception
 	 */
-	public abstract CierreStockBean obtenerRegistroCierreStock(Integer codigo) throws Exception;
+	public abstract CierreStockBean obtenerRegistroCierreStock(CierreStockBean cierreStockBean) throws Exception;
 
 	/**
 	 * @param cierreStockBean

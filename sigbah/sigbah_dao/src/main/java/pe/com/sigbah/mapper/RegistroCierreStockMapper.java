@@ -21,22 +21,16 @@ public class RegistroCierreStockMapper implements RowMapper<CierreStockBean> {
 	@Override
 	public CierreStockBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CierreStockBean cierreStock = new CierreStockBean();
-		cierreStock.setIdCartilla(rs.getInt("IDE_CARTILLA"));
 		cierreStock.setCodigoAnio(rs.getString("COD_ANIO"));
-		cierreStock.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
-		cierreStock.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
-		cierreStock.setIdDdi(rs.getInt("FK_IDE_DDI"));
-		cierreStock.setCodigoDdi(rs.getString("COD_DDI"));
-		cierreStock.setNombreDdi(rs.getString("NOMBRE_DDI"));
-		cierreStock.setNroCartilla(rs.getString("NRO_CARTILLA"));		
-		cierreStock.setCodigoCartilla(rs.getString("COD_CARTILLA"));
-		cierreStock.setFechaCartilla(rs.getString("FEC_CARTILLA"));
-		cierreStock.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
-		cierreStock.setIdResponsable(rs.getInt("FK_IDE_RESPONSABLE"));		
+		cierreStock.setCodigoMes(rs.getString("COD_MES"));
+		cierreStock.setNombreMes(rs.getString("NOMBRE_MES"));
+		cierreStock.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
+		cierreStock.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));		
+		cierreStock.setIdResponsable(rs.getInt("FK_IDE_RESPONSABLE_ALM"));
 		cierreStock.setResponsable(rs.getString("RESPONSABLE"));
-		cierreStock.setIdEstado(rs.getInt("FK_IDE_ESTADO"));
-		cierreStock.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
-		cierreStock.setObservacion(rs.getString("OBSERVACION_CARTILLA"));		
+		cierreStock.setFlagCierreAlmacen(rs.getString("FLG_CIERRE_ALM"));		
+		cierreStock.setNombreEstado(rs.getString("ESTADO"));
+		cierreStock.setObservacion(rs.getString("OBSERVACION"));
 		return cierreStock;
 	}
 

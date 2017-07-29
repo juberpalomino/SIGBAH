@@ -701,11 +701,11 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroCierreStock(java.lang.Integer)
+	 * @see pe.com.sigbah.service.LogisticaService#obtenerRegistroCierreStock(pe.com.sigbah.common.bean.CierreStockBean)
 	 */
 	@Override
-	public CierreStockBean obtenerRegistroCierreStock(Integer codigo) throws Exception {
-		return logisticaDao.obtenerRegistroCierreStock(codigo);
+	public CierreStockBean obtenerRegistroCierreStock(CierreStockBean cierreStockBean) throws Exception {
+		return logisticaDao.obtenerRegistroCierreStock(cierreStockBean);
 	}
 
 	/* (non-Javadoc)

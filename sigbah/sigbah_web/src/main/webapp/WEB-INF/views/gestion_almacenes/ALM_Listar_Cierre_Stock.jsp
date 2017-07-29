@@ -6,7 +6,7 @@
 	<ol class="breadcrumb">
 		<li>Gestión de Almacenes</li>
 		<li>Stock</li>
-		<li>Cartilla Mensual - Lista</li>
+		<li>Cierre Mensual - Lista</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -28,7 +28,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Cartilla Mensual</h2>
+						<h2>Búsqueda de Cierre Mensual</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -91,24 +91,12 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Relación de Cartilla Mensual</h2>
+						<h2>Relación de Cierre Mensual</h2>
 						
-						<div class="jarviswidget-ctrls" role="menu">   
-							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Exportar Excel">
-								<i class="fa fa-file-excel-o"></i>
-							</a> 
-							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Imprimir">
-								<i class="fa fa-file-pdf-o"></i>
-							</a>
+						<div class="jarviswidget-ctrls" role="menu">
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
-							</a>
-							<a href="#" id="href_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Nuevo">
-								<i class="fa fa-file-o"></i>
 							</a>
 						</div>
 					</header>
@@ -122,7 +110,7 @@
 							<table id="tbl_mnt_cie_stock" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
-										<th></th>
+										<th>Sel</th>
 										<th>Nº</th>
 										<th>Almacén</th>
 										<th>Mes</th>

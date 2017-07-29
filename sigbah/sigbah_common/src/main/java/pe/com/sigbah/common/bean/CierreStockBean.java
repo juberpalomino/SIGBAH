@@ -1,9 +1,7 @@
 package pe.com.sigbah.common.bean;
 
-import java.math.BigDecimal;
-
 /**
- * @className: CartillaInventarioBean.java
+ * @className: CierreStockBean.java
  * @description: 
  * @date: 23 de jun. de 2017
  * @author: Junior Huaman Flores.
@@ -11,53 +9,24 @@ import java.math.BigDecimal;
 public class CierreStockBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
-	private Integer idCartilla;
-	private String codigoCartilla;
 	private String codigoAnio;
+	private String codigoMes;
+	private String nombreMes;
 	private Integer idAlmacen;
 	private String codigoAlmacen;
 	private String nombreAlmacen;
-	private Integer idDdi;
-	private String codigoDdi;
-	private String nombreDdi;	
-	private String nroCartilla;
-	private String fechaCartilla;
 	private Integer idResponsable;
-	private String responsable;	
-	private BigDecimal itemInventariados;	
+	private String responsable;
+	private String flagCierreAlmacen;
 	private Integer idEstado;
 	private String nombreEstado;
-	private String tipoOrigen;
 	private String observacion;
 
-	
 	/**
 	 * 
 	 */
 	public CierreStockBean() {
 		super();
-	}
-	
-	/**
-	 * @param idCartilla
-	 */
-	public CierreStockBean(Integer idCartilla) {
-		super();
-		this.idCartilla = idCartilla;
-	}
-
-	/**
-	 * @return the idCartilla
-	 */
-	public Integer getIdCartilla() {
-		return idCartilla;
-	}
-
-	/**
-	 * @param idCartilla the idCartilla to set
-	 */
-	public void setIdCartilla(Integer idCartilla) {
-		this.idCartilla = idCartilla;
 	}
 
 	/**
@@ -72,6 +41,34 @@ public class CierreStockBean extends BaseOutputBean {
 	 */
 	public void setCodigoAnio(String codigoAnio) {
 		this.codigoAnio = codigoAnio;
+	}
+
+	/**
+	 * @return the codigoMes
+	 */
+	public String getCodigoMes() {
+		return codigoMes;
+	}
+
+	/**
+	 * @param codigoMes the codigoMes to set
+	 */
+	public void setCodigoMes(String codigoMes) {
+		this.codigoMes = codigoMes;
+	}
+
+	/**
+	 * @return the nombreMes
+	 */
+	public String getNombreMes() {
+		return nombreMes;
+	}
+
+	/**
+	 * @param nombreMes the nombreMes to set
+	 */
+	public void setNombreMes(String nombreMes) {
+		this.nombreMes = nombreMes;
 	}
 
 	/**
@@ -117,73 +114,17 @@ public class CierreStockBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the idDdi
+	 * @return the idResponsable
 	 */
-	public Integer getIdDdi() {
-		return idDdi;
+	public Integer getIdResponsable() {
+		return idResponsable;
 	}
 
 	/**
-	 * @param idDdi the idDdi to set
+	 * @param idResponsable the idResponsable to set
 	 */
-	public void setIdDdi(Integer idDdi) {
-		this.idDdi = idDdi;
-	}
-
-	/**
-	 * @return the codigoDdi
-	 */
-	public String getCodigoDdi() {
-		return codigoDdi;
-	}
-
-	/**
-	 * @param codigoDdi the codigoDdi to set
-	 */
-	public void setCodigoDdi(String codigoDdi) {
-		this.codigoDdi = codigoDdi;
-	}
-
-	/**
-	 * @return the nombreDdi
-	 */
-	public String getNombreDdi() {
-		return nombreDdi;
-	}
-
-	/**
-	 * @param nombreDdi the nombreDdi to set
-	 */
-	public void setNombreDdi(String nombreDdi) {
-		this.nombreDdi = nombreDdi;
-	}
-
-	/**
-	 * @return the nroCartilla
-	 */
-	public String getNroCartilla() {
-		return nroCartilla;
-	}
-
-	/**
-	 * @param nroCartilla the nroCartilla to set
-	 */
-	public void setNroCartilla(String nroCartilla) {
-		this.nroCartilla = nroCartilla;
-	}
-
-	/**
-	 * @return the fechaCartilla
-	 */
-	public String getFechaCartilla() {
-		return fechaCartilla;
-	}
-
-	/**
-	 * @param fechaCartilla the fechaCartilla to set
-	 */
-	public void setFechaCartilla(String fechaCartilla) {
-		this.fechaCartilla = fechaCartilla;
+	public void setIdResponsable(Integer idResponsable) {
+		this.idResponsable = idResponsable;
 	}
 
 	/**
@@ -201,17 +142,17 @@ public class CierreStockBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the itemInventariados
+	 * @return the flagCierreAlmacen
 	 */
-	public BigDecimal getItemInventariados() {
-		return itemInventariados;
+	public String getFlagCierreAlmacen() {
+		return flagCierreAlmacen;
 	}
 
 	/**
-	 * @param itemInventariados the itemInventariados to set
+	 * @param flagCierreAlmacen the flagCierreAlmacen to set
 	 */
-	public void setItemInventariados(BigDecimal itemInventariados) {
-		this.itemInventariados = itemInventariados;
+	public void setFlagCierreAlmacen(String flagCierreAlmacen) {
+		this.flagCierreAlmacen = flagCierreAlmacen;
 	}
 
 	/**
@@ -243,48 +184,6 @@ public class CierreStockBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the codigoCartilla
-	 */
-	public String getCodigoCartilla() {
-		return codigoCartilla;
-	}
-
-	/**
-	 * @param codigoCartilla the codigoCartilla to set
-	 */
-	public void setCodigoCartilla(String codigoCartilla) {
-		this.codigoCartilla = codigoCartilla;
-	}
-
-	/**
-	 * @return the tipoOrigen
-	 */
-	public String getTipoOrigen() {
-		return tipoOrigen;
-	}
-
-	/**
-	 * @param tipoOrigen the tipoOrigen to set
-	 */
-	public void setTipoOrigen(String tipoOrigen) {
-		this.tipoOrigen = tipoOrigen;
-	}
-
-	/**
-	 * @return the idResponsable
-	 */
-	public Integer getIdResponsable() {
-		return idResponsable;
-	}
-
-	/**
-	 * @param idResponsable the idResponsable to set
-	 */
-	public void setIdResponsable(Integer idResponsable) {
-		this.idResponsable = idResponsable;
-	}
-
-	/**
 	 * @return the observacion
 	 */
 	public String getObservacion() {
@@ -297,5 +196,4 @@ public class CierreStockBean extends BaseOutputBean {
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
-
 }

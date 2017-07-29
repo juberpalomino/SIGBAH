@@ -31,6 +31,8 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
+		var codigoMes = '';
+		var idAlmacen = '';
 		tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -38,8 +40,10 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idCartilla = listaCierreStockCache[index].idCartilla;
-				codigo = codigo + idCartilla + '_';
+				var codigoAnio = listaCierreStockCache[index].codigoAnio;
+				codigo = codigo + codigoAnio + '_';
+				codigoMes = listaCierreStockCache[index].codigoMes;
+				idAlmacen = listaCierreStockCache[index].idAlmacen;
 			}
 		});
 		
@@ -54,100 +58,9 @@ $(document).ready(function() {
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/mantenimientoCierreStock/';
-			$(location).attr('href', url + codigo);
+			$(location).attr('href', url + codigo + '/' + codigoMes + '/' + idAlmacen);
 		}
 		
-	});
-	
-	$('#href_nuevo').click(function(e) {
-		e.preventDefault();
-
-		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/mantenimientoCierreStock/0';
-		$(location).attr('href', url);
-		
-	});
-	
-	$('#href_exp_excel').click(function(e) {
-		e.preventDefault();
-		
-		var row = $('#tbl_mnt_cie_stock > tbody > tr').length;
-		var empty = null;
-		$('tr.odd').each(function() {		
-			empty = $(this).find('.dataTables_empty').text();
-			return false;
-		});					
-		if (!esnulo(empty) || row < 1) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
-			return;
-		}
-
-		loadding(true);
-		
-		var codigoAnio = $('#sel_anio').val();
-		var idAlmacen = $('#sel_almacen').val();
-		var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/exportarExcel/';
-		url += verificaParametro(codigoAnio) + '/';
-		url += verificaParametroInt(idAlmacen);
-		
-		$.fileDownload(url).done(function(respuesta) {
-			loadding(false);	
-			if (respuesta == NOTIFICACION_ERROR) {
-				addErrorMessage(null, mensajeReporteError);
-			} else {
-				addInfoMessage(null, mensajeReporteExito);
-			}
-		}).fail(function (respuesta) {
-			loadding(false);
-			addErrorMessage(null, mensajeReporteError);
-		});
-
-	});
-	
-	$('#href_imprimir').click(function(e) {
-		e.preventDefault();
-
-		var indices = [];
-		var codigo = '';
-		tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_cie_stock.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-				indices.push(index);				
-				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-				if (!esnulo(codigo)) {
-					return false;
-				}
-				var idCartilla = listaCierreStockCache[index].idCartilla;
-				codigo = codigo + idCartilla + '_';
-			}
-		});
-		
-		if (!esnulo(codigo)) {
-			codigo = codigo.substring(0, codigo.length - 1);
-		}
-		
-		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-		} else {
-			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/cierre-stock/exportarPdf/'+codigo;
-			$.fileDownload(url).done(function(respuesta) {
-				loadding(false);	
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else {
-					addInfoMessage(null, mensajeReporteExito);
-				}
-			}).fail(function (respuesta) {
-				loadding(false);
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else if (respuesta == NOTIFICACION_VALIDACION) {
-					addWarnMessage(null, mensajeReporteValidacion);
-				}
-			});
-		}
 	});
 	
 });
@@ -181,7 +94,7 @@ function listarCierreStock(respuesta) {
 	tbl_mnt_cie_stock.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idCartilla',
+			data : 'codigoAnio',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -193,7 +106,7 @@ function listarCierreStock(respuesta) {
 				}											
 			}	
 		}, {	
-			data : 'idCartilla',
+			data : 'codigoAnio',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -201,7 +114,7 @@ function listarCierreStock(respuesta) {
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nombreAlmacen'
+			data : 'nombreMes'
 		}, {
 			data : 'responsable'
 		}, {

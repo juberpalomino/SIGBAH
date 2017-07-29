@@ -62,6 +62,7 @@ import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.mapper.AlmacenActivoMapper;
 import pe.com.sigbah.mapper.CartillaInventarioMapper;
+import pe.com.sigbah.mapper.CierreStockMapper;
 import pe.com.sigbah.mapper.ControlCalidadMapper;
 import pe.com.sigbah.mapper.DetalleActaEntregaMapper;
 import pe.com.sigbah.mapper.DetalleEstadoCartillaInventarioMapper;
@@ -88,6 +89,7 @@ import pe.com.sigbah.mapper.ProductoSalidaMapper;
 import pe.com.sigbah.mapper.ProductoStockAlmacenMapper;
 import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.RegistroCartillaInventarioMapper;
+import pe.com.sigbah.mapper.RegistroCierreStockMapper;
 import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroGuiaRemisionMapper;
 import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
@@ -4393,17 +4395,98 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<CierreStockBean> listarCierreStock(CierreStockBean cierreStockBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarCierreStock] Inicio ");
+		List<CierreStockBean> lista = new ArrayList<CierreStockBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_COD_ANIO", cierreStockBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", Utils.getParam(cierreStockBean.getIdAlmacen()), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_CIERRE_ALMACEN");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new CierreStockMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarCierreStock] Ocurrio un error en la operacion del USP_LISTAR_CIERRE_ALMACEN : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<CierreStockBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarCierreStock] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroCierreStock(java.lang.Integer)
+	 * @see pe.com.sigbah.dao.LogisticaDao#obtenerRegistroCierreStock(pe.com.sigbah.common.bean.CierreStockBean)
 	 */
 	@Override
-	public CierreStockBean obtenerRegistroCierreStock(Integer codigo) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public CierreStockBean obtenerRegistroCierreStock(CierreStockBean cierreStockBean) throws Exception {
+		LOGGER.info("[obtenerRegistroCierreStock] Inicio ");
+		CierreStockBean cierreStock = new CierreStockBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", cierreStockBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", cierreStockBean.getCodigoMes(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", cierreStockBean.getIdAlmacen(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_CIERRE_ALMACEN");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new RegistroCierreStockMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerRegistroCierreStock] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_CIERRE_ALMACEN : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<CierreStockBean> lista = (List<CierreStockBean>) out.get("PO_Lr_Recordset");
+			if (!Utils.isEmpty(lista)) {
+				cierreStock = lista.get(0);
+			}
+			
+			cierreStock.setCodigoRespuesta(codigoRespuesta);
+			cierreStock.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerRegistroCierreStock] Fin ");
+		return cierreStock;
 	}
 
 	/* (non-Javadoc)
@@ -4411,8 +4494,56 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[grabarCierreStock] Inicio ");
+		CierreStockBean registroCierreStock = new CierreStockBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_ALMACEN", cierreStockBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", cierreStockBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", cierreStockBean.getCodigoMes(), Types.VARCHAR);			
+			input_objParametros.addValue("PI_FLG_CIERRE_ALM", cierreStockBean.getFlagCierreAlmacen(), Types.VARCHAR);			
+			input_objParametros.addValue("PI_FK_IDE_RESPONSABLE_ALM", cierreStockBean.getIdResponsable(), Types.NUMERIC);
+			input_objParametros.addValue("PI_OBSERVACION", cierreStockBean.getObservacion(), Types.VARCHAR);
+			input_objParametros.addValue("PI_USUARIO", cierreStockBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_CIERRE_ALMACEN");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));			
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
+			output_objParametros.put("PI_FLG_CIERRE_ALM", new SqlParameter("PI_FLG_CIERRE_ALM", Types.VARCHAR));
+			output_objParametros.put("PI_FK_IDE_RESPONSABLE_ALM", new SqlParameter("PI_FK_IDE_RESPONSABLE_ALM", Types.NUMERIC));
+			output_objParametros.put("PI_OBSERVACION", new SqlParameter("PI_OBSERVACION", Types.VARCHAR));
+			output_objParametros.put("PI_USUARIO", new SqlParameter("PI_USUARIO", Types.VARCHAR));;
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarCierreStock] Ocurrio un error en la operacion del USP_INS_UPD_CIERRE_ALMACEN : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			registroCierreStock.setCodigoRespuesta(codigoRespuesta);
+			registroCierreStock.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarCierreStock] Fin ");
+		return registroCierreStock;
 	}
 
 }
