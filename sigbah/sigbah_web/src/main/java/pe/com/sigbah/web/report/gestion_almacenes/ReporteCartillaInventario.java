@@ -1,7 +1,10 @@
 package pe.com.sigbah.web.report.gestion_almacenes;
 
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -15,7 +18,21 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 
@@ -175,6 +192,688 @@ public class ReporteCartillaInventario implements Serializable {
 			 LOGGER.error(e);
 		 }
 		 return hssfColor;
+	}
+
+	/**
+	 * @param ruta
+	 * @param cartillaInventario
+	 * @param listaProducto
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteCartillaInventarioA(String ruta, CartillaInventarioBean cartillaInventario,
+													List<ProductoCartillaInventarioBean> listaProducto) throws Exception {
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte
+			float[] ftit = {20, 15, 65};			
+			
+			float[] f1 = {100};
+
+			float[] f5 = {35, 5, 30, 5, 25};
+
+			float[] f11 = {5, 15, 10, 5, 10, 5, 10, 10, 10, 10, 10};
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font hide = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.WHITE);
+			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			   
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(ftit);
+			
+			String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));			
+			Image img = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			cell = new PdfPCell(img, true);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0");
+			det_encabezado.append("\n");
+			det_encabezado.append("FECHA : ");
+			Date fecha_hora = Calendar.getInstance().getTime();
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+			det_encabezado.append("\n");
+			det_encabezado.append("HORA : ");
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+			p = new Paragraph(det_encabezado.toString(), encabezado);
+			pdet = new Paragraph("        .", hide);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("CARTILLA DE INVENTARIO N° ".concat(cartillaInventario.getCodigoCartilla()), titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("DDI : ", negrita);
+			pdet = new Paragraph(cartillaInventario.getNombreDdi(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Almacén: ", negrita);
+			pdet = new Paragraph(cartillaInventario.getNombreAlmacen(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Responsable : ", negrita);
+			pdet = new Paragraph(cartillaInventario.getResponsable(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(11);
+			table.setWidths(f11);
+			
+			p = new Paragraph("ITEM", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("PRODUCTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("UNIDAD MEDIDA", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO LOTE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("FECHA VENCIMIENTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("NAVE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("STOCK ACTUAL", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("STOCK FISICO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("DIFERENCIA", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("TIPO AJUSTE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO DOCUMENTO AJUSTE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			int row_pro = 1;
+			
+			for (ProductoCartillaInventarioBean producto : listaProducto) {
+			
+				table = new PdfPTable(11);
+				table.setWidths(f11);
+				
+				p = new Paragraph(String.valueOf(row_pro), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+			
+				p = new Paragraph(producto.getNombreProducto(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(producto.getNombreUnidad(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(producto.getNroLote(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getFechaVencimiento()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getNave()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getCantidadStock()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getStockFisico()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getDiferencia()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getTipo()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getDocumentoAjuste()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				document.add(table);	             
+				
+				row_pro++;
+			}
+			// Bloque Fin
+			
+
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(5);
+			table.setWidths(f5);
+			
+			p = new Paragraph("Jefe Almacén", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			p = new Paragraph("Responsable Inventariador", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+
+			p = new Paragraph("Fecha", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
+	}
+
+	/**
+	 * @param ruta
+	 * @param cartillaInventario
+	 * @param listaProducto
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteCartillaInventarioB(String ruta, CartillaInventarioBean cartillaInventario,
+													List<ProductoCartillaInventarioBean> listaProducto) throws Exception {
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte
+			float[] ftit = {20, 15, 65};			
+			
+			float[] f1 = {100};
+
+			float[] f5 = {35, 5, 30, 5, 25};
+
+			float[] f9 = {5, 25, 10, 10, 10, 10, 10, 10, 10};
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font hide = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.WHITE);
+			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			   
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(ftit);
+			
+			String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));			
+			Image img = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			cell = new PdfPCell(img, true);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0");
+			det_encabezado.append("\n");
+			det_encabezado.append("FECHA : ");
+			Date fecha_hora = Calendar.getInstance().getTime();
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+			det_encabezado.append("\n");
+			det_encabezado.append("HORA : ");
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+			p = new Paragraph(det_encabezado.toString(), encabezado);
+			pdet = new Paragraph("        .", hide);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("CARTILLA DE INVENTARIO N° ".concat(cartillaInventario.getCodigoCartilla()), titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("DDI : ", negrita);
+			pdet = new Paragraph(cartillaInventario.getNombreDdi(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Almacén: ", negrita);
+			pdet = new Paragraph(cartillaInventario.getNombreAlmacen(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Responsable : ", negrita);
+			pdet = new Paragraph(cartillaInventario.getResponsable(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(9);
+			table.setWidths(f9);
+			
+			p = new Paragraph("ITEM", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("PRODUCTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("UNIDAD MEDIDA", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO LOTE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("FECHA VENCIMIENTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("NAVE", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("PRECIO UNITARIO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("STOCK ACTUAL", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			p = new Paragraph("STOCK FISICO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			int row_pro = 1;
+			
+			for (ProductoCartillaInventarioBean producto : listaProducto) {
+			
+				table = new PdfPTable(9);
+				table.setWidths(f9);
+				
+				p = new Paragraph(String.valueOf(row_pro), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+			
+				p = new Paragraph(producto.getNombreProducto(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(producto.getNombreUnidad(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(producto.getNroLote(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getFechaVencimiento()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getNave()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getPrecioUnitario()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getCantidadStock()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(producto.getStockFisico()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				document.add(table);	             
+				
+				row_pro++;
+			}
+			// Bloque Fin
+			
+
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(5);
+			table.setWidths(f5);
+			
+			p = new Paragraph("Jefe Almacén", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			p = new Paragraph("Responsable Inventariador", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+
+			p = new Paragraph("Fecha", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
 	}	
     
 }

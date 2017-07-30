@@ -40,7 +40,8 @@ public class ProductoCartillaInventarioMapper implements RowMapper<ProductoCarti
 		producto.setDiferencia(rs.getBigDecimal("DIFERENCIA"));
 		producto.setPrecioUnitario(rs.getBigDecimal("PREC_UNITARIO"));
 		producto.setTipo(rs.getString("TIPO"));	
-		producto.setDocumentoAjuste(rs.getString("DOCUMENTO_AJUSTE"));	
+		producto.setDocumentoAjuste(rs.getString("DOCUMENTO_AJUSTE"));
+		producto.setFechaVencimiento(rs.getString("FEC_VENCIMIENTO"));
 		return producto;
 	}
 

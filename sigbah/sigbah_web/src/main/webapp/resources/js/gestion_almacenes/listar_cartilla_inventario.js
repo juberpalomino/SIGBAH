@@ -117,7 +117,8 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/cartilla-inventario/exportarPdf/'+codigo;
+			var indicador = '1'; // Reporte Formato A
+			var url = VAR_CONTEXT + '/gestion-almacenes/cartilla-inventario/exportarPdf/'+codigo+'/'+indicador;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {

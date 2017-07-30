@@ -338,6 +338,42 @@ $(document).ready(function() {
 
 	});
 	
+	$('#href_imprimir').click(function(e) {
+		e.preventDefault();
+
+		var row = $('#tbl_det_productos > tbody > tr').length;
+		var empty = null;
+		$('tr.odd').each(function() {		
+			empty = $(this).find('.dataTables_empty').text();
+			return false;
+		});					
+		if (!esnulo(empty) || row < 1) {
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			return;
+		}
+
+		loadding(true);
+		var codigo = $('#hid_cod_cartilla').val();
+		var indicador = '2'; // Reporte Formato B
+		var url = VAR_CONTEXT + '/gestion-almacenes/cartilla-inventario/exportarPdf/'+codigo+'/'+indicador;
+		$.fileDownload(url).done(function(respuesta) {
+			loadding(false);	
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else {
+				addInfoMessage(null, mensajeReporteExito);
+			}
+		}).fail(function (respuesta) {
+			loadding(false);
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else if (respuesta == NOTIFICACION_VALIDACION) {
+				addWarnMessage(null, mensajeReporteValidacion);
+			}
+		});
+
+	});
+	
 	$('#href_aju_editar').click(function(e) {
 		e.preventDefault();
 

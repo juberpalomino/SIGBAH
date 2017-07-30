@@ -32,6 +32,7 @@ public class ProductoCartillaInventarioBean extends BaseOutputBean {
 	private BigDecimal diferencia;
 	private String tipo;
 	private String documentoAjuste;
+	private String fechaVencimiento;
 	
 	
 	/**
@@ -341,6 +342,20 @@ public class ProductoCartillaInventarioBean extends BaseOutputBean {
 	 */
 	public void setDiferencia(BigDecimal diferencia) {
 		this.diferencia = diferencia;
+	}
+
+	/**
+	 * @return the fechaVencimiento
+	 */
+	public String getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	/**
+	 * @param fechaVencimiento the fechaVencimiento to set
+	 */
+	public void setFechaVencimiento(String fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
 	}
 
 }

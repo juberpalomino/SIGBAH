@@ -174,7 +174,11 @@
 											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 											<h2>Detalle de Productos</h2>
 											
-											<div class="jarviswidget-ctrls" role="menu">   
+											<div class="jarviswidget-ctrls" role="menu">
+												<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+													data-original-title="Imprimir">
+													<i class="fa fa-file-pdf-o"></i>
+												</a>
 												<a href="#" id="href_pro_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Nuevo">
 													<i class="fa fa-file-o"></i>
