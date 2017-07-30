@@ -35,20 +35,24 @@
 	
 							<ul id="ul_man_programacion" class="nav nav-tabs bordered">
 								<li id="li_dat_generales" class="active">
-									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
+									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-dow "></i> 
 									Datos Generales</a>
 								</li>
 								<li id="li_alimentarios">
-									<a href="#div_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
+									<a href="#div_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down"></i> 
 									Alimentarios</a>
 								</li>
 								<li id="li_no_alimentarios">
-									<a href="#div_no_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
+									<a href="#div_no_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down"></i> 
 									No Alimentarios</a>
 								</li>
 								<li id="li_documentos">
-									<a href="#div_documentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
+									<a href="#div_documentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down"></i> 
 									Documentos</a>
+								</li>
+								<li id="li_estados">
+									<a href="#div_estados" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down"></i> 
+									Estados</a>
 								</li>
 							</ul>
 	
@@ -58,25 +62,11 @@
 									<form id="frm_dat_generales" class="form-horizontal">
 									
 										<input type="hidden" id="hid_cod_programacion" name="hid_cod_programacion">
-									
-										<div class="header-form opc-center">	
-											<strong>Control de Calidad</strong>
-										</div>
-										
-										<div class="form-group"></div>
-										
-										<div class="form-group">
-											<div class="col-sm-3"></div>
-											<label class="col-sm-3 control-label label-bold">N° Control de Calidad:</label>
-											<div class="col-sm-2">
-												<input type="text" id="txt_nro_programacion" class="form-control" disabled>
-											</div>
-										</div>												
-																
+					
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos Generales</h2>
+												<h2>Datos de Programación</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -86,99 +76,106 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-2 control-label">Año:</label>
+														<label class="col-sm-2 control-label">Nro Programación:</label>
 														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_anio" class="form-control" disabled>
+															<input type="text" id="txt_nro_programacion" class="form-control" disabled>
 														</div>
 
-														<label class="col-sm-2 control-label">DDI:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_ddi" class="form-control" disabled>
-														</div>
-
-														<label class="col-sm-2 control-label">Almacén:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" id="txt_almacen" class="form-control" disabled>
-														</div>
-													</div>
-													
-													<div class="row">
-														<label class="col-sm-2 control-label">Fecha:</label>
+														<label class="col-sm-2 control-label">Fecha Programación:</label>
 														<div class="col-sm-2 smart-form form-group">
 															<label class="input"> 
 																<i class="icon-append fa fa-calendar"></i>
-																<input type="text" name="txt_fecha" id="txt_fecha" class="datepicker" readonly>
+																<input type="text" name="txt_fec_programacion" id="txt_fec_programacion" class="datepicker" readonly>
 															</label>
 														</div>
 														
 														<label class="col-sm-2 control-label">Estado:</label>
 														<div class="col-sm-2 form-group">
-															<select id="sel_estado" name="sel_estado" class="form-control">
-																<c:forEach items="${lista_estado}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
+															<input type="text" id="txt_estado" class="form-control" disabled>
 														</div>
 													</div>
 													
 													<div class="row">
-														<label class="col-sm-2 control-label">Nº Orden Compra:</label>
+														<label class="col-sm-2 control-label">Descripción:</label>
+														<div class="col-sm-10 form-group">
+															<input type="text" name="txt_descripcion" id="txt_descripcion" class="form-control">
+														</div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-2 control-label">N° de Requerimiento:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control">
-																<c:forEach items="${lista_orden_compra}" var="item">
-																    <option value="${item.nroOrdenCompra}_${item.concepto}">${item.nroOrdenCompra}</option>
-																</c:forEach>
-															</select>
-														</div>
-													
-														<div class="col-sm-7 smart-form">
-															<section>														
-																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="2" id="txt_det_ord_compra" class="form-control custom-scroll mod-readonly" disabled></textarea> 
-																</label>
-															</section>
-														</div>
-													</div>
-													
-													<div class="row">
-														<label class="col-sm-2 control-label">Tipo de Control:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_tip_control" name="sel_tip_control" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_tipo_control}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
-														</div>
-													</div>
-													
-													<div class="row">
-														<div class="col-sm-12 header-form">	
-															<strong>Reponsables</strong>
-														</div>
-													</div>
-													
-													<div class="row"><div class="col-sm-12">&nbsp;</div></div>
-													
-													<div class="row">
-														<label class="col-sm-3 control-label">Encargado de Almacén:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_ori_en_almacen" name="sel_ori_en_almacen" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_personal}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
+															<select id="sel_nro_requerimiento" name="sel_nro_requerimiento" class="form-control">
+																<c:forEach items="${lista_requerimiento}" var="item">
+																    <option value="${item.idRequerimiento}_${item.nomRequerimiento}">${item.codRequerimiento}</option>
 																</c:forEach>
 															</select>
 														</div>
 														
-														<label class="col-sm-3 control-label">Inspector:</label>
+														<div class="col-sm-7">
+															<input type="text" id="txt_des_requerimiento" class="form-control" disabled>
+														</div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-2 control-label">N° Ración:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_inspector" name="sel_inspector" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_personal}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
+															<select id="sel_nro_racion" name="sel_nro_racion" class="form-control">
+																<c:forEach items="${lista_racion}" var="item">
+																    <option value="${item.idRacionOperativa}_${item.nombreRacion}">${item.codigoRacionOperativa}</option>
 																</c:forEach>
 															</select>
+														</div>
+														
+														<div class="col-sm-7">
+															<input type="text" id="txt_des_racion" class="form-control" disabled>
+														</div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-2 control-label">N° DEE:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_nro_dee" name="sel_nro_dee" class="form-control">
+																<c:forEach items="${lista_dee}" var="item">
+																    <option value="${item.icodigo}_${item.descripcion}">${item.descripcionCorta}</option>
+																</c:forEach>
+															</select>
+														</div>
+														
+														<div class="col-sm-7">
+															<input type="text" id="txt_des_nro_dee" class="form-control" disabled>
+														</div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-2 control-label">Region Destino:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_reg_destino" name="sel_reg_destino" class="form-control">
+																<c:forEach items="${lista_region}" var="item">
+																    <option value="${item.descripcionCorta}">${item.descripcion}</option>
+																</c:forEach>
+															</select>
+														</div>
+														
+														<label class="col-sm-2 control-label">Atención con:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_ate_con" name="sel_ate_con" class="form-control">
+																<option value="1">Alimentos</option>
+																<option value="2">Bienes no Alimentarios</option>
+																<option value="3">Ambos</option>
+															</select>
+														</div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-2 control-label">Observaciones:</label>
+														<div class="col-sm-10 smart-form">
+															<section>														
+																<label class="textarea textarea-resizable"> 										
+																	<textarea rows="3" name="txt_observaciones" id="txt_observaciones" 
+																		maxlength="500" class="custom-scroll"></textarea> 
+																</label>
+															</section>
 														</div>
 													</div>
 								
@@ -194,7 +191,7 @@
 										<div class="jarviswidget">
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos del Origen / Destino</h2>
+												<h2>Almacenes</h2>
 											</header>
 								
 											<!-- widget div-->
@@ -206,7 +203,7 @@
 													<div class="row">
 														<label class="col-sm-3 control-label">Almacén:</label>
 														<div class="col-sm-3 form-group">
-															<select id="sel_ori_almacen" name="sel_ori_almacen" class="form-control">
+															<select id="sel_almacen" name="sel_almacen" class="form-control">
 																<c:forEach items="${lista_almacen}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -222,156 +219,6 @@
 								
 										</div>
 										<!-- end widget -->
-										
-										<div class="jarviswidget">
-											<header>
-												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos de Proveedor</h2>
-											</header>
-								
-											<!-- widget div-->
-											<div>
-								
-												<!-- widget content -->
-												<div class="widget-body widget-body-50">
-								
-													<div class="row">
-														<label class="col-sm-3 control-label">Proveedor:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_proveedor" name="sel_proveedor" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_proveedor}" var="item">
-																	<option value="${item.vcodigo}_${item.descripcionCorta}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
-														</div>
-														
-														<label class="col-sm-3 control-label">Representante:</label>
-														<div class="col-sm-3 form-group">
-															<input type="text" id="txt_representante" class="form-control" disabled>
-														</div>
-													</div>
-								
-												</div>
-												<!-- end widget content -->
-								
-											</div>
-											<!-- end widget div -->
-								
-										</div>
-										<!-- end widget -->
-										
-										<div class="jarviswidget">
-											<header>
-												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Datos del Transporte</h2>
-											</header>
-								
-											<!-- widget div-->
-											<div>
-								
-												<!-- widget content -->
-												<div class="widget-body">
-								
-													<div class="row">
-														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_empresa_transporte}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
-														</div>
-														
-														<label class="col-sm-3 control-label">Chofer:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_chofer" name="sel_chofer" class="form-control">
-																<option value="">Seleccione</option>
-																<c:forEach items="${lista_chofer}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-															</select>
-														</div>
-													</div>
-													
-													<div class="row">
-														<label class="col-sm-3 control-label">N° de Placa:</label>
-														<div class="col-sm-2 form-group">
-															<input type="text" name="txt_nro_placa" id="txt_nro_placa" class="form-control upperValue" maxlength="10">
-														</div>
-													</div>
-								
-												</div>
-												<!-- end widget content -->
-								
-											</div>
-											<!-- end widget div -->
-								
-										</div>
-										<!-- end widget -->
-										
-										<div class="jarviswidget">
-											<header>
-												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-												<h2>Productos</h2>
-											</header>
-								
-											<!-- widget div-->
-											<div>
-								
-												<!-- widget content -->
-												<div class="widget-body">
-								
-													<div class="row">
-														<label class="col-sm-2 control-label">Tipo de Bien:</label>
-														
-														<div class="col-sm-1"></div>
-														
-														<div class="col-sm-6 form-group">
-															<label class="radio radio-inline">
-																<input type="radio" name="rb_tip_bien" value="1">
-																Alimentarios
-															</label>
-															
-															<label class="radio radio-inline">
-																<input type="radio" name="rb_tip_bien" value="2">
-																No Alimentarios
-															</label>																											
-														</div>
-													</div>
-													
-													<div class="row">
-														<div class="col-sm-6 smart-form">
-															<section>														
-																<label class="control-label">Conclusiones:</label>
-																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_conclusiones" id="txt_conclusiones" 
-																		maxlength="500" class="custom-scroll"></textarea> 
-																</label>
-															</section>
-														</div>
-														
-														<div class="col-sm-6 smart-form">
-															<section>
-																<label class="control-label">Recomendaciones:</label>
-																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_recomendaciones" id="txt_recomendaciones" 
-																		maxlength="500" class="custom-scroll"></textarea> 
-																</label>
-															</section>
-														</div>
-													</div>	
-
-												</div>
-												<!-- end widget content -->
-								
-											</div>
-											<!-- end widget div -->
-								
-										</div>
-										<!-- end widget -->
-										
 														
 										<div class="form-actions">
 											<div class="row">
@@ -572,6 +419,71 @@
 											<div class="widget-body">
 
 												<table id="tbl_det_documentos" class="table table-bordered table-hover tbl-responsive">
+													<thead>			                
+														<tr>
+															<th></th>
+															<th>Nº</th>
+															<th>Tipo Documento</th>
+															<th>Nro Documento</th>
+															<th>Fecha</th>
+														</tr>
+													</thead>
+												</table>
+
+											</div>
+											<!-- end widget content -->
+						
+										</div>
+										<!-- end widget div -->
+						
+									</div>
+									<!-- end widget -->
+									
+									<div class="form-actions">
+										<div class="row">
+											<div class="col-md-12 opc-center">
+												<button class="btn btn-default btn_retornar" type="button">
+													<i class="fa fa-mail-forward"></i>
+													Retornar
+												</button>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								
+								<div class="tab-pane fade" id="div_estados">
+									
+									<!-- Widget ID (each widget will need unique ID)-->
+									<div class="jarviswidget jarviswidget-color-blueLight">
+									
+										<header>
+											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+											<h2>Relación de Estados</h2>
+											
+											<div class="jarviswidget-ctrls" role="menu">   
+												<a href="#" id="href_doc_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+													data-original-title="Nuevo">
+													<i class="fa fa-file-o"></i>
+												</a>
+												<a href="#" id="href_doc_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+													data-original-title="Editar">
+													<i class="fa fa-edit"></i>
+												</a>
+												<a href="#" id="href_doc_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+													data-original-title="Eliminar">
+													<i class="fa fa-trash-o"></i>
+												</a>
+											</div>
+										</header>
+						
+										<!-- widget div-->
+										<div>
+															
+											<!-- widget content -->
+											<div class="widget-body">
+
+												<table id="tbl_det_estados" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
 															<th></th>
@@ -1012,6 +924,6 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
-<script> var controlCalidad = JSON.parse('${controlCalidad}'); </script>
+<script> var programacion = JSON.parse('${programacion}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/mantenimiento_programacion.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_programacion.js"></script>

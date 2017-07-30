@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import pe.com.sigbah.common.bean.ItemBean;
-import pe.com.sigbah.common.util.Constantes;
 
 /**
  * @className: DeeMapper.java

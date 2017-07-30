@@ -5,99 +5,64 @@ $(document).ready(function() {
 		excluded : [':disabled', ':hidden'],
 		fields : {
 			// Datos Generales
-			txt_fecha : {
+			txt_fec_programacion : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar Fecha.'
+						message : 'Debe ingresar Fecha Programación.'
 					}
 				}
 			},
-			sel_estado : {
+			txt_descripcion : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Estado.'
+						message : 'Debe ingresar Descripción.'
 					}
 				}
 			},
-			sel_nro_ord_compra : {
+			sel_nro_requerimiento : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Nº orden Compra.'
+						message : 'Debe seleccionar N° de Requerimiento.'
 					}
 				}
 			},
-			sel_tip_control : {
+			sel_nro_racion : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Tipo de Control.'
+						message : 'Debe seleccionar N° Ración.'
 					}
 				}
 			},
-			
-			// Datos del Origen / Destino - Reponsables
-			sel_ori_almacen : {
+			sel_nro_dee : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Almacén.'
+						message : 'Debe seleccionar N° DEE.'
 					}
 				}
 			},
-			sel_ori_en_almacen : {
+			sel_reg_destino : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Encargado de Almacén.'
+						message : 'Debe seleccionar Region Destino.'
 					}
 				}
 			},
-			sel_inspector : {
+			sel_ate_con : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Inspector.'
-					}
-				}
-			},
-			
-			// Datos de Proveedor
-			sel_proveedor : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Proveedor.'
+						message : 'Debe seleccionar Atención con.'
 					}
 				}
 			},
 			
 			// Datos del Transporte
-			sel_emp_transporte : {
+			sel_almacen : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Empresa de Transporte.'
+						message : 'Debe seleccionar Almacén.'
 					}
 				}
-			},
-			sel_chofer : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Chofer.'
-					}
-				}
-			},
-			txt_nro_placa : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar N° de Placa.'
-					}
-				}
-			},
-			
-			// Productos
-			rb_tip_bien : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Tipo de Bien.'
-					}
-				}
-			}
-			
+			}		
 		}
 	});
 	

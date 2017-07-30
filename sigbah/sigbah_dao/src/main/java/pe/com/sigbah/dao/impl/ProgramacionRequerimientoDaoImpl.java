@@ -21,12 +21,10 @@ import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
-import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionRequerimientoDao;
