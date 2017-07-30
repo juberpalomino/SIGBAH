@@ -23,6 +23,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
@@ -147,11 +148,13 @@ private static final long serialVersionUID = 1L;
 
         	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
         	
+        	List<ItemBean> listaAlmacen = null;
         	if (usuarioBean.getCodigoDdi().equals(Constantes.CODIGO_DDI_INDECI_CENTRAL)) {
-        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean()));
+        		listaAlmacen = generalService.listarAlmacen(new ItemBean());
         	} else {
-        		model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
+        		listaAlmacen = generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi()));
         	}
+        	model.addAttribute("listaAlmacen", getParserObject(listaAlmacen));
         	
         	
         	
@@ -219,6 +222,27 @@ private static final long serialVersionUID = 1L;
 			return getBaseRespuesta(null);
 		}
 		return programacion;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarProgramacionAlmacen", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProgramacionAlmacen(HttpServletRequest request, HttpServletResponse response) {
+		List<ProgramacionAlmacenBean> lista = null;
+		try {			
+			ProgramacionAlmacenBean programacionAlmacenBean = new ProgramacionAlmacenBean();	
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(programacionAlmacenBean, request.getParameterMap());			
+			lista = programacionRequerimientoService.listarProgramacionAlmacen(programacionAlmacenBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
 	}
 	
 	/**

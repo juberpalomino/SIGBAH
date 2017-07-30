@@ -3,6 +3,7 @@ package pe.com.sigbah.dao;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
+import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
@@ -63,5 +64,12 @@ public interface ProgramacionRequerimientoDao {
 	 * @throws Exception
 	 */
 	public abstract List<EstadoProgramacionBean> listarEstadoProgramacion(EstadoProgramacionBean estadoProgramacionBean) throws Exception;
+	
+	/**
+	 * @param programacionAlmacenBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ProgramacionAlmacenBean> listarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception;
 
 }

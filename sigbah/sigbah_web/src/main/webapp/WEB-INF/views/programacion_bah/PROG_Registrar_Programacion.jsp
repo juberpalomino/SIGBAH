@@ -4,9 +4,8 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Gestión de Almacenes</li>
-		<li>Control de Calidad</li>
-		<li>Registro</li>
+		<li>Programación</li>
+		<li>Programación de Requerimientos</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -192,6 +191,17 @@
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
 												<h2>Almacenes</h2>
+												
+												<div class="jarviswidget-ctrls" role="menu">   
+													<a href="#" id="href_alm_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Agregar Almacén">
+														<i class="fa fa-file-o"></i>
+													</a>
+													<a href="#" id="href_alm_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Eliminar Almacén">
+														<i class="fa fa-trash-o"></i>
+													</a>
+												</div>
 											</header>
 								
 											<!-- widget div-->
@@ -204,10 +214,21 @@
 														<label class="col-sm-3 control-label">Almacén:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_almacen" name="sel_almacen" class="form-control">
-																<c:forEach items="${lista_almacen}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
 															</select>
+														</div>
+													</div>
+													
+													<div class="row">
+														<div class="col-sm-4 form-group">
+															<table id="tbl_det_almacenes" class="table table-bordered table-hover tbl-responsive">
+																<thead>			                
+																	<tr>
+																		<th></th>
+																		<th>Nº</th>
+																		<th>Almacén</th>
+																	</tr>
+																</thead>
+															</table>
 														</div>
 													</div>
 								
@@ -925,5 +946,6 @@
 
 <!-- inline scripts related to this page -->
 <script> var programacion = JSON.parse('${programacion}'); </script>
+<script> var listaAlmacenesCache = JSON.parse('${listaAlmacen}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/mantenimiento_programacion.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_programacion.js"></script>

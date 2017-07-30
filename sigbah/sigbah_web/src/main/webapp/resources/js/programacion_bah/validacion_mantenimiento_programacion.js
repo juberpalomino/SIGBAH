@@ -55,7 +55,7 @@ $(document).ready(function() {
 				}
 			},
 			
-			// Datos del Transporte
+			// Almacenes
 			sel_almacen : {
 				validators : {
 					notEmpty : {
