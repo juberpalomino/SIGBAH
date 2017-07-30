@@ -20,12 +20,12 @@ public class AlmacenUsuarioMapper implements RowMapper<AlmacenBean> {
 	 */
 	@Override
 	public AlmacenBean mapRow(ResultSet rs, int rowNum) throws SQLException {
-		AlmacenBean controlCalidad = new AlmacenBean();
-		controlCalidad.setIdUsuario(rs.getInt("ID_USER"));
-		controlCalidad.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
-		controlCalidad.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
-		controlCalidad.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
-		return controlCalidad;
+		AlmacenBean almacen = new AlmacenBean();
+		almacen.setIdUsuario(rs.getInt("ID_USER"));
+		almacen.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
+		almacen.setCodigoAlmacen(rs.getString("COD_ALMACEN"));
+		almacen.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
+		return almacen;
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.AlmacenBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
+import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ModuloBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.dao.AdministracionDao;
@@ -49,6 +50,14 @@ public class AdministracionServiceImpl implements AdministracionService, Seriali
 	@Override
 	public List<AlmacenBean> listarAlmacenUsuario(Integer idUsuario) throws Exception {
 		return administracionDao.listarAlmacenUsuario(idUsuario);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.AdministracionService#listarEstadoUsuario(pe.com.sigbah.common.bean.EstadoUsuarioBean)
+	 */
+	@Override
+	public List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception {
+		return administracionDao.listarEstadoUsuario(estadoUsuarioBean);
 	}
 
 }

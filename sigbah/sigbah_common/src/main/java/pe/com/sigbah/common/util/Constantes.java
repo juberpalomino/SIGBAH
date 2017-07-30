@@ -25,8 +25,6 @@ public final class Constantes implements Serializable {
     public static final String COD_VALIDACION_GENERAL = "02";
 	public static final String COD_EXITO_GENERAL = "01";
 	public static final String COD_ERROR_GENERAL = "00";
-	public static final int COD_GENERADO = 13;
-	public static final String DES_GENERADO = "Generado";
 
 	/* DATOS GENERALES */
 	public static final String EMPTY = "";
@@ -85,6 +83,13 @@ public final class Constantes implements Serializable {
 	public static final String TIPO_ORIGEN_ALMACENES = "I";
 	public static final String TIPO_ORIGEN_DONACIONES = "D";
 	
+	public static final String CODIGO_DDI_INDECI_CENTRAL = "27";
+	
+	public static final int COD_GENERADO = 13;
+	public static final String DES_GENERADO = "Generado";
+	public static final String MODULO_DONACION = "DONACION";
+	public static final String MODULO_PROGRAMACION = "PROGRAMACION";
+	public static final String MODULO_INVENTARIO = "INVENTARIO";
 
 	/* ESTADO ACTIVO */
 	public static final int ESTADO_INACTIVO = 0;

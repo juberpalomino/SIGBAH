@@ -1499,7 +1499,7 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[listarEstado] Fin ");
+		LOGGER.info("[listarFenomeno] Fin ");
 		return lista;
 	}
 	

@@ -131,8 +131,11 @@
 	<definition name="racion-operativa" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RacionOperativa.jsp" />
 	</definition>
-	<definition name="programacion" extends="principal-layout">
+	<definition name="listar_programacion" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_Programacion.jsp" />
+	</definition>
+	<definition name="mantenimiento_programacion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Registrar_Programacion.jsp" />
 	</definition>
 	<definition name="pedido-compra" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_PedidoCompra.jsp" />

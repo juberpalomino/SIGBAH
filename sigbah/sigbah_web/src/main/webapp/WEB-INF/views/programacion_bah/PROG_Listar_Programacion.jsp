@@ -4,8 +4,8 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Programación </li>
-		<li>Programación de requerimientos</li>
+		<li>Programación</li>
+		<li>Programación de Requerimientos</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -27,16 +27,16 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de programación de requerimientos</h2>
+						<h2>Búsqueda de Programación</h2>
 					</header>
 		
 					<!-- widget div-->
-					<div id="div_wid_bod_emer_sinpad">
+					<div id="div_wid_bod_bus_programacion">
 		
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_emer_sinpad" class="form-horizontal">
+							<form id="frm_programacion" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -60,32 +60,35 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-1 control-label">DDI:</label>
-									<div class="col-sm-2 form-group">
-										<select id="sel_ddi" name="sel_ddi" class="form-control">
-											<c:forEach items="${lista_ddi}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
+									<label class="col-sm-2 control-label">Fenómeno:</label>
+									<div class="col-sm-4 form-group">
+										<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
+											<option value="">Todos</option>
+											<c:forEach items="${lista_fenomeno}" var="item">
+											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
-									
-									<label class="col-sm-2 control-label">Estado:</label>
+								</div>	
+								
+								<div class="row">							
+									<label class="col-sm-1 control-label">Estado:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_estado" name="sel_estado" class="form-control">
+											<option value="">Todos</option>
 											<c:forEach items="${lista_estado}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
-														
-									<div class="col-sm-1 opc-center">
-										<button class="btn btn-primary" type="button" id="btn_aceptar">
+									
+									<div class="col-sm-2 opc-center">
+										<button class="btn btn-primary" type="button" id="btn_buscar">
 											<i class="fa fa-search"></i>
-											Aceptar
+											Buscar
 										</button>
 									</div>
 								</div>
-								
 								
 							</form>
 		
@@ -109,7 +112,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Relación de requerimientos de BAH</h2>
+						<h2 id="h2_rel_programacion">Relación de Programaciones</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
@@ -120,6 +123,10 @@
 								data-original-title="Imprimir">
 								<i class="fa fa-file-pdf-o"></i>
 							</a>
+							<a href="#" id="href_estados" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Cambiar Estado">
+								<i class="fa fa-cog"></i>
+							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
@@ -128,7 +135,6 @@
 								data-original-title="Nuevo">
 								<i class="fa fa-file-o"></i>
 							</a>
-							
 						</div>
 					</header>
 	
@@ -138,18 +144,20 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_programacion" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
-										<th></th>
+										<th>Sel</th>
 										<th>Nº</th>
 										<th>Año</th>
 										<th>Mes</th>
-										<th>Fecha</th>
-										<th>Nro. Requerimiento</th>
-										<th>Descripción</th>
+										<th>N° Programación</th>
+										<th>Fecha Programación</th>
 										<th>Fenómeno</th>
-										<th>Región destino</th>
+										<th>Emergencia</th>
+										<th>N° DEE</th>
+										<th>Estado</th>
+										<th>Región Destino</th>
 									</tr>
 								</thead>
 							</table>
@@ -175,5 +183,72 @@
 </div>
 <!-- END MAIN CONTENT -->
 
+<!-- Modal -->
+<div id="div_gra_estado" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" id="btn_clo_estado" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title label-bold">Cambiar Estado del Requerimiento</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<form id="frm_gra_estado" class="form-horizontal" role="form">
+							
+							<input type="hidden" id="hid_cod_programacion" name="hid_cod_programacion">
+						
+							<div class="form-group">																				
+								<label class="col-sm-3 control-label">Estado:</label>
+								<div class="col-sm-8">
+									<select id="sel_estado" name="sel_estado" class="form-control">
+									</select>
+								</div>
+							</div>																		
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Fecha:</label>
+								<div class="col-sm-4 smart-form">
+									<input type="text" id="txt_fecha" class="form-control" disabled>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Observación:</label>
+								<div class="col-sm-9 smart-form">
+									<section>														
+										<label class="textarea textarea-resizable"> 										
+											<textarea rows="3" name="txt_observacion" id="txt_observacion" 
+												maxlength="500" class="custom-scroll"></textarea> 
+										</label>
+									</section>
+								</div>				
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_gra_estado">
+					<i class="fa fa-floppy-o"></i>
+					Grabar
+				</button>
+				
+				&nbsp; &nbsp;
+				
+				<button type="button" id="btn_can_estado" class="btn btn-default" data-dismiss="modal">
+					<i class="fa fa-mail-forward"></i>
+					Cancelar
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_emergencias_sinpad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_programacion.js"></script>

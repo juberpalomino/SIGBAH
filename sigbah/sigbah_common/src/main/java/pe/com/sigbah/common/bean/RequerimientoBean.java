@@ -1,7 +1,5 @@
 package pe.com.sigbah.common.bean;
 
-import java.sql.Types;
-
 /**
  * @className: RequerimientoBean.java
  * @description: 

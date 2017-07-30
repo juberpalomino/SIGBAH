@@ -4,6 +4,7 @@ import java.util.List;
 
 import pe.com.sigbah.common.bean.AlmacenBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
+import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ModuloBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 
@@ -35,5 +36,12 @@ public interface AdministracionService {
 	 * @throws Exception
 	 */
 	public abstract List<AlmacenBean> listarAlmacenUsuario(Integer idUsuario) throws Exception;
+	
+	/**
+	 * @param estadoUsuarioBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception;
 
 }

@@ -21,8 +21,8 @@
 					<li class="li_rac_ope">
 						<a href="${pageContext.request.contextPath}/programacion-bath/racion/inicio/0">Raciones Operativas</a>
 					</li>
-					<li class="li_prog">
-						<a href="${pageContext.request.contextPath}/programacion-bath/programacion/inicio/0">Programación</a>
+					<li id="li_programacion" class="li_men_opcion">
+						<a href="${pageContext.request.contextPath}/programacion-bah/programacion/inicio/0">Programación</a>
 					</li>
 					<li class="li_ped_compra">
 						<a href="${pageContext.request.contextPath}/programacion-bath/pedido/inicio/0">Pedidos de Compra</a>
