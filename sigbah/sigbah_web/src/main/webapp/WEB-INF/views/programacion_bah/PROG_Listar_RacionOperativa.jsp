@@ -31,12 +31,12 @@
 					</header>
 		
 					<!-- widget div-->
-					<div id="div_wid_bod_emer_sinpad">
+					<div id="div_wid_bod_racion_oper">
 		
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_emer_sinpad" class="form-horizontal">
+							<form id="frm_racion_oper" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -62,7 +62,8 @@
 									
 									<label class="col-sm-1 control-label">Tipo de Ración:</label>
 									<div class="col-sm-2 form-group">
-										<select id="sel_almacen" name="sel_almacen" class="form-control">
+										<select id="sel_tipo_racion" name="sel_tipo_racion" class="form-control">
+											<option value="">Todos</option>
 											<c:forEach items="${lista_racion}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -76,14 +77,10 @@
 										</button>
 									</div>
 								</div>
-								
-								
 							</form>
-		
-						</div>
+		                </div>
 						<!-- end widget content -->
-		
-					</div>
+		            </div>
 					<!-- end widget div -->
 		
 				</div>
@@ -103,9 +100,9 @@
 						<h2>Raciones operativas</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
-							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Exportar Excel">
-								<i class="fa fa-file-excel-o"></i>
+							<a href="#" id="href_exp_copiar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Copiar">
+								<i class="fa fa-files-o"></i>
 							</a> 
 							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Imprimir">
@@ -129,7 +126,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_rac_oper" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
@@ -166,4 +163,4 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_emergencias_sinpad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_raciones_operativas.js"></script>

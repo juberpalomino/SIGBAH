@@ -24,6 +24,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
@@ -157,19 +158,15 @@ private static final long serialVersionUID = 1L;
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	
-        	
-        	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
-//        	model.addAttribute("lista_requiere", generalService.listarRequiere(new ItemBean()));
-        	model.addAttribute("lista_fenomeno", generalService.listarFenomeno(new ItemBean()));
-        	
-        	if (!isNullInteger(codigo)) {//para nuevo codigo=0
+        
+        	ListaRespuestaRequerimientoBean respuestaEdicion = new ListaRespuestaRequerimientoBean();
+        	if (!isNullInteger(codigo)) {//para editar
         		
-        		requerimiento = programacionService.obtenerRequerimiento(codigo);
-//        		
-//        		model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(requerimiento.getIdEmpresaTransporte())));
-        		
-        	} else {//para editar codigo=1
+        		respuestaEdicion = programacionService.obtenerRequerimiento(usuarioBean.getCodigoAnio(),usuarioBean.getCodigoDdi(),codigo); 
+        		model.addAttribute("requerimiento", getParserObject(respuestaEdicion.getLstCabecera().get(0)));
+        		model.addAttribute("lista_requerimiento", getParserObject(respuestaEdicion.getLstDetalle()));
+        	  		
+        	} else {//para buevo
 
         		StringBuilder correlativo = new StringBuilder();
         		correlativo.append(usuarioBean.getCodigoDdi());
@@ -195,51 +192,20 @@ private static final long serialVersionUID = 1L;
     			requerimiento.setFkIdeDdi(usuarioBean.getIdDdi()); 
     			requerimiento.setIdDdi(usuarioBean.getIdDdi()); 
     			requerimiento.setCodRequerimiento(respuestaCorrelativo.getCodRequerimiento());
-//        		RequerimientoBean parametroAlmacenActivo = new RequerimientoBean();
-//        		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
-//        		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
-//        		List<RequerimientoBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
-//        		if (!isEmpty(listaAlmacenActivo)) {
-//        			requerimiento.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-//        			requerimiento.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-//        			requerimiento.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-//        			requerimiento.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-//        			requerimiento.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
-//        		}
-//        		
-//            	requerimiento.setIdDdi(usuarioBean.getIdDdi());
-//        		requerimiento.setCodigoDdi(usuarioBean.getCodigoDdi());
-//        		requerimiento.setNombreDdi(usuarioBean.getNombreDdi());
+    			model.addAttribute("requerimiento", getParserObject(requerimiento));
         	}
+	
         	
-//        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean()));
-//        	
-        	model.addAttribute("requerimiento", getParserObject(requerimiento));
-//
-//        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.FOUR_INT)));
-//        	
-//        	model.addAttribute("lista_orden_compra", logisticaService.listarOrdenCompra());
-//        	
-//        	model.addAttribute("lista_tipo_control", generalService.listarTipoControlCalidad(new ItemBean()));
-//        	
-//        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
-//        	
-//        	model.addAttribute("lista_proveedor", generalService.listarProveedor(new ItemBean()));
-//        	
-//        	ItemBean parametroEmpresaTransporte = new ItemBean();
-//        	parametroEmpresaTransporte.setIcodigo(usuarioBean.getIdDdi());
-//        	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
-//        	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
-//        	
-//        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
-//        	
-//        	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
-//     
+        	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
+        	model.addAttribute("lista_fenomeno", generalService.listarFenomeno(new ItemBean()));
+       	
+        	
+     
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
         	model.addAttribute("lista_departamento", generalService.listarDepartamentos(new UbigeoBean()));
         	
-//        	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
+        	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
@@ -255,7 +221,7 @@ private static final long serialVersionUID = 1L;
 	 */
 	@RequestMapping(value = "/grabarRequerimiento", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarControlCalidad(HttpServletRequest request, HttpServletResponse response) {
+	public Object grabarRequerimiento(HttpServletRequest request, HttpServletResponse response) {
 		RequerimientoBean requerimiento = null;
 		try {			
 			RequerimientoBean requerimientoBean = new RequerimientoBean();

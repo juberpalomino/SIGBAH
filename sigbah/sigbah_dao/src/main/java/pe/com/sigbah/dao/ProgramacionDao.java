@@ -3,8 +3,13 @@ package pe.com.sigbah.dao;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
+import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.ProductoRacionBean;
+import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
 
@@ -44,7 +49,7 @@ public interface ProgramacionDao {
 	 * @return
 	 * @throws Exception 
 	 */
-	public abstract RequerimientoBean obtenerRequerimiento(Integer codigo) throws Exception;
+	public abstract ListaRespuestaRequerimientoBean obtenerRequerimiento(String codAnio, String codDdi,Integer idRequerimiento) throws Exception;
 	
 	
 	/**
@@ -92,5 +97,59 @@ public interface ProgramacionDao {
 	 * @return
 	 */
 	public abstract EmergenciaBean pasarDistritosUbigeo(EmergenciaBean emergenciaBean)throws Exception;
+
+	/**
+	 * @param racionBean
+	 * @return
+	 */
+	public abstract List<RacionBean> listarRaciones(RacionBean racionBean)throws Exception;
+
+	/**
+	 * @param racionBean
+	 * @return
+	 */
+	public abstract RacionBean copiarRacion(RacionBean racionBean)throws Exception;
+
+	/**
+	 * @param parametros
+	 * @return
+	 */
+	public abstract RacionBean obtenerCorrelativoRacion(RacionBean parametros)throws Exception;
+
+	/**
+	 * @param racionBean
+	 * @return
+	 */
+	public abstract RacionBean insertarRegistroRacion(RacionBean racionBean)throws Exception;
+
+	/**
+	 * @param racionBean
+	 * @return
+	 */
+	public abstract RacionBean actualizarRegistroRacion(RacionBean racionBean)throws Exception;
+
+	/**
+	 * @param productoBean
+	 * @return
+	 */
+	public abstract ProductoRacionBean insertarRegistroProducto(ProductoRacionBean productoBean)throws Exception;
+
+	/**
+	 * @param productoBean
+	 * @return
+	 */
+	public abstract ProductoRacionBean actualizarRegistroProducto(ProductoRacionBean productoBean)throws Exception;
+
+	/**
+	 * @param pedidoBean
+	 * @return
+	 */
+	public abstract List<PedidoCompraBean> listarPedidosCompra(PedidoCompraBean pedidoBean)throws Exception;
+
+	/**
+	 * @param deeBean
+	 * @return
+	 */
+	public abstract List<DeeBean> listarDee(DeeBean deeBean)throws Exception;
 
 }

@@ -2,21 +2,24 @@ package pe.com.sigbah.web.controller.programacion_bah;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.ItemBean;
-import pe.com.sigbah.common.bean.OrdenSalidaBean;
-import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.service.GeneralService;
-import pe.com.sigbah.service.LogisticaService;
+import pe.com.sigbah.service.ProgramacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
 
 /**
@@ -33,7 +36,7 @@ public class DEEController extends BaseController {
 private static final long serialVersionUID = 1L;
 	
 	@Autowired 
-	private LogisticaService logisticaService;
+	private ProgramacionService programacionService;
 	
 	@Autowired 
 	private GeneralService generalService;
@@ -47,26 +50,7 @@ private static final long serialVersionUID = 1L;
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	
         	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
-        	
-//        	        	
-//        	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT)));
-//        	
-//        	OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
-//        	
-//        	ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
-//    		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
-//    		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
-//    		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
-//    		if (!isEmpty(listaAlmacenActivo)) {
-//    			ordenSalida.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-//    			ordenSalida.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-//    			ordenSalida.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-//    			ordenSalida.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-//    			ordenSalida.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
-//    		}
-//    		
-//    		model.addAttribute("ordenSalida", getParserObject(ordenSalida));
-//        	
+    	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
@@ -77,5 +61,27 @@ private static final long serialVersionUID = 1L;
         return "decreto-estado";
     }
 
-	
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/listarDee", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarDee(HttpServletRequest request, HttpServletResponse response) {
+		List<DeeBean> lista = null;
+		try {			
+			DeeBean deeBean = new DeeBean();	
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(deeBean, request.getParameterMap());			
+			
+//			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			
+			lista = programacionService.listarDee(deeBean); 
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
 }

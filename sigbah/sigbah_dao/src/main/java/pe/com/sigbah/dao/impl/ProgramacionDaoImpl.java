@@ -22,10 +22,15 @@ import org.springframework.stereotype.Repository;
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.AlimentariaEmergenciaBean;
 import pe.com.sigbah.common.bean.CabeceraEmergenciaBean;
+import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.LocalidadEmergenciaBean;
 import pe.com.sigbah.common.bean.NoAlimentariaEmergenciaBean;
+import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.ProductoRacionBean;
+import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
 import pe.com.sigbah.common.util.Constantes;
@@ -34,19 +39,22 @@ import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionDao;
 import pe.com.sigbah.mapper.EmergenciaMapper;
+import pe.com.sigbah.mapper.RacionMapper;
 import pe.com.sigbah.mapper.RegistroAlimentariaEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroCabeceraEmergenciaMapper;
-import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroLocalidadEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroNoAlimentariaEmergenciaMapper;
+import pe.com.sigbah.mapper.RequerimientoDetalleMapper;
+import pe.com.sigbah.mapper.RequerimientoEditMapper;
 import pe.com.sigbah.mapper.RequerimientoMapper;
 import pe.com.sigbah.mapper.UbigeoIneiMapper;
 
+
 /**
  * @className: ProgramacionDaoImpl.java
- * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_PROGRAMACION.
- * @date: 21 de jun. de 2017
- * @author: Junior Huaman Flores.
+ * @description: 
+ * @date: 27 jul. 2017
+ * @author: whr.
  */
 @Repository
 public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionDao, Serializable {
@@ -228,51 +236,60 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 	 * @see pe.com.sigbah.dao.ProgramacionDao#obtenerRequerimiento(java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public RequerimientoBean obtenerRequerimiento( Integer idRequerimiento) throws Exception {
+	public ListaRespuestaRequerimientoBean obtenerRequerimiento( String codAnio, String codDdi,Integer idRequerimiento) throws Exception {
 		LOGGER.info("[obtenerRequerimiento] Inicio ");
-		RequerimientoBean controlCalidad = new RequerimientoBean();
+		ListaRespuestaRequerimientoBean listaRetorno = new ListaRespuestaRequerimientoBean();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
-			input_objParametros.addValue("pi_IDE_CONTROL_CALIDAD", idRequerimiento, Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", codAnio, Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DDI", codDdi, Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_REQUERIMIENTO", idRequerimiento, Types.NUMERIC);
 			
+		    
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
-			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
 			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
-			objJdbcCall.withProcedureName("USP_SEL_MOSTRAR_CONTROL_CALIDA");
+			objJdbcCall.withProcedureName("USP_SEL_EDITAR_REQUERIMIENTO");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("pi_IDE_CONTROL_CALIDAD", new SqlParameter("pi_IDE_CONTROL_CALIDAD", Types.NUMERIC));
-			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
-			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
-			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new RegistroControlCalidadMapper()));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_REQUERIMIENTO", new SqlParameter("PI_IDE_REQUERIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET1", new SqlOutParameter("PO_LR_RECORDSET1", OracleTypes.CURSOR, new RequerimientoEditMapper()));
+			output_objParametros.put("PO_LR_RECORDSET2", new SqlOutParameter("PO_LR_RECORDSET2", OracleTypes.CURSOR, new RequerimientoDetalleMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
 			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
 			
-			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
 			
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
 				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
-				LOGGER.info("[obtenerRegistroControlCalidad] Ocurrio un error en la operacion del USP_SEL_MOSTRAR_CONTROL_CALIDA : "+mensajeRespuesta);
+				LOGGER.info("[obtenerRequerimiento] Ocurrio un error en la operacion del USP_SEL_EDITAR_REQUERIMIENTO : "+mensajeRespuesta);
     			throw new Exception();
     		}
 			
-			List<RequerimientoBean> lista = (List<RequerimientoBean>) out.get("po_Lr_Recordset");
-			if (!Utils.isEmpty(lista)) {
-				controlCalidad = lista.get(0);
-			}
+			List<RequerimientoBean> listaCabecera = (List<RequerimientoBean>) out.get("PO_LR_RECORDSET1");
+			List<EmergenciaBean> listaDetalle = (List<EmergenciaBean>) out.get("PO_LR_RECORDSET2");
 			
-			controlCalidad.setCodigoRespuesta(codigoRespuesta);
-			controlCalidad.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));			
+			listaRetorno.setLstCabecera(listaCabecera);
+			listaRetorno.setLstDetalle(listaDetalle);
+			
+			listaRetorno.setCodigoRespuesta(codigoRespuesta);
+			listaRetorno.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));					
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
 		LOGGER.info("[obtenerRequerimiento] Fin ");
-		return controlCalidad;
+		return listaRetorno; 
 	}
 
 
@@ -591,7 +608,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
 			input_objParametros.addValue("PI_FK_IDE_REQUERIMIENTO", emergenciaBean.getFkIdRequerimiento(), Types.NUMERIC);
 			input_objParametros.addValue("PI_COD_DISTRITO", emergenciaBean.getCodDistrito(), Types.VARCHAR);
-			input_objParametros.addValue("PI_NUM_POBLACION_INEI", emergenciaBean.getFamAfectado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_POBLACION_INEI", emergenciaBean.getPoblacionINEI(), Types.NUMERIC);
 			input_objParametros.addValue("PI_USERNAME", emergenciaBean.getUsuarioRegistro(), Types.VARCHAR);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -630,6 +647,359 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		}		
 		LOGGER.info("[pasarDistritosUbigeo] Fin ");
 		return emergenciaRequerimiento;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#listarRaciones(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public List<RacionBean> listarRaciones(RacionBean racionBean) throws Exception {
+		LOGGER.info("[listarRaciones] Inicio ");
+		List<RacionBean> lista = new ArrayList<RacionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", racionBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_DDI", racionBean.getIdDdi(), Types.INTEGER);
+			input_objParametros.addValue("PI_TIPO_RACION", Utils.getParam(racionBean.getTipoRacion()), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_RACIONES");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.INTEGER));
+			output_objParametros.put("PI_TIPO_RACION", new SqlParameter("PI_TIPO_RACION", Types.VARCHAR));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new RacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarRaciones] Ocurrio un error en la operacion del USP_SEL_LISTAR_RACIONES : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<RacionBean>) out.get("PO_LR_RECORDSET");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarRaciones] Fin ");
+		return lista;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#copiarRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean copiarRacion(RacionBean racionBean) throws Exception {
+		LOGGER.info("[copiarRacion] Inicio ");
+		RacionBean racion = new RacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", racionBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_ID_DDI", racionBean.getIdDdi(), Types.INTEGER);
+			input_objParametros.addValue("PI_IDE_RAC_OPERATIVA", racionBean.getIdRacionOpe(), Types.INTEGER);
+			input_objParametros.addValue("PI_USERNAME", Utils.getParam(racionBean.getUsuarioRegistro()), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_COPIAR_RACION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_ID_DDI", new SqlParameter("PI_ID_DDI", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_RAC_OPERATIVA", new SqlParameter("PI_IDE_RAC_OPERATIVA", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[copiarRacion] Ocurrio un error en la operacion del USP_SEL_COPIAR_RACION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			
+			racion.setCodigoRespuesta(codigoRespuesta);
+			racion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[copiarRacion] Fin ");
+		return racion;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#obtenerCorrelativoRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean obtenerCorrelativoRacion(RacionBean parametros) throws Exception {
+		LOGGER.info("[obtenerCorrelativoRacion] Inicio ");
+		RacionBean racionBean = new RacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_ANIO", parametros.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_DDI", parametros.getIdDdi(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_GENERA_CORR_RACION");
+			
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ANIO", new SqlParameter("PI_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_DDI", new SqlParameter("PI_DDI", Types.NUMERIC));
+			output_objParametros.put("PO_COD_RACION", new SqlOutParameter("PO_COD_RACION", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerCorrelativoRacion] Ocurrio un error en la operacion del USP_SEL_GENERA_CORR_RACION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			racionBean.setCodRacion((String) out.get("PO_COD_RACION"));
+			racionBean.setCodigoRespuesta(codigoRespuesta);
+			racionBean.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerCorrelativoRacion] Fin ");
+		return racionBean;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#insertarRegistroRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean insertarRegistroRacion(RacionBean racionBean) throws Exception {
+		LOGGER.info("[insertarRegistroRacion] Inicio ");
+		RacionBean registroRacion = new RacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_RAC_OPERATIVA", racionBean.getIdRacionOpe(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NOMBRE_RACION", racionBean.getNombreRacion(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_RACION", racionBean.getCodRacion(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_DDI", racionBean.getIdDdi(), Types.NUMERIC);
+			input_objParametros.addValue("PI_DIAS_ATENCION", racionBean.getDiasAtencion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FEC_RACION", DateUtil.obtenerFechaHoraParseada(racionBean.getFechaRacion()), Types.DATE);
+			input_objParametros.addValue("PI_TIP_RACION", racionBean.getTipoRacion(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_ANIO", racionBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+			input_objParametros.addValue("PI_USERNAME", racionBean.getUsuarioRegistro(), Types.VARCHAR);
+			
+            objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_RACIONOPERATIVACAB");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_RAC_OPERATIVA", new SqlParameter("PI_IDE_RAC_OPERATIVA", Types.NUMERIC));
+			output_objParametros.put("PI_NOMBRE_RACION", new SqlParameter("PI_NOMBRE_RACION", Types.VARCHAR));
+			output_objParametros.put("PI_COD_RACION", new SqlParameter("PI_COD_RACION", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PI_DIAS_ATENCION", new SqlParameter("PI_DIAS_ATENCION", Types.NUMERIC));
+			output_objParametros.put("PI_FEC_RACION", new SqlParameter("PI_FEC_RACION", Types.DATE));
+			output_objParametros.put("PI_TIP_RACION", new SqlParameter("PI_TIP_RACION", Types.VARCHAR));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[insertarRegistroRacion] Ocurrio un error en la operacion del USP_INS_UPD_RACIONOPERATIVACAB : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			
+			registroRacion.setCodigoRespuesta(codigoRespuesta);
+			registroRacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[insertarRegistroRacion] Fin ");
+		return registroRacion;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#actualizarRegistroRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean actualizarRegistroRacion(RacionBean racionBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#insertarRegistroProducto(pe.com.sigbah.common.bean.ProductoRacionBean)
+	 */
+	@Override
+	public ProductoRacionBean insertarRegistroProducto(ProductoRacionBean productoBean) throws Exception {
+		LOGGER.info("[insertarRegistroProducto] Inicio ");
+		ProductoRacionBean registroProducto = new ProductoRacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_DET_RAC_OPERATIVA", productoBean.getIdDetaRacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_RAC_OPERATIVA", productoBean.getIdRacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PRODUCTO", productoBean.getFkIdProducto(), Types.NUMERIC);
+			input_objParametros.addValue("PI_PESO_UND_PRES", productoBean.getPesoUnitarioPres(), Types.NUMERIC);
+			input_objParametros.addValue("PI_CANT_RACION_KGS", productoBean.getCantRacionKg(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", productoBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+			input_objParametros.addValue("PI_USERNAME", productoBean.getUsuarioRegistro(), Types.VARCHAR);
+			
+            
+            objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_RACIONOPERATIVADET");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_DET_RAC_OPERATIVA", new SqlParameter("PI_IDE_DET_RAC_OPERATIVA", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_RAC_OPERATIVA", new SqlParameter("PI_IDE_RAC_OPERATIVA", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PRODUCTO", new SqlParameter("PI_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PI_PESO_UND_PRES", new SqlParameter("PI_PESO_UND_PRES", Types.NUMERIC));
+			output_objParametros.put("PI_CANT_RACION_KGS", new SqlParameter("PI_CANT_RACION_KGS", Types.NUMERIC));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[insertarRegistroProducto] Ocurrio un error en la operacion del USP_INS_UPD_RACIONOPERATIVADET : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			
+			registroProducto.setCodigoRespuesta(codigoRespuesta);
+			registroProducto.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[insertarRegistroProducto] Fin ");
+		return registroProducto;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#actualizarRegistroProducto(pe.com.sigbah.common.bean.ProductoRacionBean)
+	 */
+	@Override
+	public ProductoRacionBean actualizarRegistroProducto(ProductoRacionBean productoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#listarPedidosCompra(pe.com.sigbah.common.bean.PedidoCompraBean)
+	 */
+	@Override
+	public List<PedidoCompraBean> listarPedidosCompra(PedidoCompraBean pedidoBean) throws Exception {
+		LOGGER.info("[listarPedidosCompra] Inicio ");
+		List<PedidoCompraBean> lista = new ArrayList<PedidoCompraBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", pedidoBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_DDI", pedidoBean.getFkIdeDdi(), Types.INTEGER);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PEDIDO_COMPRA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.INTEGER));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new RacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarPedidosCompra] Ocurrio un error en la operacion del USP_SEL_LISTAR_PEDIDO_COMPRA : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<PedidoCompraBean>) out.get("PO_LR_RECORDSET");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarPedidosCompra] Fin ");
+		return lista;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#listarDee(pe.com.sigbah.common.bean.DeeBean)
+	 */
+	@Override
+	public List<DeeBean> listarDee(DeeBean deeBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

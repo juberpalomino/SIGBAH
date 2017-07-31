@@ -6,9 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
+import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.ProductoRacionBean;
+import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
 import pe.com.sigbah.dao.ProgramacionDao;
@@ -56,8 +60,8 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	 * @see pe.com.sigbah.service.ProgramacionService#obtenerRequerimiento(java.lang.Integer, java.lang.String)
 	 */
 	@Override
-	public RequerimientoBean obtenerRequerimiento( Integer codigo) throws Exception {
-		return programacionDao.obtenerRequerimiento(codigo );
+	public ListaRespuestaRequerimientoBean obtenerRequerimiento( String codAnio, String codDdi,Integer idRequerimiento) throws Exception {
+		return programacionDao.obtenerRequerimiento( codAnio,  codDdi, idRequerimiento );
 	}
 
 	/* (non-Javadoc)
@@ -111,5 +115,77 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	@Override
 	public EmergenciaBean pasarDistritosUbigeo(EmergenciaBean emergenciaBean) throws Exception {
 		return programacionDao.pasarDistritosUbigeo(emergenciaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarRaciones(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public List<RacionBean> listarRaciones(RacionBean racionBean) throws Exception {
+		return programacionDao.listarRaciones(racionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#copiarRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean copiarRacion(RacionBean racionBean) throws Exception {
+		return programacionDao.copiarRacion(racionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerCorrelativoRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean obtenerCorrelativoRacion(RacionBean parametros) throws Exception {
+		return programacionDao.obtenerCorrelativoRacion(parametros);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#insertarRegistroRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean insertarRegistroRacion(RacionBean racionBean) throws Exception {
+		return programacionDao.insertarRegistroRacion(racionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#actualizarRegistroRacion(pe.com.sigbah.common.bean.RacionBean)
+	 */
+	@Override
+	public RacionBean actualizarRegistroRacion(RacionBean racionBean) throws Exception {
+		return programacionDao.actualizarRegistroRacion(racionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#insertarRegistroProducto(pe.com.sigbah.common.bean.ProductoRacionBean)
+	 */
+	@Override
+	public ProductoRacionBean insertarRegistroProducto(ProductoRacionBean productoBean) throws Exception {
+		return programacionDao.insertarRegistroProducto(productoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#actualizarRegistroProducto(pe.com.sigbah.common.bean.ProductoRacionBean)
+	 */
+	@Override
+	public ProductoRacionBean actualizarRegistroProducto(ProductoRacionBean productoBean) throws Exception {
+		return programacionDao.actualizarRegistroProducto(productoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarPedidosCompra(pe.com.sigbah.common.bean.PedidoCompraBean)
+	 */
+	@Override
+	public List<PedidoCompraBean> listarPedidosCompra(PedidoCompraBean pedidoBean) throws Exception {
+		return programacionDao.listarPedidosCompra(pedidoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarDee(pe.com.sigbah.common.bean.DeeBean)
+	 */
+	@Override
+	public List<DeeBean> listarDee(DeeBean deeBean) throws Exception {
+		return programacionDao.listarDee(deeBean);
 	}
 }

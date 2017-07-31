@@ -43,7 +43,9 @@ public class EmergenciaBean extends BaseOutputBean {
 	private Integer persoAfectadoReal;
 	private Integer persoDamnificadoReal;
 	private Integer fkIdRequerimiento;
-	
+	private Integer fkIdRequerimientoDamni;
+	private Integer totalFamReal;
+	private Integer totalPersoReal;
 	/**
 	 * 
 	 */
@@ -483,6 +485,48 @@ public class EmergenciaBean extends BaseOutputBean {
 	 */
 	public void setFkIdRequerimiento(Integer fkIdRequerimiento) {
 		this.fkIdRequerimiento = fkIdRequerimiento;
+	}
+
+	/**
+	 * @return the fkIdRequerimientoDamni
+	 */
+	public Integer getFkIdRequerimientoDamni() {
+		return fkIdRequerimientoDamni;
+	}
+
+	/**
+	 * @param fkIdRequerimientoDamni the fkIdRequerimientoDamni to set
+	 */
+	public void setFkIdRequerimientoDamni(Integer fkIdRequerimientoDamni) {
+		this.fkIdRequerimientoDamni = fkIdRequerimientoDamni;
+	}
+
+	/**
+	 * @return the totalPersoReal
+	 */
+	public Integer getTotalPersoReal() {
+		return totalPersoReal;
+	}
+
+	/**
+	 * @param totalPersoReal the totalPersoReal to set
+	 */
+	public void setTotalPersoReal(Integer totalPersoReal) {
+		this.totalPersoReal = totalPersoReal;
+	}
+
+	/**
+	 * @return the totalFamReal
+	 */
+	public Integer getTotalFamReal() {
+		return totalFamReal;
+	}
+
+	/**
+	 * @param totalFamReal the totalFamReal to set
+	 */
+	public void setTotalFamReal(Integer totalFamReal) {
+		this.totalFamReal = totalFamReal;
 	}
 
 	

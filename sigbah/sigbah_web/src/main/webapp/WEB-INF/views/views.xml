@@ -131,6 +131,9 @@
 	<definition name="racion-operativa" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_RacionOperativa.jsp" />
 	</definition>
+		<definition name="mantenimiento_racion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Registrar_RacionOperativa.jsp" />
+	</definition>
 	<definition name="listar_programacion" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_Programacion.jsp" />
 	</definition>

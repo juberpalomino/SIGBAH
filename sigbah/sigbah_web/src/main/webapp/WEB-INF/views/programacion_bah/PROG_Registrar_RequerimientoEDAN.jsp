@@ -250,18 +250,18 @@
 															<th>Distrito</th>
 															<th>Código SINPAD</th>
 															<th>Pob. INEI</th>
-															<th>Fam. Afect.</th>
-															<th>Fam. dam</th>
-															<th>Total fam.</th>
-															<th>Pers. afect.</th>
-															<th>Pers. dam.</th>
-															<th>Total pers.</th>
-															<th>Fam. Afect.</th>
-															<th>Fam. dam</th>
-															<th>Total fam.</th>
-															<th>Pers. afect.</th>
-															<th>Pers. dam.</th>
-															<th>Total pers.</th>
+															<th>Fam. Afect. SINPAD</th>
+															<th>Fam. dam SINPAD</th>
+															<th>Total fam. SINPAD</th>
+															<th>Pers. afect. SINPAD</th>
+															<th>Pers. dam. SINPAD</th>
+															<th>Total pers. SINPAD</th>
+															<th>Fam. Afect. REAL</th>
+															<th>Fam. dam. REAL</th>
+															<th>Total fam. REAL</th>
+															<th>Pers. afect. REAL</th>
+															<th>Pers. dam. REAL</th>
+															<th>Total pers. REAL</th>
 														</tr>
 													</thead>
 												</table>
@@ -596,5 +596,6 @@
 
 <!-- inline scripts related to this page -->
 <script> var requerimiento = JSON.parse('${requerimiento}'); </script>
+<script> var lista_requerimiento = JSON.parse('${lista_requerimiento}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/mantenimiento_requerimiento.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_requerimiento.js"></script>

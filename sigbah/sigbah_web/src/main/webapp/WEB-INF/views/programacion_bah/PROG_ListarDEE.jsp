@@ -36,7 +36,7 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_emer_sinpad" class="form-horizontal">
+							<form id="frm_dee" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -116,7 +116,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_dee" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
@@ -153,4 +153,5 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_emergencias_sinpad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_dee.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_dee.js"></script>

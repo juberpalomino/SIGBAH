@@ -1,50 +1,30 @@
-var listaRequerimientoEdanCache = new Object();
-var tbl_mnt_req_edan = $('#tbl_mnt_req_edan');
-var frm_req_edan = $('#frm_req_edan');
+var listaRacionCache = new Object();
+var tbl_mnt_rac_oper = $('#tbl_mnt_rac_oper');
+var frm_racion_oper = $('#frm_racion_oper');
 
 $(document).ready(function() {
 
 	inicializarDatos();
 	
-	frm_req_edan.bootstrapValidator({
-		framework : 'bootstrap',
-		excluded : [':disabled', ':hidden'],
-		fields : {
-			sel_anio : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Año.'
-					}
-				}
-			}
-		}
-	});
-	
 	$('#btn_aceptar').click(function(e) {
 		e.preventDefault();
-		
-		var bootstrapValidator = frm_req_edan.data('bootstrapValidator');
-		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
+
 			var params = { 
 				codAnio : $('#sel_anio').val(),
-				codMes : $('#sel_mes').val(),
-//				idDdi : $('#sel_ddi').val(),
-				idFenomeno : $('#sel_fenomeno').val()
+				codMesRacion : $('#sel_mes').val(),
+				tipoRacion : $('#sel_tipo_racion').val()
 			};
 			
 			loadding(true);
 			
-			consultarAjax('GET', '/programacion-bath/requerimiento/listarRequerimientos', params, function(respuesta) {
+			consultarAjax('GET', '/programacion-bath/racion/listarRaciones', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					listarRequerimiento(respuesta);
+					listarRacion(respuesta);
 				}
 				loadding(false);
 			});
-			
-		}
 		
 	});
 	
@@ -54,14 +34,14 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
-		tbl_mnt_req_edan.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_req_edan.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+		tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idRequerimiento = listaRequerimientoEdanCache[index].idRequerimiento;
+				var idRequerimiento = listaRacionCache[index].idRequerimiento;
 				codigo = codigo + idRequerimiento + '_';
 			}
 		});
@@ -76,7 +56,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/programacion-bath/requerimiento/mantenimientoRequerimiento/';
+			var url = VAR_CONTEXT + '/programacion-bath/racion/mantenimientoRacion/';
 			$(location).attr('href', url + codigo);
 		}
 		
@@ -86,15 +66,67 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/programacion-bath/requerimiento/mantenimientoRequerimiento/0';
+		var url = VAR_CONTEXT + '/programacion-bath/racion/mantenimientoRacion/0';
 		$(location).attr('href', url);
+		
+	});
+	
+	$('#href_exp_copiar').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		var codigo = '';
+		var anio = '';
+		var ddi = '';
+		tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idRacionOpe = listaRacionCache[index].idRacionOpe;
+				codigo = codigo + idRacionOpe + '_';
+				anio = listaRacionCache[index].codAnio;
+				ddi = listaRacionCache[index].idDdi;
+			}
+		});
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			loadding(true);
+			var obj = listaRacionCache[indices.length-1];
+			var params = { 
+					codAnio : anio,
+					idDdi : ddi,
+					idRacionOpe: codigo	
+				};
+			loadding(true);
+			
+			consultarAjax('POST', '/programacion-bath/racion/copiarRacion', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					addSuccessMessage(null, respuesta.mensajeRespuesta);
+				}
+				loadding(false);
+			});
+		
+			
+		}
+		
 		
 	});
 	
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();
 		
-		var row = $('#tbl_mnt_req_edan > tbody > tr').length;
+		var row = $('#tbl_mnt_rac_oper > tbody > tr').length;
 		var empty = null;
 		$('tr.odd').each(function() {		
 			empty = $(this).find('.dataTables_empty').text();
@@ -108,15 +140,14 @@ $(document).ready(function() {
 		loadding(true);
 		
 		var codAnio = $('#sel_anio').val();
-		var codMes = $('#sel_mes').val();
-//		var codDdi = $('#sel_ddi').val();
-		var codFenomeno = $('#sel_fenomeno').val();
+		var codMesRacion = $('#sel_mes').val();
+		var tipoRacion = $('#sel_tipo_racion').val();
 		
-		var url = VAR_CONTEXT + '/programacion-bath/requerimiento/exportarExcel/';
+		
+		var url = VAR_CONTEXT + '/programacion-bath/racion/exportarExcel/';
 		url += verificaParametro(codAnio) + '/';
-		url += verificaParametro(codMes) + '/';
-//		url += verificaParametro(codDdi) + '/';
-		url += verificaParametro(codFenomeno);
+		url += verificaParametro(codMesRacion) + '/';
+		url += verificaParametro(tipoRacion);
 		
 		$.fileDownload(url).done(function(respuesta) {
 			loadding(false);	
@@ -137,8 +168,8 @@ $(document).ready(function() {
 //
 //		var indices = [];
 //		var codigo = '';
-//		tbl_mnt_req_edan.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_req_edan.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+//		tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+//			if (tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 //				indices.push(index);				
 //				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 //				if (!esnulo(codigo)) {
@@ -191,15 +222,15 @@ function inicializarDatos() {
 	
 }
 
-function listarRequerimiento(respuesta) {
+function listarRacion(respuesta) {
 
-	tbl_mnt_req_edan.dataTable().fnDestroy();
+	tbl_mnt_rac_oper.dataTable().fnDestroy();
 	
 	
-	tbl_mnt_req_edan.dataTable({
+	tbl_mnt_rac_oper.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idRequerimiento',
+			data : 'idRacionOpe',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -211,7 +242,7 @@ function listarRequerimiento(respuesta) {
 				}											
 			}	
 		}, {	
-			data : 'idRequerimiento',
+			data : 'idRacionOpe',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -219,18 +250,18 @@ function listarRequerimiento(respuesta) {
 		}, {
 			data : 'codAnio'
 		}, {
-			data : 'nomMes'
+			data : 'nombreMesRacion'
 		}, {
-			data : 'fechaRequerimiento'
+			data : 'fechaRacion'
 		}, {
-			data : 'numRequerimiento'
+			data : 'tipoRacion'
 		}, {
-			data : 'nomRequerimiento'
+			data : 'nombreRacion'
 		}, {
-			data : 'descFenomeno'
-		}, {
-			data : 'nomRegion'
+			data : 'diasAtencion'
 		} ],
+		
+		
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
@@ -251,6 +282,6 @@ function listarRequerimiento(respuesta) {
 		]
 	});
 	
-	listaRequerimientoEdanCache = respuesta;
+	listaRacionCache = respuesta;
 
 }

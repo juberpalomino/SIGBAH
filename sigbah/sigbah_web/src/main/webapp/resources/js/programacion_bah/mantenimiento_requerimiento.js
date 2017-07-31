@@ -89,9 +89,9 @@ $(document).ready(function() {
 						
 						addSuccessMessage(null, respuesta.mensajeRespuesta);
 						
-					} else {
-
-						addSuccessMessage(null, 'Se genero el N° Requerimiento ');
+					} else { 
+						
+						addSuccessMessage(null, 'Se genero el N° Requerimiento '+$('#txt_num_requerimiento').val());   
 						$('#li_damnificados').attr('class', '');
 						$('#li_damnificados').closest('li').children('a').attr('data-toggle', 'tab');
 						
@@ -175,14 +175,16 @@ $(document).ready(function() {
 		});
 
 	});
-//	$('.btn_retornar').click(function(e) {
-//		e.preventDefault();
-//
-//		loadding(true);					
-//		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio/1';
-//		$(location).attr('href', url);
-//		
-//	});
+	
+	$('.btn_retornar').click(function(e) {
+		e.preventDefault();
+
+		loadding(true);					
+		var url = VAR_CONTEXT + '/programacion-bath/requerimiento/inicio/1';
+		$(location).attr('href', url);
+		
+	});
+	
 	
 	$('#btn_agregar_emergencia').click(function(e) {
 		e.preventDefault(); 
@@ -193,18 +195,10 @@ $(document).ready(function() {
 	$('#btn_pasar_distrito').click(function(e) {
 		e.preventDefault();
 		var indices = [];
-		var codigo = '';
-		var codigoAnio = '';
+		
 		tbl_mnt_emer_act.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_emer_act.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
-				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-				if (!esnulo(codigo)) {
-					return false;
-				}
-				var idEmergencia = listaEmergenciasActivosCache[index].idEmergencia;
-				codigo = codigo + idEmergencia + '_';
-				
 			}
 		});
 		
@@ -243,16 +237,10 @@ $(document).ready(function() {
 	$('#btn_pasar_distrito_ubigeo').click(function(e) {
 		e.preventDefault();
 		var indices = [];
-		var codigo = '';
+		
 		tbl_mnt_ubigeo_inei.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ubigeo_inei.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
-				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-				if (!esnulo(codigo)) {
-					return false;
-				}
-				var coddpto = listaUbigeosIneiCache[index].coddpto;
-				codigo = codigo + coddpto + '_';
 				
 			}
 		});
@@ -659,10 +647,64 @@ function inicializarDatos() {
 		$('#txt_num_requerimiento').val(requerimiento.numRequerimiento);
 		$('#txt_anio').val(requerimiento.codAnio);
 		$('#txt_fecha_requerimiento').val(requerimiento.fechaRequerimiento);
-		
 		$('#li_damnificados').addClass('disabled'); //whr descomentar de abajo para activar bloqueo de tab
-//		$('#li_damnificados').closest('li').children('a').removeAttr('data-toggle'); 
+		$('#li_damnificados').closest('li').children('a').removeAttr('data-toggle'); 
+		
+		if (!esnulo(requerimiento.numRequerimiento)) {
+//			$('#li_damnificados').addClass('enabled'); //activar tab
+//			$('#li_damnificados').attr('class', '');
+			
+			$('#li_damnificados').attr('class', '');
+			$('#li_damnificados').closest('li').children('a').attr('data-toggle', 'tab');
+			
+			$('#txt_descripcion').val(requerimiento.nomRequerimiento);
+			$('#txt_observaciones').val(requerimiento.observacion);
 
+			 $('input[name=rb_req_sinpad][value="'+requerimiento.flgSinpad+'"]').prop('checked', true);
+			if (requerimiento.flgSinpad == '1') {
+				$('#btn_agregar_emergencia').attr("disabled", false);
+			} else {
+				$('#btn_agregar_emergencia').attr("disabled", true);
+			}
+			$('#sel_fenomeno').val(requerimiento.fkIdeFenomeno);
+			$('#sel_region').val(requerimiento.fkIdeRegion);
+			
+			$('#txt_nro_req').val(requerimiento.numRequerimiento);
+			$('#txt_des_req').val(requerimiento.nomRequerimiento); 
+			
+			listarDetalleRequerimiento(lista_requerimiento);
+			
+		} else {
+			
+//			$('#li_alimentarios').addClass('disabled');
+//			$('#li_no_alimentarios').addClass('disabled');
+//			$('#li_documentos').addClass('disabled');
+//			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
+//			
+//			$('#txt_fecha').datepicker('setDate', new Date());
+//			
+//			var arr = $('#sel_nro_ord_compra').val().split('_');
+//			if (arr.length > 1) {
+//				$('#txt_det_ord_compra').val(arr[1]);
+//			}
+//			
+//			var val_proveedor = $('#sel_proveedor').val();		
+//			if (!esnulo(val_proveedor)) {
+//				var arr = val_proveedor.split('_');
+//				if (arr.length > 1) {
+//					$('#txt_representante').val(arr[1]);
+//				} else {
+//					$('#txt_representante').val('');
+//				}			
+//			}
+//			
+//			cargarTipoControl($('#sel_tip_control').val());
+//			
+//			listarDetalleAlimentarios(new Object());
+//			listarDetalleNoAlimentarios(new Object());
+//			listarDetalleDocumentos(new Object());
+
+		}
 	}
 	
 }
@@ -819,6 +861,72 @@ function listarUbigeoInei(respuesta) {
 				{data : 'desprov'}, 
 				{data : 'desdist'}, 
 				{data : 'poblacionInei'} 
+			],
+			language : {
+				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+			},
+			bFilter : false,
+			paging : true,
+			ordering : false,
+			info : true,
+			iDisplayLength : 15,
+			aLengthMenu : [
+				[15, 50, 100],
+				[15, 50, 100]
+			],
+			columnDefs : [
+				{ width : '15%', targets : 3 },
+				{ width : '15%', targets : 4 },
+				{ width : '15%', targets : 5 }
+			]
+		});
+		
+	listaUbigeosIneiCache = respuesta;
+
+	}
+
+
+
+function listarDetalleRequerimiento(respuesta) {
+
+	tbl_det_afectados.dataTable().fnDestroy();
+	tbl_det_afectados.dataTable({
+			data : respuesta,
+			columns : [ {
+					data : 'idEmergencia',
+					sClass : 'opc-center',
+					render: function(data, type, row) {
+						if (data != null) {
+							return '<label class="checkbox">'+
+										'<input type="checkbox"><i></i>'+
+									'</label>';	
+						} else {
+							return '';	
+						}											
+					}	
+				}, {	
+					data : 'idEmergencia',
+					render : function(data, type, full, meta) {
+						var row = meta.row + 1;
+						return row;											
+					}
+				}, {data : 'desDepartamento'}, 
+				{data : 'desProvincia'}, 
+				{data : 'desDistrito'}, 
+				{data : 'idEmergencia'},
+				{data : 'poblacionINEI'},
+				{data : 'famAfectado'},
+				{data : 'famDamnificado'},
+				{data : 'totalFam'},
+				{data : 'persoAfectado'},
+				{data : 'persoDamnificado'},
+				{data : 'totalPerso'},
+				{data : 'famAfectadoReal'},
+				{data : 'famDamnificadoReal'},
+				{data : 'totalFamReal'},
+				{data : 'persoAfectadoReal'}, 
+				{data : 'persoDamnificadoReal'}, 
+				{data : 'totalPersoReal'}
 			],
 			language : {
 				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'

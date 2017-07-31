@@ -36,7 +36,7 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_emer_sinpad" class="form-horizontal">
+							<form id="frm_pedi_compra" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
@@ -101,15 +101,16 @@
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 						<h2>Relación de pedidos de compra</h2>
 						
-						<div class="jarviswidget-ctrls" role="menu">   
+						<div class="jarviswidget-ctrls" role="menu">  
+							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Imprimir">
+								<i class="fa fa-file-pdf-o"></i>
+							</a> 
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Exportar Excel">
 								<i class="fa fa-file-excel-o"></i>
 							</a> 
-							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Imprimir">
-								<i class="fa fa-file-pdf-o"></i>
-							</a>
+							
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
@@ -128,7 +129,7 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_calidad" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_ped_compra" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
@@ -166,4 +167,5 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_emergencias_sinpad.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_pedidos_compra.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_pedidos_compra.js"></script>
