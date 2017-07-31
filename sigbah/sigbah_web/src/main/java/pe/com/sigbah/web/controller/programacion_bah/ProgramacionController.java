@@ -127,12 +127,13 @@ private static final long serialVersionUID = 1L;
         		String anioActual = generalService.obtenerAnioActual();
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
-        		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());        		
+        		parametros.setIdDdi(usuarioBean.getIdDdi());        		
         		ProgramacionBean respuestaCorrelativo = programacionRequerimientoService.obtenerCorrelativoProgramacion(parametros);
         		programacion.setNroProgramacion(respuestaCorrelativo.getNroProgramacion());
             	programacion.setIdDdi(usuarioBean.getIdDdi());
         		programacion.setCodigoDdi(usuarioBean.getCodigoDdi());
         		programacion.setNombreDdi(usuarioBean.getNombreDdi());
+        		programacion.setCodigoAnio(anioActual);
         	}
         	
         	model.addAttribute("programacion", getParserObject(programacion));
@@ -155,28 +156,7 @@ private static final long serialVersionUID = 1L;
         		listaAlmacen = generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi()));
         	}
         	model.addAttribute("listaAlmacen", getParserObject(listaAlmacen));
-        	
-        	
-        	
-//        	model.addAttribute("lista_orden_compra", programacionRequerimientoService.listarOrdenCompra());
-//        	
-//        	model.addAttribute("lista_tipo_control", generalService.listarTipoProgramacion(new ItemBean()));
-//        	
-//        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
-//        	
-//        	model.addAttribute("lista_proveedor", generalService.listarProveedor(new ItemBean()));
-//        	
-//        	ItemBean parametroEmpresaTransporte = new ItemBean();
-//        	parametroEmpresaTransporte.setIcodigo(usuarioBean.getIdDdi());
-//        	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
-//        	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
-//        	
-//        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
-//        	
-//        	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
-//     
-//        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.TWO_INT)));
-        	
+
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
         } catch (Exception e) {
@@ -210,12 +190,8 @@ private static final long serialVersionUID = 1L;
         	
         	programacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-//			if (!isNullInteger(programacionBean.getIdProgramacion())) {				
-//				programacion = programacionRequerimientoService.actualizarRegistroProgramacion(programacionBean);				
-//			} else {			
-//				programacion = programacionRequerimientoService.insertarRegistroProgramacion(programacionBean);			
-//			}
-//			programacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			programacion = programacionRequerimientoService.grabarProgramacion(programacionBean);			
+			programacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -250,22 +226,29 @@ private static final long serialVersionUID = 1L;
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/obtenerEstadosProgramacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarProgramacionAlmacen", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object obtenerEstadosProgramacion(HttpServletRequest request, HttpServletResponse response) {
-		List<EstadoUsuarioBean> lista = null;
+	public Object grabarProgramacionAlmacen(HttpServletRequest request, HttpServletResponse response) {
+		ProgramacionAlmacenBean programacionAlmacen = null;
 		try {			
+			ProgramacionAlmacenBean programacionAlmacenBean = new ProgramacionAlmacenBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(programacionAlmacenBean, request.getParameterMap());
+
 			// Retorno los datos de session
-           	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-           	EstadoUsuarioBean estadoUsuarioBean = new EstadoUsuarioBean();
-           	estadoUsuarioBean.setIdUsuario(usuarioBean.getIdUsuario());
-           	estadoUsuarioBean.setNombreModulo(Constantes.MODULO_PROGRAMACION);
-			lista = administracionService.listarEstadoUsuario(estadoUsuarioBean);
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	programacionAlmacenBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+        	programacionAlmacen = programacionRequerimientoService.grabarProgramacionAlmacen(programacionAlmacenBean);			
+        	programacionAlmacen.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return lista;
+		return programacionAlmacen;
 	}
 	
 	/**
@@ -273,31 +256,37 @@ private static final long serialVersionUID = 1L;
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarEstadoProgramacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarProgramacionAlmacen", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object grabarEstadoProgramacion(HttpServletRequest request, HttpServletResponse response) {
-		EstadoProgramacionBean producto = null;
-		try {
-			EstadoProgramacionBean estadoProgramacionBean = new EstadoProgramacionBean();
-			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(estadoProgramacionBean, request.getParameterMap());	
+	public Object eliminarProgramacionAlmacen(HttpServletRequest request, HttpServletResponse response) {
+		ProgramacionAlmacenBean programacionAlmacen = null;
+		try {			
+			String[] arrIdDetalleControlCalidad = request.getParameter("arrIdDetalleProgramacionAlmacen").split(Constantes.UNDERLINE);
 			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			
+			for (String codigo : arrIdDetalleControlCalidad) {				
+				ProgramacionAlmacenBean programacionAlmacenBean = new ProgramacionAlmacenBean(getInteger(codigo));
 
-        	estadoProgramacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				programacionAlmacenBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-			producto = programacionRequerimientoService.grabarEstadoProgramacion(estadoProgramacionBean);				
+				programacionAlmacen = programacionRequerimientoService.eliminarProgramacionAlmacen(programacionAlmacenBean);				
+			}
 
-			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+			programacionAlmacen.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
-		return producto;
+		return programacionAlmacen;
 	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * @param request
@@ -640,5 +629,59 @@ private static final long serialVersionUID = 1L;
 //	    	return Constantes.COD_ERROR_GENERAL;
 //	    } 
 //	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/obtenerEstadosProgramacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object obtenerEstadosProgramacion(HttpServletRequest request, HttpServletResponse response) {
+		List<EstadoUsuarioBean> lista = null;
+		try {			
+			// Retorno los datos de session
+           	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+           	EstadoUsuarioBean estadoUsuarioBean = new EstadoUsuarioBean();
+           	estadoUsuarioBean.setIdUsuario(usuarioBean.getIdUsuario());
+           	estadoUsuarioBean.setNombreModulo(Constantes.MODULO_PROGRAMACION);
+			lista = administracionService.listarEstadoUsuario(estadoUsuarioBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarEstadoProgramacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarEstadoProgramacion(HttpServletRequest request, HttpServletResponse response) {
+		EstadoProgramacionBean producto = null;
+		try {
+			EstadoProgramacionBean estadoProgramacionBean = new EstadoProgramacionBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(estadoProgramacionBean, request.getParameterMap());	
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+
+        	estadoProgramacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+			producto = programacionRequerimientoService.grabarEstadoProgramacion(estadoProgramacionBean);				
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
 	
 }

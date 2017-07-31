@@ -66,10 +66,31 @@ public interface ProgramacionRequerimientoDao {
 	public abstract List<EstadoProgramacionBean> listarEstadoProgramacion(EstadoProgramacionBean estadoProgramacionBean) throws Exception;
 	
 	/**
+	 * @param programacionBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProgramacionBean grabarProgramacion(ProgramacionBean programacionBean) throws Exception;
+	
+	/**
 	 * @param programacionAlmacenBean
 	 * @return Lista de registros.
 	 * @throws Exception
 	 */
 	public abstract List<ProgramacionAlmacenBean> listarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception;
+	
+	/**
+	 * @param programacionAlmacenBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProgramacionAlmacenBean grabarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception;
+
+	/**
+	 * @param programacionAlmacenBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProgramacionAlmacenBean eliminarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception;
 
 }

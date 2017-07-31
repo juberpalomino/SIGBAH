@@ -40,6 +40,7 @@ public class ProgramacionBean extends BaseOutputBean {
 	private String nombreRacion;	
 	private Integer tipoAtencion;
 	private String observacion;
+	private String tipoControl;
 	private List<ProgramacionAlmacenBean> almacenes;
 	
 	/**
@@ -389,6 +390,18 @@ public class ProgramacionBean extends BaseOutputBean {
 	 */
 	public void setNombreDeclarion(String nombreDeclarion) {
 		this.nombreDeclarion = nombreDeclarion;
+	}
+	/**
+	 * @return the tipoControl
+	 */
+	public String getTipoControl() {
+		return tipoControl;
+	}
+	/**
+	 * @param tipoControl the tipoControl to set
+	 */
+	public void setTipoControl(String tipoControl) {
+		this.tipoControl = tipoControl;
 	}
 	/**
 	 * @return the almacenes

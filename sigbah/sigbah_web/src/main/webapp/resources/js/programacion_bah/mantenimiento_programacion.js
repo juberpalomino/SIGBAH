@@ -66,39 +66,36 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			var codigo = $('#hid_cod_programacion').val();
-			var tipoBien = $('input[name="rb_tip_bien"]:checked').val();
-			var idProveedor = null;
-			var val_proveedor = $('#sel_proveedor').val();
-			if (!esnulo(val_proveedor)) {
-				var arr = val_proveedor.split('_');
-				idProveedor = arr[0];
+			var tipoControl = 'I'; // Insert
+			if (!esnulo(codigo)) {
+				tipoControl = 'U'; // Update
 			}
+
+			var val_requerimiento = $('#sel_nro_requerimiento').val();
+			var arr_requerimiento = val_requerimiento.split('_');
 			
-			var val_ord_compra = $('#sel_nro_ord_compra').val();
-			var arr_ord_compra = val_ord_compra.split('_');
+			var val_nro_racion = $('#sel_nro_racion').val();
+			var arr_nro_racion = val_nro_racion.split('_');
+			
+			var val_nro_dee = $('#sel_nro_dee').val();
+			var arr_nro_dee = val_nro_dee.split('_');
+			
+			var tipoAtencion = $('#sel_ate_con').val();
 			
 			var params = {
 				idProgramacion : codigo,	
-				codigoAnio : $('#txt_anio').val(),
-				codigoMes : programacion.codigoMes,
-				codigoDdi : programacion.codigoDdi,
+				codigoAnio : programacion.codigoAnio,
+				idRequerimiento : arr_requerimiento[0],
+				fechaProgramacion : $('#txt_fec_programacion').val(),
 				idDdi : programacion.idDdi, 
-				idAlmacen : programacion.idAlmacen,
-				codigoAlmacen : programacion.codigoAlmacen,
-				fechaEmision : $('#txt_fec_programacion').val(),
-				idEstado : $('#sel_estado').val(),
-				nroOrdenCompra : arr_ord_compra[0],
-				idTipoControl : $('#sel_tip_control').val(),
-				idAlmacenOrigen : $('#sel_ori_almacen').val(),
-				idEncargado : $('#sel_ori_en_almacen').val(),
-				idInspector : $('#sel_inspector').val(),
-				idProveedor : idProveedor,
-				idEmpresaTransporte : $('#sel_emp_transporte').val(),
-				idChofer : $('#sel_chofer').val(),
-				nroPlaca : $('#txt_nro_placa').val(),
-				flagTipoBien : tipoBien,
-				conclusiones : $('#txt_conclusiones').val(),
-				recomendaciones : $('#txt_recomendaciones').val()				
+				codigoDdi : programacion.codigoDdi,
+				idRegion : $('#sel_reg_destino').val(),				
+				idRacion : arr_nro_racion[0],
+				nombreProgramacion : $('#txt_descripcion').val(),				
+				idNroDee : arr_nro_dee[0],	
+				tipoAtencion : tipoAtencion,
+				observacion : $('#txt_observaciones').val(),
+				tipoControl : tipoControl
 			};
 			
 			loadding(true);
@@ -116,18 +113,31 @@ $(document).ready(function() {
 						
 						$('#hid_cod_programacion').val(respuesta.idProgramacion);
 						$('#txt_nro_programacion').val(respuesta.nroProgramacion);
+						$('#txt_estado').val(respuesta.nombreEstado);
+						$('#sel_almacen').prop('disabled', false);
+						$('#sel_almacen').val($('#sel_almacen option:first').val());
+						$('#btn_alm_agregar').prop('disabled', false);
+						$('#btn_alm_eliminar').prop('disabled', false);
 						
-						if (tipoBien == '1') {					
-							$('#li_alimentarios').attr('class', '');
-							$('#li_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
-						} else {							
+						if (tipoAtencion == '1') { // Alimentos			
+							$('#li_alimentos').attr('class', '');
+							$('#li_alimentos').closest('li').children('a').attr('data-toggle', 'tab');
+						} else if (tipoAtencion == '2') { // No Alimentarios
+							$('#li_no_alimentarios').attr('class', '');
+							$('#li_no_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
+						} else { // Ambos
+							$('#li_alimentos').attr('class', '');
+							$('#li_alimentos').closest('li').children('a').attr('data-toggle', 'tab');
 							$('#li_no_alimentarios').attr('class', '');
 							$('#li_no_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
 						}
 						$('#li_documentos').attr('class', '');
 						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
+						
+						$('#li_estados').attr('class', '');
+						$('#li_estados').closest('li').children('a').attr('data-toggle', 'tab');
 
-						addSuccessMessage(null, 'Se genero el N° Control de Calidad: '+respuesta.nroProgramacion);
+						addSuccessMessage(null, 'Se genero el N° Programación: '+respuesta.nroProgramacion);
 						
 					}
 					
@@ -147,29 +157,36 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#href_alm_nuevo').click(function(e) {
+	$('#btn_alm_agregar').click(function(e) {
 		e.preventDefault();
 
-		var params = { 
-			idProgramacion : $('#hid_cod_programacion').val()
-		};
+		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
+		bootstrapValidator.validate();
+		if (bootstrapValidator.isValid()) {
+			
+			var params = { 
+				idProgramacion : $('#hid_cod_programacion').val(),
+				idAlmacen : $('#sel_almacen').val()
+			};
 
-		loadding(true);
-		
-		consultarAjax('POST', '/programacion-bah/programacion/grabarProgramacionAlmacen', params, function(respuesta) {
-			$('#div_det_alimentarios').modal('hide');
-			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-				loadding(false);
-				addErrorMessage(null, respuesta.mensajeRespuesta);
-			} else {
-				listarProgramacionAlmacenes(true);			
-				addSuccessMessage(null, respuesta.mensajeRespuesta);					
-			}
-		});
+			loadding(true);
+			
+			consultarAjax('POST', '/programacion-bah/programacion/grabarProgramacionAlmacen', params, function(respuesta) {
+				$('#div_det_alimentarios').modal('hide');
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					loadding(false);
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarProgramacionAlmacenes(true);
+					frm_dat_generales.data('bootstrapValidator').resetForm();
+					addSuccessMessage(null, respuesta.mensajeRespuesta);
+				}
+			});
+		}
 
 	});
 	
-	$('#href_alm_eliminar').click(function(e) {
+	$('#btn_alm_eliminar').click(function(e) {
 		e.preventDefault();
 
 		var indices = [];
@@ -843,7 +860,7 @@ function inicializarDatos() {
 			
 		} else {
 			
-			$('#li_alimentarios').addClass('disabled');
+			$('#li_alimentos').addClass('disabled');
 			$('#li_no_alimentarios').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
 			$('#li_estados').addClass('disabled');
@@ -855,6 +872,10 @@ function inicializarDatos() {
 			obtenerRacion($('#sel_nro_racion').val());
 			obtenerNroDee($('#sel_nro_dee').val());
 			cargarAlmacenes();
+			$('#sel_almacen').val('');
+			$('#sel_almacen').prop('disabled', true);
+			$('#btn_alm_agregar').prop('disabled', true);
+			$('#btn_alm_eliminar').prop('disabled', true);
 			
 			listarDetalleProgramacionAlmacenes(new Object());
 			listarDetalleAlimentarios(new Object());
@@ -1238,7 +1259,9 @@ function cargarAlmacenes() {
 	var options = '';
 	if (!esnulo(idProgramacion)) {
 	    $.each(listaAlmacenesCache, function(i, item) {
-	        options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+	    	if (verificarAlmacen(item.vcodigo) != '1') {
+	    		options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+	    	}
 	    });	    
 	} else {
 		$.each(listaAlmacenesCache, function(i, item) {
@@ -1249,11 +1272,16 @@ function cargarAlmacenes() {
 	if (programacion.codigoDdi == CODIGO_DDI_INDECI_CENTRAL) {
 		$('#sel_almacen').prepend("<option value=''>Seleccione</option>").val('');
 	}
-	if (!esnulo(idProgramacion)) {
-		$('#sel_almacen').prop('disabled', false);
-	} else {
-		$('#sel_almacen').prop('disabled', true);
-	}
 }
 
 
+function verificarAlmacen(vcodigo) {
+	var indicador = null;
+    $.each(listaDetalleAlmacenesCache, function(i, item) {
+		if (vcodigo == item.idAlmacen) {
+			indicador = '1';
+			return false;
+		}
+    });
+    return indicador;
+}

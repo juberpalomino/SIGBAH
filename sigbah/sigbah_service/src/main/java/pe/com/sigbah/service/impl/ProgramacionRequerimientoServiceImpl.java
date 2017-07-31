@@ -83,6 +83,14 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	public List<EstadoProgramacionBean> listarEstadoProgramacion(EstadoProgramacionBean estadoProgramacionBean) throws Exception {
 		return programacionRequerimientoDao.listarEstadoProgramacion(estadoProgramacionBean);
 	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#grabarProgramacion(pe.com.sigbah.common.bean.ProgramacionBean)
+	 */
+	@Override
+	public ProgramacionBean grabarProgramacion(ProgramacionBean programacionBean) throws Exception {
+		return programacionRequerimientoDao.grabarProgramacion(programacionBean);
+	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarProgramacionAlmacen(pe.com.sigbah.common.bean.ProgramacionAlmacenBean)
@@ -90,6 +98,22 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	@Override
 	public List<ProgramacionAlmacenBean> listarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception {
 		return programacionRequerimientoDao.listarProgramacionAlmacen(programacionAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#grabarProgramacionAlmacen(pe.com.sigbah.common.bean.ProgramacionAlmacenBean)
+	 */
+	@Override
+	public ProgramacionAlmacenBean grabarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception {
+		return programacionRequerimientoDao.grabarProgramacionAlmacen(programacionAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#eliminarProgramacionAlmacen(pe.com.sigbah.common.bean.ProgramacionAlmacenBean)
+	 */
+	@Override
+	public ProgramacionAlmacenBean eliminarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception {
+		return programacionRequerimientoDao.eliminarProgramacionAlmacen(programacionAlmacenBean);
 	}
 
 }

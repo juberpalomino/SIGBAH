@@ -272,7 +272,7 @@ function inicializarDatos() {
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();
 		} else {
-			listarProgramacion(new Object());
+			listarDetalleProgramacion(new Object());
 		}
 	}
 }

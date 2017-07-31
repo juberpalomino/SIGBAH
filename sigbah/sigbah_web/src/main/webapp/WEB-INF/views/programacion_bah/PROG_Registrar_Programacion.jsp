@@ -37,9 +37,9 @@
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-dow "></i> 
 									Datos Generales</a>
 								</li>
-								<li id="li_alimentarios">
-									<a href="#div_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down"></i> 
-									Alimentarios</a>
+								<li id="li_alimentos">
+									<a href="#div_alimentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down"></i> 
+									Alimentos</a>
 								</li>
 								<li id="li_no_alimentarios">
 									<a href="#div_no_alimentarios" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down"></i> 
@@ -151,7 +151,7 @@
 														<div class="col-sm-3 form-group">
 															<select id="sel_reg_destino" name="sel_reg_destino" class="form-control">
 																<c:forEach items="${lista_region}" var="item">
-																    <option value="${item.descripcionCorta}">${item.descripcion}</option>
+																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
@@ -191,17 +191,6 @@
 											<header>
 												<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
 												<h2>Almacenes</h2>
-												
-												<div class="jarviswidget-ctrls" role="menu">   
-													<a href="#" id="href_alm_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-														data-original-title="Agregar Almacén">
-														<i class="fa fa-file-o"></i>
-													</a>
-													<a href="#" id="href_alm_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-														data-original-title="Eliminar Almacén">
-														<i class="fa fa-trash-o"></i>
-													</a>
-												</div>
 											</header>
 								
 											<!-- widget div-->
@@ -211,26 +200,36 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-3 control-label">Almacén:</label>
-														<div class="col-sm-3 form-group">
+														<label class="col-sm-2 control-label">Almacén:</label>
+														<div class="col-sm-2 form-group">
 															<select id="sel_almacen" name="sel_almacen" class="form-control">
 															</select>
 														</div>
-													</div>
+														
+														<div class="col-sm-2 opc-center">
+															<button class="btn btn-primary" type="button" id="btn_alm_agregar">
+																<i class="fa fa-plus "></i>
+																Agregar Almacén
+															</button>
+														</div>
 													
-													<div class="row">
-														<div class="col-sm-4 form-group">
-															<table id="tbl_det_almacenes" class="table table-bordered table-hover tbl-responsive">
-																<thead>			                
-																	<tr>
-																		<th></th>
-																		<th>Nº</th>
-																		<th>Almacén</th>
-																	</tr>
-																</thead>
-															</table>
+														<div class="col-sm-2 opc-center">
+															<button class="btn btn-danger" type="button" id="btn_alm_eliminar">
+																<i class="fa fa-trash-o"></i>
+																Eliminar Almacén
+															</button>
 														</div>
 													</div>
+													
+													<table id="tbl_det_almacenes" class="table table-bordered table-hover tbl-responsive">
+														<thead>			                
+															<tr>
+																<th></th>
+																<th>Nº</th>
+																<th>Almacén</th>
+															</tr>
+														</thead>
+													</table>													
 								
 												</div>
 												<!-- end widget content -->
@@ -263,7 +262,7 @@
 										
 								</div>
 								
-								<div class="tab-pane fade" id="div_alimentarios">
+								<div class="tab-pane fade" id="div_alimentos">
 									
 									<!-- Widget ID (each widget will need unique ID)-->
 									<div class="jarviswidget jarviswidget-color-blueLight">

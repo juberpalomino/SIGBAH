@@ -58,9 +58,17 @@ $(document).ready(function() {
 			// Almacenes
 			sel_almacen : {
 				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Almacén.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	var idProgramacion = $('#hid_cod_programacion').val();                   		
+                    		if (!esnulo(idProgramacion)) {
+                    			if (esnulo(value)) {
+                    				return { valid: false, message: 'Debe seleccionar Almacén.' }
+                    			}
+		            		}
+		            		return true;
+		                }
+		            }
 				}
 			}		
 		}

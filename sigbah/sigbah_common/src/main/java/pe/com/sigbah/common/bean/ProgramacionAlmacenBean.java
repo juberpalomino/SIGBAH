@@ -15,8 +15,24 @@ public class ProgramacionAlmacenBean implements Serializable {
 	private Integer idProgramacion;
 	private Integer idAlmacen;
 	private String nombreAlmacen;
+	private String codigoRespuesta;
+	private String mensajeRespuesta;
+	private String usuarioRegistro;
 	
 	
+	/**
+	 * 
+	 */
+	public ProgramacionAlmacenBean() {
+		super();
+	}
+	/**
+	 * @param idProgramacionAlmacen
+	 */
+	public ProgramacionAlmacenBean(Integer idProgramacionAlmacen) {
+		super();
+		this.idProgramacionAlmacen = idProgramacionAlmacen;
+	}
 	/**
 	 * @return the idProgramacionAlmacen
 	 */
@@ -64,6 +80,42 @@ public class ProgramacionAlmacenBean implements Serializable {
 	 */
 	public void setNombreAlmacen(String nombreAlmacen) {
 		this.nombreAlmacen = nombreAlmacen;
+	}
+	/**
+	 * @return the codigoRespuesta
+	 */
+	public String getCodigoRespuesta() {
+		return codigoRespuesta;
+	}
+	/**
+	 * @param codigoRespuesta the codigoRespuesta to set
+	 */
+	public void setCodigoRespuesta(String codigoRespuesta) {
+		this.codigoRespuesta = codigoRespuesta;
+	}
+	/**
+	 * @return the mensajeRespuesta
+	 */
+	public String getMensajeRespuesta() {
+		return mensajeRespuesta;
+	}
+	/**
+	 * @param mensajeRespuesta the mensajeRespuesta to set
+	 */
+	public void setMensajeRespuesta(String mensajeRespuesta) {
+		this.mensajeRespuesta = mensajeRespuesta;
+	}
+	/**
+	 * @return the usuarioRegistro
+	 */
+	public String getUsuarioRegistro() {
+		return usuarioRegistro;
+	}
+	/**
+	 * @param usuarioRegistro the usuarioRegistro to set
+	 */
+	public void setUsuarioRegistro(String usuarioRegistro) {
+		this.usuarioRegistro = usuarioRegistro;
 	}
 
 }
