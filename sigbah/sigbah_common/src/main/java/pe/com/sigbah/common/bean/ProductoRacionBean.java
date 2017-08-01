@@ -18,7 +18,7 @@ public class ProductoRacionBean extends BaseOutputBean {
 	private BigDecimal pesoUnitarioPres;
 	private BigDecimal cantRacionKg;
 	private String codAnio;
-	
+	private String nombProducto;
 	
 	
 	/**
@@ -26,6 +26,16 @@ public class ProductoRacionBean extends BaseOutputBean {
 	 */
 	public ProductoRacionBean() {
 		super();
+	}
+
+
+
+	/**
+	 * @param fkIdProducto
+	 */
+	public ProductoRacionBean(Integer fkIdProducto) {
+		super();
+		this.fkIdProducto = fkIdProducto;
 	}
 
 
@@ -134,6 +144,24 @@ public class ProductoRacionBean extends BaseOutputBean {
 	 */
 	public void setCodAnio(String codAnio) {
 		this.codAnio = codAnio;
+	}
+
+
+
+	/**
+	 * @return the nombProducto
+	 */
+	public String getNombProducto() {
+		return nombProducto;
+	}
+
+
+
+	/**
+	 * @param nombProducto the nombProducto to set
+	 */
+	public void setNombProducto(String nombProducto) {
+		this.nombProducto = nombProducto;
 	}
 	
 	

@@ -2,11 +2,13 @@ package pe.com.sigbah.service;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
@@ -170,4 +172,29 @@ public interface ProgramacionService {
 	 * @throws Exception
 	 */
 	public abstract List<DeeBean> listarDee(DeeBean deeBean) throws Exception;
+	
+	
+	
+	/**
+	 * @param racionBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoRacionBean> listarProductos(ProductoRacionBean racionBean) throws Exception;
+	
+	/**
+	 * @param productoRacionBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoRacionBean eliminarProductoRacion(ProductoRacionBean productoRacionBean) throws Exception;
+	
+	
+	/**
+	 * @param idControlCalidad
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract RacionBean obtenerRegistroRacion(Integer idRacion) throws Exception;
+	
 }

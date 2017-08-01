@@ -139,7 +139,7 @@
 										<!-- widget content -->
 										<div class="widget-body">
 				
-											<table id="tbl_mnt_racion_ope" class="table table-bordered table-hover tbl-responsive">
+											<table id="tbl_mnt_productos" class="table table-bordered table-hover tbl-responsive">
 												<thead>			                
 													<tr>
 														<th></th>
@@ -167,7 +167,7 @@
 									<div class="col-md-12 opc-center">
 										<button class="btn btn-default btn_retornar" type="button">
 											<i class="fa fa-mail-forward"></i>
-											Retornar
+											Cancelar
 										</button>
 									</div>
 								</div>
@@ -216,7 +216,7 @@
 								<div class="col-sm-5 form-group">
 									<select id="sel_producto" name="sel_producto" class="form-control ">
 										<c:forEach items="${lista_producto}" var="item">
-											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
+											<option value="${item.idProducto}">${item.nombreProducto}</option>
 										</c:forEach>
 									</select>
 								</div>

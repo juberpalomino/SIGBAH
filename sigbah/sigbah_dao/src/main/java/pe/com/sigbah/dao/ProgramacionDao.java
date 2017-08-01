@@ -152,4 +152,22 @@ public interface ProgramacionDao {
 	 */
 	public abstract List<DeeBean> listarDee(DeeBean deeBean)throws Exception;
 
+	/**
+	 * @param racionBean
+	 * @return
+	 */
+	public abstract List<ProductoRacionBean> listarProductos(ProductoRacionBean racionBean)throws Exception;
+
+	/**
+	 * @param productoRacionBean
+	 * @return
+	 */
+	public abstract ProductoRacionBean eliminarProductoRacion(ProductoRacionBean productoRacionBean)throws Exception;
+
+	/**
+	 * @param idRacion
+	 * @return
+	 */
+	public abstract RacionBean obtenerRegistroRacion(Integer idRacion)throws Exception;
+
 }

@@ -188,4 +188,28 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	public List<DeeBean> listarDee(DeeBean deeBean) throws Exception {
 		return programacionDao.listarDee(deeBean);
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarProductos(pe.com.sigbah.common.bean.ProductoRacionBean)
+	 */
+	@Override
+	public List<ProductoRacionBean> listarProductos(ProductoRacionBean racionBean) throws Exception {
+		return programacionDao.listarProductos(racionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#eliminarProductoRacion(pe.com.sigbah.common.bean.ProductoRacionBean)
+	 */
+	@Override
+	public ProductoRacionBean eliminarProductoRacion(ProductoRacionBean productoRacionBean) throws Exception {
+		return programacionDao.eliminarProductoRacion(productoRacionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerRegistroRacion(java.lang.Integer)
+	 */
+	@Override
+	public RacionBean obtenerRegistroRacion(Integer idRacion) throws Exception {
+		return programacionDao.obtenerRegistroRacion(idRacion);
+	}
 }

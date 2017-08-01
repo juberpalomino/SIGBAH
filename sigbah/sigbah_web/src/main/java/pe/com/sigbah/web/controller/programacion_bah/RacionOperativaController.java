@@ -1,5 +1,6 @@
 package pe.com.sigbah.web.controller.programacion_bah;
 
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.converters.IntegerConverter;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -20,18 +22,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.ProductoBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
-import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.ProgramacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
+import pe.com.sigbah.web.report.gestion_almacenes.ReporteControlCalidad;
+import pe.com.sigbah.web.report.programacion_bah.ReporteRacionProducto;
 
 /**
  * @className: EmergenciaController.java
@@ -116,29 +121,7 @@ private static final long serialVersionUID = 1L;
 		return lista;
 	}
 	
-	@RequestMapping(value = "/exportarExcel/{codAnio}/{codMesRacion}/{tipoRacion}", method = RequestMethod.GET)
-	@ResponseBody
-	public String exportarExcel(@PathVariable("codAnio") String codAnio, 
-								@PathVariable("codMesRacion") String codMesRacion, 
-								@PathVariable("tipoRacion") String tipoRacion, 
-								HttpServletResponse response) {
-	    try {
-	    	RacionBean racionBean = new RacionBean();
-	    	racionBean.setCodAnio(verificaParametro(codAnio));
-	    	racionBean.setCodMesRacion(verificaParametro(codMesRacion));
-	    	racionBean.setTipoRacion(verificaParametro(tipoRacion));
-	    	
-			List<RacionBean> lista = programacionService.listarRaciones(racionBean);
-	    	
-			String file_name = "Reporte_Racion";
-			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
-			
-			return Constantes.COD_EXITO_GENERAL;   	
-	    } catch (Exception e) {
-	    	LOGGER.error(e.getMessage(), e);
-	    	return Constantes.COD_ERROR_GENERAL;
-	    } 
-	}
+
 	
 //	@RequestMapping(value = "/mantenimientoRacion/{codigo}/{codigoAnio}", method = RequestMethod.GET)
 //    public String mantenimientoEmergencia(@PathVariable("codigo") Integer codigo,
@@ -214,12 +197,13 @@ private static final long serialVersionUID = 1L;
         	
         
         	ListaRespuestaRequerimientoBean respuestaEdicion = new ListaRespuestaRequerimientoBean();
+        
         	if (!isNullInteger(codigo)) {// editar
         		
-//        		respuestaEdicion = programacionService.obtenerRequerimiento(usuarioBean.getCodigoAnio(),usuarioBean.getCodigoDdi(),codigo); 
-//        		model.addAttribute("requerimiento", getParserObject(respuestaEdicion.getLstCabecera().get(0)));
-//        		model.addAttribute("lista_requerimiento", getParserObject(respuestaEdicion.getLstDetalle()));
-        	  		
+        		racion = programacionService.obtenerRegistroRacion(codigo); 
+//        		model.addAttribute("producto", getParserObject(respuestaEdicion.getLstCabecera().get(0)));
+//        		model.addAttribute("lista_producto", getParserObject(respuestaEdicion.getLstDetalle()));
+        		model.addAttribute("racion", getParserObject(racion));
         	} else {//nuevo
 
         		RacionBean parametros = new RacionBean();
@@ -305,9 +289,9 @@ private static final long serialVersionUID = 1L;
         	String anioActual = generalService.obtenerAnioActual();
         	
         	productoBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
-        	productoBean.setFkIdProducto(usuarioBean.getIdDdi());
+        	
         	productoBean.setCodAnio(anioActual);
-        	productoBean.setIdRacion(32);//whr consultar por idrracion, deberia devolver al grabar racion o llamr independientemente el 
+//        	productoBean.setIdRacion(32);//whr consultar por idrracion, deberia devolver al grabar racion o llamr independientemente el 
         	
            
             
@@ -324,4 +308,92 @@ private static final long serialVersionUID = 1L;
 		}
 		return producto;
 	}
+	
+	
+	@RequestMapping(value = "/listarProductos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProductos(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoRacionBean> lista = null;
+		try {			
+			ProductoRacionBean productoRacionBean = new ProductoRacionBean();	
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(productoRacionBean, request.getParameterMap());			
+			
+			lista = programacionService.listarProductos(productoRacionBean); 
+		} catch (Exception e) { 
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	@RequestMapping(value = "/exportarExcelProducto/{idRacionOpe}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarExcel(@PathVariable("idRacionOpe") Integer idRacionOpe,
+								HttpServletResponse response) {
+	    try {
+	    	ProductoRacionBean productoRacionBean = new ProductoRacionBean();
+	    	productoRacionBean.setIdRacion(idRacionOpe);
+	    	
+			List<ProductoRacionBean> lista = programacionService.listarProductos(productoRacionBean);
+	    	
+			String file_name = "Raciones";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
+			
+			
+			ReporteRacionProducto reporte = new ReporteRacionProducto();
+		    HSSFWorkbook wb = reporte.generaReporteExcelRacionProducto(lista);
+			
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_XLS);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+	    	
+		    // Captured backflow
+	    	OutputStream out = response.getOutputStream();
+	    	wb.write(out); // We write in that flow
+	    	out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    		
+			return Constantes.COD_EXITO_GENERAL;   	
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
+	
+	@RequestMapping(value = "/eliminarProductoRacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object eliminarProductoRacion(HttpServletRequest request, HttpServletResponse response) {
+		ProductoRacionBean producto = null;
+		try {			
+			String[] arrIdProducto = request.getParameter("arrIdProducto").split(Constantes.UNDERLINE);
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			
+			for (String codigo : arrIdProducto) {				
+				ProductoRacionBean productoRacionBean = new ProductoRacionBean();
+
+				productoRacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				productoRacionBean.setIdDetaRacion(getInteger(codigo));
+				producto = programacionService.eliminarProductoRacion(productoRacionBean);
+				
+				
+				
+			}
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
+	
 }

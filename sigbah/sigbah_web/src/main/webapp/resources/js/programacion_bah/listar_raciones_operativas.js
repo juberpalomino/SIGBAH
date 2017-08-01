@@ -41,8 +41,8 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idRequerimiento = listaRacionCache[index].idRequerimiento;
-				codigo = codigo + idRequerimiento + '_';
+				var idRacionOpe = listaRacionCache[index].idRacionOpe; 
+				codigo = codigo + idRacionOpe + '_';  
 			}
 		});
 		
