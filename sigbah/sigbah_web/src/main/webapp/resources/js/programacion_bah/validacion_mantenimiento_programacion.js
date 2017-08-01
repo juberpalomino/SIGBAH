@@ -60,8 +60,9 @@ $(document).ready(function() {
 				validators : {
 					callback: {
 		                callback: function(value, validator, field) {
-		                	var idProgramacion = $('#hid_cod_programacion').val();                   		
-                    		if (!esnulo(idProgramacion)) {
+		                	var idProgramacion = $('#hid_cod_programacion').val();
+		                	var ind_programacion = $('#hid_ind_programacion').val(); 
+                    		if (!esnulo(idProgramacion) && ind_programacion == '2') {
                     			if (esnulo(value)) {
                     				return { valid: false, message: 'Debe seleccionar Almacén.' }
                     			}

@@ -1,14 +1,18 @@
 var listaDetalleAlmacenesCache = new Object();
-var listaAlimentariosCache = new Object();
-var listaNoAlimentariosCache = new Object();
-var listaDocumentosCache = new Object();
+
+var listaDetalleAlmacenesCache = new Object();
+var listaDetalleAlmacenesCache = new Object();
+
+var listaProductosRacionCache = new Object();
+var listaProgramacionAlimentosCache = new Object();
 
 var frm_dat_generales = $('#frm_dat_generales');
 
 var tbl_det_almacenes = $('#tbl_det_almacenes');
 
-var tbl_det_alimentarios = $('#tbl_det_alimentarios');
-var frm_det_alimentarios = $('#frm_det_alimentarios');
+var tbl_pro_racion = $('#tbl_pro_racion');
+var tbl_det_pro_alimentos = $('#tbl_det_pro_alimentos');
+var tbl_res_pro_alimentos = $('#tbl_res_pro_alimentos');
 
 var tbl_det_no_alimentarios = $('#tbl_det_no_alimentarios');
 var frm_det_no_alimentarios = $('#frm_det_no_alimentarios');
@@ -61,6 +65,8 @@ $(document).ready(function() {
 	
 	$('#btn_grabar').click(function(e) {
 		e.preventDefault();
+		
+		$('#hid_ind_programacion').val('1');
 		
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
@@ -119,6 +125,9 @@ $(document).ready(function() {
 						$('#btn_alm_agregar').prop('disabled', false);
 						$('#btn_alm_eliminar').prop('disabled', false);
 						
+						$('#txt_programacion').val(respuesta.codigoProgramacion+'-'+$('#txt_descripcion').val());
+						$('#txt_pro_racion').val($('#txt_des_racion').val());
+						
 						if (tipoAtencion == '1') { // Alimentos			
 							$('#li_alimentos').attr('class', '');
 							$('#li_alimentos').closest('li').children('a').attr('data-toggle', 'tab');
@@ -142,6 +151,7 @@ $(document).ready(function() {
 					}
 					
 				}
+				frm_dat_generales.data('bootstrapValidator').resetForm();
 				loadding(false);
 			});			
 		}
@@ -159,6 +169,8 @@ $(document).ready(function() {
 	
 	$('#btn_alm_agregar').click(function(e) {
 		e.preventDefault();
+		
+		$('#hid_ind_programacion').val('2');
 
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
@@ -827,36 +839,38 @@ function inicializarDatos() {
 				$('#li_alimentarios').closest('li').children('a').removeAttr('data-toggle');
 			}
 			
-//			$('#txt_fec_programacion').val(programacion.fechaEmision);
-//			$('#sel_estado').val(programacion.idEstado);
-//			$('#sel_nro_ord_compra').val(programacion.nroOrdenCompra+'_'+programacion.concepto);			
-//			$('#txt_det_ord_compra').val(programacion.concepto);
-//			
-//			$('#sel_tip_control').val(programacion.idTipoControl);
-//			cargarTipoControl(programacion.idTipoControl);
-//			$('#sel_ori_almacen').val(programacion.idAlmacenOrigen);
-//			$('#sel_ori_en_almacen').val(programacion.idEncargado);
-//			$('#sel_inspector').val(programacion.idInspector);			
-//			var val_idProveedor = programacion.provRep;
-//			$('#sel_proveedor').val(val_idProveedor);
-//			var arr = val_idProveedor.split('_');
-//			if (arr.length > 1) {
-//				$('#txt_representante').val(arr[1]);
-//			}
-//			$('#sel_emp_transporte').val(programacion.idEmpresaTransporte);
-//			$('#sel_chofer').val(programacion.idChofer);
-//			$('#txt_nro_placa').val(programacion.nroPlaca);
-//			$('input[name=rb_tip_bien][value="'+programacion.flagTipoBien+'"]').prop('checked', true);
-//			$('#txt_conclusiones').val(programacion.conclusiones);
-//			$('#txt_recomendaciones').val(programacion.recomendaciones);
-//			
-//			$('input[name=rb_tip_bien]').prop('disabled', true);
+			$('#txt_fec_programacion').val(programacion.fechaProgramacion);
+			$('#txt_estado').val(programacion.nombreEstado);
+			$('#txt_descripcion').val(programacion.nombreProgramacion);
+			$('#sel_nro_requerimiento').val(programacion.idRequerimiento+'_'+programacion.nombreRequerimiento);			
+			$('#txt_des_requerimiento').val(programacion.nombreRequerimiento);			
+			$('#sel_nro_racion').val(programacion.idRacion+'_'+programacion.nombreRacion);			
+			$('#txt_des_racion').val(programacion.nombreRacion);			
+			$('#sel_nro_dee').val(programacion.idNroDee+'_'+programacion.nombreDeclarion);			
+			$('#txt_des_nro_dee').val(programacion.nombreDeclarion);
+			$('#sel_reg_destino').val(programacion.idRegion);
+			$('#sel_ate_con').val(programacion.tipoAtencion);
+			$('#txt_observaciones').val(programacion.observacion);
 			
+			$('#txt_programacion').val($('#txt_descripcion').val());
+			$('#txt_pro_racion').val($('#txt_des_racion').val());
 			
+			listarDetalleProgramacionAlmacenes(programacion.almacenes);
+			cargarAlmacenes();
 			
-			listarProductoProgramacion(false);
+			if (programacion.tipoAtencion == '1') { // Alimentos			
+				$('#li_no_alimentarios').addClass('disabled');
+				$('#ul_man_programacion li.disabled a').removeAttr('data-toggle');
+				listarProgramacionRacionOperativa(false);
+			} else if (programacion.tipoAtencion == '2') { // No Alimentarios
+				$('#li_alimentos').addClass('disabled');
+				$('#ul_man_programacion li.disabled a').removeAttr('data-toggle');
+			} else if (programacion.tipoAtencion == '3') { // Ambos
+				listarProgramacionRacionOperativa(false);
+			}
 			
-			listarDocumentoProgramacion(false);
+//			listarProductoProgramacion(false);			
+//			listarDocumentoProgramacion(false);
 			
 		} else {
 			
@@ -938,59 +952,44 @@ function listarDetalleProgramacionAlmacenes(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaDetalleAlmacenesCache = respuesta;
 
 }
 
-function listarProductoProgramacion(indicador) {
+function listarProgramacionRacionOperativa(indicador) {
+	var val_nro_racion = $('#sel_nro_racion').val();
+	var arr_nro_racion = val_nro_racion.split('_');
 	var params = { 
-		idProgramacion : $('#hid_cod_programacion').val(),
-		flagTipoProducto : $('input[name="rb_tip_bien"]:checked').val()
+		idRacionOperativa : arr_nro_racion[0]
 	};			
-	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarProductoProgramacion', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarProgramacionRacionOperativa', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
-			if ($('input[name="rb_tip_bien"]:checked').val() == '1') {
-				listarDetalleAlimentarios(respuesta);
+			listarDetalleRacionOperativa(respuesta);
+			if (respuesta.length > 0) {
+				$('#txt_dia_atencion').val(respuesta[0].diasAtencion);
 			} else {
-				listarDetalleNoAlimentarios(respuesta);
+				$('#txt_dia_atencion').val('');
 			}
 			if (indicador) {
 				loadding(false);
-			}
-			if (respuesta != null && respuesta.length > 0) {
-				$('input[name=rb_tip_bien]').prop('disabled', true);
-			} else {
-				$('input[name=rb_tip_bien]').prop('disabled', false);
 			}
 		}
 	});
 }
 
-function listarDetalleAlimentarios(respuesta) {
+function listarDetalleRacionOperativa(respuesta) {
 
-	tbl_det_alimentarios.dataTable().fnDestroy();
+	tbl_pro_racion.dataTable().fnDestroy();
 	
-	tbl_det_alimentarios.dataTable({
+	tbl_pro_racion.dataTable({
 		data : respuesta,
-		columns : [ {
-			data : 'idDetalleProgramacion',
-			sClass : 'opc-center',
-			render: function(data, type, row) {
-				if (data != null) {
-					return '<label class="checkbox">'+
-								'<input type="checkbox"><i></i>'+
-						   '</label>';	
-				} else {
-					return '';	
-				}											
-			}
-		}, {	
-			data : 'idDetalleProgramacion',
+		columns : [ {	
+			data : 'idDetalleRacionOperativa',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -998,27 +997,9 @@ function listarDetalleAlimentarios(respuesta) {
 		}, {
 			data : 'nombreProducto'
 		}, {
-			data : 'nombreUnidad'
+			data : 'cantidadRacionKg'
 		}, {
-			data : 'cantidadLote'
-		}, {
-			data : 'fechaVencimiento'
-		}, {
-			data : 'cantidadLote'
-		}, {
-			data : 'cantidadMuestra'
-		}, {
-			data : 'valorPrimario'
-		}, {
-			data : 'valorSecundario'
-		}, {
-			data : 'valorOlor'
-		}, {
-			data : 'valorColor'
-		}, {
-			data : 'valorTextura'
-		}, {
-			data : 'valorSabor'
+			data : 'pesoUnidadPres'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1026,10 +1007,26 @@ function listarDetalleAlimentarios(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false,
+		'footerCallback' : function ( row, data, start, end, display ) {
+			var api = this.api(), data;	 
+			
+			// Remove the formatting to get integer data for summation
+			var intVal = function ( i ) {
+				return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ?	i : 0;
+			};
+ 
+			// total_page_peso over this page
+			var tot_gr = api.column(2, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+
+			// Update footer
+			$('#sp_tot_gr').html(parseFloat(tot_gr).toFixed(2));
+		}
 	});
 	
-	listaAlimentariosCache = respuesta;
+	listaProductosRacionCache = respuesta;
 
 }
 

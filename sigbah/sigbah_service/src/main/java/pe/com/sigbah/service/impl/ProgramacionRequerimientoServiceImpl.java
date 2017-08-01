@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.DetalleProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
+import pe.com.sigbah.common.bean.ProductoAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
@@ -114,6 +116,38 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	@Override
 	public ProgramacionAlmacenBean eliminarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception {
 		return programacionRequerimientoDao.eliminarProgramacionAlmacen(programacionAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarProgramacionRacionOperativa(java.lang.Integer)
+	 */
+	@Override
+	public List<RacionOperativaBean> listarProgramacionRacionOperativa(Integer idRacionOperativa) throws Exception {
+		return programacionRequerimientoDao.listarProgramacionRacionOperativa(idRacionOperativa);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#actualizarProgramacionRacionOperativa(pe.com.sigbah.common.bean.RacionOperativaBean)
+	 */
+	@Override
+	public RacionOperativaBean actualizarProgramacionRacionOperativa(RacionOperativaBean racionOperativaBean) throws Exception {
+		return programacionRequerimientoDao.actualizarProgramacionRacionOperativa(racionOperativaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#obtenerDetalleProgramacionAlimento(java.lang.Integer, java.util.List)
+	 */
+	@Override
+	public DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception {
+		return programacionRequerimientoDao.obtenerDetalleProgramacionAlimento(idProgramacion, arrIdProducto);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#actualizarDetalleProgramacionAlimento(pe.com.sigbah.common.bean.ProductoAlimentoBean)
+	 */
+	@Override
+	public ProductoAlimentoBean actualizarDetalleProgramacionAlimento(ProductoAlimentoBean productoAlimentoBean) throws Exception {
+		return programacionRequerimientoDao.actualizarDetalleProgramacionAlimento(productoAlimentoBean);
 	}
 
 }

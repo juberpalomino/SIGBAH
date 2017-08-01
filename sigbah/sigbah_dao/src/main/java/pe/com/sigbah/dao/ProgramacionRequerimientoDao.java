@@ -2,7 +2,9 @@ package pe.com.sigbah.dao;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.DetalleProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
+import pe.com.sigbah.common.bean.ProductoAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
@@ -92,5 +94,34 @@ public interface ProgramacionRequerimientoDao {
 	 * @throws Exception
 	 */
 	public abstract ProgramacionAlmacenBean eliminarProgramacionAlmacen(ProgramacionAlmacenBean programacionAlmacenBean) throws Exception;
+	
+	/**
+	 * @param idRacionOperativa
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<RacionOperativaBean> listarProgramacionRacionOperativa(Integer idRacionOperativa) throws Exception;
+	
+	/**
+	 * @param racionOperativaBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract RacionOperativaBean actualizarProgramacionRacionOperativa(RacionOperativaBean racionOperativaBean) throws Exception;
+	
+	/**
+	 * @param idProgramacion
+	 * @param arrIdProducto 
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception;
+	
+	/**
+	 * @param productoAlimentoBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProductoAlimentoBean actualizarDetalleProgramacionAlimento(ProductoAlimentoBean productoAlimentoBean) throws Exception;
 
 }

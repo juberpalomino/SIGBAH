@@ -17,12 +17,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.DetalleProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
@@ -282,6 +285,106 @@ private static final long serialVersionUID = 1L;
 		}
 		return programacionAlmacen;
 	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarProgramacionRacionOperativa", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProgramacionRacionOperativa(HttpServletRequest request, HttpServletResponse response) {
+		List<RacionOperativaBean> lista = null;
+		try {		
+			lista = programacionRequerimientoService.listarProgramacionRacionOperativa(getInteger(request.getParameter("idRacionOperativa")));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/actualizarProgramacionRacionOperativa", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object actualizarProgramacionRacionOperativa(HttpServletRequest request, HttpServletResponse response) {
+		RacionOperativaBean racionOperativa = null;
+		try {			
+			RacionOperativaBean racionOperativaBean = new RacionOperativaBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(racionOperativaBean, request.getParameterMap());
+
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	racionOperativaBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+        	racionOperativa = programacionRequerimientoService.actualizarProgramacionRacionOperativa(racionOperativaBean);			
+        	racionOperativa.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return racionOperativa;
+	}
+	
+	/**
+	 * @param idProgramacion 
+	 * @param arrIdProducto 
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarDetalleProgramacionAlimento", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarDetalleProgramacionAlimento(@RequestParam(value="idProgramacion") Integer idProgramacion,
+			 										@RequestParam(value="arrIdProducto[]") List<Integer> arrIdProducto) {
+		DetalleProgramacionAlimentoBean detalleProgramacionAlimentoBean = null;
+		try {		
+			detalleProgramacionAlimentoBean = programacionRequerimientoService.obtenerDetalleProgramacionAlimento(idProgramacion, arrIdProducto);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return detalleProgramacionAlimentoBean;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/actualizarDetalleProgramacionAlimento", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object actualizarDetalleProgramacionAlimento(HttpServletRequest request, HttpServletResponse response) {
+		ProductoAlimentoBean productoAlimento = null;
+		try {			
+			ProductoAlimentoBean productoAlimentoBean = new ProductoAlimentoBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(productoAlimentoBean, request.getParameterMap());
+
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	productoAlimentoBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+        	productoAlimento = programacionRequerimientoService.actualizarDetalleProgramacionAlimento(productoAlimentoBean);			
+        	productoAlimento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return productoAlimento;
+	}
+	
+	
+	
 	
 	
 	

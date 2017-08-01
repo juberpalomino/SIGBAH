@@ -61,6 +61,7 @@
 									<form id="frm_dat_generales" class="form-horizontal">
 									
 										<input type="hidden" id="hid_cod_programacion" name="hid_cod_programacion">
+										<input type="hidden" id="hid_ind_programacion" name="hid_ind_programacion">
 					
 										<div class="jarviswidget">
 											<header>
@@ -200,7 +201,7 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-2 control-label">Almacén:</label>
+														<label class="col-sm-1 control-label">Almacén:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_almacen" name="sel_almacen" class="form-control">
 															</select>
@@ -208,7 +209,7 @@
 														
 														<div class="col-sm-2 opc-center">
 															<button class="btn btn-primary" type="button" id="btn_alm_agregar">
-																<i class="fa fa-plus "></i>
+																<i class="fa fa-plus"></i>
 																Agregar Almacén
 															</button>
 														</div>
@@ -221,16 +222,20 @@
 														</div>
 													</div>
 													
-													<table id="tbl_det_almacenes" class="table table-bordered table-hover tbl-responsive">
-														<thead>			                
-															<tr>
-																<th></th>
-																<th>Nº</th>
-																<th>Almacén</th>
-															</tr>
-														</thead>
-													</table>													
-								
+													<div class="form-group">
+														<div class="col-sm-4">
+															<table id="tbl_det_almacenes" class="table table-bordered table-hover tbl-responsive">
+																<thead>			                
+																	<tr>
+																		<th></th>
+																		<th>Nº</th>
+																		<th>Almacén</th>
+																	</tr>
+																</thead>
+															</table>													
+														</div>
+														<div class="col-sm-8"></div>
+													</div>
 												</div>
 												<!-- end widget content -->
 								
@@ -263,28 +268,20 @@
 								</div>
 								
 								<div class="tab-pane fade" id="div_alimentos">
+								
+									<div class="row">
+										<label class="col-sm-1 control-label">Programación:</label>
+										<div class="col-sm-11 form-group">
+											<input type="text" id="txt_programacion" class="form-control" disabled>
+										</div>
+									</div>
 									
 									<!-- Widget ID (each widget will need unique ID)-->
 									<div class="jarviswidget jarviswidget-color-blueLight">
 									
 										<header>
 											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Detalle de Productos</h2>
-											
-											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_ali_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Nuevo">
-													<i class="fa fa-file-o"></i>
-												</a>
-												<a href="#" id="href_ali_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Editar">
-													<i class="fa fa-edit"></i>
-												</a>
-												<a href="#" id="href_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
-												</a>
-											</div>
+											<h2>Programación Alimentos</h2>
 										</header>
 						
 										<!-- widget div-->
@@ -292,27 +289,110 @@
 															
 											<!-- widget content -->
 											<div class="widget-body">
-
-												<table id="tbl_det_alimentarios" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th></th>
-															<th>Nº</th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Lote</th>
-															<th>Fecha Vencimiento</th>
-															<th>Cantidad de Lote</th>
-															<th>Cantidad para la Muestra</th>
-															<th>Envase Primario</th>
-															<th>Envase Secundario</th>
-															<th>Olor</th>
-															<th>Color</th>
-															<th>Textura</th>
-															<th>Sabor</th>
-														</tr>
-													</thead>
-												</table>
+											
+												<form class="form-horizontal">
+											
+													<div class="row">
+														<label class="col-sm-2 control-label">Productos de la Ración:</label>
+														<div class="col-sm-10 form-group">
+															<input type="text" id="txt_pro_racion" class="form-control" disabled>
+														</div>
+													</div>
+	
+													<table id="tbl_pro_racion" class="table table-bordered table-hover tbl-responsive">
+														<thead>			                
+															<tr>
+																<th>Nº</th>
+																<th>Producto</th>
+																<th>Gramos por Racion</th>
+																<th>Presentacion</th>
+															</tr>
+														</thead>
+														<tfoot>
+															<tr>
+																<td colspan="2">
+																	<span class="label-bold" style="float:right;">Total (gr):</span>
+																</td>
+																<td colspan="1">
+																	<span id="sp_tot_gr"></span>
+																</td>
+																<td colspan="1"></td>
+															</tr>
+														</tfoot>
+													</table>
+													
+													<div class="row">
+														<label class="col-sm-6 control-label">Dias de Atención:</label>
+														<div class="col-sm-2 form-group">
+															<input type="text" id="txt_dia_atencion" class="form-control" disabled>
+														</div>
+														<div class="col-sm-2 opc-center">
+															<button class="btn btn-primary" type="button" id="btn_actualizar">
+																<i class="fa fa-refresh"></i>
+																Actualizar
+															</button>
+														</div>
+													</div>
+													
+													<div class="row">
+														<div class="col-sm-12 form-group"><hr></div>
+													</div>
+													
+													<div class="row">
+														<label class="col-sm-6">Detalle de la Programación de Alimentos:</label>
+														
+														<div class="col-sm-2 opc-center">
+															<button class="btn btn-default" type="button" id="btn_exp_pdf">
+																<i class="fa fa-file-pdf-o"></i>
+																Exportar PDF
+															</button>
+														</div>
+														
+														<div class="col-sm-2 opc-center">
+															<button class="btn btn-default" type="button" id="btn_exp_excel">
+																<i class="fa fa-file-excel-o"></i>
+																Exportar Excel
+															</button>
+														</div>
+														
+														<div class="col-sm-1 opc-center">
+															<button class="btn btn-primary" type="button" id="btn_editar">
+																<i class="fa fa-edit"></i>
+																Editar
+															</button>
+														</div>
+														
+														<div class="col-sm-1 opc-center">
+															<button class="btn btn-danger" type="button" id="btn_eliminar">
+																<i class="fa fa-trash-o"></i>
+																Eliminar
+															</button>
+														</div>
+													</div>
+													
+													<div class="row">
+														<div class="col-sm-12 form-group">&nbsp;</div>
+													</div>
+													
+													<table id="tbl_det_pro_alimentos" class="table table-bordered table-hover tbl-responsive">
+														<thead>			                
+															<tr>
+																<th>Sel</th>
+																<th>Nº</th>
+																<th>Departamento</th>
+																<th>Provincia</th>
+																<th>Distrito</th>
+																<th>Pers. Afect.</th>
+																<th>Pers. Dam.</th>
+																<th>Total Pers.</th>
+																<th>Total Raciones</th>
+																
+																<th>Total (TM)</th>
+															</tr>
+														</thead>
+													</table>	
+													
+												</form>											
 
 											</div>
 											<!-- end widget content -->
@@ -322,6 +402,41 @@
 						
 									</div>
 									<!-- end widget -->
+									
+									<!-- Widget ID (each widget will need unique ID)-->
+									<div class="jarviswidget jarviswidget-color-blueLight">
+									
+										<header>
+											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+											<h2>Resumen</h2>
+										</header>
+						
+										<!-- widget div-->
+										<div>
+															
+											<!-- widget content -->
+											<div class="widget-body">
+											
+												<table id="tbl_res_pro_alimentos" class="table table-bordered table-hover tbl-responsive">
+													<thead>			                
+														<tr>
+															<th>Nº</th>
+															<th>Producto</th>
+															<th>Stock (TM)</th>
+															<th>Total (TM)</th>
+															<th>Saldo (TM)</th>
+														</tr>
+													</thead>
+												</table>
+												
+											</div>
+											<!-- end widget content -->
+											
+										</div>
+										<!-- end widget div -->
+						
+									</div>
+									<!-- end widget -->											
 									
 									<div class="form-actions">
 										<div class="row">
