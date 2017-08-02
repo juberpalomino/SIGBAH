@@ -53,17 +53,18 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
-		tbl_mnt_programacion.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_mnt_programacion.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-				indices.push(index);				
+		
+		$.each(listaProgramacionCache, function(i, item) {
+			if ($('#chk_'+item.idProgramacion).is(':checked')) {
+				var idProgramacion = item.idProgramacion;
+				indices.push(idProgramacion);
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
 					return false;
-				}
-				var idProgramacion = listaProgramacionCache[index].idProgramacion;
+				}				
 				codigo = codigo + idProgramacion + '_';
 			}
-		});
+	    });		
 		
 		if (!esnulo(codigo)) {
 			codigo = codigo.substring(0, codigo.length - 1);
@@ -312,7 +313,7 @@ function listarDetalleProgramacion(respuesta) {
 			render: function(data, type, row) {
 				if (data != null) {
 					return '<label class="checkbox">'+
-								'<input type="checkbox"><i></i>'+
+								'<input type="checkbox" id="chk_'+data+'"><i></i>'+
 							'</label>';	
 				} else {
 					return '';	

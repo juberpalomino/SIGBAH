@@ -1,8 +1,5 @@
 var listaDetalleAlmacenesCache = new Object();
 
-var listaDetalleAlmacenesCache = new Object();
-var listaDetalleAlmacenesCache = new Object();
-
 var listaProductosRacionCache = new Object();
 var listaProgramacionAlimentosCache = new Object();
 var programacionAlimentosCache = new Object();
@@ -369,8 +366,20 @@ $(document).ready(function() {
 			var unidad = $('#txt_ali_uni_'+item.idProducto).val();
 			$.each(programacionAlimentosCache.listaProducto, function(i, item_prod) {
 				if (item.idProducto == item_prod.idProducto && unidad != obtieneParametro(item_prod.unidad)) {
-					arrIdProducto.push(item.idProducto);
-					arrUnidad.push(unidad);
+					var indicador = false;
+					if (!esnulo(unidad) && !esnulo(item_prod.unidad)) {
+						if (parseFloat(formatMonto(unidad)) != parseFloat(item_prod.unidad)) {
+							indicador = true;
+						}
+					} else {
+						if (unidad != obtieneParametro(item_prod.unidad)) {
+							indicador = true;
+						}
+					}
+					if (indicador) {			
+						arrIdProducto.push(item.idProducto);
+						arrUnidad.push(formatMonto(unidad));
+					}
 				}					
 		    });
 	    });
