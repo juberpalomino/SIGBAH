@@ -2,16 +2,25 @@ package pe.com.sigbah.service;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
 import pe.com.sigbah.common.bean.DonacionesIngresoBean;
 import pe.com.sigbah.common.bean.DonacionesSalidaBean;
+import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ProductoDonacionBean;
 import pe.com.sigbah.common.bean.ProductoDonacionIngresoBean;
+import pe.com.sigbah.common.bean.ProductoDonacionSalidaBean;
 import pe.com.sigbah.common.bean.RegionDonacionBean;
+import pe.com.sigbah.common.bean.StockAlmacenBean;
+import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
 /**
  * @className: DonacionService.java
  * @description: Clase que contiene el consumo de los procedimientos del package BAH_PKG_DONACION.
@@ -251,6 +260,265 @@ public interface DonacionService {
 	 * @throws Exception
 	 */
 	public abstract DonacionesSalidaBean obtenerCorrelativoOrdenSalida(DonacionesSalidaBean donacionesSalidaBean) throws Exception;
+
+
+	/**
+	 * @param donacionesSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DonacionesSalidaBean insertarRegistroDonacionSalida(DonacionesSalidaBean donacionesSalidaBean) throws Exception;
+
+
+	/**
+	 * @param idSalida
+	 * @param codAnio
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DonacionesSalidaBean obtenerDonacionSalidaXIdSalida(Integer idSalida) throws Exception;
+
+
+	/**
+	 * @param itemBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionSalidaBean> listarProductoDonacionSalida(ProductoDonacionSalidaBean itemBean) throws Exception;
+
+
+	/**
+	 * @param productoDonacionSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoDonacionSalidaBean insertarProductoDonacionSalida(ProductoDonacionSalidaBean productoDonacionSalidaBean) throws Exception;
+
+
+	/**
+	 * @param productoDonacionSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoDonacionSalidaBean actualizarProductoDonacionSalida(ProductoDonacionSalidaBean productoDonacionSalidaBean) throws Exception;
+
+
+	/**
+	 * @param productoDonacionSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoDonacionSalidaBean eliminarProductoDonacionSalida(ProductoDonacionSalidaBean productoDonacionSalidaBean) throws Exception;
+
+
+	/**
+	 * @param itemBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionSalidaBean> listarProductosDonacionSalida(ProductoDonacionSalidaBean itemBean) throws Exception;
+
+
+	/**
+	 * @param documentoSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DocumentoSalidaBean> listarDocumentoDonacionSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
+
+
+	/**
+	 * @param documentoSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentoSalidaBean insertarDocumentoDonacionSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
+
+
+	/**
+	 * @param documentoSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentoSalidaBean eliminarDocumentoSalidaDonacion(DocumentoSalidaBean documentoSalidaBean) throws Exception;
+
+
+	/**
+	 * @param documentoSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentoSalidaBean actualizarDocumentoDonacionSalida(DocumentoSalidaBean documentoSalidaBean) throws Exception;
+
+
+	/**
+	 * @param donacionesSalidaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DonacionesSalidaBean actualizarRegistroDonacionSalida(DonacionesSalidaBean donacionesSalidaBean) throws Exception;
+
+	
+	
+
+	/**
+	 * @param guiaRemisionBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<GuiaRemisionBean> listarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+
+
+	/**
+	 * @param idGuiaRemision
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract GuiaRemisionBean obtenerRegistroGuiaRemision(Integer idGuiaRemision) throws Exception;
+
+
+	/**
+	 * @param guiaRemisionBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+
+
+	/**
+	 * @param stockAlmacenBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<StockAlmacenBean> listarStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception;
+
+
+	/**
+	 * @param stockAlmacenBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract StockAlmacenBean obtenerRegistroStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception;
+
+
+	/**
+	 * @param stockAlmacenBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract StockAlmacenBean actualizarStockAlmacen(StockAlmacenBean stockAlmacenBean) throws Exception;
+
+
+	/**
+	 * @param cartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<CartillaInventarioBean> listarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param idCartilla
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract CartillaInventarioBean obtenerRegistroCartillaInventario(Integer idCartilla) throws Exception;
+
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoCartillaInventarioBean> listarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param estadoCartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<EstadoCartillaInventarioBean> listarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param cartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract CartillaInventarioBean grabarCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param estadoCartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract EstadoCartillaInventarioBean grabarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean grabarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean procesarProductosCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param stockAlmacenProductoLoteBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<StockAlmacenProductoLoteBean> listarStockAlmacenProductoLote(StockAlmacenProductoLoteBean stockAlmacenProductoLoteBean) throws Exception;
+
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean eliminarProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param productoCartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoCartillaInventarioBean actualizarAjusteProductoCartillaInventario(ProductoCartillaInventarioBean productoCartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param cierreStockBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<CierreStockBean> listarCierreStock(CierreStockBean cierreStockBean) throws Exception;
+
+
+	/**
+	 * @param cierreStockBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract CierreStockBean obtenerRegistroCierreStock(CierreStockBean cierreStockBean) throws Exception;
+
+
+	/**
+	 * @param cierreStockBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception;
 
 
 

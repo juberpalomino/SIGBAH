@@ -55,7 +55,7 @@
 								
 									<form id="frm_dat_generales" class="form-horizontal">
 									
-										<input type="hidden" id="hid_id_ingreso" name="hid_id_ingreso">
+										<input type="hidden" id="hid_id_salida" name="hid_id_salida">
 										<input type="hidden" id="hid_id_donacion" name="hid_id_donacion">
 										<div class="header-form opc-center">	
 											<strong>Orden Salida</strong>
@@ -67,7 +67,7 @@
 											<div class="col-sm-3"></div>
 											<label class="col-sm-3 control-label label-bold">Nº Orden Salida:</label>
 											<div class="col-sm-2">
-												<input type="text" id="txt_cod_ingreso" class="form-control"  disabled>
+												<input type="text" id="txt_cod_salida" class="form-control"  disabled>
 												<input type="hidden" id="txt_nro_salida" name="txt_nro_salida">
 											</div>
 										</div>				
@@ -157,6 +157,7 @@
 														<label class="col-sm-3 control-label">Solicitada por:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_solicitada" name="sel_solicitada" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -166,6 +167,7 @@
 														<label class="col-sm-3 control-label">Responsable:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_responsable" name="sel_responsable" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -211,7 +213,7 @@
 													<div id="div_gob_destino" class="row">
 														<label class="col-sm-3 control-label">Tipo de Atención:</label>
 														
-														<div class="col-sm-4 form-group">
+														<div class="col-sm-8 form-group">
 															<label class="radio radio-inline">
 																<input type="radio" name="rb_tie_ate_gobierno" value="R">
 																Gobierno Regional
@@ -318,13 +320,15 @@
 													</div>
 													
 													<div class="row">
-														<label class="col-sm-3 control-label">Fecha de Llegada:</label>
+														<label class="col-sm-3 control-label">Fecha de Entrega:</label>
 														<div class="col-sm-3 smart-form form-group">
 															<label class="input"> 
 																<i class="icon-append fa fa-calendar"></i>
-																<input type="text" name="txt_fec_llegada" id="txt_fec_llegada" class="datepicker" readonly>
+																<input type="text" name="txt_fec_entrega" id="txt_fec_entrega" class="datepicker" readonly>
 															</label>
 														</div>
+														
+														
 														
 														<label class="col-sm-3 control-label">Chofer:</label>
 														<div class="col-sm-3 form-group">
@@ -517,7 +521,8 @@
 															<th>Cantidad</th>
 															<th>Precio Unitario</th>
 															<th>Importe Total</th>
-															<th>Fecha Vencimiento</th>
+															<th>Peso Bruto Total</th>
+															<th>Codigo Donación</th>
 														</tr>
 													</thead>
 												</table>
@@ -730,12 +735,24 @@
 						<form id="frm_det_productos" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
+							<input type="hidden" id="hid_donacion_pro" name="hid_donacion_pro">
 							
+							<div class="row">																				
+								<label class="col-sm-3 control-label">Categoría de Producto:</label>
+								<div class="col-sm-3 form-group">
+									<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
+										<option value="">Seleccione</option>
+										<c:forEach items="${lista_categoria}" var="item">
+										    <option value="${item.icodigo}">${item.descripcion}</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
 							
 							<div class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-3 form-group">
-									<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
+								<div class="col-sm-8 form-group">
+									<select id="sel_producto" name="sel_producto" class="form-control">
 										<option value="">Seleccione</option>
 										<c:forEach items="${lista_productos_donacion}" var="item">
 										    <option value="${item.idProducto}_${item.unidadMedida}_${item.precio}">${item.nombreProducto}</option>
@@ -752,33 +769,43 @@
 									<input type="text" id="txt_uni_medida" class="form-control" disabled>
 								</div>
 
-								<label class="col-sm-3 control-label">Fecha Vencimiento:</label>
-								<div class="col-sm-3 smart-form form-group">
-									<label class="input"> 
-										<i class="icon-append fa fa-calendar"></i>
-										<input type="text" name="txt_fec_vencimiento" id="txt_fec_vencimiento" class="datepicker" readonly>
-									</label>
-								</div>
+<!-- 								<label class="col-sm-3 control-label">Fecha Vencimiento:</label> -->
+<!-- 								<div class="col-sm-3 smart-form form-group"> -->
+<!-- 									<label class="input">  -->
+<!-- 										<i class="icon-append fa fa-calendar"></i> -->
+<!-- 										<input type="text" name="txt_fec_vencimiento" id="txt_fec_vencimiento" class="datepicker" readonly> -->
+<!-- 									</label> -->
+<!-- 								</div> -->
 							</div>
 							
 							<div class="row">
-								<label class="col-sm-3 control-label">Cantidad:</label>
-								<div class="col-sm-3 form-group">
+								<label class="col-sm-2 control-label">Cantidad:</label>
+								<div class="col-sm-2 form-group">
 									<input type="text" name="txt_cantidad" id="txt_cantidad" class="form-control monto-format" maxlength="10">
 								</div>
+
+								<label class="col-sm-2 control-label">Precio Unitario:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" id="txt_precio" class="form-control">
+								</div>
+								
+								<label class="col-sm-2 control-label">Importe Total:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_imp_total" id="txt_imp_total" class="form-control" disabled>
+								</div>
 							</div>
 							
 							<div class="row">
+								<label class="col-sm-2 control-label">Peso Neto Unitario</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_peso_unitario" id="txt_peso_unitario" class="form-control monto-format" maxlength="10" disabled>
+								</div>
 
-								<label class="col-sm-3 control-label">Precio:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" id="txt_precio" class="form-control" disabled>
+								<label class="col-sm-2 control-label">Peso Bruto Unitario:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_peso_bruto" id="txt_peso_bruto" class="form-control" disabled>
 								</div>
-								
-								<label class="col-sm-3 control-label">Importe Total:</label>
-								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_imp_total" id="txt_imp_total" class="form-control" disabled>
-								</div>
+
 							</div>
 							
 						</form>

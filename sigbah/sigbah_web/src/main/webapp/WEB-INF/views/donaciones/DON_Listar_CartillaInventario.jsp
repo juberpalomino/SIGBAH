@@ -5,7 +5,8 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
 		<li>Donaciones</li>
-		<li>Lista Guiía de Remisión</li>
+		<li>Stock</li>
+		<li>Cartilla de Inventario - Lista</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -27,45 +28,26 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Guía de Remisión</h2>
+						<h2>Búsqueda de Cartilla de Inventario</h2>
 					</header>
 		
 					<!-- widget div-->
-					<div id="div_wid_bod_bus_con_calidad">
+					<div id="div_wid_bod_bus_car_inventario">
 		
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_gui_remision" class="form-horizontal">
+							<form id="frm_car_inventario" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 							
 								<div class="row">
 									<label class="col-sm-1 control-label">Año:</label>
-									<div class="col-sm-2 form-group">
+									<div class="col-sm-3 form-group">
 										<select id="sel_anio" name="sel_anio" class="form-control">
+											<option value="">Todos</option>
 											<c:forEach items="${lista_anio}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
-									
-									<label class="col-sm-1 control-label">Mes:</label>
-									<div class="col-sm-2 form-group">
-										<select id="sel_mes" name="sel_mes" class="form-control">
-											<option value="%">Todos</option>
-											<c:forEach items="${lista_mes}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
-									
-									<label class="col-sm-2 control-label">Tipo Movimiento:</label>
-									<div class="col-sm-2 form-group">
-										<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
-											<option value="0">Todos</option>
-											<c:forEach items="${lista_tipo_movimiento}" var="item">
-											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -76,7 +58,6 @@
 											Buscar
 										</button>
 									</div>
-									
 								</div>
 								
 							</form>
@@ -101,7 +82,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Relación de Guias de Remisión</h2>
+						<h2>Relación de Cartilla de Inventario</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
@@ -112,9 +93,17 @@
 								data-original-title="Imprimir">
 								<i class="fa fa-file-pdf-o"></i>
 							</a>
+							<a href="#" id="href_estados" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Cambiar Estado">
+								<i class="fa fa-cog"></i>
+							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
+							</a>
+							<a href="#" id="href_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Nuevo">
+								<i class="fa fa-file-o"></i>
 							</a>
 						</div>
 					</header>
@@ -125,19 +114,16 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_gui_remision" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_mnt_car_inventario" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
 										<th>Nº</th>
-										<th>Año</th>
-										<th>Mes</th>
+										<th>Almacén</th>
+										<th>Nro Cartilla</th>
 										<th>Fecha</th>
-										<th>N° Orden de Salida</th>
-										<th>N° Guia de Remisión</th>
-										<th>N° Manifiesto de Carga</th>
-										<th>N° Acta de Entrega Recepción</th>
-										<th>Tipo de Movimiento</th>										
+										<th>Responsable</th>
+										<th>Nro de Items Inventariados</th>
 										<th>Estado</th>
 									</tr>
 								</thead>
@@ -165,46 +151,48 @@
 <!-- END MAIN CONTENT -->
 
 <!-- Modal -->
-<div id="div_imp_pdf" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div id="div_gra_estado" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold">IMPRIMIR</h4>
+				<h4 class="modal-title label-bold">Cambiar Estado de la Cartilla</h4>
 			</div>
 			
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12">
-						<form class="form-horizontal" role="form">
+						<form id="frm_gra_estado" class="form-horizontal" role="form">
 							
-							<div class="row">
-								<label class="col-sm-5 control-label">Guia Remision:</label>
-								<div class="col-sm-7 smart-form">
-									<label class="checkbox">
-										<input type="checkbox" name="chk_gui_remision" id="chk_gui_remision"><i></i>
-									</label>
+							<input type="hidden" id="hid_cod_cartilla" name="hid_cod_cartilla">
+						
+							<div class="form-group">																				
+								<label class="col-sm-3 control-label">Estado:</label>
+								<div class="col-sm-8">
+									<select id="sel_estado" name="sel_estado" class="form-control">
+									</select>
+								</div>
+							</div>																		
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Fecha:</label>
+								<div class="col-sm-4 smart-form">
+									<input type="text" id="txt_fecha" class="form-control" disabled>
 								</div>
 							</div>
 							
-							<div class="row">
-								<label class="col-sm-5 control-label">Manifiesto Carga:</label>
-								<div class="col-sm-7 smart-form">
-									<label class="checkbox">
-										<input type="checkbox" name="chk_man_carga" id="chk_man_carga"><i></i>
-									</label>
-								</div>
-							</div>
-							
-							<div class="row">
-								<label class="col-sm-5 control-label">Acta Entrega / Recepción:</label>
-								<div class="col-sm-7 smart-form">
-									<label class="checkbox">
-										<input type="checkbox" name="chk_act_ent_recepcion" id="chk_act_ent_recepcion"><i></i>
-									</label>
-								</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Observación:</label>
+								<div class="col-sm-9 smart-form">
+									<section>														
+										<label class="textarea textarea-resizable"> 										
+											<textarea rows="3" name="txt_observacion" id="txt_observacion" 
+												maxlength="500" class="custom-scroll"></textarea> 
+										</label>
+									</section>
+								</div>				
 							</div>
 							
 						</form>
@@ -213,11 +201,11 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_exportar">
-					<i class="fa fa-file-pdf-o"></i>
-					Exportar
+				<button type="button" class="btn btn-primary" id="btn_gra_estado">
+					<i class="fa fa-floppy-o"></i>
+					Grabar
 				</button>
-
+				
 				&nbsp; &nbsp;
 				
 				<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -230,5 +218,4 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
-<script> var guiaRemision = JSON.parse('${guiaRemision}'); </script>
-<script src="${pageContext.request.contextPath}/resources/js/donaciones/listar_guia_remision.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/donaciones/listar_cartilla_inventario.js"></script>

@@ -5,6 +5,14 @@ $(document).ready(function() {
 		excluded : [':disabled', ':hidden'],
 		fields : {
 			// Datos Generales
+			txt_fecha : {
+				validators : {
+					notEmpty : {
+						message : 'Debe Ingresar Fecha.'
+					}
+				}
+			},
+			
 			sel_movimiento : {
 				validators : {
 					notEmpty : {
@@ -121,14 +129,14 @@ $(document).ready(function() {
 						message : 'Debe ingresar Cantidad.'
 					}
 				}
-			},
-			txt_fec_vencimiento : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha.'
-					}
-				}
 			}
+//			txt_fec_vencimiento : {
+//				validators : {
+//					notEmpty : {
+//						message : 'Debe ingresar Fecha.'
+//					}
+//				}
+//			}
 		}
 	});
 //	

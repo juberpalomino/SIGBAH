@@ -1169,7 +1169,7 @@
 						
 							<div id="div_pro_det_productos" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 form-group">
+								<div class="col-sm-8 form-group">
 									<select id="sel_lis_producto" name="sel_lis_producto" class="form-control">
 									</select>
 								</div>

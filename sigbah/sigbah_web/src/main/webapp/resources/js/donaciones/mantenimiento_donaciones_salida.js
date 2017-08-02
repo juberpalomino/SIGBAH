@@ -114,75 +114,110 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
-			var codigo = $('#hid_id_ingreso').val();
+			var codigo = $('#hid_id_salida').val();
 		//	var tipoBien = $('input[name="rb_tip_bien"]:checked').val();
-			var idDonante = null;
-			var val_donante = $('#sel_donante').val();
-			if (!esnulo(val_donante)) {
-				var arr = val_donante.split('_');
-				idDonante = arr[0];
-			}
-			
-			var idDonacion = null;
-			var val_donacion = $('#sel_cod_donacion').val();
-			if (!esnulo(val_donacion)) {
-				var arr = val_donacion.split('_');
-				idDonacion = arr[0];
-			}
-			
-			var idControlCalidad = null;
-			var flagControlCalidad = null;
-			var selecControlCalidad = $('#sel_control_calidad').val();
-			if(selecControlCalidad==='0'){
-				idControlCalidad='';
-				flagControlCalidad='0';
+//			var idDonante = null;
+//			var val_donante = $('#sel_donante').val();
+//			if (!esnulo(val_donante)) {
+//				var arr = val_donante.split('_');
+//				idDonante = arr[0];
+//			}
+//			
+//			var idDonacion = null;
+//			var val_donacion = $('#sel_cod_donacion').val();
+//			if (!esnulo(val_donacion)) {
+//				var arr = val_donacion.split('_');
+//				idDonacion = arr[0];
+//			}
+//			
+//			var idControlCalidad = null;
+//			var flagControlCalidad = null;
+//			var selecControlCalidad = $('#sel_control_calidad').val();
+//			if(selecControlCalidad==='0'){
+//				idControlCalidad='';
+//				flagControlCalidad='0';
+//			}else{
+//				idControlCalidad=$('#sel_control_calidad').val();
+//				flagControlCalidad='1';
+//			}
+//			
+//			var idIngreso = $('#hid_id_ingreso').val();
+//			var nroOrdenIn = null;
+//			if(idIngreso == "" || idIngreso==0){
+//				nroOrdenIn='';
+//			}else{
+//				nroOrdenIn=$('#txt_nro_ingreso').val();
+//			}
+			var flag=null;
+			var codUbigeo=null;
+			if($('input[name=rb_tie_ate_gobierno]:checked').val()=='R'){
+				flag='R';
+				codUbigeo=$('#sel_gore').val();
 			}else{
-				idControlCalidad=$('#sel_control_calidad').val();
-				flagControlCalidad='1';
+				if($('input[name=rb_tie_ate_gobierno]:checked').val()=='L'){
+					flag='L';
+					codUbigeo=$('#sel_distrito').val();
+				}else{
+					flag='I';
+					codUbigeo='';
+				}
 			}
-			
-			var idIngreso = $('#hid_id_ingreso').val();
-			var nroOrdenIn = null;
-			if(idIngreso == "" || idIngreso==0){
-				nroOrdenIn='';
+			var mov = $('#sel_movimiento').val();
+			var responsable=null;
+			var responsable_ext=null;
+			var almacen=null;
+			var almacen_ext=null;
+			if(mov=='3' || mov=='4'){
+				almacen=$('#sel_alm_destino').val();
+				almacen_ext='';
+				responsable=$('#sel_res_recepcion').val();
+				responsable_ext='';
 			}else{
-				nroOrdenIn=$('#txt_nro_ingreso').val();
+				almacen='';
+				almacen_ext=$('#sel_alm_destino').val();
+				responsable='';
+				responsable_ext=$('#sel_res_recepcion').val();
 			}
 
 			
 			var params = {
-					idIngreso : $('#hid_id_ingreso').val(),
+					idSalida : $('#hid_id_salida').val(),
 					codigoAnio : $('#txt_anio').val(),
 					//codigoMes : $('#hid_id_donacion').val(),
-					fechaEmision : $('#txt_fecha').val(),
-					idDonacion : idDonacion, 
-					idMedTransporte: $('#sel_med_transporte').val(),
-					idTipoMovimiento : $('#sel_movimiento').val(),
+					//idAlmacen :  $('#sel_tip_persona').val(),
+					//codigoDdi :  $('#sel_oficina').val(), 
 					//codAlmacen :  $('#sel_oficina').val(), 
-					//idAlmacen :  $('#sel_tip_persona').val(), 
-					idAlmacenProcedencia : $('#sel_almacen').val(), 
-					codigoDdi : $('#txt_codDdi').val(),
-					nroOrdenIngreso :  nroOrdenIn, 
-					idControlCalidad :  idControlCalidad, 
-					idChofer :  $('#sel_chofer').val(), 
-					nroPlaca :  $('#txt_nro_placa').val(), 
-					observacion   :  $('#txt_observaciones').val(), 
-					idEstado   :  $('#sel_estado').val(), 
-					flagControlCalidad : flagControlCalidad,
-					idEmpresaTrans : $('#sel_emp_transporte').val(),
-					idResponsable : $('#sel_responsable').val(),
-					fechaLlegada : $('#txt_fec_llegada').val(),
-					idSalida : $('#sel_salida').val()
+					nroOrdenSalida : $('#txt_cod_salida').val(),
+					fechaEmision: $('#txt_fecha').val(), 
+					codigoUbigeo: codUbigeo,
+					idProgramacion : '',
+					idResponsable :  $('#sel_responsable').val(), 
+					idResponsableExt : responsable_ext, 
+					idSolicitante : $('#sel_solicitada').val(), 
+					idResponsableRecepcion : responsable,
+					idProyectoManifiesto :  '', 
+					idTipoMovimiento :  $('#sel_movimiento').val(), 
+					idAlmacenDestino :  almacen, 
+					idAlmacenDestinoExt :  almacen_ext, 
+					idMedTransporte   :  $('#sel_med_transporte').val(), 
+					idEmpresaTrans   :  $('#sel_emp_transporte').val(), 
+					idChofer : $('#sel_chofer').val(),
+					nroPlaca : $('#txt_nro_placa').val(),
+					fechaEntrega : $('#txt_fec_entrega').val(),
+					flagTipoDestino : flag,
+					observacion : $('#txt_observaciones').val(),
+					idEstado : $('#sel_estado').val(),
+					//usuarioRegistro : $('#sel_salida').val()
 
 			};
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/donacionesIngreso/registro-donacionesIngreso/grabarDonacionesIngreso', params, function(respuesta) {
+			consultarAjax('POST', '/donacionesSalida/registro-donacionesSalida/grabarDonacionesSalida', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					$('#hid_id_donacion').val(respuesta.idDonacion);
+					$('#hid_id_salida').val(respuesta.idSalida);
 					if (!esnulo(codigo)) {
 						
 						addSuccessMessage(null, respuesta.mensajeRespuesta);
@@ -190,7 +225,7 @@ $(document).ready(function() {
 					} else {
 						
 						$('#hid_id_donacion').val(respuesta.idDonacion);
-						$('#hid_id_ingreso').val(respuesta.idIngreso);
+						$('#hid_id_salida').val(respuesta.idSalida);
 						
 						
 						$('#li_documentos').attr('class', '');
@@ -212,8 +247,9 @@ $(document).ready(function() {
 //						}
 //						$('#li_documentos').attr('class', '');
 //						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
-
-						addSuccessMessage(null, 'Se genero el N° de Ingreso: '+respuesta.codIngreso);
+						listarProductoDonacion(false);
+						listarDocumentoDonacion(false);
+						addSuccessMessage(null, 'Se genero el N° de Ingreso: '+respuesta.codSalida);
 						
 					}
 					
@@ -322,10 +358,10 @@ $(document).ready(function() {
 			
 			$('#h4_tit_documentos').html('Actualizar Documento');
 			$('#frm_det_documentos').trigger('reset');
-			$('#hid_cod_documento').val(obj.idDocumentoIngreso);			
+			$('#hid_cod_documento').val(obj.idDocumentoSalida);			
 			$('#sel_tipo_documento').val(obj.idTipoDocumento);
 			$('#txt_nro_documento').val(obj.nroDocumento);
-			$('#txt_doc_fecha').val(obj.fecha);
+			$('#txt_doc_fecha').val(obj.fechaDocumento);
 			$('#hid_cod_act_alfresco').val(obj.codAlfresco);
 			$('#hid_cod_ind_alfresco').val('');
 			$('#txt_lee_sub_archivo').val(obj.nombreArchivo);
@@ -344,7 +380,7 @@ $(document).ready(function() {
 		tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				var idDocumentoDonacion = listaDocumentosCache[index].idDocumentoIngreso;
+				var idDocumentoDonacion = listaDocumentosCache[index].idDocumentoSalida;
 				codigo = codigo + idDocumentoDonacion + '_';
 			}
 		});
@@ -374,10 +410,10 @@ $(document).ready(function() {
 					
 					var params = { 
 						arrIdDocumentoDonacion : codigo,
-						idIngreso : $('#hid_id_ingreso').val()
+						idSalida : $('#hid_id_salida').val()
 					};
 			
-					consultarAjax('POST', '/donacionesIngreso/registro-donacionesIngreso/eliminarDocumentoDonacionIngreso', params, function(respuesta) {
+					consultarAjax('POST', '/donacionesSalida/registro-donacionesSalida/eliminarDocumentoDonacionSalida', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -402,6 +438,7 @@ $(document).ready(function() {
 		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
 		$('#frm_det_productos').trigger('reset');
 		$('#hid_cod_producto').val('0');
+		limpiarFormularioProducto();
 		$('#div_det_productos').modal('show');
 		
 	});
@@ -425,20 +462,21 @@ $(document).ready(function() {
 			var obj = listaProductosCache[indices[0]];
 			
 			$('#h4_tit_productos').html('Actualizar Producto');
-			//limpiarFormularioProducto();
+			limpiarFormularioProducto();
 			
-			$('#hid_cod_producto').val(obj.idIngresoDet);
+			$('#hid_cod_producto').val(obj.idSalidaDet);
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
-//			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.unidadMedida);
+						
+			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.unidadMedida+'_'+obj.pesoNetoUnitario+'_'+obj.pesoBrutoUnitario+'_'+obj.idDonacion);
 			
 			$('#txt_uni_medida').val(obj.unidadMedida);
-			$('#txt_fec_vencimiento').val(obj.fecVencimiento);
+			//$('#txt_fec_vencimiento').val(obj.fecVencimiento);
 			$('#txt_cantidad').val(obj.cantidad);
-			$('#sel_monedas').val(obj.idMoneda);
-			$('#txt_imp_origen').val(obj.monOrigen);
-			$('#txt_imp_soles').val(obj.monSoles);
-			$('#txt_imp_dolares').val(obj.monDolares);
+			$('#txt_precio').val(obj.precioUnitario);
+			$('#txt_imp_total').val(obj.importeTotal);
+			$('#txt_peso_unitario').val(obj.pesoNetoUnitario);
+			$('#txt_peso_bruto').val(obj.pesoBrutoUnitario);
 			
 			$('#div_det_productos').modal('show');
 		}
@@ -453,8 +491,8 @@ $(document).ready(function() {
 		tbl_det_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_det_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);
-				var idDetalleIngreso = listaProductosCache[index].idIngresoDet;
-				codigo = codigo + idDetalleIngreso + '_';
+				var idDetalleSalida = listaProductosCache[index].idSalidaDet;
+				codigo = codigo + idDetalleSalida + '_';
 			}
 		});
 		console.log(codigo);
@@ -482,10 +520,10 @@ $(document).ready(function() {
 					loadding(true);
 					
 					var params = { 
-						idIngresoDet : codigo
+						idSalidaDet : codigo
 					};
 			
-					consultarAjax('POST', '/donacionesIngreso/registro-donacionesIngreso/eliminarProductoDonacion', params, function(respuesta) {
+					consultarAjax('POST', '/donacionesSalida/registro-donacionesSalida/eliminarProductoDonacion', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -509,7 +547,7 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			var idProducto = null;
-			var val_producto = $('#sel_cat_producto').val();
+			var val_producto = $('#sel_producto').val();
 			if (!esnulo(val_producto)) {
 				var arr = val_producto.split('_');
 				idProducto = arr[0];
@@ -518,21 +556,23 @@ $(document).ready(function() {
 			
 			
 			var params = { 
-				idIngreso : $('#hid_id_ingreso').val(),	
-				idIngresoDet : $('#hid_cod_producto').val(),
+				idSalida : $('#hid_id_salida').val(),	
+				idSalidaDet : $('#hid_cod_producto').val(),
 				idProducto : idProducto,
 				//idDonacion : $('#hid_id_donacion').val(),
 				cantidad : formatMonto($('#txt_cantidad').val()),
 				precioUnitario : $('#txt_precio').val(),
-				importeTotal : $('#txt_imp_total').val(),
-				fecVencimiento : $('#txt_fec_vencimiento').val(),
-				idDonacion : $('#hid_id_donacion').val()
+				idProgramacion : '',
+				idDonacion : $('#hid_donacion_pro').val()
+//				importeTotal : $('#hid_donacion_pro').val(),
+//				fecVencimiento : $('#txt_fec_vencimiento').val(),
+//				idDonacion : $('#hid_id_donacion').val()
 				//monOrigen : formatMonto($('#txt_imp_total').val())
 			};
 
 			loadding(true);
 			
-			consultarAjax('POST', '/donacionesIngreso/registro-donacionesIngreso/grabarProductoDonacionIngreso', params, function(respuesta) {
+			consultarAjax('POST', '/donacionesSalida/registro-donacionesSalida/grabarProductoDonacionSalida', params, function(respuesta) {
 				$('#div_det_productos').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					loadding(false);
@@ -548,43 +588,75 @@ $(document).ready(function() {
 		
 	});
 	
-//	$('#sel_cat_producto').change(function() {
-//		var idCategoria = $(this).val();		
-//		if (!esnulo(idCategoria)) {					
-//			cargarProductos(idCategoria, null);
-//		} else {
-//			$('#sel_no_producto').html('');
-//			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
-//		}
-//	});
-//	
-//	function cargarProductos(idCategoria, codigoProducto) {
-//		var params = { 
-//			idCategoria : idCategoria
-//		};			
-//		loadding(true);
-//		consultarAjax('GET', '/donaciones/registro-donaciones/listarProductosXCategoria', params, function(respuesta) {
-//			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//				addErrorMessage(null, respuesta.mensajeRespuesta);
-//			} else {
-//				var options = '';
-//		        $.each(respuesta, function(i, item) {
-//		            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
-//		        });
-//		        $('#sel_producto').html(options);
-////		        if (codigoProducto != null) {
-////		        	$('#sel_producto').val(codigoProducto);
-////					$('#sel_producto').select2().trigger('change');
-////					$('#sel_producto').select2({
-////						  dropdownParent: $('#frm_det_productos')
-////					});	        	
-////		        } else {
-////		        	frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
-////		        }
-//			}
-//			loadding(false);		
-//		});
-//	}
+	$('#sel_cat_producto').change(function() {
+		var idCategoria = $(this).val();		
+		if (!esnulo(idCategoria)) {					
+			cargarProductos(idCategoria, null);
+		} else {
+			$('#sel_producto').html('');
+			//frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
+		}
+	});
+	
+	$('#sel_producto').change(function() {
+		var codigo = $(this).val();	
+		if (!esnulo(codigo)) {
+			var arr = codigo.split('_');
+			if (arr.length > 1) {
+				$('#txt_uni_medida').val(arr[1]);
+				$('#txt_peso_unitario').val(arr[2]);
+				$('#txt_peso_bruto').val(arr[3]);
+				$('#hid_donacion_pro').val(arr[4]);
+			} else {
+				$('#txt_uni_medida').val('');
+				$('#txt_peso_unitario').val('');
+				$('#txt_peso_bruto').val('');
+				$('#hid_donacion_pro').val('');
+			}	
+		} else {
+			$('#txt_uni_medida').val('');
+			$('#txt_peso_unitario').val('');
+			$('#txt_peso_bruto').val('');
+			$('#hid_donacion_pro').val('');
+		}
+	});
+	
+	function cargarProductos(idCategoria, codigoProducto) {
+		var params = { 
+			idCategoria : idCategoria
+		};			
+		loadding(true);
+		consultarAjax('GET', '/donacionesSalida/registro-donacionesSalida/listarProductosXCategoria', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+		        $.each(respuesta, function(i, item) {
+		            options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'_'+item.pesoNetoUnitario+'_'+item.pesoBrutoUnitario+'_'+item.idDonacion+'">'+item.nombreProducto+'</option>';
+		        });
+		        $('#sel_producto').html(options);
+		        if (codigoProducto != null) {
+		        	$('#sel_producto').val(codigoProducto);
+					        	
+		        } else {
+		        	var arr = $('#sel_producto').val().split('_');
+					if (arr.length > 1) {
+						$('#txt_uni_medida').val(arr[1]);
+						$('#txt_peso_unitario').val(arr[2]);
+						$('#txt_peso_bruto').val(arr[3]);
+						$('#hid_donacion_pro').val(arr[4]);
+					} else {
+						$('#txt_uni_medida').val('');
+						$('#txt_peso_unitario').val('');
+						$('#txt_peso_bruto').val('');
+						$('#hid_donacion_pro').val('');
+					}
+		        	frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+		        }
+			}
+			loadding(false);		
+		});
+	}
 	
 	$('#sel_ddi').change(function() {
 		var codigo = $(this).val();		
@@ -818,6 +890,19 @@ $(document).ready(function() {
 //		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	});
 	
+	$('#txt_precio').change(function() {	
+		var cantidad =  $('#txt_cantidad').val();
+		var pre_unitario = $(this).val();
+		
+		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
+			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
+			$('#txt_imp_total').val(formatMontoAll(imp_total));
+		} else {
+			$('#txt_imp_total').val('');
+		}
+//		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+	});
+	
 	var cantidad = $(this).val();
 	var pre_unitario = $('#txt_pre_unitario').val();
 	if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
@@ -841,7 +926,7 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		
-		$('#txt_cod_ingreso').val(donaciones.codSalida);
+		$('#txt_cod_salida').val(donaciones.codSalida);
 		$('#txt_nro_salida').val(donaciones.nroOrdenSalida);
 		$('#txt_cod_id').val(donaciones.codigoDonacion);
 		$('#txt_anio').val(donaciones.codigoAnio);
@@ -853,33 +938,61 @@ function inicializarDatos() {
 		
 		
 
-		if (!esnulo(donaciones.idIngreso)) {
-			$('#hid_id_ingreso').val(donaciones.idIngreso);	
-			$('#txt_cod_ingreso').val(donaciones.textoCodigo);
+		if (!esnulo(donaciones.idSalida)) {
+			$('#hid_id_salida').val(donaciones.idSalida);	
+			
+			$('#txt_cod_salida').val(donaciones.nroOrden);
+			$('#txt_nro_salida').val(donaciones.nroOrdenSalida);
 			
 			
-			$('#hid_id_donacion').val(donaciones.idDonacion);	
 			
-//			$('#txt_fecha').val(donaciones.fechaEmision);
-//			$('#txt_tipo_donacion').val(donaciones.nombreTipoDonacion);
-//			$('#txt_donante').val(donaciones.nombreDonante);
-//			$('#txt_representante').val(donaciones.representante);
-//
-//			$('#txt_estado_donacion').val(donaciones.textoCodigo);
-//
-//			$('#sel_dee').val(donaciones.idDee);
-//			$('#sel_tip_donacion').val(donaciones.tipoDonante);
-//			$('#sel_ori_donacion').val(donaciones.tipoOrigenDonante);
-//			$('#sel_ori_pais').val(donaciones.idPaisDonante);
-//			$('#sel_tip_persona').val(donaciones.idDonante);
-//			$('#sel_donante').val(donaciones.idDonante);
-//			$('#sel_oficina').val(donaciones.idOficina);
-//			$('#sel_personal_oficina').val(donaciones.idPersonal);
 			
 			////////////////////////////////////////////
 			
 //			$('#sel_oficina').val(donaciones.idEstado);
+			$('#sel_estado').val(donaciones.idEstado);
 			$('#sel_movimiento').val(donaciones.idTipoMovimiento);
+			
+			$('#sel_solicitada').val(donaciones.idSolicitante);
+			$('#sel_responsable').val(donaciones.idResponsable);
+			
+			if (!esnulo(donaciones.idDdiDestino)) {
+				$('#sel_ddi').val(donaciones.idDdiDestino);
+			}
+			
+			$('input[name=rb_tie_ate_gobierno][value="'+donaciones.flagTipoDestino+'"]').prop('checked', true);
+			
+			$('#sel_med_transporte').val(donaciones.idMedTransporte);
+			$('#sel_emp_transporte').val(donaciones.idEmpresaTrans);
+			$('#txt_fec_entrega').val(donaciones.fechaEntrega);
+			$('#sel_chofer').val(donaciones.idChofer);
+			$('#txt_nro_placa').val(donaciones.nroPlaca);
+			$('#txt_observaciones').val(donaciones.observacion);
+			
+			cargarTipoMovimiento(donaciones.idTipoMovimiento);
+			
+			if (donaciones.flagTipoDestino == 'I') {
+				cargarDatosDdiDestino(donaciones.idDdiDestino, donaciones.idAlmacenDestino, donaciones.idResponsableRecepcion);
+			} else if (donaciones.flagTipoDestino == 'R') {
+				cargarTipoAtencion(donaciones.flagTipoDestino);
+				if (!esnulo(donaciones.codRegion)) {
+					$('#sel_gore').val(donaciones.codRegion);
+					cargarDatosRegionalDestino(donaciones.codRegion, donaciones.idAlmacenDestinoExt, donaciones.idResponsableExt);
+				}
+			} else if (donaciones.flagTipoDestino == 'L') {
+				cargarTipoAtencion(donaciones.flagTipoDestino);
+				if (!esnulo(donaciones.codigoUbigeo)) {
+					$('#sel_departamento').val(donaciones.codDepartamento);
+					cargarProvincia(donaciones.codDepartamento, donaciones.codProvincia);
+					cargarDistrito(donaciones.codProvincia, donaciones.codigoUbigeo);
+					cargarDatosLocalDestino(donaciones.codigoUbigeo, donaciones.idAlmacenDestinoExt, donaciones.idResponsableExt);
+				}
+			}
+			if (!esnulo(donaciones.idMedTransporte)) {
+				listarEmpresaChofer(donaciones.idMedTransporte,donaciones.idEmpresaTrans,donaciones.idChofer);
+			}
+			$('#txt_fec_entrega').val(donaciones.fechaEntrega);
+			
 //			$('#sel_cod_donacion').val(donaciones.idDonacion+"_"+donaciones.nombreTipoDonacion+"_"+donaciones.nombreDonante+"_"+donaciones.representante);
 //			$('#sel_control_calidad').val(donaciones.idControlCalidad);
 //			$('#sel_almacen').val(donaciones.idAlmacenProcedencia);
@@ -890,60 +1003,60 @@ function inicializarDatos() {
 //			$('#sel_med_transporte').val(donaciones.idMedTransporte);
 //			$('#sel_salida').val(donaciones.idSalida);
 			
-			var tipMov = donaciones.idTipoMovimiento;
-			
-			//////////PARA TIP MOV
-			//donaciones
-			if (tipMov == '11' || tipMov == '12' || tipMov == '13') {
-				$('#sel_cod_donacion').val(donaciones.idDonacion+"_"+donaciones.nombreTipoDonacion+"_"+donaciones.nombreDonante+"_"+donaciones.representante);
-				$('#txt_tipo_donacion').val(donaciones.nombreTipoDonacion);
-				$('#txt_donante').val(donaciones.nombreDonante);
-				$('#txt_representante').val(donaciones.representante);
-				$('#sel_control_calidad').val(donaciones.idControlCalidad);
-				$('#sel_med_transporte').val(donaciones.idMedTransporte);
-				listarEmpresaChofer(donaciones.idMedTransporte,donaciones.idEmpresaTrans,donaciones.idChofer);
-				$('#sel_responsable').val(donaciones.idResponsable);
-				$('#txt_fec_llegada').val(donaciones.fechaLlegada);
-				$('#txt_nro_placa').val(donaciones.nroPlaca);
-				
-				//TRANSFERENCIA INTERNA, TRANSFERENCIA ENTRE ALMACENES
-			} else if (tipMov == '4' || tipMov == '3') {
-				$('#sel_control_calidad').val(donaciones.idControlCalidad);
-				$('#sel_almacen').val(donaciones.idAlmacenProcedencia);
-				listarOpcionSalida(donaciones.idAlmacenProcedencia, donaciones.idSalida);
-				
-				$('#sel_med_transporte').val(donaciones.idMedTransporte);
-				listarEmpresaChofer(donaciones.idMedTransporte,donaciones.idEmpresaTrans,donaciones.idChofer);
-				$('#sel_responsable').val(donaciones.idResponsable);
-				$('#txt_fec_llegada').val(donaciones.fechaLlegada);
-				$('#txt_nro_placa').val(donaciones.nroPlaca);
-				
-				//INVENTARIO INICIAL
-			} else if (tipMov == '7') {
-				console.log(donaciones.idDonacion+"_"+donaciones.nombreTipoDonacion+"_"+donaciones.nombreDonante+"_"+donaciones.representante);
-				$('#sel_cod_donacion').val(donaciones.idDonacion+"_"+donaciones.nombreTipoDonacion+"_"+donaciones.nombreDonante+"_"+donaciones.representante);
-				$('#txt_tipo_donacion').val(donaciones.nombreTipoDonacion);
-				$('#txt_donante').val(donaciones.nombreDonante);
-				$('#txt_representante').val(donaciones.representante);
-
-				//AJUSTES POR INVENTARIO, AJUSTES POR IMPORTE 
-			} else if (tipMov == '1' || tipMov == '9') {
-				
-
-
-			}
-			
-			////////////////////
-
-			
-			
-			$('#txt_observaciones').val(donaciones.observacion);
-			////////////////////////////////////////0//
+//			var tipMov = donaciones.idTipoMovimiento;
+//			
+//			//////////PARA TIP MOV
+//			//donaciones
+//			if (tipMov == '11' || tipMov == '12' || tipMov == '13') {
+//				$('#sel_cod_donacion').val(donaciones.idDonacion+"_"+donaciones.nombreTipoDonacion+"_"+donaciones.nombreDonante+"_"+donaciones.representante);
+//				$('#txt_tipo_donacion').val(donaciones.nombreTipoDonacion);
+//				$('#txt_donante').val(donaciones.nombreDonante);
+//				$('#txt_representante').val(donaciones.representante);
+//				$('#sel_control_calidad').val(donaciones.idControlCalidad);
+//				$('#sel_med_transporte').val(donaciones.idMedTransporte);
+//				listarEmpresaChofer(donaciones.idMedTransporte,donaciones.idEmpresaTrans,donaciones.idChofer);
+//				$('#sel_responsable').val(donaciones.idResponsable);
+//				$('#txt_fec_llegada').val(donaciones.fechaLlegada);
+//				$('#txt_nro_placa').val(donaciones.nroPlaca);
+//				
+//				//TRANSFERENCIA INTERNA, TRANSFERENCIA ENTRE ALMACENES
+//			} else if (tipMov == '4' || tipMov == '3') {
+//				$('#sel_control_calidad').val(donaciones.idControlCalidad);
+//				$('#sel_almacen').val(donaciones.idAlmacenProcedencia);
+//				listarOpcionSalida(donaciones.idAlmacenProcedencia, donaciones.idSalida);
+//				
+//				$('#sel_med_transporte').val(donaciones.idMedTransporte);
+//				listarEmpresaChofer(donaciones.idMedTransporte,donaciones.idEmpresaTrans,donaciones.idChofer);
+//				$('#sel_responsable').val(donaciones.idResponsable);
+//				$('#txt_fec_llegada').val(donaciones.fechaLlegada);
+//				$('#txt_nro_placa').val(donaciones.nroPlaca);
+//				
+//				//INVENTARIO INICIAL
+//			} else if (tipMov == '7') {
+//				console.log(donaciones.idDonacion+"_"+donaciones.nombreTipoDonacion+"_"+donaciones.nombreDonante+"_"+donaciones.representante);
+//				$('#sel_cod_donacion').val(donaciones.idDonacion+"_"+donaciones.nombreTipoDonacion+"_"+donaciones.nombreDonante+"_"+donaciones.representante);
+//				$('#txt_tipo_donacion').val(donaciones.nombreTipoDonacion);
+//				$('#txt_donante').val(donaciones.nombreDonante);
+//				$('#txt_representante').val(donaciones.representante);
+//
+//				//AJUSTES POR INVENTARIO, AJUSTES POR IMPORTE 
+//			} else if (tipMov == '1' || tipMov == '9') {
+//				
+//
+//
+//			}
+//			
+//			////////////////////
+//
+//			
+//			
+//			$('#txt_observaciones').val(donaciones.observacion);
+//			////////////////////////////////////////0//
 			
 			listarProductoDonacion(false);
 			listarDocumentoDonacion(false);
-			listarEstadosDonacion(new Object());
-			cargarTipoMovimiento(tipMov, true);
+			
+			//cargarTipoMovimiento(tipMov, true);
 			
 //			if (controlCalidad.flagTipoBien == '1') {
 //				$('#li_no_alimentarios').addClass('disabled');
@@ -981,8 +1094,7 @@ function inicializarDatos() {
 			
 		} else {
 			
-			$('#li_alimentarios').addClass('disabled');
-			$('#li_no_alimentarios').addClass('disabled');
+			
 			$('#li_documentos').addClass('disabled');
 			$('#li_productos').addClass('disabled');
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
@@ -1024,7 +1136,7 @@ function inicializarDatos() {
 			e.preventDefault();
 
 			loadding(true);					
-			var url = VAR_CONTEXT + '/donacionesIngreso/registro-donacionesIngreso/inicio';
+			var url = VAR_CONTEXT + '/donacionesSalida/registro-donacionesSalida/inicio';
 			$(location).attr('href', url);
 			
 		});
@@ -1144,9 +1256,9 @@ function listarEstadosDonacion(respuesta) {
 
 function listarProductoDonacion(indicador) {
 	var params = { 
-		idIngreso : $('#hid_id_ingreso').val()
+		idSalida : $('#hid_id_salida').val()
 	};			
-	consultarAjaxSincrono('GET', '/donacionesIngreso/registro-donacionesIngreso/listarProductoDonacion', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarProductoDonacion', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -1170,7 +1282,7 @@ function listarDetalleProductos(respuesta) {
 	tbl_det_productos.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idIngresoDet',
+			data : 'idSalidaDet',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -1182,7 +1294,7 @@ function listarDetalleProductos(respuesta) {
 				}											
 			}
 		}, {	
-			data : 'idIngresoDet',
+			data : 'idSalidaDet',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -1198,7 +1310,9 @@ function listarDetalleProductos(respuesta) {
 		}, {
 			data : 'importeTotal'
 		}, {
-			data : 'fecVencimiento'
+			data : 'pesoBrutoTotal'
+		}, {
+			data : 'codDonacion'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1213,25 +1327,26 @@ function listarDetalleProductos(respuesta) {
 
 }
 
-//function cargarProducto(idCategoria, codigoProducto) {
-//	var params = { 
-//		idProducto : idCategoria,
-//		idCategoria : idCategoria
-//	};			
-//	loadding(true);
-//	consultarAjax('GET', '/donacionesIngreso/registro-donacionesIngreso/listarProductosXCategoria', params, function(respuesta) {
-//		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//			addErrorMessage(null, respuesta.mensajeRespuesta);
-//		} else {
-//			var options = '<option value="">Seleccione</option>';
-//	        $.each(respuesta, function(i, item) {
-//	            options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'">'+item.nombreProducto+'</option>';
-//	        });
-//	        $('#sel_lis_producto').html(options);
-//	        if (codigoProducto != null) {
-//	        	$('#sel_lis_producto').val(codigoProducto);
-////				cargarLote(codigoProducto, codigoLote);				
-//	        } else {
+function cargarProducto(idCategoria, codigoProducto) {
+	var params = { 
+		idProducto : idCategoria,
+		idCategoria : idCategoria
+	};			
+	loadding(true);
+	consultarAjax('GET', '/donacionesSalida/registro-donacionesSalida/listarProductosXCategoria', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			console.log("CODIGO: "+codigoProducto);
+			var options = '<option value="">Seleccione</option>';
+	        $.each(respuesta, function(i, item) {
+	        	options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'_'+item.pesoNetoUnitario+'_'+item.pesoBrutoUnitario+'_'+item.idDonacion+'">'+item.nombreProducto+'</option>';
+	        });
+	        $('#sel_producto').html(options);
+	        if (codigoProducto != null) {
+	        	$('#sel_producto').val(codigoProducto);
+//				cargarLote(codigoProducto, codigoLote);				
+	        } else {
 //	        	var arr = $('#sel_lis_producto').val().split('_');
 //				if (arr.length > 1) {
 //					$('#txt_uni_medida').val(arr[1]);
@@ -1240,23 +1355,23 @@ function listarDetalleProductos(respuesta) {
 //					$('#txt_uni_medida').val('');
 //	
 //				}
-//				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
-//	        }
-//	        $('#sel_lis_producto').select2().trigger('change');
-//			$('#sel_lis_producto').select2({
+				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+	        }
+	        //$('#sel_producto').select2().trigger('change');
+//			$('#sel_producto').select2({
 //				  dropdownParent: $('#div_pro_det_productos')
 //			});
-//		}
-//		loadding(false);		
-//	});
-//}
+		}
+		loadding(false);		
+	});
+}
 
 function listarDocumentoDonacion(indicador) {
 	var params = { 
-		idIngreso : $('#hid_id_ingreso').val()
+		idSalida : $('#hid_id_salida').val()
 	};			
-	console.log("ID INGRESO: "+$('#hid_id_ingreso').val());
-	consultarAjaxSincrono('GET', '/donacionesIngreso/registro-donacionesIngreso/listarDocumentoDonacionIngreso', params, function(respuesta) {
+
+	consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarDocumentoDonacionSalida', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -1280,7 +1395,7 @@ function listarDetalleDocumentos(respuesta) {
 	tbl_det_documentos.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idDocumentoIngreso',
+			data : 'idDocumentoSalida',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -1336,8 +1451,8 @@ $('#btn_gra_documento').click(function(e) {
 		loadding(true);
 		
 		var params = { 
-			idDocumentoIngreso : $('#hid_cod_documento').val(),
-			idIngreso: $('#hid_id_ingreso').val(),
+			idDocumentoSalida : $('#hid_cod_documento').val(),
+			idSalida: $('#hid_id_salida').val(),
 			idTipoDocumento : $('#sel_tipo_documento').val(),
 			nroDocumento : $('#txt_nro_documento').val(),
 			fechaDocumento : $('#txt_doc_fecha').val(),
@@ -1358,9 +1473,7 @@ $('#btn_gra_documento').click(function(e) {
 	    	formData.append('uploadDirectory', 'params.alfresco.uploadDirectory.donaciones');
 	    	
 			consultarAjaxFile('POST', '/common/archivo/cargarArchivo', formData, function(resArchivo) {
-				console.log("ARCHIVO1: "+resArchivo);
 				if (resArchivo == NOTIFICACION_ERROR) {
-					console.log("ARCHIVO2: "+resArchivo);
 					$('#div_det_documentos').modal('hide');
 					frm_det_documentos.data('bootstrapValidator').resetForm();
 					loadding(false);
@@ -1368,7 +1481,6 @@ $('#btn_gra_documento').click(function(e) {
 				} else {
 					
 					params.codigoArchivoAlfresco = resArchivo;
-					console.log("ARCHIVO3: "+resArchivo);
 					grabarDetalleDocumento(params);					
 				}
 			});
@@ -1384,7 +1496,7 @@ $('#btn_gra_documento').click(function(e) {
 });
 
 function grabarDetalleDocumento(params) {
-	consultarAjax('POST', '/donacionesIngreso/registro-donacionesIngreso/grabarDocumentoDonacionIngreso', params, function(respuesta) {
+	consultarAjax('POST', '/donacionesSalida/registro-donacionesSalida/grabarDocumentoDonacionSalida', params, function(respuesta) {
 		$('#div_det_documentos').modal('hide');
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			loadding(false);			
@@ -1404,7 +1516,7 @@ function listarEmpresaChofer(idMedio, idEmpresa, idChofer ){
 		var params = { 
 			icodigoParam2 : codigo
 		};			
-		loadding(true);
+		//loadding(true);
 		consultarAjax('GET', '/gestion-almacenes/orden-ingreso/listarEmpresaTransporte', params, function(respuesta) {
 			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 				addErrorMessage(null, respuesta.mensajeRespuesta);
@@ -1417,7 +1529,7 @@ function listarEmpresaChofer(idMedio, idEmpresa, idChofer ){
 		        $('#sel_emp_transporte').val(idEmpresa);
 			}
 			loadding(false);
-			//frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_emp_transporte');
 			
 			consultarAjax('GET', '/gestion-almacenes/control-calidad/listarChofer', {icodigo : $('#sel_emp_transporte').val()}, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
@@ -1430,7 +1542,7 @@ function listarEmpresaChofer(idMedio, idEmpresa, idChofer ){
 			        $('#sel_chofer').html(options);
 			        $('#sel_chofer').val(idChofer);
 				}
-				//frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+				frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
 			});
 			
 		});
@@ -1727,6 +1839,7 @@ function cargarTipoMovimiento(val_tip_movimiento) {
 }
 
 function cargarTipoAtencion(valor) {
+
 	if (valor == 'R') {
 		$('#div_gore_destino').show();
 		$('#div_ubi_destino').hide();
@@ -1734,6 +1847,7 @@ function cargarTipoAtencion(valor) {
 		$('#div_gore_destino').hide();
 		$('#div_ubi_destino').show();
 	}
+	
 }
 
 function cargarDatosDdiDestino(codigo, codigoAlmacen, codigoResponsable) {
@@ -1772,4 +1886,145 @@ function cargarDatosDdiDestino(codigo, codigoAlmacen, codigoResponsable) {
 		});
 		
 	});
+}
+
+function cargarDatosRegionalDestino(codigo, codigoAlmacenExtRegion, codigoPersonalExtRegion) {
+	var params = { 
+		icodigo : codigo
+	};			
+	loadding(true);
+	consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarAlmacenExtRegion', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
+			});
+			$('#sel_alm_destino').html(options);
+			if (codigoAlmacenExtRegion != null && codigoAlmacenExtRegion != 0) {
+	        	$('#sel_alm_destino').val(codigoAlmacenExtRegion);       	
+	        } else {
+	        	frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
+	        }
+			
+		}
+		loadding(false);
+		
+		consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarPersonalExtRegion', {icodigo : codigo}, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+				$.each(respuesta, function(i, item) {
+					options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
+				});
+				$('#sel_res_recepcion').html(options);
+				if (codigoPersonalExtRegion != null && codigoPersonalExtRegion != 0) {
+					$('#sel_res_recepcion').val(codigoPersonalExtRegion);       	
+				} else {
+					frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
+				}
+			}
+		});				
+	});
+}
+
+function cargarProvincia(codigo, codigoProvincia) {
+	var params = { 
+		coddpto : codigo
+	};			
+	loadding(true);
+	consultarAjax('GET', '/donacionesSalida/registro-donacionesSalida/listarProvincia', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.codprov+'">'+item.nombre+'</option>';
+			});
+			$('#sel_provincia').html(options);
+			if (codigoProvincia != null) {
+				$('#sel_provincia').val(codigoProvincia);       	
+			}
+		}
+		loadding(false);
+	});
+}
+
+function cargarDistrito(codigo, codigoDistrito) {
+	var params = { 
+		coddpto : $('#sel_departamento').val(),
+		codprov : codigo
+	};			
+	loadding(true);
+	consultarAjax('GET', '/donacionesSalida/registro-donacionesSalida/listarDistrito', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.coddist+'">'+item.nombre+'</option>';
+			});
+			$('#sel_distrito').html(options);
+			if (codigoDistrito != null) {
+				$('#sel_distrito').val(codigoDistrito);       	
+			}
+		}
+		loadding(false);
+	});
+}
+
+function cargarDatosLocalDestino(codigo, codigoAlmacenExtLocal, codigoPersonalExtLocal) {
+	var params = { 
+		icodigo : codigo
+	};			
+	loadding(true);
+	consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarAlmacenExtLocal', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
+			});
+			$('#sel_alm_destino').html(options);
+			if (codigoAlmacenExtLocal != null && codigoAlmacenExtLocal != 0) {
+	        	$('#sel_alm_destino').val(codigoAlmacenExtLocal);       	
+	        } else {
+	        	frm_dat_generales.bootstrapValidator('revalidateField', 'sel_alm_destino');
+	        }
+		}
+		loadding(false);
+		
+		consultarAjaxSincrono('GET', '/donacionesSalida/registro-donacionesSalida/listarPersonalExtLocal', {vcodigo : codigo}, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+				$.each(respuesta, function(i, item) {
+					options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
+				});
+				$('#sel_res_recepcion').html(options);
+				if (codigoPersonalExtLocal != null && codigoPersonalExtLocal != 0) {
+					$('#sel_res_recepcion').val(codigoPersonalExtLocal);       	
+				} else {
+					frm_dat_generales.bootstrapValidator('revalidateField', 'sel_res_recepcion');
+				}
+				
+			}
+		});				
+	});
+}
+
+function limpiarFormularioProducto() {
+	$('#sel_cat_producto').val('');
+	$('#sel_producto').val('');
+	$('#txt_uni_medida').val('');
+	$('#txt_cantidad').val('');
+	$('#txt_precio').val('');
+	$('#txt_imp_total').val('');
+	
+	$('#txt_peso_unitario').val('');
+	$('#txt_peso_bruto').val('');
 }

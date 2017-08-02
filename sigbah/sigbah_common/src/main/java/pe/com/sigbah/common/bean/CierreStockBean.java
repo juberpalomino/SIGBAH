@@ -21,6 +21,7 @@ public class CierreStockBean extends BaseOutputBean {
 	private Integer idEstado;
 	private String nombreEstado;
 	private String observacion;
+	private String fecha;
 
 	/**
 	 * 
@@ -195,5 +196,19 @@ public class CierreStockBean extends BaseOutputBean {
 	 */
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
+	}
+	
+	/**
+	 * @return the fecha
+	 */
+	public String getFecha() {
+		return fecha;
+	}
+
+	/**
+	 * @param fecha the fecha to set
+	 */
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
 }

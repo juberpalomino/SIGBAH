@@ -200,11 +200,7 @@ public class DonacionesIngresoController extends BaseController {
             	donacionesBean.setNombreDdi(usuarioBean.getNombreDdi());
             	donacionesBean.setNroOrdenIngreso("");
             	donacionesBean.setCodIngreso(datosDonacion.getCodIngreso());
-           
-            	//enviar 0 para listar dee
 
-            	//model.addAttribute("lista_dee", generalService.listarDee(new ItemBean(Constantes.ZERO_INT)));
-            	
             	listaDee1 = generalService.listarDee(new ItemBean(Constantes.ONE_INT));
 
             	//model.addAttribute("lista_proce_pais", generalService.listarPais(new ItemBean(Constantes.ZERO_INT)));
@@ -213,47 +209,6 @@ public class DonacionesIngresoController extends BaseController {
             	datoDonaciones.setTipoDonante("1");
             	
             	
-            	
-
-            	//model.addAttribute("lista_donadores", donacionService.listarDonadores(datoDonaciones));
-            	
-            	//model.addAttribute("lista_oficinas", generalService.listarOficinas(new ItemBean(Constantes.ZERO_INT)));
-            	
-            	//model.addAttribute("nombreDee", listaDee1.get(0).getDescripcion());
-            	
-//        		StringBuilder correlativo = new StringBuilder();
-//        		correlativo.append(usuarioBean.getCodigoDdi());
-//        		correlativo.append(Constantes.SEPARADOR);
-//        		correlativo.append(usuarioBean.getCodigoAlmacen());
-//        		correlativo.append(Constantes.SEPARADOR);
-//        		
-//        		ControlCalidadBean parametros = new ControlCalidadBean();
-//        		String anioActual = generalService.obtenerAnioActual();
-//        		parametros.setCodigoAnio(anioActual);
-//        		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
-//        		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());   
-        		
-        		//ControlCalidadBean respuestaCorrelativo = logisticaService.obtenerCorrelativoControlCalidad(parametros);
-        	      
-        	//	correlativo.append(respuestaCorrelativo.getNroControlCalidad());
-        		
-//        		controlCalidad.setNroControlCalidad(correlativo.toString());        		
-//        		
-//        		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
-//        		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
-//        		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
-//        		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
-//        		if (!isEmpty(listaAlmacenActivo)) {
-//        			controlCalidad.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
-//        			controlCalidad.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
-//        			controlCalidad.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
-//        			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
-//        			controlCalidad.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
-//        		}
-//        		
-//            	controlCalidad.setIdDdi(usuarioBean.getIdDdi());
-//        		controlCalidad.setCodigoDdi(usuarioBean.getCodigoDdi());
-//        		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
         	}
         	
         	if (!Utils.isNullInteger(donacionesBean.getIdDonacion())) {
@@ -299,32 +254,7 @@ public class DonacionesIngresoController extends BaseController {
         	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.THREE_INT)));
         	//falta pintar
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean(Constantes.ZERO_INT)));
-        	
-        	//Para estados
-        	
-//
-//        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.THREE_INT)));
-//        	
-//        	model.addAttribute("lista_orden_compra", logisticaService.listarOrdenCompra());
-//        	
-//        	model.addAttribute("lista_tipo_control", generalService.listarTipoControlCalidad(new ItemBean()));
-//        	
-//        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
-//        	
-//        	model.addAttribute("lista_proveedor", generalService.listarProveedor(new ItemBean()));
-//        	  
-//        	ItemBean parametroEmpresaTransporte = new ItemBean();
-//        	parametroEmpresaTransporte.setIcodigo(usuarioBean.getIdDdi());
-//        	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
-//        	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
-//        	
-//        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
-//        	
-//        	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
-//     
-//        	
-//        	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
-            
+        	   
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
@@ -349,6 +279,31 @@ public class DonacionesIngresoController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	item.setIcodigo(usuarioBean.getIdDdi());
 			lista = generalService.listarEmpresaTransporte(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarProductosAlGrabar", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProductosAlGrabar(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoDonacionBean> lista = null;
+		try {			
+			
+			DonacionesIngresoBean donacionesBean = new DonacionesIngresoBean();		
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(donacionesBean, request.getParameterMap());
+			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			donacionesBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+			lista = donacionService.listarProductosDonacion(donacionesBean);
+			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);

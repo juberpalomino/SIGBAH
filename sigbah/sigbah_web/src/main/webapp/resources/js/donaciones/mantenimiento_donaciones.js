@@ -93,6 +93,10 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					
+					listarEstadoDonacion(false);
+					listarProductoDonacion(false);
+					listarDocumentoDonacion(false);
+					
 					if (!esnulo(codigo)) {
 						
 						addSuccessMessage(null, respuesta.mensajeRespuesta);
@@ -742,8 +746,8 @@ function inicializarDatos() {
 			$('#txt_codDdi').val(donaciones.codigoDdi);
 			$('#txt_idDdi').val(donaciones.idDdi);
 			
-			$('#li_alimentarios').addClass('disabled');
-			$('#li_no_alimentarios').addClass('disabled');
+			$('#li_estados').addClass('disabled');
+			$('#li_productos').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
 			

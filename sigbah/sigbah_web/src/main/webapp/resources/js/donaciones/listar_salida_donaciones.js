@@ -87,8 +87,8 @@ $(document).ready(function() {
 					return false;
 				}
 				 estado = listaDonacionesCache[index].idEstado;
-				var idIngreso = listaDonacionesCache[index].idIngreso;
-				codigo = codigo + idIngreso + '_';
+				var idSalida = listaDonacionesCache[index].idSalida;
+				codigo = codigo + idSalida + '_';
 			}
 		});
 		
@@ -103,7 +103,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/donacionesIngreso/registro-donacionesIngreso/mantenimientoDonaciones/';
+			var url = VAR_CONTEXT + '/donacionesSalida/registro-donacionesSalida/mantenimientoDonaciones/';
 			$(location).attr('href', url + codigo);
 		}
 		

@@ -116,6 +116,34 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Guia_Remision.jsp" />
 	</definition>
 	
+	<definition name="mantenimiento-guia-remision-donacion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registrar_GuiaRemision.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones-stock" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Stock.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento-stock-donacion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registrar_Stock.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones-cartilla" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_CartillaInventario.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento-cartilla-donacion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registrar_CartillaInventario.jsp" />
+	</definition>
+	
+	<definition name="listar-donaciones-cierre" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Cierre_Stock.jsp" />
+	</definition>
+	
+	<definition name="mantenimiento-cierre-donacion" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registrar_Cierre_Stock.jsp" />
+	</definition>
+	
 	<definition name="emergencias-sinpad" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_EmergenciasSINPAD.jsp" />
 	</definition>

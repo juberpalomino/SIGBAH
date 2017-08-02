@@ -197,8 +197,9 @@ public class DonacionesController extends BaseController {
         		String tablaEstados=HtmlUtils.TablaEstadosXDonacion(listaEstadoUsu);
         		model.addAttribute("tabla_estados", tablaEstados);
         		System.out.println("ENTRO: tabla ESTADOS: ");
-        		model.addAttribute("lista_monedas", generalService.listarMoneda(new ItemBean(Constantes.ZERO_INT)));
+        		//model.addAttribute("lista_monedas", generalService.listarMoneda(new ItemBean(Constantes.ZERO_INT)));
         	}
+        	model.addAttribute("lista_monedas", generalService.listarMoneda(new ItemBean(Constantes.ZERO_INT)));
         	
         	model.addAttribute("donaciones", getParserObject(donacionesBean));
         	
@@ -1002,14 +1003,15 @@ public class DonacionesController extends BaseController {
 	@RequestMapping(value = "/actualizarEstadoDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object actualizarEstadoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		DonacionesBean donacion = null;
+		DonacionesBean donacion = new DonacionesBean();
 		try {			
 			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 			Integer idDonacion = Integer.parseInt(request.getParameter("idDonacion"));
 			Integer idEstado = Integer.parseInt(request.getParameter("idEstado"));
+			System.out.println("ESTADO: "+idEstado);
 			donacion.setIdEstado(idEstado);
 			donacion.setIdDonacion(idDonacion);
-			donacion.setUsuarioRegistro(usuarioBean.getNombreUsuario());
+			donacion.setUsuarioRegistro(usuarioBean.getUsuario());
 			donacion = donacionService.actualizarEstadoDonacion(donacion);
 			donacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 

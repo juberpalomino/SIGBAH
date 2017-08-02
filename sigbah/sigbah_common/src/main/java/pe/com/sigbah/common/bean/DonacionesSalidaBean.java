@@ -40,6 +40,23 @@ public class DonacionesSalidaBean extends BaseOutputBean {
 	private String tipoOrigen;
 	private String nombreTipoDonacion;
 	private Integer idSalida;
+	private String codigoUbigeo;
+	private Integer idProgramacion;
+	private Integer idResponsableExt;
+	private Integer idSolicitante;
+	private Integer idResponsableRecepcion;
+	private Integer idProyectoManifiesto;
+	private Integer idAlmacenDestino;
+	private Integer idAlmacenDestinoExt;
+	private String fechaEntrega;
+	private String flagTipoDestino;	
+	private String observacion;
+	private String nroOrden;
+	private Integer idDdiDestino;
+	private String codRegion;
+	private String codProvincia;
+	private String codDepartamento;
+	private String codDistrito;
 	
 //	private String codigoEstado;
 //	private Integer idPaisDonante;
@@ -561,5 +578,172 @@ public class DonacionesSalidaBean extends BaseOutputBean {
 		return idSalida;
 	}
 	
+	public String getCodigoUbigeo() {
+		return codigoUbigeo;
+	}
+	/**
+	 * @param codigoUbigeo the codigoUbigeo to set
+	 */
+	public void setCodigoUbigeo(String codigoUbigeo) {
+		this.codigoUbigeo = codigoUbigeo;
+	}
+	
+	public Integer getIdProgramacion() {
+		return idProgramacion;
+	}
+	/**
+	 * @param idProgramacion the idProgramacion to set
+	 */
+	public void setIdProgramacion(Integer idProgramacion) {
+		this.idProgramacion = idProgramacion;
+	}
+	
+	public Integer getIdResponsableExt() {
+		return idResponsableExt;
+	}
+	/**
+	 * @param idResponsableExt the idResponsableExt to set
+	 */
+	public void setIdResponsableExt(Integer idResponsableExt) {
+		this.idResponsableExt = idResponsableExt;
+	}
+	
+	public Integer getIdSolicitante() {
+		return idSolicitante;
+	}
+	/**
+	 * @param idSolicitante the idSolicitante to set
+	 */
+	public void setIdSolicitante(Integer idSolicitante) {
+		this.idSolicitante = idSolicitante;
+	}
+	
+	public Integer getIdResponsableRecepcion() {
+		return idResponsableRecepcion;
+	}
+	/**
+	 * @param idResponsableRecepcion the idResponsableRecepcion to set
+	 */
+	public void setIdResponsableRecepcion(Integer idResponsableRecepcion) {
+		this.idResponsableRecepcion = idResponsableRecepcion;
+	}
+	/**
+	 * @return the idProyectoManifiesto
+	 */
+	public Integer getIdProyectoManifiesto() {
+		return idProyectoManifiesto;
+	}
+	/**
+	 * @param idProyectoManifiesto the idProyectoManifiesto to set
+	 */
+	public void setIdProyectoManifiesto(Integer idProyectoManifiesto) {
+		this.idProyectoManifiesto = idProyectoManifiesto;
+	}
+	
+	public Integer getIdAlmacenDestino() {
+		return idAlmacenDestino;
+	}
+	/**
+	 * @param idAlmacenDestino the idAlmacenDestino to set
+	 */
+	public void setIdAlmacenDestino(Integer idAlmacenDestino) {
+		this.idAlmacenDestino = idAlmacenDestino;
+	}
+	/**
+	 * @return the idAlmacenDestinoExt
+	 */
+	public Integer getIdAlmacenDestinoExt() {
+		return idAlmacenDestinoExt;
+	}
+	/**
+	 * @param idAlmacenDestinoExt the idAlmacenDestinoExt to set
+	 */
+	public void setIdAlmacenDestinoExt(Integer idAlmacenDestinoExt) {
+		this.idAlmacenDestinoExt = idAlmacenDestinoExt;
+	}
+	
+	public String getFechaEntrega() {
+		return fechaEntrega;
+	}
+	/**
+	 * @param fechaEntrega the fechaEntrega to set
+	 */
+	public void setFechaEntrega(String fechaEntrega) {
+		this.fechaEntrega = fechaEntrega;
+	}
+	/**
+	 * @return the flagTipoDestino
+	 */
+	public String getFlagTipoDestino() {
+		return flagTipoDestino;
+	}
+	/**
+	 * @param flagTipoDestino the flagTipoDestino to set
+	 */
+	public void setFlagTipoDestino(String flagTipoDestino) {
+		this.flagTipoDestino = flagTipoDestino;
+	}
+	/**
+	 * @return the observacion
+	 */
+	public String getObservacion() {
+		return observacion;
+	}
+	/**
+	 * @param observacion the observacion to set
+	 */
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+	
+	public String getNroOrden() {
+		return nroOrden;
+	}
+
+	public void setNroOrden(String nroOrden) {
+		this.nroOrden = nroOrden;
+	}
+	
+	public Integer getIdDdiDestino() {
+		return idDdiDestino;
+	}
+	/**
+	 * @param idDdi the idDdi to set
+	 */
+	public void setIdDdiDestino(Integer idDdiDestino) {
+		this.idDdiDestino = idDdiDestino;
+	}
+	
+	public String getCodRegion() {
+		return codRegion;
+	}
+
+	public void setCodRegion(String codRegion) {
+		this.codRegion = codRegion;
+	}
+	
+	public String getCodProvincia() {
+		return codProvincia;
+	}
+
+	public void setCodProvincia(String codProvincia) {
+		this.codProvincia = codProvincia;
+	}
+	
+	public String getCodDepartamento() {
+		return codDepartamento;
+	}
+
+	public void setCodDepartamento(String codDepartamento) {
+		this.codDepartamento = codDepartamento;
+	}
+	
+	public String getCodDistrito() {
+		return codDistrito;
+	}
+
+	public void setCodDistrito(String codDistrito) {
+		this.codDistrito = codDistrito;
+	}
 
 }

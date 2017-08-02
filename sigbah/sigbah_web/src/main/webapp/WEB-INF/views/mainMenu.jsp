@@ -169,8 +169,29 @@
 								</a>
 							</li>
 							<li id="li_gui_remision" class="li_men_opcion">
-								<a href="${pageContext.request.contextPath}/gestion-almacenes/guia-remision/inicio/0">
+								<a href="${pageContext.request.contextPath}/donaciones/guia-remision/inicio/0">
 									<i class="fa fa-caret-right"></i>Guia de Remision
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					<li>
+						<a href="#">Inventarios</a>
+						<ul id="ul_don_inventarios">
+							<li id="li_reg_donaciones_stock" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/donaciones/stock-donacion/inicio/0">
+									<i class="fa fa-caret-right"></i>Stock de Productos
+								</a>
+							</li>
+							<li id="li_reg_donaciones_cartilla" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/donaciones/cartilla-inventario/inicio/0">
+									<i class="fa fa-caret-right"></i>Cartilla de Inventario
+								</a>
+							</li>
+							<li id="li_reg_donaciones_cierre" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/donaciones/cierre-stock/inicio/0">
+									<i class="fa fa-caret-right"></i>Cierre Mensual
 								</a>
 							</li>
 						</ul>

@@ -5,6 +5,15 @@ $(document).ready(function() {
 		excluded : [':disabled', ':hidden'],
 		fields : {
 			// Datos Generales
+			
+			txt_fecha : {
+				validators : {
+					notEmpty : {
+						message : 'Debe Ingresar Fecha.'
+					}
+				}
+			},
+			
 			sel_movimiento : {
 				validators : {
 					notEmpty : {
@@ -19,34 +28,77 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_cod_donacion : {
+			sel_solicitada : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Donación.'
+						message : 'Debe seleccionar Solicitante.'
 					}
 				}
 			},
-			sel_control_calidad : {
+			sel_responsable : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Tipo de Control.'
+						message : 'Debe seleccionar Responsable.'
 					}
 				}
 			},
 			
 		
-			sel_almacen : {
+			sel_ddi : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Almacén.'
+						message : 'Debe seleccionar DDI.'
 					}
 				}
 			},
 			
-			sel_salida : {
+			rb_tie_ate_gobierno : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Orden de Salida.'
+						message : 'Debe seleccionar Tipo de Atención.'
+					}
+				}
+			},
+			
+			sel_gore : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar GORE.'
+					}
+				}
+			},
+			sel_departamento : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Departamento.'
+					}
+				}
+			},
+			sel_provincia : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Provincia.'
+					}
+				}
+			},
+			sel_distrito : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Distrito.'
+					}
+				}
+			},
+			sel_alm_destino : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Almacen Destino.'
+					}
+				}
+			},
+			sel_res_recepcion : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Responsable Recepción.'
 					}
 				}
 			},
@@ -67,13 +119,13 @@ $(document).ready(function() {
 			},
 			
 			
-			txt_fec_llegada : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha Llegada.'
-					}
-				}
-			},
+//			txt_fec_entrega : {
+//				validators : {
+//					notEmpty : {
+//						message : 'Debe ingresar Fecha Llegada.'
+//					}
+//				}
+//			},
 			
 			
 			sel_chofer : {
@@ -90,14 +142,6 @@ $(document).ready(function() {
 						message : 'Debe seleccionar N° de Placa.'
 					}
 				}
-			},
-			
-			sel_responsable : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Responsable de Recepción.'
-					}
-				}
 			}
 			
 		}
@@ -108,6 +152,14 @@ $(document).ready(function() {
 		excluded : [':disabled', ':hidden'],
 		fields : {
 			sel_cat_producto : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Categoría Producto.'
+					}
+				}
+			},
+			
+			sel_producto : {
 				validators : {
 					notEmpty : {
 						message : 'Debe seleccionar Producto.'
@@ -122,10 +174,11 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_fec_vencimiento : {
+			
+			txt_precio : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar Fecha.'
+						message : 'Debe ingresar Precio  Unitario.'
 					}
 				}
 			}

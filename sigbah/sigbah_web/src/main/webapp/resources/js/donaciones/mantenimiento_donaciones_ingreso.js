@@ -158,7 +158,7 @@ $(document).ready(function() {
 						
 						$('#hid_id_donacion').val(respuesta.idDonacion);
 						$('#hid_id_ingreso').val(respuesta.idIngreso);
-						
+						$('#txt_nro_ingreso').val(respuesta.nroOrdenIngreso);
 						
 						$('#li_documentos').attr('class', '');
 						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
@@ -179,7 +179,9 @@ $(document).ready(function() {
 //						}
 //						$('#li_documentos').attr('class', '');
 //						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
-
+						listarProductoDonacion(false);
+						listarDocumentoDonacion(false);
+						cargarProductosAlGrabar(respuesta.idDonacion);
 						addSuccessMessage(null, 'Se genero el N° de Ingreso: '+respuesta.codIngreso);
 						
 					}
@@ -860,7 +862,7 @@ function inicializarDatos() {
 			
 			listarProductoDonacion(false);
 			listarDocumentoDonacion(false);
-			listarEstadosDonacion(new Object());
+			//listarEstadosDonacion(new Object());
 			cargarTipoMovimiento(tipMov, true);
 			
 //			if (controlCalidad.flagTipoBien == '1') {
@@ -899,8 +901,8 @@ function inicializarDatos() {
 			
 		} else {
 			
-			$('#li_alimentarios').addClass('disabled');
-			$('#li_no_alimentarios').addClass('disabled');
+
+			$('#li_productos').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
 			
@@ -1485,3 +1487,30 @@ function cargarTipoMovimiento(val_tip_movimiento, indicador) {
 	$('#txt_donante').prop('readonly', true);
 	$('#txt_representante').prop('readonly', true);
 }
+
+function cargarProductosAlGrabar(donacion){
+	var donacionid = donacion ; 
+	var tipoMovimiento = $('#sel_movimiento').val();
+		var params = { 
+			idDonacion : donacionid,
+			idTipoMovimiento : tipoMovimiento
+		};			
+		loadding(true);
+		consultarAjax('GET', '/donacionesIngreso/registro-donacionesIngreso/listarProductosAlGrabar', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				var options = '';
+				options += '<option value="">Seleccione</option>';
+		        $.each(respuesta, function(i, item) {
+		            options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'_'+item.precio+'">'+item.nombreProducto+'</option>';
+		        });
+		        $('#sel_cat_producto').html(options);
+			}
+			loadding(false);
+			//frm_dat_generales.bootstrapValidator('revalidateField', 'sel_chofer');
+		});	
+		
+		
+}
+

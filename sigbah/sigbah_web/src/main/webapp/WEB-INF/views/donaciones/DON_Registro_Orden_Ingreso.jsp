@@ -351,6 +351,7 @@
 														<label class="col-sm-3 control-label">Responsable:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_responsable" name="sel_responsable" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -726,7 +727,7 @@
 							
 							<div class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-3 form-group">
+								<div class="col-sm-8 form-group">
 									<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
 										<option value="">Seleccione</option>
 										<c:forEach items="${lista_productos_donacion}" var="item">
