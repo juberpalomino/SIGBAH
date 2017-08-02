@@ -212,4 +212,12 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	public RacionBean obtenerRegistroRacion(Integer idRacion) throws Exception {
 		return programacionDao.obtenerRegistroRacion(idRacion);
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerCorrelativoPedidoCompra(pe.com.sigbah.common.bean.PedidoCompraBean)
+	 */
+	@Override
+	public PedidoCompraBean obtenerCorrelativoPedidoCompra(PedidoCompraBean parametros) throws Exception {
+		return programacionDao.obtenerCorrelativoPedidoCompra(parametros);
+	}
 }

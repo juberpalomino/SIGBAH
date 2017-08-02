@@ -170,4 +170,10 @@ public interface ProgramacionDao {
 	 */
 	public abstract RacionBean obtenerRegistroRacion(Integer idRacion)throws Exception;
 
+	/**
+	 * @param parametros
+	 * @return
+	 */
+	public abstract PedidoCompraBean obtenerCorrelativoPedidoCompra(PedidoCompraBean parametros)throws Exception;
+
 }

@@ -1016,8 +1016,10 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
 			input_objParametros.addValue("PI_COD_ANIO", pedidoBean.getCodAnio(), Types.VARCHAR);
-			input_objParametros.addValue("PI_IDE_DDI", pedidoBean.getFkIdeDdi(), Types.INTEGER);
+			input_objParametros.addValue("PI_COD_MES", pedidoBean.getFkIdeDdi(), Types.VARCHAR);
+			input_objParametros.addValue("PI_ID_ESTADO", pedidoBean.getFkIdeDdi(), Types.INTEGER);
 			
+            
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
@@ -1026,7 +1028,8 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
-			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.INTEGER));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
+			output_objParametros.put("PI_ID_ESTADO", new SqlParameter("PI_ID_ESTADO", Types.INTEGER));
 			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new RacionMapper()));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
@@ -1202,6 +1205,62 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		}		
 		LOGGER.info("[obtenerRegistroRacion] Fin ");
 		return racion;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#obtenerCorrelativoPedidoCompra(pe.com.sigbah.common.bean.PedidoCompraBean)
+	 */
+	@Override
+	public PedidoCompraBean obtenerCorrelativoPedidoCompra(PedidoCompraBean parametros) throws Exception {
+		LOGGER.info("[obtenerCorrelativoPedidoCompra] Inicio ");
+		PedidoCompraBean pedidoBean = new PedidoCompraBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", parametros.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DDI", parametros.getCodDdi(), Types.VARCHAR);
+			input_objParametros.addValue("PI_FK_IDE_DDI", parametros.getFkIdeDdi(), Types.NUMERIC);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_GENERA_PEDIDO_COMPRA");
+			
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("PI_FK_IDE_DDI", new SqlParameter("PI_FK_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PO_COD_PEDIDO_COMPRA", new SqlOutParameter("PO_COD_PEDIDO_COMPRA", Types.VARCHAR));
+			output_objParametros.put("PO_COD_PEDIDO_CONCATENADO", new SqlOutParameter("PO_COD_PEDIDO_CONCATENADO", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerCorrelativoPedidoCompra] Ocurrio un error en la operacion del USP_SEL_GENERA_PEDIDO_COMPRA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			pedidoBean.setCodPedido((String) out.get("PO_COD_PEDIDO_COMPRA"));
+			pedidoBean.setCodPedidoConcate((String) out.get("PO_COD_PEDIDO_CONCATENADO"));
+			pedidoBean.setCodigoRespuesta(codigoRespuesta);
+			pedidoBean.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerCorrelativoPedidoCompra] Fin ");
+		return pedidoBean;
+		
 	}
 
 

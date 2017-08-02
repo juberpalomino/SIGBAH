@@ -1,5 +1,6 @@
 package pe.com.sigbah.web.controller.programacion_bah;
 
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -22,13 +24,18 @@ import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoBean;
+import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
+import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.ProgramacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
+import pe.com.sigbah.web.report.programacion_bah.ReportePedidoCompra;
+import pe.com.sigbah.web.report.programacion_bah.ReporteRacionProducto;
+import pe.com.sigbah.web.report.programacion_bah.ReporteRequerimiento;
 
 /**
  * @className: EmergenciaController.java
@@ -52,12 +59,11 @@ private static final long serialVersionUID = 1L;
 	@RequestMapping(value = "/inicio/{indicador}", method = RequestMethod.GET)
     public String inicio(@PathVariable("indicador") String indicador, Model model) {
         try {
-        	// Retorno los datos de session
-//        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-//        	
+	
         	model.addAttribute("lista_anio", generalService.listarAnios());
-        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean()));
-        	model.addAttribute("lista_estado", generalService.listarEstado( new ItemBean(null,Constantes.ONE_INT)));
+//        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean()));
+        	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
+        	model.addAttribute("lista_estado", generalService.listarEstadoPedidoCompra( new ItemBean()));
        	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
@@ -94,6 +100,56 @@ private static final long serialVersionUID = 1L;
 		return lista;
 	}
 	
+	/**
+	 * @param codAnio
+	 * @param codMes
+	 * @param codFenomeno
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/exportarExcel/{codAnio}/{codMes}/{codEstado}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarExcel(@PathVariable("codAnio") String codAnio, 
+								@PathVariable("codMes") String codMes, 
+								@PathVariable("codEstado") Integer codEstado, 
+								HttpServletResponse response) {
+	    try {
+	    	PedidoCompraBean pedidoCompraBean = new PedidoCompraBean();
+	    	pedidoCompraBean.setCodAnio(verificaParametro(codAnio));
+	    	pedidoCompraBean.setCodMes(verificaParametro(codMes));
+	    	pedidoCompraBean.setiEstado(codEstado);
+	    	
+			List<PedidoCompraBean> lista = programacionService.listarPedidosCompra(pedidoCompraBean);
+	    	
+			String file_name = "PedidoCompra";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
+			
+			ReportePedidoCompra reporte = new ReportePedidoCompra();
+		    HSSFWorkbook wb = reporte.generaReporteExcelPedidoCompra(lista);
+		    
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_XLS);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+	    	
+		    // Captured backflow
+	    	OutputStream out = response.getOutputStream();
+	    	wb.write(out); // We write in that flow
+	    	out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	return Constantes.COD_EXITO_GENERAL;   	
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
+	
+	
 	@RequestMapping(value = "/mantenimientoPedido/{codigo}", method = RequestMethod.GET)
     public String mantenimientoPedido(@PathVariable("codigo") Integer codigo, Model model) {
         try {
@@ -102,7 +158,6 @@ private static final long serialVersionUID = 1L;
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        
         	ListaRespuestaRequerimientoBean respuestaEdicion = new ListaRespuestaRequerimientoBean();
         	if (!isNullInteger(codigo)) {// editar
         		
@@ -113,11 +168,11 @@ private static final long serialVersionUID = 1L;
         	} else {//nuevo
 
         		PedidoCompraBean parametros = new PedidoCompraBean();
-//        		String anioActual = generalService.obtenerAnioActual();
-//        		parametros.setCodAnio(anioActual);
-//        		parametros.setIdDdi(usuarioBean.getIdDdi());   
-//        		
-//        		RacionBean respuestaCorrelativo = programacionService.obtenerCorrelativoRacion(parametros);
+        		String anioActual = generalService.obtenerAnioActual();
+        		parametros.setCodAnio(anioActual);
+        		parametros.setFkIdeDdi(usuarioBean.getIdDdi());   
+        		
+        		PedidoCompraBean respuestaCorrelativo = programacionService.obtenerCorrelativoPedidoCompra(parametros);
 //        		pedido.setCodRacion(respuestaCorrelativo.getCodRacion());   		
 //        		Date fecha_hora = Calendar.getInstance().getTime();
 //        		pedido.setFechaRacion(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
@@ -127,9 +182,9 @@ private static final long serialVersionUID = 1L;
 	
         	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean()));
         	model.addAttribute("lista_dee", generalService.listarDee(new ItemBean()));//whr consultar
-        	model.addAttribute("lista_tipo_prod", generalService.listarRacion(new ItemBean()));
-        	model.addAttribute("lista_categoria_prod", generalService.listarRacion(new ItemBean()));
-        	model.addAttribute("lista_producto", generalService.listarRacion(new ItemBean()));
+        	model.addAttribute("lista_tipo_prod", generalService.listarTipoProducto(new ItemBean()));
+        	model.addAttribute("lista_categoria_prod", generalService.listarCategoria(new ItemBean()));
+        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
@@ -137,7 +192,7 @@ private static final long serialVersionUID = 1L;
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "mantenimiento_racion";
+        return "mantenimiento-pedido-compra";
     }
 	
 }

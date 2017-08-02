@@ -11,7 +11,7 @@ $(document).ready(function() {
 
 			var params = { 
 				codAnio : $('#sel_anio').val(),
-				fkIdeDdi : $('#sel_ddi').val(),
+				fkIdeDdi : $('#sel_mes').val(),
 				codEstado : $('#sel_estado').val()
 			};
 			
@@ -39,6 +39,46 @@ $(document).ready(function() {
 		
 	});
 	
+	
+	$('#href_exp_excel').click(function(e) {
+		e.preventDefault();
+		
+		var row = $('#tbl_mnt_ped_compra > tbody > tr').length;
+		var empty = null;
+		$('tr.odd').each(function() {		
+			empty = $(this).find('.dataTables_empty').text();
+			return false;
+		});					
+		if (!esnulo(empty) || row < 1) {
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			return;
+		}
+
+		loadding(true);
+		
+		var codAnio = $('#sel_anio').val();
+		var codMes = $('#sel_mes').val();
+		var codEstado = $('#sel_estado').val();
+		
+		
+		var url = VAR_CONTEXT + '/programacion-bath/pedido/exportarExcel/';
+		url += verificaParametro(codAnio) + '/';
+		url += verificaParametro(codMes) + '/';
+		url += verificaParametro(codEstado);
+		
+		$.fileDownload(url).done(function(respuesta) {
+			loadding(false);	
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else {
+				addInfoMessage(null, mensajeReporteExito);
+			}
+		}).fail(function (respuesta) {
+			loadding(false);
+			addErrorMessage(null, mensajeReporteError);
+		});
+
+	});
 //	$('#href_editar').click(function(e) {
 //		e.preventDefault();
 //
@@ -125,46 +165,7 @@ $(document).ready(function() {
 //		
 //		
 //	});
-//	
-//	$('#href_exp_excel').click(function(e) {
-//		e.preventDefault();
-//		
-//		var row = $('#tbl_mnt_ped_compra > tbody > tr').length;
-//		var empty = null;
-//		$('tr.odd').each(function() {		
-//			empty = $(this).find('.dataTables_empty').text();
-//			return false;
-//		});					
-//		if (!esnulo(empty) || row < 1) {
-//			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
-//			return;
-//		}
-//
-//		loadding(true);
-//		
-//		var codAnio = $('#sel_anio').val();
-//		var codMesRacion = $('#sel_mes').val();
-//		var tipoRacion = $('#sel_tipo_racion').val();
-//		
-//		
-//		var url = VAR_CONTEXT + '/programacion-bath/racion/exportarExcel/';
-//		url += verificaParametro(codAnio) + '/';
-//		url += verificaParametro(codMesRacion) + '/';
-//		url += verificaParametro(tipoRacion);
-//		
-//		$.fileDownload(url).done(function(respuesta) {
-//			loadding(false);	
-//			if (respuesta == NOTIFICACION_ERROR) {
-//				addErrorMessage(null, mensajeReporteError);
-//			} else {
-//				addInfoMessage(null, mensajeReporteExito);
-//			}
-//		}).fail(function (respuesta) {
-//			loadding(false);
-//			addErrorMessage(null, mensajeReporteError);
-//		});
-//
-//	});
+
 	
 //	$('#href_imprimir').click(function(e) {
 //		e.preventDefault();

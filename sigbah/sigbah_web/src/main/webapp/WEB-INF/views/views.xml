@@ -143,6 +143,9 @@
 	<definition name="pedido-compra" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_PedidoCompra.jsp" />
 	</definition>
+	<definition name="mantenimiento-pedido-compra" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_RegistrarPedidoCompra.jsp" />
+	</definition>
 	<definition name="decreto-estado" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_ListarDEE.jsp" />
 	</definition>

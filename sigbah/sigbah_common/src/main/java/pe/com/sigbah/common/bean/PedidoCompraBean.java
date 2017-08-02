@@ -14,15 +14,22 @@ public class PedidoCompraBean extends BaseOutputBean {
 	
 	private Integer idPedidoCom;
 	private String codAnio;
+	private String codMes;
 	private String codPedido;
-	private String fkIdeDdi;
+	private String codPedidoConcate;
+	private Integer fkIdeDdi;
 	private String nombreDdi;
 	private String fecPedido;
 	private String dde;
 	private String tipFenomeno;
 	private String NomEstado;
 	private String codEstado;
-    
+	private Integer iEstado;
+	private String NomMes;
+	private String numPedidoCompra;
+	private String descripcion;
+	private String codDdi;
+	
 	/**
 	 * 
 	 */
@@ -72,17 +79,19 @@ public class PedidoCompraBean extends BaseOutputBean {
 		this.codPedido = codPedido;
 	}
 
+
+
 	/**
 	 * @return the fkIdeDdi
 	 */
-	public String getFkIdeDdi() {
+	public Integer getFkIdeDdi() {
 		return fkIdeDdi;
 	}
 
 	/**
 	 * @param fkIdeDdi the fkIdeDdi to set
 	 */
-	public void setFkIdeDdi(String fkIdeDdi) {
+	public void setFkIdeDdi(Integer fkIdeDdi) {
 		this.fkIdeDdi = fkIdeDdi;
 	}
 
@@ -168,6 +177,104 @@ public class PedidoCompraBean extends BaseOutputBean {
 	 */
 	public void setCodEstado(String codEstado) {
 		this.codEstado = codEstado;
+	}
+
+	/**
+	 * @return the codMes
+	 */
+	public String getCodMes() {
+		return codMes;
+	}
+
+	/**
+	 * @param codMes the codMes to set
+	 */
+	public void setCodMes(String codMes) {
+		this.codMes = codMes;
+	}
+
+	/**
+	 * @return the iEstado
+	 */
+	public Integer getiEstado() {
+		return iEstado;
+	}
+
+	/**
+	 * @param iEstado the iEstado to set
+	 */
+	public void setiEstado(Integer iEstado) {
+		this.iEstado = iEstado;
+	}
+
+	/**
+	 * @return the nomMes
+	 */
+	public String getNomMes() {
+		return NomMes;
+	}
+
+	/**
+	 * @param nomMes the nomMes to set
+	 */
+	public void setNomMes(String nomMes) {
+		NomMes = nomMes;
+	}
+
+	/**
+	 * @return the numPedidoCompra
+	 */
+	public String getNumPedidoCompra() {
+		return numPedidoCompra;
+	}
+
+	/**
+	 * @param numPedidoCompra the numPedidoCompra to set
+	 */
+	public void setNumPedidoCompra(String numPedidoCompra) {
+		this.numPedidoCompra = numPedidoCompra;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @return the codDdi
+	 */
+	public String getCodDdi() {
+		return codDdi;
+	}
+
+	/**
+	 * @param codDdi the codDdi to set
+	 */
+	public void setCodDdi(String codDdi) {
+		this.codDdi = codDdi;
+	}
+
+	/**
+	 * @return the codPedidoConcate
+	 */
+	public String getCodPedidoConcate() {
+		return codPedidoConcate;
+	}
+
+	/**
+	 * @param codPedidoConcate the codPedidoConcate to set
+	 */
+	public void setCodPedidoConcate(String codPedidoConcate) {
+		this.codPedidoConcate = codPedidoConcate;
 	}
 
 	

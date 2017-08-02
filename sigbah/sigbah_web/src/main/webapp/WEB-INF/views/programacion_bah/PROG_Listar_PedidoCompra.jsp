@@ -50,10 +50,10 @@
 										</select>
 									</div>
 									
-									<label class="col-sm-1 control-label">DDI:</label>
+									<label class="col-sm-1 control-label">Mes:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_ddi" name="sel_ddi" class="form-control">
-											<c:forEach items="${lista_ddi}" var="item">
+											<c:forEach items="${lista_mes}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
@@ -63,7 +63,7 @@
 									<div class="col-sm-2 form-group">
 										<select id="sel_estado" name="sel_estado" class="form-control">
 											<c:forEach items="${lista_estado}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
+											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
