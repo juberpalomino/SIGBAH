@@ -18,6 +18,8 @@ public class ResumenStockBean implements Serializable {
 	private Integer idProducto;
 	private String nombreProducto;
 	private BigDecimal cantidad;
+	private BigDecimal totalTm;
+	private BigDecimal saldoTm;
 	
 	
 	/**
@@ -91,6 +93,30 @@ public class ResumenStockBean implements Serializable {
 	 */
 	public void setCantidad(BigDecimal cantidad) {
 		this.cantidad = cantidad;
+	}
+	/**
+	 * @return the totalTm
+	 */
+	public BigDecimal getTotalTm() {
+		return totalTm;
+	}
+	/**
+	 * @param totalTm the totalTm to set
+	 */
+	public void setTotalTm(BigDecimal totalTm) {
+		this.totalTm = totalTm;
+	}
+	/**
+	 * @return the saldoTm
+	 */
+	public BigDecimal getSaldoTm() {
+		return saldoTm;
+	}
+	/**
+	 * @param saldoTm the saldoTm to set
+	 */
+	public void setSaldoTm(BigDecimal saldoTm) {
+		this.saldoTm = saldoTm;
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import pe.com.sigbah.common.bean.DetalleProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
+import pe.com.sigbah.common.bean.ProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
@@ -111,11 +112,12 @@ public interface ProgramacionRequerimientoService {
 	
 	/**
 	 * @param idProgramacion
+	 * @param idRacionOperativa 
 	 * @param arrIdProducto 
 	 * @return Lista de registros.
 	 * @throws Exception
 	 */
-	public abstract DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception;
+	public abstract DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, Integer idRacionOperativa, List<Integer> arrIdProducto) throws Exception;
 	
 	/**
 	 * @param productoAlimentoBean
@@ -123,5 +125,19 @@ public interface ProgramacionRequerimientoService {
 	 * @throws Exception
 	 */
 	public abstract ProductoAlimentoBean actualizarDetalleProgramacionAlimento(ProductoAlimentoBean productoAlimentoBean) throws Exception;
+
+	/**
+	 * @param programacionAlimentoBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProgramacionAlimentoBean eliminarDetalleProgramacionAlimento(ProgramacionAlimentoBean programacionAlimentoBean) throws Exception;
+
+	/**
+	 * @param programacionBean
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProgramacionBean eliminarProgramacionAlimento(ProgramacionBean programacionBean) throws Exception;
 	
 }

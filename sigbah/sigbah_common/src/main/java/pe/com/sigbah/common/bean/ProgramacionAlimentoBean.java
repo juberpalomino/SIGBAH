@@ -27,7 +27,25 @@ public class ProgramacionAlimentoBean implements Serializable {
 	private BigDecimal totalRaciones;
 	private BigDecimal totalTm;
 	private List<ProductoAlimentoBean> listaProducto;
+	private String codigoRespuesta;
+	private String mensajeRespuesta;
+	private String usuarioRegistro;
 	
+	
+	/**
+	 * 
+	 */
+	public ProgramacionAlimentoBean() {
+		super();
+	}
+
+	/**
+	 * @param idProgramacionUbigeo
+	 */
+	public ProgramacionAlimentoBean(Integer idProgramacionUbigeo) {
+		super();
+		this.idProgramacionUbigeo = idProgramacionUbigeo;
+	}
 	
 	/**
 	 * @return the idProgramacionUbigeo
@@ -196,6 +214,48 @@ public class ProgramacionAlimentoBean implements Serializable {
 	 */
 	public void setListaProducto(List<ProductoAlimentoBean> listaProducto) {
 		this.listaProducto = listaProducto;
+	}
+
+	/**
+	 * @return the codigoRespuesta
+	 */
+	public String getCodigoRespuesta() {
+		return codigoRespuesta;
+	}
+
+	/**
+	 * @param codigoRespuesta the codigoRespuesta to set
+	 */
+	public void setCodigoRespuesta(String codigoRespuesta) {
+		this.codigoRespuesta = codigoRespuesta;
+	}
+
+	/**
+	 * @return the mensajeRespuesta
+	 */
+	public String getMensajeRespuesta() {
+		return mensajeRespuesta;
+	}
+
+	/**
+	 * @param mensajeRespuesta the mensajeRespuesta to set
+	 */
+	public void setMensajeRespuesta(String mensajeRespuesta) {
+		this.mensajeRespuesta = mensajeRespuesta;
+	}
+
+	/**
+	 * @return the usuarioRegistro
+	 */
+	public String getUsuarioRegistro() {
+		return usuarioRegistro;
+	}
+
+	/**
+	 * @param usuarioRegistro the usuarioRegistro to set
+	 */
+	public void setUsuarioRegistro(String usuarioRegistro) {
+		this.usuarioRegistro = usuarioRegistro;
 	}
 		
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pe.com.sigbah.common.bean.DetalleProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
+import pe.com.sigbah.common.bean.ProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
@@ -135,11 +136,11 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#obtenerDetalleProgramacionAlimento(java.lang.Integer, java.util.List)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#obtenerDetalleProgramacionAlimento(java.lang.Integer, java.lang.Integer, java.util.List)
 	 */
 	@Override
-	public DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception {
-		return programacionRequerimientoDao.obtenerDetalleProgramacionAlimento(idProgramacion, arrIdProducto);
+	public DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, Integer idRacionOperativa, List<Integer> arrIdProducto) throws Exception {
+		return programacionRequerimientoDao.obtenerDetalleProgramacionAlimento(idProgramacion, idRacionOperativa, arrIdProducto);
 	}
 
 	/* (non-Javadoc)
@@ -148,6 +149,22 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	@Override
 	public ProductoAlimentoBean actualizarDetalleProgramacionAlimento(ProductoAlimentoBean productoAlimentoBean) throws Exception {
 		return programacionRequerimientoDao.actualizarDetalleProgramacionAlimento(productoAlimentoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#eliminarDetalleProgramacionAlimento(pe.com.sigbah.common.bean.ProgramacionAlimentoBean)
+	 */
+	@Override
+	public ProgramacionAlimentoBean eliminarDetalleProgramacionAlimento(ProgramacionAlimentoBean programacionAlimentoBean) throws Exception {
+		return programacionRequerimientoDao.eliminarDetalleProgramacionAlimento(programacionAlimentoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#eliminarProgramacionAlimento(pe.com.sigbah.common.bean.ProgramacionBean)
+	 */
+	@Override
+	public ProgramacionBean eliminarProgramacionAlimento(ProgramacionBean programacionBean) throws Exception {
+		return programacionRequerimientoDao.eliminarProgramacionAlimento(programacionBean);
 	}
 
 }

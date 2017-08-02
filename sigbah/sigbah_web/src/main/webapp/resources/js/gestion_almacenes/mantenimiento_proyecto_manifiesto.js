@@ -377,7 +377,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];		
-		var arrFlagVehiculo= [];	
+		var arrFlagVehiculo = [];	
 		var arrIdTipoCamion = [];
 		var arrVolumen = [];
 		tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {

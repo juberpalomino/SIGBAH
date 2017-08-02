@@ -43,6 +43,21 @@ public class ProgramacionBean extends BaseOutputBean {
 	private String tipoControl;
 	private List<ProgramacionAlmacenBean> almacenes;
 	
+	
+	
+	/**
+	 * 
+	 */
+	public ProgramacionBean() {
+		super();
+	}
+	/**
+	 * @param idProgramacion
+	 */
+	public ProgramacionBean(Integer idProgramacion) {
+		super();
+		this.idProgramacion = idProgramacion;
+	}
 	/**
 	 * @return the idProgramacion
 	 */

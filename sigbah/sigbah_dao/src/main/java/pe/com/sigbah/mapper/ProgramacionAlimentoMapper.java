@@ -1,5 +1,6 @@
 package pe.com.sigbah.mapper;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,17 +46,20 @@ public class ProgramacionAlimentoMapper implements RowMapper<ProgramacionAliment
 		alimento.setPersDam(rs.getBigDecimal("NPD"));
 		alimento.setTotalPers(rs.getBigDecimal("NPT"));
 		alimento.setTotalRaciones(rs.getBigDecimal("TOT_RACIONES"));
-		
+		BigDecimal totalTm = BigDecimal.ZERO;
 		List<ProductoAlimentoBean> listaProducto = new ArrayList<ProductoAlimentoBean>();
 		for (Integer idProducto : listaIdProducto) {
 			ProductoAlimentoBean producto = new ProductoAlimentoBean();
 			producto.setIdProducto(idProducto);
-			
-			
+			BigDecimal unidad = rs.getBigDecimal(idProducto.toString().concat("_NRO_UNIDADES"));
+			producto.setUnidad(unidad);			
 			listaProducto.add(producto);
+			totalTm = totalTm.add(unidad == null ? BigDecimal.ZERO : unidad);
 		}
 		
 		alimento.setListaProducto(listaProducto);
+		
+		alimento.setTotalTm(totalTm);
 		
 		return alimento;
 	}
