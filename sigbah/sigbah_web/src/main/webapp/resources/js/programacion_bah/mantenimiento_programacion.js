@@ -14,8 +14,6 @@ var tbl_res_pro_alimentos = $('#tbl_res_pro_alimentos');
 //var tbl_det_no_alimentarios = $('#tbl_det_no_alimentarios');
 //var frm_det_no_alimentarios = $('#frm_det_no_alimentarios');
 
-//var tbl_det_documentos = $('#tbl_det_documentos');
-//var frm_det_documentos = $('#frm_det_documentos');
 
 $(document).ready(function() {
 	
