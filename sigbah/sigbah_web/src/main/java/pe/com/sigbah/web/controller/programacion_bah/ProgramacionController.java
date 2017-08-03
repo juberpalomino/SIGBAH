@@ -451,6 +451,59 @@ private static final long serialVersionUID = 1L;
 		return programacion;
 	}
 	
+	/**
+	 * @param idProgramacion 
+	 * @param idRacionOperativa 
+	 * @param arrIdProducto 
+	 * @param arrNombreProducto 
+	 * @param arrUnidadProducto 
+	 * @param response 
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/exportarExcelAlimento", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarExcelAlimento(@RequestParam(value="idProgramacion") Integer idProgramacion,
+										@RequestParam(value="idRacionOperativa") Integer idRacionOperativa,
+			 							@RequestParam(value="arrIdProducto[]") List<Integer> arrIdProducto,
+			 							@RequestParam(value="arrNombreProducto[]") List<String> arrNombreProducto,
+			 							@RequestParam(value="arrUnidadProducto[]") List<BigDecimal> arrUnidadProducto,
+										HttpServletResponse response) {
+		DetalleProgramacionAlimentoBean detalleProgramacionAlimentoBean = null;
+	    try {
+	    	
+			detalleProgramacionAlimentoBean = programacionRequerimientoService.obtenerDetalleProgramacionAlimento(idProgramacion, idRacionOperativa, arrIdProducto);
+	    	
+			String file_name = "ProgramacionAlimento";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
+			
+			ReporteProgramacion reporte = new ReporteProgramacion();
+		    HSSFWorkbook wb = reporte.generaReporteExcelAlimento(detalleProgramacionAlimentoBean, arrIdProducto, arrNombreProducto, arrUnidadProducto);
+			
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_XLS);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+	    	
+		    // Captured backflow
+	    	OutputStream out = response.getOutputStream();
+	    	wb.write(out); // We write in that flow
+	    	out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	return Constantes.COD_EXITO_GENERAL;   	
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
+	
+	
+	
+	
 	
 	
 	

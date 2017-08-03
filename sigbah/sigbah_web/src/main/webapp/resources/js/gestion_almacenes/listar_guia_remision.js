@@ -269,14 +269,9 @@ function listarGuiaRemision(respuesta) {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
-		iDisplayLength : 15,
-		aLengthMenu : [
-			[15, 50, 100],
-			[15, 50, 100]
-		],
+		info : false,
 		columnDefs : [
   			{ width : '14%', targets : 5 },
   			{ width : '14%', targets : 6 },

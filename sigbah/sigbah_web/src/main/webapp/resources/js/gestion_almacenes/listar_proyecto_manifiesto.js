@@ -248,14 +248,9 @@ function listarProyectoManifiesto(respuesta) {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
-		iDisplayLength : 15,
-		aLengthMenu : [
-			[15, 50, 100],
-			[15, 50, 100]
-		],
+		info : false,
 		columnDefs : [
   			{ width : '10%', targets : 3 },
   			{ width : '15%', targets : 4 },

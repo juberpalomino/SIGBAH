@@ -348,12 +348,12 @@
 <!-- 															</button> -->
 <!-- 														</div> -->
 														
-<!-- 														<div class="col-sm-2 opc-center"> -->
-<!-- 															<button class="btn btn-default" type="button" id="btn_ali_exp_excel"> -->
-<!-- 																<i class="fa fa-file-excel-o"></i> -->
-<!-- 																Exportar Excel -->
-<!-- 															</button> -->
-<!-- 														</div> -->
+														<div class="col-sm-2 opc-center">
+															<button class="btn btn-default" type="button" id="btn_ali_exp_excel">
+																<i class="fa fa-file-excel-o"></i>
+																Exportar Excel
+															</button>
+														</div>
 														
 														<div class="col-sm-2 opc-center">
 															<button class="btn btn-primary" type="button" id="btn_ali_editar">

@@ -450,6 +450,76 @@ $(document).ready(function() {
 		}
 		
 	});
+	
+	$('#btn_ali_exp_excel').click(function(e) {
+		e.preventDefault();
+		
+		var row = 0;
+		$('tr.item_ali').each(function() {	
+			row = row + 1;
+			if (row > 0) {
+				return false;
+			}
+		});
+			
+		if (row == 0) {
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			return;
+		}
+
+		loadding(true);
+		
+		var arrIdProducto = [];
+		var arrNombreProducto = [];
+		$.each(listaProductosRacionCache, function(i, item) {
+			arrIdProducto.push(item.idProducto);
+			arrNombreProducto.push(item.nombreProducto);
+	    });
+		
+		var val_nro_racion = $('#sel_nro_racion').val();
+		var arr_nro_racion = val_nro_racion.split('_');
+		
+		var arrUnidadProducto = [];
+		arrUnidadProducto.push($('#pro_ali_per_afect').html());
+		arrUnidadProducto.push($('#pro_ali_per_dam').html());
+		arrUnidadProducto.push($('#pro_ali_tot_pers').html());
+		arrUnidadProducto.push($('#pro_ali_tot_raciones').html());
+		$.each(listaProductosRacionCache, function(i, item) {
+			arrUnidadProducto.push($('#td_ali_'+item.idProducto).html());
+	    });		
+		arrUnidadProducto.push($('#pro_ali_total_tm').html());
+
+		var params = { 
+			idProgramacion : $('#hid_cod_programacion').val(),
+			idRacionOperativa : arr_nro_racion[0],
+			arrIdProducto : arrIdProducto,
+			arrNombreProducto : arrNombreProducto,
+			arrUnidadProducto : arrUnidadProducto
+		};	
+		
+		var url = VAR_CONTEXT + '/programacion-bah/programacion/exportarExcelAlimento';
+		$.fileDownload(url, {
+		    httpMethod : 'GET',
+		    data : params,
+		    successCallback : function (respuesta, url) {
+		    	loadding(false);	
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+		    },
+		    failCallback : function (respuesta, url) {
+		    	loadding(false);
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+		    }
+		});
+
+	});
 
 });
 
@@ -712,8 +782,15 @@ function listarDetalleProgramacionAlimento(indicador) {
 
 			if (respuesta.listaProgramacionAlimento.length > 0) {
 				var row_num = 1;
+				
+				var tot_persAfect = 0;
+				var tot_persDam = 0;
+				var tot_totalPers = 0;
+				var tot_totalRaciones = 0;				
+				var tot_totalTm = 0;
+				
 				$.each(respuesta.listaProgramacionAlimento, function(index, item) {
-					row = $('<tr/>');
+					row = $('<tr class="item_ali" />');
 					row.append($('<td class="opc-right" />').html('<label class="checkbox"><input type="checkbox" id="chk_'+item.idProgramacionUbigeo+'"><i></i></label>'));
 					row.append($('<td/>').html(row_num));
 					row.append($('<td/>').html(item.departamento));
@@ -724,15 +801,44 @@ function listarDetalleProgramacionAlimento(indicador) {
 					row.append($('<td/>').html(item.totalPers));
 					row.append($('<td/>').html(item.totalRaciones));
 					$.each(item.listaProducto, function(i, item_prod) {
-						row.append($('<td/>').html(item_prod.unidad));
+						row.append($('<td class="pro_ali_'+item_prod.idProducto+'" />').html(item_prod.unidad));
 				    });					
 					row.append($('<td/>').html(item.totalTm));
 					table.append(row);
 					row_num++;
+					
+					tot_persAfect = tot_persAfect + parseFloat(verificaParametroInt(item.persAfect));
+					tot_persDam = tot_persDam + parseFloat(verificaParametroInt(item.persDam));
+					tot_totalPers = tot_totalPers + parseFloat(verificaParametroInt(item.totalPers));
+					tot_totalRaciones = tot_totalRaciones + parseFloat(verificaParametroInt(item.totalRaciones));
+					tot_totalTm = tot_totalTm + parseFloat(verificaParametroInt(item.totalTm));
 				});
+				
+				row = $('<tr/>');
+				row.append($('<td class="opc-right" colspan="5" />').html("Total:"));
+				row.append($('<td id="pro_ali_per_afect" />').html(tot_persAfect));
+				row.append($('<td id="pro_ali_per_dam" />').html(tot_persDam));
+				row.append($('<td id="pro_ali_tot_pers" />').html(tot_totalPers));
+				row.append($('<td id="pro_ali_tot_raciones" />').html(tot_totalRaciones));
+				$.each(listaProductosRacionCache, function(i, item) {
+					row.append($('<td id="td_ali_'+item.idProducto+'" />').html(''));
+			    });
+				row.append($('<td id="pro_ali_total_tm" />').html(tot_totalTm));
+				table.append(row);
 			}
 			
 			$('#div_det_pro_alimentos').html(table);
+			
+			if (respuesta.listaProgramacionAlimento.length > 0) {
+				$.each(listaProductosRacionCache, function(i, item) {
+					var can_tot_unidad = 0;
+					$('tr.item_ali').each(function() {	
+						var can_unidad = $(this).find('.pro_ali_'+item.idProducto).html();
+						can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
+					});
+					$('#td_ali_'+item.idProducto).html(can_tot_unidad);
+				});
+			}
 			
 			listarResumenStock(respuesta.listaResumenStock);
 			

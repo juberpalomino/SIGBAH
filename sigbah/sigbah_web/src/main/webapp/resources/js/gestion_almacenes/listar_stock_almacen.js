@@ -226,14 +226,9 @@ function listarStockAlmacen(respuesta) {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
-		iDisplayLength : 15,
-		aLengthMenu : [
-			[15, 50, 100],
-			[15, 50, 100]
-		],
+		info : false,
 		columnDefs : [
   			{ width : '25%', targets : 4 }
   		]
