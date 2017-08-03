@@ -732,8 +732,16 @@ public class DonacionesController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	productoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	System.out.println("IDDET: "+productoDonacionBean.getIdDetDonacion());
+        	Integer idDetDona=productoDonacionBean.getIdDetDonacion()!=null?productoDonacionBean.getIdDetDonacion():0;
+        	
+        	if(idDetDona==0){
+        		productoDonacion = donacionService.insertarProductoDonacion(productoDonacionBean);
+        	}else{
+        		productoDonacion = donacionService.actualizarProductoDonacion(productoDonacionBean);
+        	}
 			
-        	productoDonacion = donacionService.insertarProductoDonacion(productoDonacionBean);
+        	
 			
         	productoDonacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -771,13 +779,14 @@ public class DonacionesController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarProductoDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object eliminarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
 		ProductoDonacionBean producto = null;
 		try {			
-			System.out.println("PARAMETRO : "+request.getParameter("IdDetDonacion"));
-			String[] arrIdDetalleControlCalidad = request.getParameter("IdDetDonacion").split(Constantes.UNDERLINE);
+			System.out.println("PARAMETRO : "+request.getParameter("idDetDonacion"));
+			String[] arrIdDetalleControlCalidad = request.getParameter("idDetDonacion").split(Constantes.UNDERLINE);
+			Integer idDonacion  = Integer.parseInt(request.getParameter("idDonacion"));
 			for (String codigo : arrIdDetalleControlCalidad) {				
 				ProductoDonacionBean productoDonacionBean = new ProductoDonacionBean(getInteger(codigo));
 
@@ -785,7 +794,7 @@ public class DonacionesController extends BaseController {
 	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 	        	
 	        	productoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-				
+				productoDonacionBean.setIdDonacion(idDonacion);
 				producto = donacionService.eliminarProductoDonacion(productoDonacionBean);				
 			}
 

@@ -119,3 +119,7 @@ table.dataTable thead .sorting_desc {
     max-height: calc(100vh - 200px);
     overflow-y: auto;
 }
+.label-bold1 {
+	font-weight: bold;
+	color: #ffffff;
+}

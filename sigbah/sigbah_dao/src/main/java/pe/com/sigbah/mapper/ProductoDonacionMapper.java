@@ -32,6 +32,8 @@ public class ProductoDonacionMapper implements RowMapper<ProductoDonacionBean> {
 		producto.setMonDolares(rs.getDouble("IMP_MONEDA_DOLAR"));
 		producto.setFecVencimiento(rs.getString("FECHA_VENCIMIENTO"));
 		producto.setNombreMoneda(rs.getString("NOMBRE"));
+		producto.setIdMoneda(rs.getInt("IDE_MONEDA"));
+		producto.setIdDetDonacion(rs.getInt("IDE_DET_DONACION"));
 
 		return producto;
 	}
