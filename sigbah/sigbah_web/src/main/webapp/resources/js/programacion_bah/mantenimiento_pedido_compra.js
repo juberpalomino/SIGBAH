@@ -52,11 +52,12 @@ $(document).ready(function() {
 					} else { 
 						
 						addSuccessMessage(null, respuesta.mensajeRespuesta);
-//						racion.idRacionOpe=respuesta.idRacionOpe;
-//						$('#div_tabla_prod').show();
-//
-//						$('#btn_grabar_racion').attr("disabled", true); 
+						pedido.idPedidoCom=respuesta.idPedidoCom;
+						$('#div_tabla_prod').show();//activamos tab productos y documentos
 
+						$('#btn_grabar_dat_gen').attr("disabled", true); //deshabilitamos boton grabar
+						$('#txt_desc_pedido').val(pedido.codPedidoConcate+": "+$('#txt_descripcion').val());
+						$('#txt_desc_pedido_doc').val(pedido.codPedidoConcate+ ": "+ $('#txt_descripcion').val());
 						
 					}
 					
@@ -272,8 +273,8 @@ function inicializarDatos() {
 		$('#txt_num_pedido').val(pedido.codPedidoConcate);
 		$('#txt_fecha_pedido').val(pedido.fecPedido);
 		
-		$('#txt_desc_pedido').val(pedido.codPedidoConcate);
-		$('#txt_desc_pedido_doc').val(pedido.codPedidoConcate);
+//		$('#txt_desc_pedido').val(pedido.codPedidoConcate);
+//		$('#txt_desc_pedido_doc').val(pedido.codPedidoConcate);
 		
 		if (!esnulo(pedido.codPedido)) {
 			
