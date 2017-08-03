@@ -132,7 +132,7 @@
 										<th>Nº</th>
 										<th>Año</th>
 										<th>Mes</th>
-										<th>Fecha</th>
+										<th>Fechaaaaaa</th>
 										<th>N° Orden de Salida</th>
 										<th>N° Guia de Remisión</th>
 										<th>N° Manifiesto de Carga</th>

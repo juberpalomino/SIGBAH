@@ -5,6 +5,7 @@ import java.util.List;
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
@@ -90,6 +91,8 @@ public interface DonacionService {
 	public abstract List<ItemBean> mostrarEstadoDonacionUsuario(ItemBean itemBean) throws Exception;
 	
 	public abstract ProductoDonacionBean insertarProductoDonacion(ProductoDonacionBean productoDonacionBean) throws Exception;
+	
+	public abstract ProductoDonacionBean actualizarProductoDonacion(ProductoDonacionBean productoDonacionBean) throws Exception;
 	
 	public abstract List<ProductoDonacionBean> listarProductoDonacion(ProductoDonacionBean productoDonacionBean) throws Exception;
 	
@@ -519,6 +522,15 @@ public interface DonacionService {
 	 * @throws Exception
 	 */
 	public abstract CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception;
+
+
+	/**
+	 * @param idGuiaRemision
+	 * @param tipoOrigen
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DetalleGuiaRemisionBean> listarDetalleGuiaRemision(Integer idGuiaRemision, String tipoOrigen) throws Exception;
 
 
 

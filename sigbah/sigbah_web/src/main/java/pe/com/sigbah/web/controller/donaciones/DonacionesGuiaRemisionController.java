@@ -314,7 +314,7 @@ public class DonacionesGuiaRemisionController extends BaseController {
 	    	List<DetalleManifiestoCargaBean> listaManifiestoCarga = null;
 	    	List<DetalleActaEntregaBean> listaActaEntrega = null;
 	    	if (ind_gui.equals(Constantes.ONE_STRING)) {
-	    		listaGuiaRemision = logisticaService.listarDetalleGuiaRemision(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+	    		listaGuiaRemision = donacionService.listarDetalleGuiaRemision(codigo, Constantes.TIPO_ORIGEN_DONACIONES);
 	    		if (isEmpty(listaGuiaRemision)) {
 					return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 				}

@@ -92,7 +92,7 @@ $(document).ready(function() {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					
+					$('#hid_id_donacion').val(respuesta.idDonacion);
 					listarEstadoDonacion(false);
 					listarProductoDonacion(false);
 					listarDocumentoDonacion(false);
@@ -204,9 +204,9 @@ $(document).ready(function() {
 		e.preventDefault();
 		$('#h4_tit_no_alimentarios').html('Nuevo Documento');
 		$('#frm_det_documentos').trigger('reset');
-		
+
 		$('#txt_doc_fecha').datepicker('setDate', new Date());
-		$('#txt_codigo_cod_pro').val('');
+
 		$('#hid_cod_documento').val('');
 		$('#txt_descripcion_pro').val('');
 		$('#hid_cod_act_alfresco').val('');
@@ -316,10 +316,12 @@ $(document).ready(function() {
 	$('#href_pro_nuevo').click(function(e) {
 		e.preventDefault();
 		$('#txt_pro_fecha').datepicker('setDate', new Date());
-		$('#h4_tit_no_alimentarios').html('Nuevo Documento');
+		$('#h4_tit_productos').html('Nuevo Producto');
 		$('#frm_det_productos').trigger('reset');
-		$('#hid_cod_documento').val('');
+		$('#hid_cod_producto').val('');
 		$('#div_det_productos').modal('show');
+	
+		$('#sel_lis_producto').html('');
 		
 	});
 	
@@ -345,8 +347,9 @@ $(document).ready(function() {
 			//limpiarFormularioProducto();
 			
 			$('#hid_cod_producto').val(obj.idDetDonacion);
-			
+			console.log("IDDONACION: "+obj.idDetDonacion);
 			$('#sel_cat_producto').val(obj.idCategoria);
+			console.log("DATOS: "+obj.idCategoria+"-"+obj.idProducto+'_'+obj.unidadMedida);
 			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.unidadMedida);
 			
 			$('#txt_uni_medida').val(obj.unidadMedida);
@@ -356,6 +359,7 @@ $(document).ready(function() {
 			$('#txt_imp_origen').val(obj.monOrigen);
 			$('#txt_imp_soles').val(obj.monSoles);
 			$('#txt_imp_dolares').val(obj.monDolares);
+			$('#sel_monedas').val(obj.idMoneda);
 			
 			$('#div_det_productos').modal('show');
 		}
@@ -399,15 +403,16 @@ $(document).ready(function() {
 					loadding(true);
 					
 					var params = { 
-						idDetDonacion : codigo
+						idDetDonacion : codigo,
+						idDonacion : $('#hid_id_donacion').val()
 					};
-			
-					consultarAjax('POST', '/donaciones/registrar-donaciones/eliminarProductoDonacion', params, function(respuesta) {
+
+					consultarAjax('POST', '/donaciones/registro-donaciones/eliminarProductoDonacion', params, function(respuesta) {
 						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 							loadding(false);
 							addErrorMessage(null, respuesta.mensajeRespuesta);
 						} else {
-							listarProductoOrdenIngreso(true);
+							listarProductoDonacion(true);
 							addSuccessMessage(null, respuesta.mensajeRespuesta);							
 						}
 					});
@@ -435,7 +440,7 @@ $(document).ready(function() {
 			var params = { 
 				idProducto : idProducto,
 				idDonacion : $('#hid_id_donacion').val(),
-				idDetDonacion : 0,
+				idDetDonacion : $('#hid_cod_producto').val(),
 				idMoneda : $('#sel_monedas').val(),
 				cantidad : formatMonto($('#txt_cantidad').val()),
 				fecVencimiento : $('#txt_fec_vencimiento').val(),
@@ -878,7 +883,7 @@ function listarDetalleProductos(respuesta) {
 	tbl_det_productos.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idProducto',
+			data : 'idDetDonacion',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -890,7 +895,7 @@ function listarDetalleProductos(respuesta) {
 				}											
 			}
 		}, {	
-			data : 'idDetDonacion',
+			data : 'idProducto',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -935,7 +940,7 @@ function cargarProducto(idCategoria, codigoProducto) {
 		} else {
 			var options = '<option value="">Seleccione</option>';
 	        $.each(respuesta, function(i, item) {
-	            options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'">'+item.nombreProducto+'</option>';
+	            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
 	        });
 	        $('#sel_lis_producto').html(options);
 	        if (codigoProducto != null) {

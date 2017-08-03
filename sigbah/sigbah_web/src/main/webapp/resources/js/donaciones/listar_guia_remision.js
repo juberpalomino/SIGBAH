@@ -156,23 +156,21 @@ $(document).ready(function() {
 	
 	$('#btn_exportar').click(function(e) {
 		e.preventDefault();
-		
 		var codigo = $('#hid_codigo').val();
 		var ind_gui = $('#chk_gui_remision').is(':checked') ? '1' : '0';
 		var ind_man = $('#chk_man_carga').is(':checked') ? '1' : '0';
 		var ind_act = $('#chk_act_ent_recepcion').is(':checked') ? '1' : '0';
-		var url = VAR_CONTEXT + '/gestion-almacenes/guia-remision/exportarPdf/';
+		var url = VAR_CONTEXT + '/donaciones/guia-remision/exportarPdf/';
 		url = url + codigo + '/' + ind_gui + '/'+ ind_man + '/' + ind_act;
-				
+		console.log("RUtass: "+url);		
 		if ((ind_gui == '0' && ind_man == '0' && ind_act == '0') || 
 				(ind_gui == '1' && ind_man == '1' && ind_act == '1') || 
 				(ind_gui == '1' && ind_man == '1' && ind_act == '0') || 
 				(ind_gui == '1' && ind_man == '0' && ind_act == '1') || 
 				(ind_gui == '0' && ind_man == '1' && ind_act == '1') ) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un tipo reporte.');
+			addWarnMessage(null, 'Debe de Seleccionar solo un tipo reporterrrr.');
 			return;
 		}
-		
 		loadding(true);
 		$.fileDownload(url).done(function(respuesta) {
 //			$('#div_imp_pdf').modal('hide');
@@ -266,9 +264,9 @@ function listarGuiaRemision(respuesta) {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
+		info : false,
 		iDisplayLength : 15,
 		aLengthMenu : [
 			[15, 50, 100],

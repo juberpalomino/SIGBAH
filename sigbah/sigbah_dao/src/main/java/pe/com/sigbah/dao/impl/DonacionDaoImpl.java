@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
@@ -57,6 +58,7 @@ import pe.com.sigbah.mapper.CierreStockMapper;
 import pe.com.sigbah.mapper.ControlCalidadDonIngresoMapper;
 import pe.com.sigbah.mapper.DatosDonacionMapper;
 import pe.com.sigbah.mapper.DetalleEstadoCartillaInventarioMapper;
+import pe.com.sigbah.mapper.DetalleGuiaRemisionMapper;
 import pe.com.sigbah.mapper.DetalleProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.DocumentoDonacionIngresoMapper;
 import pe.com.sigbah.mapper.DocumentoDonacionMapper;
@@ -835,6 +837,73 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		return registroProductoDonacion;
 	}
 	
+	@Override
+	public ProductoDonacionBean actualizarProductoDonacion(ProductoDonacionBean productoDonacionBean) throws Exception {
+		LOGGER.info("[insertarProductoDonacion] Inicio ");
+		ProductoDonacionBean registroProductoDonacion = new ProductoDonacionBean();
+		try {
+			System.out.println("********");
+			System.out.println(productoDonacionBean.getFecVencimiento());
+			System.out.println(DateUtil.obtenerFechaHoraParseada(productoDonacionBean.getFecVencimiento()));
+			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_DONACION", productoDonacionBean.getIdDonacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_DET_DONACION", productoDonacionBean.getIdDetDonacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PRODUCTO", productoDonacionBean.getIdProducto(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MONEDA", productoDonacionBean.getIdMoneda(), Types.NUMERIC);
+			input_objParametros.addValue("PI_CANTIDAD", productoDonacionBean.getCantidad(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FEC_VENCIMIENTO",  DateUtil.obtenerFechaHoraParseada(productoDonacionBean.getFecVencimiento()), Types.DATE);
+			input_objParametros.addValue("PI_IMP_MONEDA_ORIGEN", productoDonacionBean.getMonOrigen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IMP_MONEDA_SOLES", productoDonacionBean.getMonSoles(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IMP_MONEDA_DOLAR", productoDonacionBean.getMonDolares(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", productoDonacionBean.getUsuario(), Types.VARCHAR);
+			input_objParametros.addValue("PI_CONTROL", "U", Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_PRODUCTODONACION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_DONACION", new SqlParameter("PI_FK_IDE_DONACION", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_DET_DONACION", new SqlParameter("PI_IDE_DET_DONACION", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PRODUCTO", new SqlParameter("PI_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MONEDA", new SqlParameter("PI_IDE_MONEDA", Types.NUMERIC));
+			output_objParametros.put("PI_CANTIDAD", new SqlParameter("PI_CANTIDAD", Types.NUMERIC));
+			output_objParametros.put("PI_FEC_VENCIMIENTO", new SqlParameter("PI_FEC_VENCIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_IMP_MONEDA_ORIGEN", new SqlParameter("PI_IMP_MONEDA_ORIGEN", Types.NUMERIC));
+			output_objParametros.put("PI_IMP_MONEDA_SOLES", new SqlParameter("PI_IMP_MONEDA_SOLES", Types.NUMERIC));
+			output_objParametros.put("PI_IMP_MONEDA_DOLAR", new SqlParameter("PI_IMP_MONEDA_DOLAR", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_IDE_DET_DONACION", new SqlOutParameter("PO_IDE_DET_DONACION", Types.NUMERIC));
+			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[insertarProductoDonacion] Ocurrio un error en la operacion del USP_INS_UPD_PRODUCTODONACION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			registroProductoDonacion.setIdDetDonacion(productoDonacionBean.getIdDonacion());
+			registroProductoDonacion.setCodigoRespuesta(codigoRespuesta);
+			registroProductoDonacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[insertarProductoDonacion] Fin ");
+		return registroProductoDonacion;
+	}
+	
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductoDonacion(pe.com.sigbah.common.bean.ProductoDonacionBean)
 	 */
@@ -883,8 +952,8 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		ProductoDonacionBean registroProductoDonacion = new ProductoDonacionBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-			input_objParametros.addValue("IDE_DET_DONACION", productoDonacionBean.getIdDetDonacion(), Types.NUMERIC);
-			input_objParametros.addValue("FK_IDE_DONACION", productoDonacionBean.getIdDonacion(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_DET_DONACION", productoDonacionBean.getIdDetDonacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_DONACION", productoDonacionBean.getIdDonacion(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -893,8 +962,8 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			objJdbcCall.withProcedureName("USP_DEL_PRODUCTODONACION");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("IDE_DET_DONACION", new SqlParameter("IDE_DET_DONACION", Types.NUMERIC));
-			output_objParametros.put("FK_IDE_DONACION", new SqlParameter("FK_IDE_DONACION", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_DET_DONACION", new SqlParameter("PI_IDE_DET_DONACION", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_DONACION", new SqlParameter("PI_FK_IDE_DONACION", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -3248,6 +3317,48 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		LOGGER.info("[actualizarGuiaRemision] Fin ");
 		return registroGuiaRemision;
 	}
+	
+	@Override
+	public List<DetalleGuiaRemisionBean> listarDetalleGuiaRemision(Integer idGuiaRemision, String tipoOrigen) throws Exception {
+		LOGGER.info("[listarDetalleGuiaRemision] Inicio ");
+		List<DetalleGuiaRemisionBean> lista = new ArrayList<DetalleGuiaRemisionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_TIPO_ORIGEN", tipoOrigen, Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_GUIA_REMISION", idGuiaRemision, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REPORT_GUIA_REMISION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_GUIA_REMISION", new SqlParameter("pi_IDE_GUIA_REMISION", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new DetalleGuiaRemisionMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDetalleGuiaRemision] Ocurrio un error en la operacion del USP_REP_GUIA_DE_REMISION : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<DetalleGuiaRemisionBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDetalleGuiaRemision] Fin ");
+		return lista;
+	}
+
 	
 	///////////////////////////////////////////////////////////////////////
 	//////////////Stock Donacion//////////////////////////////////////////////
