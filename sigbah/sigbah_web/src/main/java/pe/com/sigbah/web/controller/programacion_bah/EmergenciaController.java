@@ -63,6 +63,8 @@ private static final long serialVersionUID = 1L;
         	
         	model.addAttribute("lista_fenomeno", generalService.listarFenomeno(new ItemBean()));
    	
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 

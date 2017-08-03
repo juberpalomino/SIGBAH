@@ -15,6 +15,13 @@ $(document).ready(function() {
 						message : 'Debe seleccionar Año.'
 					}
 				}
+			},
+			sel_region : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Región.'
+					}
+				}
 			}
 		}
 	});
@@ -267,15 +274,15 @@ function listarEmergencia(respuesta) {
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
-		bFilter : false,
-		paging : true,
+		bFilter : true, 
+		paging : false,
 		ordering : false,
-		info : true,
-		iDisplayLength : 15,
-		aLengthMenu : [
-			[15, 50, 100],
-			[15, 50, 100]
-		],
+		info : false,
+		iDisplayLength : 15, 
+//		aLengthMenu : [
+//			[15, 50, 100],
+//			[15, 50, 100]
+//		],
 		columnDefs : [
 			{ width : '15%', targets : 3 },
 			{ width : '15%', targets : 4 },

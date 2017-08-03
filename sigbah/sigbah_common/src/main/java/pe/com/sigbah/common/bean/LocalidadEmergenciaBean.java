@@ -19,6 +19,8 @@ public class LocalidadEmergenciaBean extends BaseOutputBean {
 	private String desProvincia;	
 	private String codDistrito;
 	private String desDistrito;
+	private String codCentroPoblado;
+	private String desCentroPoblado;
 	private Integer famAfectado;
 	private Integer famDamnificado;
 	private Integer persoAfectado;
@@ -187,6 +189,38 @@ public class LocalidadEmergenciaBean extends BaseOutputBean {
 	 */
 	public void setPersoDamnificado(Integer persoDamnificado) {
 		this.persoDamnificado = persoDamnificado;
+	}
+
+
+	/**
+	 * @return the desCentroPoblado
+	 */
+	public String getDesCentroPoblado() {
+		return desCentroPoblado;
+	}
+
+
+	/**
+	 * @param desCentroPoblado the desCentroPoblado to set
+	 */
+	public void setDesCentroPoblado(String desCentroPoblado) {
+		this.desCentroPoblado = desCentroPoblado;
+	}
+
+
+	/**
+	 * @return the codCentroPoblado
+	 */
+	public String getCodCentroPoblado() {
+		return codCentroPoblado;
+	}
+
+
+	/**
+	 * @param codCentroPoblado the codCentroPoblado to set
+	 */
+	public void setCodCentroPoblado(String codCentroPoblado) {
+		this.codCentroPoblado = codCentroPoblado;
 	}
 	
 	

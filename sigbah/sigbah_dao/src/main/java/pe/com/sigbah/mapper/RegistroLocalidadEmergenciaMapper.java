@@ -30,11 +30,14 @@ public class RegistroLocalidadEmergenciaMapper implements RowMapper<LocalidadEme
 		emergencia.setDesProvincia(rs.getString("DES_PROVINCIA"));
 		emergencia.setCodDistrito(rs.getString("COD_DISTRITO"));
 		emergencia.setDesDistrito(rs.getString("DES_DISTRITO"));
+		emergencia.setCodCentroPoblado(rs.getString("COD_CENTRO_POBLA"));
+		emergencia.setDesCentroPoblado(rs.getString("DES_CENTRO_POBLA"));
 		emergencia.setFamAfectado(rs.getInt("FAM_AFECTADO"));
 		emergencia.setFamDamnificado(rs.getInt("FAM_DAMNIFICADO"));
 		emergencia.setPersoAfectado(rs.getInt("PERSO_AFECTADO"));
 		emergencia.setPersoDamnificado(rs.getInt("PERSO_DAMNIFICADO"));
 		
+         
        return emergencia;
 	}
 

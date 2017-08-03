@@ -201,4 +201,12 @@ public interface ProgramacionService {
 	 * @throws Exception
 	 */
 	public abstract PedidoCompraBean obtenerCorrelativoPedidoCompra(PedidoCompraBean parametros ) throws Exception;
+	
+	/**
+	 * @param pedidoCompraBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract PedidoCompraBean insertarRegistroPedido(PedidoCompraBean pedidoCompraBean) throws Exception;
+	
 }

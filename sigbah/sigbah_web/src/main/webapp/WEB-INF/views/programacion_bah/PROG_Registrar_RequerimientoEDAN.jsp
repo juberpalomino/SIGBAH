@@ -76,9 +76,9 @@
 														<div class="col-sm-2 form-group">
 																<input type="text" id="txt_num_requerimiento" class="form-control" >
 														</div>
-														
+														<div class="col-sm-1"></div>
 														<label class="col-sm-2 control-label">Descripción:</label>
-														<div class="col-sm-2 form-group">
+														<div class="col-sm-5 form-group">
 																<input type="text" id="txt_descripcion" name="txt_descripcion" class="form-control" >
 														</div>
 														
@@ -92,10 +92,11 @@
 																<input type="text" name="txt_fecha_requerimiento" id="txt_fecha_requerimiento" class="datepicker" >
 															</label>
 														</div>
-														
-														<label class="col-sm-2 control-label">Region destino:</label>
+														<div class="col-sm-1"></div>
+														<label class="col-sm-2 control-label">Región destino:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_region" name="sel_region" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_region}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -105,9 +106,8 @@
 													</div>
 														
 													<div class="row">
-														<label class="col-sm-2 control-label">El requerimiento se hace con SINPAD?:</label>
-														<div class="col-sm-1"></div>
-														<div class="col-sm-6 form-group">
+														<label class="col-sm-3 control-label">El requerimiento se hace con SINPAD?:</label>
+														<div class="col-sm-2 form-group">
 															<label class="radio radio-inline">
 																<input type="radio" name="rb_req_sinpad" value="1">
 																Si
@@ -122,6 +122,7 @@
 														<label class="col-sm-2 control-label">Fenomeno:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_fenomeno}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -130,14 +131,12 @@
 													</div>
 													
 													<div class="row">
-														<div class="col-sm-6 smart-form">
-															<section>														
-																<label class="control-label">Observaciones:</label>
-																<label class="textarea textarea-resizable"> 										
+														<label class="col-sm-2 control-label">Observaciones:</label>
+														<div class="col-sm-6 smart-form form-group">
+															<label class="textarea textarea-resizable"> 										
 																	<textarea rows="3" name="txt_observaciones" id="txt_observaciones" 
 																		maxlength="500" class="custom-scroll"></textarea> 
 																</label>
-															</section>
 														</div>
 													</div>
 												</div>

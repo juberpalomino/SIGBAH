@@ -38,9 +38,13 @@
 									<a href="#div_dat_generales" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
 									Registrar pedidos de compra</a>
 								</li>
-								<li id="li_damnificados">
+								<li id="li_productos">
 									<a href="#div_productos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
-									Seleccionar productos</a>
+									Productos</a>
+								</li> 
+								<li id="li_documentos">
+									<a href="#div_documentos" data-toggle="tab"><i class="fa fa-fw fa-lg fa-arrow-circle-o-down "></i> 
+									Documentos</a>
 								</li>
 							</ul>
 	
@@ -63,25 +67,20 @@
 												<!-- widget content -->
 												<div class="widget-body">
 								
-													<div class="row">
-														<label class="col-sm-2 control-label">Año:</label>
-														<div class="col-sm-2 form-group">
-																<input type="text" id="txt_anio" name="txt_anio" class="form-control" disabled>
-														</div>
-														
-														<label class="col-sm-2 control-label">DDI:</label>
-														<div class="col-sm-2 form-group">
-																<input type="text" id="txt_ddi" name="txt_ddi" class="form-control" disabled>
-														</div>
-														
-													</div>
 													
 													<div class="row">
-														<label class="col-sm-2 control-label">Nro. pedido:</label>
+														<label class="col-sm-2 control-label">Nro. pedido de compra:</label>
 														<div class="col-sm-2 form-group">
 																<input type="text" id="txt_num_pedido" name="txt_num_pedido"  class="form-control" >
 														</div>
+													</div>	
+													<div class="form-group"></div>
+													<div class="row">
+														<label class="col-sm-2 control-label">Datos generales de pedido</label>
 														
+													</div>	
+													<div class="form-group"></div>
+													<div class="row">
 														<label class="col-sm-2 control-label">Fecha de pedido:</label>
 														<div class="col-sm-2 smart-form form-group">
 															<label class="input"> 
@@ -89,49 +88,43 @@
 																<input type="text" name="txt_fecha_pedido" id="txt_fecha_pedido" class="datepicker" >
 															</label>
 														</div>
-														
-														<select id="sel_estado" name="sel_estado" class="form-control">
-																<c:forEach items="${lista_estado}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-														</select>
-													</div>
-													
-													<div class="row">
-														<select id="sel_tipo_producto" name="sel_tipo_producto" class="form-control">
-																<c:forEach items="${lista_tipo_producto}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-														</select>
-														<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
-																<c:forEach items="${lista_cat_producto}" var="item">
-																    <option value="${item.vcodigo}">${item.descripcion}</option>
-																</c:forEach>
-														</select>
-													</div>
-														
-													<div class="row">
-														<label class="col-sm-2 control-label">Producto:</label>
+														<label class="col-sm-2 control-label">Estado:</label>
 														<div class="col-sm-2 form-group">
-															<select id="sel_producto" name="sel_producto" class="form-control">
-																<c:forEach items="${lista_producto}" var="item">
+															<select id="sel_estado" name="sel_estado" class="form-control">
+																	<c:forEach items="${lista_estado}" var="item">
+																	    <option value="${item.icodigo}">${item.descripcion}</option>
+																	</c:forEach>
+															</select>
+														</div>
+													</div>
+													<div class="row">
+														<label class="col-sm-2 control-label">Pedido por:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_pedidoPor" name="sel_pedidoPor" class="form-control">
+																<option value="">Seleccione</option>
+																<option value="1">Reabastecimiento</option>
+																<option value="2">Emergencia</option>
+															</select>
+														</div>
+													</div>
+													<div class="row">
+														<label class="col-sm-2 control-label">Descripción:</label>
+														<div class="col-sm-6 form-group">
+																<input type="text" id="txt_descripcion" name="txt_descripcion" class="form-control" >
+														</div>
+													</div>
+													<div class="row">
+														<label class="col-sm-2 control-label">DEE:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_dee" name="sel_dee" class="form-control">
+																<option value="">Seleccione</option>
+																<c:forEach items="${lista_dee}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
 															</select>
 														</div>
 													</div>
-													
-													<div class="row">
-														<div class="col-sm-6 smart-form">
-															<section>														
-																<label class="control-label">Observaciones:</label>
-																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="3" name="txt_observaciones" id="txt_observaciones" 
-																		maxlength="500" class="custom-scroll"></textarea> 
-																</label>
-															</section>
-														</div>
-													</div>
+										
 												</div>
 												<!-- end widget content -->
 								
@@ -163,44 +156,73 @@
 										
 								</div>
 								
-								<div class="tab-pane fade" id="div_damnificados">
+								<div class="tab-pane fade" id="div_productos">
 									
 									<!-- Widget ID (each widget will need unique ID)-->
 									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										
-										<form id="frm_dat_generales" class="form-horizontal">
-									
-										<input type="hidden" id="hid_cod_con_calidad" name="hid_cod_con_calidad">
-									
-										
-										
-										<div class="form-group"></div>
-										
-										<div class="form-group">
-											
-											<label class="col-sm-3 control-label label-bold">N° de requerimiento:</label>
-											<div class="col-sm-2">
-												<input type="text" id="txt_nro_req" class="form-control" >
+										<form id="frm_productos" class="form-horizontal">
+											<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
+											<div class="form-group"></div>
+											<div class="row">
+														<label class="col-sm-2 control-label">N° Pedido de compra:</label>
+														<div class="col-sm-2 form-group">
+																<input type="text" id="txt_desc_pedido" name="txt_desc_pedido"  class="form-control" >
+														</div>
+											</div>	
+											<div class="form-group"></div>
+											<div class="row">
+												<label class="col-sm-2 control-label">Datos generales de pedido</label>
+												
+											</div>	
+											<div class="form-group"></div>
+											<div class="row">
+												<label class="col-sm-2 control-label">Categoria de productos:</label>
+												<div class="col-sm-2 form-group">
+													<select id="sel_cate_prod" name="sel_cate_prod" class="form-control">
+														<c:forEach items="${lista_categoria_prod}" var="item">
+														    <option value="${item.icodigo}">${item.descripcion}</option>
+														</c:forEach>
+													</select>
+												</div>
 											</div>
-											<div class="col-sm-2">
-												<input type="text" id="txt_des_req" class="form-control" >
+											<div class="row">
+												<label class="col-sm-2 control-label">Producto:</label>
+												<div class="col-sm-6 form-group">
+													<select id="sel_cate_prod" name="sel_cate_prod" class="form-control">
+														<c:forEach items="${lista_producto}" var="item">
+														    <option value="${item.idProducto}">${item.nombreProducto}</option>
+														</c:forEach>
+													</select>
+												</div>
 											</div>
-										</div>		
+											<div class="row">
+												<label class="col-sm-2 control-label">Unidad de medida:</label>
+												<div class="col-sm-2 form-group">
+														<input type="text" id="txt_unidad_med" name="txt_unidad_med" class="form-control" disabled>
+												</div>
+											</div>
+											<div class="row">
+												<label class="col-sm-2 control-label">Cantidad:</label>
+												<div class="col-sm-2 form-group">
+														<input type="text" id="txt_cantidad" name="txt_cantidad" class="form-control" >
+												</div>
+												<label class="col-sm-2 control-label">Precio unitario (S/):</label>
+												<div class="col-sm-2 form-group">
+														<input type="text" id="txt_precio_uni" name="txt_precio_uni" class="form-control" >
+												</div>
+												<label class="col-sm-2 control-label">Importe Total:</label>
+												<div class="col-sm-2 form-group">
+														<input type="text" id="txt_importe_tot" name="txt_importe_tot" class="form-control" disabled>
+												</div>
+											</div>
 										<div class="form-actions">
 											<div class="row">
 												<div class="col-md-12 opc-center">
-													<button class="btn btn-primary" type="button" id="btn_agregar_ubigeo">
+													<button class="btn btn-primary" type="button" id="btn_grabar_prod">
 														<i class="fa fa-floppy-o"></i>
-														Agregar ubigeo INEI
+														Grabar
 													</button>
 													
-													&nbsp; &nbsp;
-													
-													<button class="btn btn-primary" type="button" id="btn_agregar_emergencia">
-														<i class="fa fa-floppy-o"></i>
-														Agregar emergencia del SINPAD
-													</button>
 												</div>
 											</div>
 										</div>	
@@ -208,18 +230,18 @@
 										
 										<header>
 											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Afectados y damnificados según distrito</h2>
+											<h2>Productos</h2>
 											
 											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Exportar Excel">
-													<i class="fa fa-file-excel-o"></i>
-												</a> 
-												<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Imprimir">
-													<i class="fa fa-file-pdf-o"></i>
+												<a href="#" id="href_prod_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+													data-original-title="Nuevo">
+													<i class="fa fa-file-o"></i>
 												</a>
-												<a href="#" id="href_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_prod_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+													data-original-title="Editar">
+													<i class="fa fa-edit"></i>
+												</a>
+												<a href="#" id="href_prod_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Eliminar">
 													<i class="fa fa-trash-o"></i>
 												</a>
@@ -232,28 +254,16 @@
 											<!-- widget content -->
 											<div class="widget-body">
 
-												<table id="tbl_det_afectados" class="table table-bordered table-hover tbl-responsive">
+												<table id="tbl_mnt_productos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
 															<th></th>
 															<th>Nº</th>
-															<th>Región</th>
-															<th>Provincia</th>
-															<th>Distrito</th>
-															<th>Código SINPAD</th>
-															<th>Pob. INEI</th>
-															<th>Fam. Afect. SINPAD</th>
-															<th>Fam. dam SINPAD</th>
-															<th>Total fam. SINPAD</th>
-															<th>Pers. afect. SINPAD</th>
-															<th>Pers. dam. SINPAD</th>
-															<th>Total pers. SINPAD</th>
-															<th>Fam. Afect. REAL</th>
-															<th>Fam. dam. REAL</th>
-															<th>Total fam. REAL</th>
-															<th>Pers. afect. REAL</th>
-															<th>Pers. dam. REAL</th>
-															<th>Total pers. REAL</th>
+															<th>Producto</th>
+															<th>Unidad de medida</th>
+															<th>Cantidad</th>
+															<th>Precio unitario (S/)</th>
+															<th>Importe total (S/)</th>
 														</tr>
 													</thead>
 												</table>
@@ -268,19 +278,86 @@
 									<!-- end widget -->
 									
 									<div class="modal-footer">
-										<button type="button" class="btn btn-primary" id="btn_gra_afectados">
-											<i class="fa fa-floppy-o"></i>
-											Grabar
-										</button>
-										
-										&nbsp; &nbsp;
-										
 										<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_afectados">
 											<i class="fa fa-mail-forward"></i>
-											Cancelar
+											Retornar
 										</button>
 									</div>
 									
+								</div>
+								
+								<div class="tab-pane fade" id="div_documentos">
+									<form id="frm_documento" class="form-horizontal">
+											<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
+											<div class="form-group"></div>
+											<div class="row">
+														<label class="col-sm-2 control-label">Pedido de compras:</label>
+														<div class="col-sm-2 form-group">
+																<input type="text" id="txt_desc_pedido_doc" name="txt_desc_pedido_doc"  class="form-control" >
+														</div>
+											</div>	
+											<div class="form-group"></div>
+											<div class="row">
+												<label class="col-sm-2 control-label">Registro de Documentos</label>
+												
+											</div>	
+											<div class="form-group"></div>
+											
+											<div class="row">
+												<label class="col-sm-2 control-label">Tipo de documento:</label>
+												<div class="col-sm-2 form-group">
+													<select id="sel_cate_prod" name="sel_cate_prod" class="form-control">
+														<c:forEach items="${lista_tipo_doc}" var="item">
+														    <option value="${item.icodigo}">${item.descripcion}</option>
+														</c:forEach>
+													</select>
+												</div>
+												
+												<label class="col-sm-1 control-label">N° doc.:</label>
+												<div class="col-sm-1 form-group">
+														<input type="text" id="txt_num_doc" name="txt_num_doc" class="form-control" disabled>
+												</div>
+												
+												<label class="col-sm-1 control-label">Fecha:</label>
+												<div class="col-sm-2 smart-form form-group">
+													<label class="input"> 
+														<i class="icon-append fa fa-calendar"></i>
+														<input type="text" name="txt_fecha_doc" id="txt_fecha_doc" class="datepicker" >
+													</label>
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-1 control-label">Subir Archivo:</label>
+													<div class="col-sm-2 smart-form">
+														<div class="input input-file">
+															<span id="sp_sub_archivo" class="button">
+																<input type="file" id="fil_sub_archivo" name="fil_sub_archivo">
+																Cargar
+															</span>
+															<input type="text" id="txt_lee_sub_archivo" name="txt_lee_sub_archivo" readonly>
+														</div>
+													</div>
+													<div class="col-sm-1">
+														<a href="#" id="href_eli_archivo" class="btn btn-default txt-color-red" rel="tooltip" 
+															data-placement="right" data-original-title="Eliminar Archivo" data-html="true">
+															<i class="fa fa-eraser fa-lg"></i>
+														</a>
+													</div>					
+												</div>
+											</div>
+											
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-md-12 opc-center">
+													<button class="btn btn-primary" type="button" id="btn_grabar_prod">
+														<i class="fa fa-floppy-o"></i>
+														Grabar
+													</button>
+													
+												</div>
+											</div>
+										</div>	
+									</form>
 								</div>
 							</div>
 	
@@ -318,7 +395,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12">
-						<form id="frm_det_prog_ubigeo" class="form-horizontal" role="form">
+						<form id="frm_documento" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_producto" name="hid_cod_producto">
 						
@@ -587,7 +664,7 @@
 
 
 <!-- inline scripts related to this page -->
-<script> var requerimiento = JSON.parse('${requerimiento}'); </script>
-<script> var lista_requerimiento = JSON.parse('${lista_requerimiento}'); </script>
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/mantenimiento_requerimiento.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_requerimiento.js"></script>
+<script> var pedido = JSON.parse('${pedido}'); </script>
+<script> var lista_pedido = JSON.parse('${lista_pedido}'); </script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/mantenimiento_pedido_compra.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_pedidos_compra.js"></script>

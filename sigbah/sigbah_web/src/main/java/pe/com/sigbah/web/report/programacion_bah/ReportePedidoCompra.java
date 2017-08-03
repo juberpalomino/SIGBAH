@@ -120,7 +120,7 @@ public class ReportePedidoCompra implements Serializable {
 		        rows.createCell(6).setCellValue(pedido.getDescripcion());
 		        rows.getCell(6).setCellStyle(style_cell);
 		        
-		        rows.createCell(7).setCellValue(pedido.getDde());
+		        rows.createCell(7).setCellValue(pedido.getDee());
 		        rows.getCell(7).setCellStyle(style_cell);
 		        
 		        rows.createCell(8).setCellValue(pedido.getNomEstado());

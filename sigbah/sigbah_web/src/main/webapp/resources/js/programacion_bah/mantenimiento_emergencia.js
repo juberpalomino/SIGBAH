@@ -94,7 +94,9 @@ function listarDetalleLocalidad(respuesta) {
 		}, {
 			data : 'desProvincia'
 		}, {
-			data : 'desDistrito'
+			data : 'desDistrito' 
+		}, {
+			data : 'desCentroPoblado'
 		}, {
 			data : 'famAfectado'
 		} , {
@@ -110,7 +112,7 @@ function listarDetalleLocalidad(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	   
 	listaLocalidadesCache = respuesta;
@@ -139,7 +141,7 @@ function listarDetalleAlimentarios(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaAlimentariosCache = respuesta;
@@ -171,7 +173,7 @@ function listarDetalleNoAlimentarios(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaNoAlimentariosCache = respuesta;

@@ -1,35 +1,29 @@
 $(document).ready(function() {
 
-	frm_pedi_compra.bootstrapValidator({ 
+	frm_dat_generales.bootstrapValidator({  
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
 			// Datos Generales
-			sel_tipo_racion : {
-				validators : {
+		
+			sel_pedidoPor : {
+				validators : { 
 					notEmpty : {
-						message : 'Debe seleccionar Tipo de Ración.'
+						message : 'Debe seleccionar pedido por.'
 					}
 				}
 			},
-			txt_nom_racion : {
+			txt_descripcion : { 
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar Nombre Ración.'
+						message : 'Debe ingresar descripción.'
 					}
 				}
 			},
-			txt_num_dias : { 
+			sel_dee : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar numero dias de atención.'
-					}
-				}
-			},
-			txt_fecha : {
-				validators : {
-					notEmpty : {
-						message : 'Debe ingresar fecha.'
+						message : 'Debe seleccionar DEE.'
 					}
 				}
 			}

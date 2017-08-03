@@ -1,10 +1,13 @@
-var listaRacionCache = new Object();
-var listaProductoCache = new Object();
-var frm_dat_generales_racion = $('#frm_dat_generales_racion');
-var tbl_mnt_racion_ope = $('#tbl_mnt_racion_ope'); 
- 
-var frm_det_productos = $('#frm_det_productos');
+//var listaRacionCache = new Object();
+//var listaProductoCache = new Object();
+var frm_dat_generales = $('#frm_dat_generales');
+//var tbl_mnt_racion_ope = $('#tbl_mnt_racion_ope'); 
+// 
+var frm_productos = $('#frm_productos');
 var tbl_mnt_productos = $('#tbl_mnt_productos'); 
+
+var frm_documento = $('#frm_documento');
+
 
 $(document).ready(function() {
 	
@@ -17,24 +20,27 @@ $(document).ready(function() {
 	
 	inicializarDatos();
 
-	$('#btn_grabar_racion').click(function(e) {
+	$('#btn_grabar_dat_gen').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_dat_generales_racion.data('bootstrapValidator');
+		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			var codigo = $('#hid_cod_raciones').val();
+			var codigo = $('#hid_cod_ped_compra').val();
 			var params = {
-				tipoRacion : $('#sel_tipo_racion').val(),
-				codRacion : $('#txt_cod_racion').val(),
-				nombreRacion : $('#txt_nom_racion').val(),  
-				diasAtencion : $('#txt_num_dias').val(),
-				fechaRacion : $('#txt_fecha').val() 
+//				tipoRacion : $('#txt_num_pedido').val(),
+					codPedido :pedido.codPedido,
+					fecPedido : $('#txt_fecha_pedido').val(),
+					codEstado : $('#sel_estado').val(),  
+					codPedidoPor : $('#sel_pedidoPor').val(),
+					descripcion : $('#txt_descripcion').val(),
+					dee : $('#sel_dee').val()
+				
 			};
 			
 			loadding(true);
 			
-			consultarAjax('POST', '/programacion-bath/racion/grabarRacion', params, function(respuesta) {
+			consultarAjax('POST', '/programacion-bath/pedido/grabarPedido', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -45,11 +51,11 @@ $(document).ready(function() {
 						
 					} else { 
 						
-						addSuccessMessage(null, 'Se genero la racion el N°  '+$('#txt_cod_racion').val());   
-						racion.idRacionOpe=respuesta.idRacionOpe;
-						$('#div_tabla_prod').show();
-
-						$('#btn_grabar_racion').attr("disabled", true); 
+						addSuccessMessage(null, respuesta.mensajeRespuesta);
+//						racion.idRacionOpe=respuesta.idRacionOpe;
+//						$('#div_tabla_prod').show();
+//
+//						$('#btn_grabar_racion').attr("disabled", true); 
 
 						
 					}
@@ -66,7 +72,7 @@ $(document).ready(function() {
 	$('#btn_gra_prod').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_det_productos.data('bootstrapValidator');
+		var bootstrapValidator = frm_productos.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			var codigo = $('#hid_cod_producto').val();
@@ -110,7 +116,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		$('#h4_tit_productos').html('Productos');
-		frm_det_productos.trigger('reset');
+		frm_productos.trigger('reset');
 	
 		$('#hid_cod_producto').val('');
 		$('#div_det_productos').modal('show');
@@ -263,11 +269,13 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		//inicializar los valores
-		$('#txt_cod_racion').val(racion.codRacion);
-		$('#txt_fecha').val(racion.fechaRacion);
+		$('#txt_num_pedido').val(pedido.codPedidoConcate);
+		$('#txt_fecha_pedido').val(pedido.fecPedido);
 		
+		$('#txt_desc_pedido').val(pedido.codPedidoConcate);
+		$('#txt_desc_pedido_doc').val(pedido.codPedidoConcate);
 		
-		if (!esnulo(racion.codRacion)) {
+		if (!esnulo(pedido.codPedido)) {
 			
 
 			
@@ -279,139 +287,139 @@ function inicializarDatos() {
 	
 }
 
-
-function llenarProductos(codigo) {
-		
-			var params = { 
-					idRacion : codigo
-			};
-			
-			loadding(true);
-			
-			consultarAjax('GET', '/programacion-bath/racion/listarProductos', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					addSuccessMessage(null, respuesta.mensajeRespuesta);
-					 listarProductos(respuesta);
-				}
-				loadding(false);
-			});
-	
-}
-
-
-function listarProductos(respuesta) {
-
-	tbl_mnt_productos.dataTable().fnDestroy();
-	tbl_mnt_productos.dataTable({
-			data : respuesta,
-			columns : [ {
-					data : 'fkIdProducto',
-					sClass : 'opc-center',
-					render: function(data, type, row) {
-						if (data != null) {
-							return '<label class="checkbox">'+
-										'<input type="checkbox"><i></i>'+
-									'</label>';	
-						} else {
-							return '';	
-						}											
-					}	
-				}, {	
-					data : 'fkIdProducto',
-					render : function(data, type, full, meta) {
-						var row = meta.row + 1;
-						return row;											
-					}
-				}, {data : 'nombProducto'}, 
-				{data : 'pesoUnitarioPres'}, 
-				{data : 'cantRacionKg'}
-			],
-			language : {
-				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
-			},
-			bFilter : false,
-			paging : false,
-			ordering : false,
-			info : false,
-			iDisplayLength : 15,
-			aLengthMenu : [
-				[15, 50, 100],
-				[15, 50, 100]
-			],
-			columnDefs : [
-				{ width : '55%', targets : 2 },
-				{ width : '15%', targets : 3 },
-				{ width : '15%', targets : 4 }
-			]
-		});
-		
-	listaProductoCache = respuesta;
-
-	}
-
-
-function listarDetalleRequerimiento(respuesta) {
-
-	tbl_mnt_racion_ope.dataTable().fnDestroy();
-	tbl_mnt_racion_ope.dataTable({
-			data : respuesta,
-			columns : [ {
-					data : 'idEmergencia',
-					sClass : 'opc-center',
-					render: function(data, type, row) {
-						if (data != null) {
-							return '<label class="checkbox">'+
-										'<input type="checkbox"><i></i>'+
-									'</label>';	
-						} else {
-							return '';	
-						}											
-					}	
-				}, {	
-					data : 'idEmergencia',
-					render : function(data, type, full, meta) {
-						var row = meta.row + 1;
-						return row;											
-					}
-				}, {data : 'desDepartamento'}, 
-				{data : 'desProvincia'}, 
-				{data : 'desDistrito'}, 
-				{data : 'idEmergencia'},
-				{data : 'poblacionINEI'},
-				{data : 'famAfectado'},
-				{data : 'famDamnificado'},
-				{data : 'totalFam'},
-				{data : 'persoAfectado'},
-				{data : 'persoDamnificado'},
-				{data : 'totalPerso'},
-				{data : 'famAfectadoReal'},
-				{data : 'famDamnificadoReal'},
-				{data : 'totalFamReal'},
-				{data : 'persoAfectadoReal'}, 
-				{data : 'persoDamnificadoReal'}, 
-				{data : 'totalPersoReal'}
-			],
-			language : {
-				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
-			},
-			bFilter : false,
-			paging : false,
-			ordering : false,
-			info : false,
-			iDisplayLength : 15,
-			aLengthMenu : [
-				[15, 50, 100],
-				[15, 50, 100]
-			],
-			columnDefs : [
-				{ width : '15%', targets : 3 },
-				{ width : '15%', targets : 4 },
-				{ width : '15%', targets : 5 }
-			]
-		});
-		
-	listaRacionCache = respuesta;
-
-	}
+//
+//function llenarProductos(codigo) {
+//		
+//			var params = { 
+//					idRacion : codigo
+//			};
+//			
+//			loadding(true);
+//			
+//			consultarAjax('GET', '/programacion-bath/racion/listarProductos', params, function(respuesta) {
+//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+//					addErrorMessage(null, respuesta.mensajeRespuesta);
+//				} else {
+//					addSuccessMessage(null, respuesta.mensajeRespuesta);
+//					 listarProductos(respuesta);
+//				}
+//				loadding(false);
+//			});
+//	
+//}
+//
+//
+//function listarProductos(respuesta) {
+//
+//	tbl_mnt_productos.dataTable().fnDestroy();
+//	tbl_mnt_productos.dataTable({
+//			data : respuesta,
+//			columns : [ {
+//					data : 'fkIdProducto',
+//					sClass : 'opc-center',
+//					render: function(data, type, row) {
+//						if (data != null) {
+//							return '<label class="checkbox">'+
+//										'<input type="checkbox"><i></i>'+
+//									'</label>';	
+//						} else {
+//							return '';	
+//						}											
+//					}	
+//				}, {	
+//					data : 'fkIdProducto',
+//					render : function(data, type, full, meta) {
+//						var row = meta.row + 1;
+//						return row;											
+//					}
+//				}, {data : 'nombProducto'}, 
+//				{data : 'pesoUnitarioPres'}, 
+//				{data : 'cantRacionKg'}
+//			],
+//			language : {
+//				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+//			},
+//			bFilter : false,
+//			paging : false,
+//			ordering : false,
+//			info : false,
+//			iDisplayLength : 15,
+//			aLengthMenu : [
+//				[15, 50, 100],
+//				[15, 50, 100]
+//			],
+//			columnDefs : [
+//				{ width : '55%', targets : 2 },
+//				{ width : '15%', targets : 3 },
+//				{ width : '15%', targets : 4 }
+//			]
+//		});
+//		
+//	listaProductoCache = respuesta;
+//
+//	}
+//
+//
+//function listarDetalleRequerimiento(respuesta) {
+//
+//	tbl_mnt_racion_ope.dataTable().fnDestroy();
+//	tbl_mnt_racion_ope.dataTable({
+//			data : respuesta,
+//			columns : [ {
+//					data : 'idEmergencia',
+//					sClass : 'opc-center',
+//					render: function(data, type, row) {
+//						if (data != null) {
+//							return '<label class="checkbox">'+
+//										'<input type="checkbox"><i></i>'+
+//									'</label>';	
+//						} else {
+//							return '';	
+//						}											
+//					}	
+//				}, {	
+//					data : 'idEmergencia',
+//					render : function(data, type, full, meta) {
+//						var row = meta.row + 1;
+//						return row;											
+//					}
+//				}, {data : 'desDepartamento'}, 
+//				{data : 'desProvincia'}, 
+//				{data : 'desDistrito'}, 
+//				{data : 'idEmergencia'},
+//				{data : 'poblacionINEI'},
+//				{data : 'famAfectado'},
+//				{data : 'famDamnificado'},
+//				{data : 'totalFam'},
+//				{data : 'persoAfectado'},
+//				{data : 'persoDamnificado'},
+//				{data : 'totalPerso'},
+//				{data : 'famAfectadoReal'},
+//				{data : 'famDamnificadoReal'},
+//				{data : 'totalFamReal'},
+//				{data : 'persoAfectadoReal'}, 
+//				{data : 'persoDamnificadoReal'}, 
+//				{data : 'totalPersoReal'}
+//			],
+//			language : {
+//				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+//			},
+//			bFilter : false,
+//			paging : false,
+//			ordering : false,
+//			info : false,
+//			iDisplayLength : 15,
+//			aLengthMenu : [
+//				[15, 50, 100],
+//				[15, 50, 100]
+//			],
+//			columnDefs : [
+//				{ width : '15%', targets : 3 },
+//				{ width : '15%', targets : 4 },
+//				{ width : '15%', targets : 5 }
+//			]
+//		});
+//		
+//	listaRacionCache = respuesta;
+//
+//	}

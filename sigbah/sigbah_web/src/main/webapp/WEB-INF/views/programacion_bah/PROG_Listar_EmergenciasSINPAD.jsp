@@ -63,12 +63,16 @@
 									<label class="col-sm-1 control-label">Región:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_region" name="sel_region" class="form-control">
+										   <option value="">Seleccione</option>
 											<c:forEach items="${lista_region}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
 									
+								</div>
+								<div class="row">
+								
 									<label class="col-sm-1 control-label">Fenómeno:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
@@ -82,30 +86,29 @@
 									<div class="col-sm-1 opc-center">
 										<button class="btn btn-primary" type="button" id="btn_aceptar">
 											<i class="fa fa-search"></i>
-											Aceptar
-										</button>
-									</div>
-								</div>
-								
-								
-							</form>
-		
-							<form id="frm_emer_sinpad2" class="form-horizontal">
-							
-								<div class="row">
-									<label class="col-sm-1 control-label"></label>
-									<div class="col-sm-2  form-group" >
-										<input type="text" id="txt_caja_busqueda" class="form-control">
-									</div>
-									<div class="col-sm-2 opc-center">
-										<button class="btn btn-primary" type="button" id="btn_buscar">
-											<i class="fa fa-search"></i>
 											Buscar
 										</button>
 									</div>
 								</div>
 								
 							</form>
+		
+<!-- 							<form id="frm_emer_sinpad2" class="form-horizontal"> -->
+							
+<!-- 								<div class="row"> -->
+<!-- 									<label class="col-sm-1 control-label"></label> -->
+<!-- 									<div class="col-sm-2  form-group" > -->
+<!-- 										<input type="text" id="txt_caja_busqueda" class="form-control"> -->
+<!-- 									</div> -->
+<!-- 									<div class="col-sm-2 opc-center"> -->
+<!-- 										<button class="btn btn-primary" type="button" id="btn_buscar"> -->
+<!-- 											<i class="fa fa-search"></i> -->
+<!-- 											Buscar -->
+<!-- 										</button> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+								
+<!-- 							</form> -->
 						</div>
 						<!-- end widget content -->
 		
@@ -161,7 +164,7 @@
 										<th>Fecha</th>
 										<th>Código SINPAD</th>
 										<th>Fenómeno</th>
-										<th>Nombre Emergencias</th>
+										<th>Emergencia</th>
 										<th>Región</th>
 										<th>Provincia</th>
 										<th>Distrito</th>

@@ -19,20 +19,20 @@ $(document).ready(function() {
 					}
 				}
 			},
-//			sel_region : { 
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar región.'
-//					}
-//				}
-//			},
-//			sel_fenomeno : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Fenómeno.'
-//					}
-//				}
-//			},
+			sel_region : { 
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar región.'
+					}
+				}
+			},
+			sel_fenomeno : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Fenómeno.'
+					}
+				}
+			},
 			rb_req_sinpad : {
 				validators : {
 					notEmpty : {

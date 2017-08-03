@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -171,20 +173,22 @@ private static final long serialVersionUID = 1L;
         		String anioActual = generalService.obtenerAnioActual();
         		parametros.setCodAnio(anioActual);
         		parametros.setFkIdeDdi(usuarioBean.getIdDdi());   
-        		
+        		parametros.setCodDdi(usuarioBean.getCodigoDdi());   
         		PedidoCompraBean respuestaCorrelativo = programacionService.obtenerCorrelativoPedidoCompra(parametros);
-//        		pedido.setCodRacion(respuestaCorrelativo.getCodRacion());   		
-//        		Date fecha_hora = Calendar.getInstance().getTime();
-//        		pedido.setFechaRacion(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
-//        		
-//    			model.addAttribute("pedido", getParserObject(pedido));
+        		pedido.setCodPedidoConcate(respuestaCorrelativo.getCodPedidoConcate()); 
+        		pedido.setCodPedido(respuestaCorrelativo.getCodPedido()); 
+        		Date fecha_hora = Calendar.getInstance().getTime();
+        		pedido.setFecPedido(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+        		
+    			model.addAttribute("pedido", getParserObject(pedido));
         	}
 	
-        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean()));
-        	model.addAttribute("lista_dee", generalService.listarDee(new ItemBean()));//whr consultar
-        	model.addAttribute("lista_tipo_prod", generalService.listarTipoProducto(new ItemBean()));
-        	model.addAttribute("lista_categoria_prod", generalService.listarCategoria(new ItemBean()));
-        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
+        	model.addAttribute("lista_estado", generalService.listarEstadoPedidoCompra(new ItemBean()));
+        	model.addAttribute("lista_dee", generalService.listarDee(new ItemBean()));
+        	
+//        	model.addAttribute("lista_tipo_prod", generalService.listarTipoProducto(new ItemBean()));
+//        	model.addAttribute("lista_categoria_prod", generalService.listarCategoria(new ItemBean()));
+//        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
@@ -195,4 +199,44 @@ private static final long serialVersionUID = 1L;
         return "mantenimiento-pedido-compra";
     }
 	
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/grabarPedido", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarPedido(HttpServletRequest request, HttpServletResponse response) {
+		PedidoCompraBean pedido = null;
+		try {			
+			PedidoCompraBean pedidoBean = new PedidoCompraBean();
+
+	        // Convierte los vacios en nulos en los enteros
+			IntegerConverter con_integer = new IntegerConverter(null);
+			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
+			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			// Copia los parametros del cliente al objeto
+			beanUtilsBean.populate(pedidoBean, request.getParameterMap());
+
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	String anioActual = generalService.obtenerAnioActual();
+        	
+        	pedidoBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
+        	pedidoBean.setFkIdeDdi(usuarioBean.getIdDdi());
+        	pedidoBean.setCodAnio(anioActual);
+        	pedidoBean.setCodDdi(usuarioBean.getCodigoDdi());
+			if (!isNullInteger(pedidoBean.getIdPedidoCom())) {				
+//				pedido = programacionService.actualizarRegistroRacion(pedidoBean);				
+			} else {			
+				pedido = programacionService.insertarRegistroPedido(pedidoBean);			
+			}
+			pedido.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return pedido;
+	}
 }

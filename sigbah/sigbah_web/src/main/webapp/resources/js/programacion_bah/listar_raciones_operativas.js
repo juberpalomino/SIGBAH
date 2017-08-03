@@ -266,9 +266,9 @@ function listarRacion(respuesta) {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
+		info : false,
 		iDisplayLength : 15,
 		aLengthMenu : [
 			[15, 50, 100],

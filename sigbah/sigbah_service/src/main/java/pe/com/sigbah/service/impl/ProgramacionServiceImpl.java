@@ -220,4 +220,12 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	public PedidoCompraBean obtenerCorrelativoPedidoCompra(PedidoCompraBean parametros) throws Exception {
 		return programacionDao.obtenerCorrelativoPedidoCompra(parametros);
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#insertarRegistroPedido(pe.com.sigbah.common.bean.PedidoCompraBean)
+	 */
+	@Override
+	public PedidoCompraBean insertarRegistroPedido(PedidoCompraBean pedidoCompraBean) throws Exception {
+		return programacionDao.insertarRegistroPedido(pedidoCompraBean);
+	}
 }

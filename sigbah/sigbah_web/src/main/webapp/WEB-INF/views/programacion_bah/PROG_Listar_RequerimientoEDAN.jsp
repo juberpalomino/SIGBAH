@@ -75,7 +75,7 @@
 									<div class="col-sm-1 opc-center">
 										<button class="btn btn-primary" type="button" id="btn_aceptar">
 											<i class="fa fa-search"></i>
-											Aceptar
+											Buscar
 										</button>
 									</div>
 								</div>
@@ -140,10 +140,10 @@
 										<th>Año</th>
 										<th>Mes</th>
 										<th>Fecha</th>
-										<th>Nro. Requerimiento</th>
+										<th>N° Requerimiento</th>
 										<th>Descripción</th>
 										<th>Fenómeno</th>
-										<th>Región destino</th>
+										<th>Región Destino</th>
 									</tr>
 								</thead>
 							</table>

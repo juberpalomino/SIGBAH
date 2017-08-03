@@ -20,7 +20,7 @@ public class PedidoCompraBean extends BaseOutputBean {
 	private Integer fkIdeDdi;
 	private String nombreDdi;
 	private String fecPedido;
-	private String dde;
+	private String dee;
 	private String tipFenomeno;
 	private String NomEstado;
 	private String codEstado;
@@ -29,7 +29,9 @@ public class PedidoCompraBean extends BaseOutputBean {
 	private String numPedidoCompra;
 	private String descripcion;
 	private String codDdi;
-	
+	private String codPedidoPor;
+	private String descPedidoPor;
+	private String tipPedido;
 	/**
 	 * 
 	 */
@@ -123,18 +125,20 @@ public class PedidoCompraBean extends BaseOutputBean {
 		this.fecPedido = fecPedido;
 	}
 
+	
+
 	/**
-	 * @return the dde
+	 * @return the dee
 	 */
-	public String getDde() {
-		return dde;
+	public String getDee() {
+		return dee;
 	}
 
 	/**
-	 * @param dde the dde to set
+	 * @param dee the dee to set
 	 */
-	public void setDde(String dde) {
-		this.dde = dde;
+	public void setDee(String dee) {
+		this.dee = dee;
 	}
 
 	/**
@@ -275,6 +279,48 @@ public class PedidoCompraBean extends BaseOutputBean {
 	 */
 	public void setCodPedidoConcate(String codPedidoConcate) {
 		this.codPedidoConcate = codPedidoConcate;
+	}
+
+	/**
+	 * @return the codPedidoPor
+	 */
+	public String getCodPedidoPor() {
+		return codPedidoPor;
+	}
+
+	/**
+	 * @param codPedidoPor the codPedidoPor to set
+	 */
+	public void setCodPedidoPor(String codPedidoPor) {
+		this.codPedidoPor = codPedidoPor;
+	}
+
+	/**
+	 * @return the descPedidoPor
+	 */
+	public String getDescPedidoPor() {
+		return descPedidoPor;
+	}
+
+	/**
+	 * @param descPedidoPor the descPedidoPor to set
+	 */
+	public void setDescPedidoPor(String descPedidoPor) {
+		this.descPedidoPor = descPedidoPor;
+	}
+
+	/**
+	 * @return the tipPedido
+	 */
+	public String getTipPedido() {
+		return tipPedido;
+	}
+
+	/**
+	 * @param tipPedido the tipPedido to set
+	 */
+	public void setTipPedido(String tipPedido) {
+		this.tipPedido = tipPedido;
 	}
 
 	

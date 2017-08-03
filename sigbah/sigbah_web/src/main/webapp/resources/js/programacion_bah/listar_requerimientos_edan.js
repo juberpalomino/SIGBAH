@@ -235,19 +235,22 @@ function listarRequerimiento(respuesta) {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
+		info : false,
 		iDisplayLength : 15,
-		aLengthMenu : [
-			[15, 50, 100],
-			[15, 50, 100]
-		],
+//		aLengthMenu : [
+//			[15, 50, 100],
+//			[15, 50, 100]
+//		],
 		columnDefs : [
-			{ width : '15%', targets : 3 },
-			{ width : '15%', targets : 4 },
-			{ width : '15%', targets : 5 },
-			{ width : '18%', targets : 7 }
+			{ width : '10%', targets : 2 },
+			{ width : '10%', targets : 3 },
+			{ width : '10%', targets : 4 },
+			{ width : '10%', targets : 5 },
+			{ width : '25%', targets : 6 },
+			{ width : '25%', targets : 7 },
+			{ width : '10%', targets : 8 }
 		]
 	});
 	

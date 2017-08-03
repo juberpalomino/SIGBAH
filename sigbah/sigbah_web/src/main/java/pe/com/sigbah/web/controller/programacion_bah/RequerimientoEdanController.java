@@ -93,7 +93,12 @@ private static final long serialVersionUID = 1L;
 		try {			
 			RequerimientoBean requerimientoBean = new RequerimientoBean();	
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(requerimientoBean, request.getParameterMap());			
+			BeanUtils.populate(requerimientoBean, request.getParameterMap());	
+			
+			 
+			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			requerimientoBean.setFkIdeDdi(Integer.parseInt(usuarioBean.getCodigoDdi()));
+			
 			lista = programacionService.listarRequerimiento(requerimientoBean); 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

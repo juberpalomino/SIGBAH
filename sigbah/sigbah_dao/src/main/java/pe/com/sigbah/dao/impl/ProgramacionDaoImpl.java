@@ -200,6 +200,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
 			input_objParametros.addValue("PI_COD_ANIO", requerimientoBean.getCodAnio(), Types.VARCHAR);
 			input_objParametros.addValue("PI_COD_MES", Utils.getParam(requerimientoBean.getCodMes()), Types.VARCHAR);
+			input_objParametros.addValue("PI_ID_DDI", Utils.getParam(requerimientoBean.getFkIdeDdi()), Types.INTEGER);
 			input_objParametros.addValue("PI_IDE_FENOMENO", requerimientoBean.getIdFenomeno(), Types.VARCHAR);
 			
 		
@@ -212,6 +213,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
+			output_objParametros.put("PI_ID_DDI", new SqlParameter("PI_ID_DDI", Types.INTEGER));
 			output_objParametros.put("PI_IDE_FENOMENO", new SqlParameter("PI_IDE_FENOMENO", Types.VARCHAR));
 			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new RequerimientoMapper()));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
@@ -1261,6 +1263,76 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		LOGGER.info("[obtenerCorrelativoPedidoCompra] Fin ");
 		return pedidoBean;
 		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#insertarRegistroPedido(pe.com.sigbah.common.bean.PedidoCompraBean)
+	 */
+	@Override
+	public PedidoCompraBean insertarRegistroPedido(PedidoCompraBean pedidoCompraBean) throws Exception {
+		LOGGER.info("[insertarRegistroPedido] Inicio ");
+		PedidoCompraBean pedidoCompra = new PedidoCompraBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_PEDIDO_COMPRA", pedidoCompraBean.getIdPedidoCom(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NOM_PEDIDO_COMPRA", pedidoCompraBean.getDescripcion(), Types.VARCHAR);//whr verificar
+			input_objParametros.addValue("PI_IDE_ESTADO", pedidoCompraBean.getCodEstado(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", pedidoCompraBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_PEDIDO", pedidoCompraBean.getCodPedido(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DDI", pedidoCompraBean.getCodDdi(), Types.VARCHAR);
+			input_objParametros.addValue("PI_FEC_PEDIDO", DateUtil.obtenerFechaHoraParseada(pedidoCompraBean.getFecPedido()), Types.DATE);
+			input_objParametros.addValue("PI_TIP_PEDIDO", pedidoCompraBean.getCodPedidoPor(), Types.VARCHAR);
+			input_objParametros.addValue("PI_FK_IDE_DEE", pedidoCompraBean.getDee(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_DDI", pedidoCompraBean.getFkIdeDdi(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", pedidoCompraBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+            
+            objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_PEDIDO_COMPRA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PEDIDO_COMPRA", new SqlParameter("PI_IDE_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PI_NOM_PEDIDO_COMPRA", new SqlParameter("PI_NOM_PEDIDO_COMPRA", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ESTADO", new SqlParameter("PI_IDE_ESTADO", Types.NUMERIC));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_PEDIDO", new SqlParameter("PI_COD_PEDIDO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("PI_FEC_PEDIDO", new SqlParameter("PI_FEC_PEDIDO", Types.DATE));
+			output_objParametros.put("PI_TIP_PEDIDO", new SqlParameter("PI_TIP_PEDIDO", Types.VARCHAR));
+			output_objParametros.put("PI_FK_IDE_DEE", new SqlParameter("PI_FK_IDE_DEE", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_DDI", new SqlParameter("PI_FK_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PO_IDE_PEDIDO_COMPRA", new SqlOutParameter("PO_IDE_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[insertarRegistroPedido] Ocurrio un error en la operacion del USP_INS_UPD_PEDIDO_COMPRA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+		
+			pedidoCompra.setIdPedidoCom(((BigDecimal)  out.get("PO_IDE_PEDIDO_COMPRA")).intValue());
+			pedidoCompra.setCodigoRespuesta(codigoRespuesta);
+			pedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[insertarRegistroPedido] Fin ");
+		return pedidoCompra;
 	}
 
 
