@@ -23,15 +23,15 @@ import org.springframework.stereotype.Repository;
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.AlimentariaEmergenciaBean;
 import pe.com.sigbah.common.bean.CabeceraEmergenciaBean;
-import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DeeBean;
+import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.LocalidadEmergenciaBean;
 import pe.com.sigbah.common.bean.NoAlimentariaEmergenciaBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
-import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
@@ -41,7 +41,9 @@ import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionDao;
+import pe.com.sigbah.mapper.DocumentoPedidoCompraMapper;
 import pe.com.sigbah.mapper.EmergenciaMapper;
+import pe.com.sigbah.mapper.ProductoPedidoCompraMapper;
 import pe.com.sigbah.mapper.ProductoRacionMapper;
 import pe.com.sigbah.mapper.RacionMapper;
 import pe.com.sigbah.mapper.RegistroAlimentariaEmergenciaMapper;
@@ -1336,4 +1338,275 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 	}
 
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#grabarDocumentoPedidoCompra(pe.com.sigbah.common.bean.DocumentoPedidoCompraBean)
+	 */
+	@Override
+	public DocumentoPedidoCompraBean grabarDocumentoPedidoCompra(DocumentoPedidoCompraBean documentoPedidoCompraBean)throws Exception {
+	LOGGER.info("[grabarDocumentoPedidoCompra] Inicio ");
+	DocumentoPedidoCompraBean registroDocumentoPedidoCompra = new DocumentoPedidoCompraBean();
+	try {			
+		MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+		input_objParametros.addValue("PI_FK_IDE_PEDIDO_COMPRA", documentoPedidoCompraBean.getIdPedidoCompra(), Types.NUMERIC);
+		input_objParametros.addValue("PI_ID_DOCUMENTO", documentoPedidoCompraBean.getIdDocumentoPedidoCompra(), Types.NUMERIC);
+		input_objParametros.addValue("PI_nro_documento", documentoPedidoCompraBean.getNroDocumento(), Types.VARCHAR);
+		input_objParametros.addValue("PI_fk_ide_tip_documento", documentoPedidoCompraBean.getIdTipoDocumento(), Types.NUMERIC);
+		 input_objParametros.addValue("PI_COD_ALFRESCO", documentoPedidoCompraBean.getCodigoArchivoAlfresco(), Types.VARCHAR);
+		 input_objParametros.addValue("PI_NOMB_ARCHIVO", documentoPedidoCompraBean.getNombreArchivo(), Types.VARCHAR);	
+		 input_objParametros.addValue("PI_FEC_DOCUMENTO", DateUtil.obtenerFechaHoraParseada(documentoPedidoCompraBean.getFechaDocumento()), Types.DATE);
+		 input_objParametros.addValue("PI_FLG_ACTIVO", "1", Types.VARCHAR);// 1 para nuevo
+		 input_objParametros.addValue("PI_USERNAME", documentoPedidoCompraBean.getUsuarioRegistro(), Types.VARCHAR);	
+		 if(documentoPedidoCompraBean.getIdDocumentoPedidoCompra()==0 || documentoPedidoCompraBean.getIdDocumentoPedidoCompra().equals(null)){
+			 input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+		 }else{
+			 input_objParametros.addValue("PI_CONTROL", "U", Types.VARCHAR);
+		 }
+			
+
+		objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+		objJdbcCall.withoutProcedureColumnMetaDataAccess();
+		objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+		objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+		objJdbcCall.withProcedureName("USP_INS_UPD_PEDIDO_FILE");
+
+		LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+		output_objParametros.put("PI_FK_IDE_PEDIDO_COMPRA", new SqlParameter("PI_FK_IDE_PEDIDO_COMPRA", Types.NUMERIC));
+		output_objParametros.put("PI_ID_DOCUMENTO", new SqlParameter("PI_ID_DOCUMENTO", Types.NUMERIC));
+		output_objParametros.put("PI_nro_documento", new SqlParameter("PI_nro_documento", Types.VARCHAR));
+		output_objParametros.put("PI_fk_ide_tip_documento", new SqlParameter("PI_fk_ide_tip_documento", Types.NUMERIC));
+		output_objParametros.put("PI_COD_ALFRESCO", new SqlParameter("PI_COD_ALFRESCO", Types.VARCHAR));
+		output_objParametros.put("PI_NOMB_ARCHIVO", new SqlParameter("PI_NOMB_ARCHIVO", Types.VARCHAR));
+		output_objParametros.put("PI_FEC_DOCUMENTO", new SqlParameter("PI_FEC_DOCUMENTO", Types.DATE));
+		output_objParametros.put("PI_FLG_ACTIVO", new SqlParameter("PI_FLG_ACTIVO", Types.VARCHAR));
+		output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+		output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+		output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+		output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+		objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+		
+		Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+		
+		String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+		
+		if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+			String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+			LOGGER.info("[grabarDocumentoPedidoCompra] Ocurrio un error en la operacion del USP_INS_UPD_PEDIDO_FILE : "+mensajeRespuesta);
+			throw new Exception();
+		}
+		
+		registroDocumentoPedidoCompra.setCodigoRespuesta(codigoRespuesta);
+		registroDocumentoPedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+	} catch (Exception e) {
+		LOGGER.error(e.getMessage(), e);
+		throw new Exception();
+	}		
+	LOGGER.info("[grabarDocumentoPedidoCompra] Fin ");
+	return registroDocumentoPedidoCompra;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#listarDocumentoPedidoCompra(pe.com.sigbah.common.bean.DocumentoPedidoCompraBean)
+	 */
+	@Override
+	public List<DocumentoPedidoCompraBean> listarDocumentoPedidoCompra(	DocumentoPedidoCompraBean documentoPedidoCompraBean) throws Exception {
+		LOGGER.info("[listarDocumentoPedidoCompra] Inicio ");
+		List<DocumentoPedidoCompraBean> lista = new ArrayList<DocumentoPedidoCompraBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_FK_IDE_PEDIDO_COMPRA", documentoPedidoCompraBean.getIdPedidoCompra(), Types.NUMERIC);
+			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PEDIDO_FILE");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PEDIDO_COMPRA", new SqlParameter("PI_FK_IDE_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DOCUMENTOS", new SqlOutParameter("PO_CURSOR_DOCUMENTOS", OracleTypes.CURSOR, new DocumentoPedidoCompraMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentoPedidoCompra] Ocurrio un error en la operacion del USP_SEL_LISTAR_PEDIDO_FILE : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DocumentoPedidoCompraBean>) out.get("PO_CURSOR_DOCUMENTOS");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDocumentoPedidoCompra] Fin ");
+		return lista;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#eliminarDocumentoPedidoCompra(pe.com.sigbah.common.bean.DocumentoPedidoCompraBean)
+	 */
+	@Override
+	public DocumentoPedidoCompraBean eliminarDocumentoPedidoCompra(DocumentoPedidoCompraBean documentoPedidoCompraBean)throws Exception {
+	LOGGER.info("[eliminarDocumentoPedidoCompra] Inicio ");
+	DocumentoPedidoCompraBean registroDocumentoPedidoCompra = new DocumentoPedidoCompraBean();
+	try {			
+		MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+		input_objParametros.addValue("PI_ID_DOCUMENTO", documentoPedidoCompraBean.getIdDocumentoPedidoCompra(), Types.NUMERIC);
+
+		objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+		objJdbcCall.withoutProcedureColumnMetaDataAccess();
+		objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+		objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+		objJdbcCall.withProcedureName("USP_DEL_PEDIDO_FILE");
+
+		LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+		output_objParametros.put("PI_ID_DOCUMENTO", new SqlParameter("PI_ID_DOCUMENTO", Types.NUMERIC));
+		output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+		output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+		objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+		
+		Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+		
+		String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+		
+		if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+			String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+			LOGGER.info("[eliminarDocumentoPedidoCompra] Ocurrio un error en la operacion del USP_DEL_DOCUMENTO_CC : "+mensajeRespuesta);
+			throw new Exception();
+		}
+		
+		registroDocumentoPedidoCompra.setCodigoRespuesta(codigoRespuesta);
+		registroDocumentoPedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+	} catch (Exception e) {
+		LOGGER.error(e.getMessage(), e);
+		throw new Exception();
+	}		
+	LOGGER.info("[eliminarDocumentoPedidoCompra] Fin ");
+	return registroDocumentoPedidoCompra;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#grabarProductoPedidoCompra(pe.com.sigbah.common.bean.ProductoPedidoCompraBean)
+	 */
+	@Override
+	public ProductoPedidoCompraBean grabarProductoPedidoCompra(ProductoPedidoCompraBean productoPedidoCompraBean)throws Exception {
+		LOGGER.info("[grabarProductoPedidoCompra] Inicio ");
+		ProductoPedidoCompraBean registroProductoPedidoCompra = new ProductoPedidoCompraBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_DET_PEDIDO_COMPRA", productoPedidoCompraBean.getIdDetallePedidoCompra(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PEDIDO_COMPRA", productoPedidoCompraBean.getIdPedidoCompra(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PRODUCTO", productoPedidoCompraBean.getIdProducto(), Types.NUMERIC);
+			input_objParametros.addValue("PI_CANTIDAD", productoPedidoCompraBean.getCantidad(), Types.NUMERIC);
+			input_objParametros.addValue("PI_PRECIO_UNITARIO", productoPedidoCompraBean.getPrecioUnitario(), Types.NUMERIC);
+			
+			input_objParametros.addValue("PI_USERNAME", productoPedidoCompraBean.getUsuarioRegistro(), Types.VARCHAR);			
+			 if(productoPedidoCompraBean.getIdDetallePedidoCompra().equals("0") || productoPedidoCompraBean.getIdDetallePedidoCompra().equals(null)){
+				 input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+			 }else{
+				 input_objParametros.addValue("PI_CONTROL", "U", Types.VARCHAR);
+			 }
+			 
+		
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_PRODUCTO_PEDIDO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_DET_PEDIDO_COMPRA", new SqlParameter("PI_IDE_DET_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PEDIDO_COMPRA", new SqlParameter("PI_FK_IDE_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PRODUCTO", new SqlParameter("PI_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PI_CANTIDAD", new SqlParameter("PI_CANTIDAD", Types.NUMERIC));
+			output_objParametros.put("PI_PRECIO_UNITARIO", new SqlParameter("PI_PRECIO_UNITARIO", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PI_CONTROL", new SqlOutParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarProductoPedidoCompra] Ocurrio un error en la operacion del USP_INS_UPD_PRODUCTO_PEDIDO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoPedidoCompra.setCodigoRespuesta(codigoRespuesta);
+			registroProductoPedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarProductoPedidoCompra] Fin ");
+		return registroProductoPedidoCompra;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#listarProductoPedidoCompra(pe.com.sigbah.common.bean.ProductoPedidoCompraBean)
+	 */
+	@Override
+	public List<ProductoPedidoCompraBean> listarProductoPedidoCompra(ProductoPedidoCompraBean producto)
+			throws Exception {
+		LOGGER.info("[listarProductoPedidoCompra] Inicio ");
+		List<ProductoPedidoCompraBean> lista = new ArrayList<ProductoPedidoCompraBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_FK_IDE_PEDIDO_COMPRA", producto.getIdPedidoCompra(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PRODUCTO_PEDIDO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PEDIDO_COMPRA", new SqlParameter("PI_FK_IDE_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PO_CUR_PRODUCTOS_COMPRA", new SqlOutParameter("PO_CUR_PRODUCTOS_COMPRA", OracleTypes.CURSOR, new ProductoPedidoCompraMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoPedidoCompra] Ocurrio un error en la operacion del USP_SEL_LISTAR_PRODUCTO_PEDIDO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProductoPedidoCompraBean>) out.get("PO_CUR_PRODUCTOS_COMPRA");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductoPedidoCompra] Fin ");
+		return lista;
+	}
 }

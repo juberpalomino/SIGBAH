@@ -10,8 +10,8 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 /**
  * @className: DocumentoControlCalidadMapper.java
  * @description: 
- * @date: 21 de jun. de 2017
- * @author: Junior Huaman Flores.
+ * @date: 4 ago. 2017
+ * @author: whr.
  */
 public class DocumentoControlCalidadMapper implements RowMapper<DocumentoControlCalidadBean> {
 

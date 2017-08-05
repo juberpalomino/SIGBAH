@@ -168,4 +168,3 @@
 
 <!-- inline scripts related to this page -->
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/listar_pedidos_compra.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_pedidos_compra.js"></script>

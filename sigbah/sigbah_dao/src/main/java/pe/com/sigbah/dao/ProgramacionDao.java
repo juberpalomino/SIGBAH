@@ -4,10 +4,12 @@ import java.util.List;
 
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DeeBean;
+import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
@@ -181,5 +183,39 @@ public interface ProgramacionDao {
 	 * @return
 	 */
 	public abstract PedidoCompraBean insertarRegistroPedido(PedidoCompraBean pedidoCompraBean)throws Exception;
+
+	/**
+	 * @param documentoPedidoCompraBean
+	 * @return
+	 */
+	public abstract DocumentoPedidoCompraBean grabarDocumentoPedidoCompra(
+			DocumentoPedidoCompraBean documentoPedidoCompraBean)throws Exception;
+
+	/**
+	 * @param documentoPedidoCompraBean
+	 * @return
+	 */
+	public abstract List<DocumentoPedidoCompraBean> listarDocumentoPedidoCompra(
+			DocumentoPedidoCompraBean documentoPedidoCompraBean)throws Exception;
+
+	/**
+	 * @param documentoPedidoCompraBean
+	 * @return
+	 */
+	public abstract DocumentoPedidoCompraBean eliminarDocumentoPedidoCompra(
+			DocumentoPedidoCompraBean documentoPedidoCompraBean)throws Exception;
+
+	/**
+	 * @param productoPedidoCompraBean
+	 * @return
+	 */
+	public abstract ProductoPedidoCompraBean grabarProductoPedidoCompra(
+			ProductoPedidoCompraBean productoPedidoCompraBean)throws Exception;
+
+	/**
+	 * @param producto
+	 * @return
+	 */
+	public abstract List<ProductoPedidoCompraBean> listarProductoPedidoCompra(ProductoPedidoCompraBean producto)throws Exception;
 
 }

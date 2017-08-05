@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.DeeBean;
+import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
@@ -227,5 +229,51 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	@Override
 	public PedidoCompraBean insertarRegistroPedido(PedidoCompraBean pedidoCompraBean) throws Exception {
 		return programacionDao.insertarRegistroPedido(pedidoCompraBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#grabarDocumentoPedidoCompra(pe.com.sigbah.common.bean.DocumentoPedidoCompraBean)
+	 */
+	@Override
+	public DocumentoPedidoCompraBean grabarDocumentoPedidoCompra(DocumentoPedidoCompraBean documentoPedidoCompraBean)
+			throws Exception {
+		return programacionDao.grabarDocumentoPedidoCompra(documentoPedidoCompraBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarDocumentoPedidoCompra(pe.com.sigbah.common.bean.DocumentoPedidoCompraBean)
+	 */
+	@Override
+	public List<DocumentoPedidoCompraBean> listarDocumentoPedidoCompra(
+			DocumentoPedidoCompraBean documentoPedidoCompraBean) throws Exception {
+		return programacionDao.listarDocumentoPedidoCompra(documentoPedidoCompraBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#eliminarDocumentoPedidoCompra(pe.com.sigbah.common.bean.DocumentoPedidoCompraBean)
+	 */
+	@Override
+	public DocumentoPedidoCompraBean eliminarDocumentoPedidoCompra(DocumentoPedidoCompraBean documentoPedidoCompraBean)
+			throws Exception {
+		return programacionDao.eliminarDocumentoPedidoCompra(documentoPedidoCompraBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#grabarProductoPedidoCompra(pe.com.sigbah.common.bean.ProductoPedidoCompraBean)
+	 */
+	@Override
+	public ProductoPedidoCompraBean grabarProductoPedidoCompra(ProductoPedidoCompraBean productoPedidoCompraBean)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return programacionDao.grabarProductoPedidoCompra(productoPedidoCompraBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarProductoPedidoCompra(pe.com.sigbah.common.bean.ProductoPedidoCompraBean)
+	 */
+	@Override
+	public List<ProductoPedidoCompraBean> listarProductoPedidoCompra(ProductoPedidoCompraBean producto)
+			throws Exception {
+		return programacionDao.listarProductoPedidoCompra(producto);
 	}
 }

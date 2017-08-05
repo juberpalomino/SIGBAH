@@ -1,6 +1,7 @@
 package pe.com.sigbah.web.controller.programacion_bah;
 
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
-import pe.com.sigbah.common.bean.ProductoBean;
-import pe.com.sigbah.common.bean.ProductoRacionBean;
-import pe.com.sigbah.common.bean.RacionBean;
-import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
@@ -36,8 +37,6 @@ import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.ProgramacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
 import pe.com.sigbah.web.report.programacion_bah.ReportePedidoCompra;
-import pe.com.sigbah.web.report.programacion_bah.ReporteRacionProducto;
-import pe.com.sigbah.web.report.programacion_bah.ReporteRequerimiento;
 
 /**
  * @className: EmergenciaController.java
@@ -186,8 +185,8 @@ private static final long serialVersionUID = 1L;
         	model.addAttribute("lista_estado", generalService.listarEstadoPedidoCompra(new ItemBean()));
         	model.addAttribute("lista_dee", generalService.listarDee(new ItemBean()));
         	
-//        	model.addAttribute("lista_tipo_prod", generalService.listarTipoProducto(new ItemBean()));
-//        	model.addAttribute("lista_categoria_prod", generalService.listarCategoria(new ItemBean()));
+        	model.addAttribute("lista_tipo_doc", generalService.listarTipoDocumento(new ItemBean()));
+        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean()));
 //        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
         	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
@@ -239,4 +238,135 @@ private static final long serialVersionUID = 1L;
 		}
 		return pedido;
 	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/grabarDocumentoPedidoCompra", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarDocumentoPedidoCompra(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoPedidoCompraBean documento = null;
+		try {			
+			DocumentoPedidoCompraBean documentoPedidoCompraBean = new DocumentoPedidoCompraBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(documentoPedidoCompraBean, request.getParameterMap());
+		
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	documentoPedidoCompraBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+        	documento = programacionService.grabarDocumentoPedidoCompra(documentoPedidoCompraBean);
+        	
+        	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return documento;
+	}
+	
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "/listarDocumentoPedidoCompra", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarDocumentoPedidoCompra(HttpServletRequest request, HttpServletResponse response) {
+		List<DocumentoPedidoCompraBean> lista = null;
+		try {			
+			DocumentoPedidoCompraBean documento = new DocumentoPedidoCompraBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(documento, request.getParameterMap());			
+			lista = programacionService.listarDocumentoPedidoCompra(documento);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	@RequestMapping(value = "/eliminarDocumentoPedidoCompra", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object eliminarDocumentoPedidoCompra(HttpServletRequest request, HttpServletResponse response) {
+		DocumentoPedidoCompraBean documento = null;
+		try {			
+			String[] arrIdDetallePedidoCompra = request.getParameter("arrIdDocumentoPedidoCompra").split(Constantes.UNDERLINE);
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+			for (String codigo : arrIdDetallePedidoCompra) {				
+				DocumentoPedidoCompraBean documentoPedidoCompraBean = new DocumentoPedidoCompraBean(getInteger(codigo));
+
+				documentoPedidoCompraBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+	        	documento = programacionService.eliminarDocumentoPedidoCompra(documentoPedidoCompraBean);				
+			}
+
+			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return documento;
+	}
+	
+	@RequestMapping(value = "/grabarProductoPedidoCompra", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarProductoPedidoCompra(HttpServletRequest request, HttpServletResponse response) {
+		ProductoPedidoCompraBean producto = null;
+		try {			
+			ProductoPedidoCompraBean productoPedidoCompraBean = new ProductoPedidoCompraBean();
+
+			// Convierte los vacios en nulos en los enteros
+//			IntegerConverter con_integer = new IntegerConverter(null);			
+			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
+//			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			// Convierte los vacios en nulos en los decimales
+			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
+			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
+			// Copia los parametros del cliente al objeto
+			beanUtilsBean.populate(productoPedidoCompraBean, request.getParameterMap());
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	productoPedidoCompraBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+			producto = programacionService.grabarProductoPedidoCompra(productoPedidoCompraBean);
+			
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
+	
+	@RequestMapping(value = "/listarProductoPedidoCompra", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProductoPedidoCompra(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoPedidoCompraBean> lista = null;
+		try {			
+			ProductoPedidoCompraBean producto = new ProductoPedidoCompraBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(producto, request.getParameterMap());			
+			lista = programacionService.listarProductoPedidoCompra(producto);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	
 }

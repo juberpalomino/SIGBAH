@@ -366,6 +366,7 @@ $(document).ready(function() {
 
 			loadding(true);
 			
+			
 			consultarAjax('POST', '/gestion-almacenes/control-calidad/grabarProductoControlCalidad', params, function(respuesta) {
 				$('#div_det_alimentarios').modal('hide');
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {

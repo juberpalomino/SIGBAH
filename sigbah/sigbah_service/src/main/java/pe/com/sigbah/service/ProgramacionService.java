@@ -3,10 +3,13 @@ package pe.com.sigbah.service;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.DeeBean;
+import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
@@ -208,5 +211,41 @@ public interface ProgramacionService {
 	 * @throws Exception
 	 */
 	public abstract PedidoCompraBean insertarRegistroPedido(PedidoCompraBean pedidoCompraBean) throws Exception;
+	
+	/**
+	 * @param documentoPedidoCompraBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentoPedidoCompraBean grabarDocumentoPedidoCompra(DocumentoPedidoCompraBean documentoPedidoCompraBean) throws Exception;
+	
+	/**
+	 * @param documentoPedidoCompraBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DocumentoPedidoCompraBean> listarDocumentoPedidoCompra(DocumentoPedidoCompraBean documentoPedidoCompraBean) throws Exception;
+	
+	/**
+	 * @param documentoPedidoCompraBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DocumentoPedidoCompraBean eliminarDocumentoPedidoCompra(DocumentoPedidoCompraBean documentoPedidoCompraBean) throws Exception;
+	
+	/**
+	 * @param productoPedidoCompraBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoPedidoCompraBean grabarProductoPedidoCompra(ProductoPedidoCompraBean productoPedidoCompraBean) throws Exception;
+	
+	/**
+	 * @param producto
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoPedidoCompraBean> listarProductoPedidoCompra(ProductoPedidoCompraBean producto) throws Exception;
+	
 	
 }

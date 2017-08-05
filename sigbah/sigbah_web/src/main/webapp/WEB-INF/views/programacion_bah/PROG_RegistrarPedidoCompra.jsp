@@ -222,18 +222,18 @@
 										
 										<header>
 											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Productos</h2>
+											<h2>Documentos</h2>
 											
 											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_prod_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_doc_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Nuevo">
 													<i class="fa fa-file-o"></i>
 												</a>
-												<a href="#" id="href_prod_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_doc_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Editar">
 													<i class="fa fa-edit"></i>
 												</a>
-												<a href="#" id="href_prod_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_doc_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Eliminar">
 													<i class="fa fa-trash-o"></i>
 												</a>
@@ -246,16 +246,15 @@
 											<!-- widget content -->
 											<div class="widget-body">
 
-												<table id="tbl_mnt_productos" class="table table-bordered table-hover tbl-responsive">
+												<table id="tbl_mnt_documentos" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>Nº</th>
-															<th>Producto</th>
-															<th>Unidad de medida</th>
-															<th>Cantidad</th>
-															<th>Precio unitario (S/)</th>
-															<th>Importe total (S/)</th>
+															<th>Nº</th> 
+															<th>Tipo Documento</th>
+															<th>N° Documento</th>
+															<th>Fecha</th>
+															<th>Nombre de Archivo</th>
 														</tr>
 													</thead>
 												</table>
@@ -299,7 +298,7 @@
 </div>
 <!-- END MAIN CONTENT -->
 
-<!-- Modal  Agregar UBIGEO INEI-->
+<!-- Modal  Agregar Productos-->
 <div id="div_det_productos" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -307,7 +306,7 @@
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Seleccionar distritos según INEI</h4>
+				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Productos</h4>
 			</div>
 			
 			<div class="modal-body">
@@ -330,22 +329,21 @@
 											<div class="row">
 												<label class="col-sm-2 control-label">Categoria de productos:</label>
 												<div class="col-sm-2 form-group">
-													<select id="sel_cate_prod" name="sel_cate_prod" class="form-control">
-														<c:forEach items="${lista_categoria_prod}" var="item">
+													<select id="sel_cat_producto" name="sel_cat_producto" class="form-control">
+														<option value="">Seleccione</option>
+														<c:forEach items="${lista_categoria}" var="item">
 														    <option value="${item.icodigo}">${item.descripcion}</option>
 														</c:forEach>
 													</select>
 												</div>
 											</div>
-											<div class="row">
+											<div id="div_pro_det_productos" class="row">
 												<label class="col-sm-2 control-label">Producto:</label>
 												<div class="col-sm-6 form-group">
-													<select id="sel_cate_prod" name="sel_cate_prod" class="form-control">
-														<c:forEach items="${lista_producto}" var="item">
-														    <option value="${item.idProducto}">${item.nombreProducto}</option>
-														</c:forEach>
-													</select>
+													<select id="sel_lis_producto" name="sel_lis_producto" class="form-control">
+														</select>
 												</div>
+													
 											</div>
 											<div class="row">
 												<label class="col-sm-2 control-label">Unidad de medida:</label>
@@ -356,15 +354,15 @@
 											<div class="row">
 												<label class="col-sm-2 control-label">Cantidad:</label>
 												<div class="col-sm-2 form-group">
-														<input type="text" id="txt_cantidad" name="txt_cantidad" class="form-control" >
+														<input type="text" id="txt_cantidad" name="txt_cantidad" class="form-control only-numbers-format" >
 												</div>
 												<label class="col-sm-2 control-label">Precio unitario (S/):</label>
 												<div class="col-sm-2 form-group">
-														<input type="text" id="txt_precio_uni" name="txt_precio_uni" class="form-control" >
+														<input type="text" id="txt_pre_unitario" name="txt_pre_unitario" class="form-control monto-format" >
 												</div>
 												<label class="col-sm-2 control-label">Importe Total:</label>
 												<div class="col-sm-2 form-group">
-														<input type="text" id="txt_importe_tot" name="txt_importe_tot" class="form-control" disabled>
+														<input type="text" id="txt_imp_total" name="txt_imp_total" class="form-control monto-format" disabled>
 												</div>
 											</div>
 										<div class="form-actions">
@@ -396,13 +394,16 @@
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Emergencias</h4>
+				<h4 class="modal-title label-bold" id="h4_tit_documentos">Documentos</h4>
 			</div>
 			
 			<div class="modal-body">
 				<div class="row">
-					<form id="frm_documento" class="form-horizontal">
-											<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
+					<form id="frm_det_documentos" class="form-horizontal">
+							<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
+							<input type="hidden" id="hid_cod_act_alfresco" name="hid_cod_act_alfresco">
+							<input type="hidden" id="hid_cod_ind_alfresco" name="hid_cod_ind_alfresco">
+							
 											<div class="form-group"></div>
 											<div class="row">
 <!-- 													<label class="col-sm-2 control-label"></label> -->
@@ -419,21 +420,23 @@
 											<div class="form-group"></div>
 											
 											<div class="row">
-												<label class="col-sm-2 control-label">Tipo de documento:</label>
-												<div class="col-sm-2 form-group">
-													<select id="sel_cate_prod" name="sel_cate_prod" class="form-control">
+												<label class="col-sm-2 control-label">Tipo Documento:</label>
+												<div class="col-sm-4 form-group">
+													<select id="sel_tipo_doc" name="sel_tipo_doc" class="form-control">
+														<option value="">Seleccione</option>
 														<c:forEach items="${lista_tipo_doc}" var="item">
-														    <option value="${item.icodigo}">${item.descripcion}</option>
+														    <option value="${item.vcodigo}">${item.descripcion}</option>
 														</c:forEach>
 													</select>
 												</div>
 												
-												<label class="col-sm-1 control-label">N° doc.:</label>
-												<div class="col-sm-1 form-group">
-														<input type="text" id="txt_num_doc" name="txt_num_doc" class="form-control" disabled>
+												<label class="col-sm-2 control-label">N° Documento:</label>
+												<div class="col-sm-3 form-group">
+														<input type="text" id="txt_num_doc" name="txt_num_doc" class="form-control" >
 												</div>
-												
-												<label class="col-sm-1 control-label">Fecha:</label>
+											</div>
+											<div class="row">	
+												<label class="col-sm-2 control-label">Fecha:</label>
 												<div class="col-sm-2 smart-form form-group">
 													<label class="input"> 
 														<i class="icon-append fa fa-calendar"></i>
@@ -441,9 +444,10 @@
 													</label>
 												</div>
 												
-												<div class="form-group">
-													<label class="col-sm-1 control-label">Subir Archivo:</label>
-													<div class="col-sm-2 smart-form">
+											
+												
+													<label class="col-sm-2 control-label">Subir Archivo:</label>
+													<div class="col-sm-4 smart-form">
 														<div class="input input-file">
 															<span id="sp_sub_archivo" class="button">
 																<input type="file" id="fil_sub_archivo" name="fil_sub_archivo">
@@ -458,13 +462,13 @@
 															<i class="fa fa-eraser fa-lg"></i>
 														</a>
 													</div>					
-												</div>
+												
 											</div>
 											
 										<div class="form-actions">
 											<div class="row">
 												<div class="col-md-12 opc-center">
-													<button class="btn btn-primary" type="button" id="btn_grabar_prod">
+													<button class="btn btn-primary" type="button" id="btn_gra_documento">
 														<i class="fa fa-floppy-o"></i>
 														Grabar
 													</button>
@@ -485,6 +489,5 @@
 
 <!-- inline scripts related to this page -->
 <script> var pedido = JSON.parse('${pedido}'); </script>
-<script> var lista_pedido = JSON.parse('${lista_pedido}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/mantenimiento_pedido_compra.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_pedidos_compra.js"></script>
