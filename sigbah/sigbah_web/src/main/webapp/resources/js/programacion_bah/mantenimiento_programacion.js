@@ -4,6 +4,10 @@ var listaProductosRacionCache = new Object();
 var listaProgramacionAlimentosCache = new Object();
 var programacionAlimentosCache = new Object();
 
+var listaNoAlimentariosCache = new Object();
+var listaProgramacionNoAlimentariosCache = new Object();
+var programacionNoAlimentariosCache = new Object();
+
 var frm_dat_generales = $('#frm_dat_generales');
 
 var tbl_det_almacenes = $('#tbl_det_almacenes');
@@ -11,9 +15,12 @@ var tbl_det_almacenes = $('#tbl_det_almacenes');
 var tbl_pro_racion = $('#tbl_pro_racion');
 var tbl_res_pro_alimentos = $('#tbl_res_pro_alimentos');
 
-//var tbl_det_no_alimentarios = $('#tbl_det_no_alimentarios');
-//var frm_det_no_alimentarios = $('#frm_det_no_alimentarios');
+var tbl_pro_no_alimentarios = $('#tbl_pro_no_alimentarios');
+var frm_pro_no_alimentarios = $('#frm_pro_no_alimentarios');
+var tbl_res_pro_no_alimentarios = $('#tbl_res_pro_no_alimentarios');
 
+//var tbl_det_documentos = $('#tbl_det_documentos');
+//var frm_det_documentos = $('#frm_det_documentos');
 
 $(document).ready(function() {
 	
@@ -142,7 +149,8 @@ $(document).ready(function() {
 						$('#btn_alm_agregar').prop('disabled', false);
 						$('#btn_alm_eliminar').prop('disabled', false);
 						
-						$('#txt_programacion').val(respuesta.codigoProgramacion+'-'+$('#txt_descripcion').val());
+						$('#txt_ali_programacion').val(respuesta.codigoProgramacion+'-'+$('#txt_descripcion').val());
+						$('#txt_no_ali_programacion').val(respuesta.codigoProgramacion+'-'+$('#txt_descripcion').val());
 						$('#txt_pro_racion').val($('#txt_des_racion').val());
 						
 						programacion.idRacion = arr_nro_racion[0];
@@ -303,8 +311,8 @@ $(document).ready(function() {
 		var indices = [];
 		var codigo = '';
 		var row = 0;
-		$.each(listaProgramacionAlimentosCache.listaProgramacionAlimento, function(i, item) {
-			if ($('#chk_'+item.idProgramacionUbigeo).is(':checked')) {
+		$.each(listaProgramacionAlimentosCache, function(i, item) {
+			if ($('#chk_ali_'+item.idProgramacionUbigeo).is(':checked')) {
 				indices.push(row);				
 				// Verificamos que tiene mas de un registro marcado y salimos del bucle
 				if (!esnulo(codigo)) {
@@ -320,7 +328,7 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
-			programacionAlimentosCache = listaProgramacionAlimentosCache.listaProgramacionAlimento[indices];
+			programacionAlimentosCache = listaProgramacionAlimentosCache[indices];
 
 			$('#txt_ali_departamento').val(programacionAlimentosCache.departamento);
 			$('#txt_ali_provincia').val(programacionAlimentosCache.provincia);
@@ -405,8 +413,8 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var arrIdDetalleProgramacionUbigeo = [];
-		$.each(listaProgramacionAlimentosCache.listaProgramacionAlimento, function(i, item) {
-			if ($('#chk_'+item.idProgramacionUbigeo).is(':checked')) {
+		$.each(listaProgramacionAlimentosCache, function(i, item) {
+			if ($('#chk_ali_'+item.idProgramacionUbigeo).is(':checked')) {
 				arrIdDetalleProgramacionUbigeo.push(item.idProgramacionUbigeo);
 			}
 	    });	
@@ -476,9 +484,6 @@ $(document).ready(function() {
 			arrNombreProducto.push(item.nombreProducto);
 	    });
 		
-		var val_nro_racion = $('#sel_nro_racion').val();
-		var arr_nro_racion = val_nro_racion.split('_');
-		
 		var arrUnidadProducto = [];
 		arrUnidadProducto.push($('#pro_ali_per_afect').html());
 		arrUnidadProducto.push($('#pro_ali_per_dam').html());
@@ -491,13 +496,416 @@ $(document).ready(function() {
 
 		var params = { 
 			idProgramacion : $('#hid_cod_programacion').val(),
-			idRacionOperativa : arr_nro_racion[0],
 			arrIdProducto : arrIdProducto,
 			arrNombreProducto : arrNombreProducto,
 			arrUnidadProducto : arrUnidadProducto
 		};	
 		
 		var url = VAR_CONTEXT + '/programacion-bah/programacion/exportarExcelAlimento';
+		$.fileDownload(url, {
+		    httpMethod : 'GET',
+		    data : params,
+		    successCallback : function (respuesta, url) {
+		    	loadding(false);	
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+		    },
+		    failCallback : function (respuesta, url) {
+		    	loadding(false);
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+		    }
+		});
+
+	});
+	
+	$('#btn_pro_nuevo').click(function(e) {
+		e.preventDefault();
+
+		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
+		frm_pro_no_alimentarios.trigger('reset');
+		
+		$('#sel_no_producto').html('');
+		$('#sel_no_producto').select2().trigger('change');
+		$('#sel_no_producto').select2({
+			  dropdownParent: $('#div_pro_det_no_alimentarios')
+		});
+		
+		$('#hid_cod_no_producto').val('');
+		$('#div_pro_no_alimentarios').modal('show');
+		
+	});
+	
+	$('#btn_pro_editar').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		tbl_pro_no_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_pro_no_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+			}
+		});
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			
+			var obj = listaNoAlimentariosCache[indices[0]];
+			
+			$('#h4_tit_no_alimentarios').html('Actualizar Producto');
+			frm_pro_no_alimentarios.trigger('reset');
+			
+			$('#hid_cod_no_producto').val(obj.idDetalleProductoNoAlimentario);
+			
+			$('#sel_no_cat_producto').val(obj.idCategoria);
+			cargarProductoNoAlimentario(obj.idCategoria, obj.idProducto);			
+			$('input[name=rb_distribuir][value="'+obj.tipoEntrega+'"]').prop('checked', true);
+			$('#txt_no_cantidad').val(obj.cantidad);
+			
+			$('#div_pro_no_alimentarios').modal('show');
+		}
+		
+	});
+	
+	$('#btn_pro_eliminar').click(function(e) {
+		e.preventDefault();
+		
+		var indices = [];
+		var codigo = '';
+		tbl_pro_no_alimentarios.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_pro_no_alimentarios.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+				var idDetalleProductoNoAlimentario = listaNoAlimentariosCache[index].idDetalleProductoNoAlimentario;
+				codigo = codigo + idDetalleProductoNoAlimentario + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else {
+			var msg = '';
+			if (indices.length > 1) {
+				msg = 'Está seguro de eliminar los siguientes registros ?';
+			} else {
+				msg = 'Está seguro de eliminar el registro ?';
+			}
+			
+			$.SmartMessageBox({
+				title : msg,
+				content : '',
+				buttons : '[Cancelar][Aceptar]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'Aceptar') {
+	
+					loadding(true);
+					
+					var params = { 
+						arrIdDetalleControlCalidad : codigo
+					};
+			
+					consultarAjax('POST', '/programacion-bah/programacion/eliminarProductoNoAlimentarioProgramacion', params, function(respuesta) {
+						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+							loadding(false);
+							addErrorMessage(null, respuesta.mensajeRespuesta);
+						} else {
+							listarProductoNoAlimentarioProgramacion(true);
+							addSuccessMessage(null, respuesta.mensajeRespuesta);
+						}		
+					});
+					
+				}	
+			});
+			
+		}
+		
+	});
+	
+	$('#sel_no_cat_producto').change(function() {
+		var idCategoria = $(this).val();		
+		if (!esnulo(idCategoria)) {					
+			cargarProductoNoAlimentario(idCategoria, null);
+		} else {
+			$('#sel_no_producto').html('');
+			if ($('#sel_producto').hasClass('select2-hidden-accessible')) {
+				$('#sel_producto').select2('destroy');
+			}
+			frm_pro_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
+		}
+	});
+	
+	$('#btn_gra_no_alimentario').click(function(e) {
+		e.preventDefault();
+		
+		var bootstrapValidator = frm_pro_no_alimentarios.data('bootstrapValidator');
+		bootstrapValidator.validate();
+		if (bootstrapValidator.isValid()) {
+			var params = { 
+				idDetalleProductoNoAlimentario : $('#hid_cod_no_producto').val(),
+				idProgramacion : $('#hid_cod_programacion').val(),
+				idProducto : $('#sel_no_producto').val(),
+				cantidad : formatMonto($('#txt_no_cantidad').val()),
+				tipoEntrega : $('input[name="rb_distribuir"]:checked').val()
+			};
+			
+			loadding(true);
+			
+			consultarAjax('POST', '/programacion-bah/programacion/grabarProductoNoAlimentarioProgramacion', params, function(respuesta) {
+				$('#div_pro_no_alimentarios').modal('hide');
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					loadding(false);
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarProductoNoAlimentarioProgramacion(true);
+					addSuccessMessage(null, respuesta.mensajeRespuesta);	
+				}
+				frm_pro_no_alimentarios.data('bootstrapValidator').resetForm();
+			});
+			
+		}
+		
+	});
+	
+	$('#btn_can_no_alimentario, #btn_clo_no_alimentarios').click(function(e) {
+		e.preventDefault();
+		frm_pro_no_alimentarios.data('bootstrapValidator').resetForm();
+	});
+	
+	$('#btn_no_ali_actualizar').click(function(e) {
+		e.preventDefault();
+		
+		loadding(true);
+		
+		var params = { 
+			idProgramacion : $('#hid_cod_programacion').val()
+		};
+
+		consultarAjax('POST', '/programacion-bah/programacion/actualizarProgramacionNoAlimentario', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				loadding(false);
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarProductoNoAlimentarioProgramacion(false);
+				listarDetalleProgramacionNoAlimentario(true);
+				addSuccessMessage(null, respuesta.mensajeRespuesta);							
+			}
+		});
+		
+	});
+	
+	$('#btn_no_ali_editar').click(function(e) {
+		e.preventDefault();
+		
+		var indices = [];
+		var codigo = '';
+		var row = 0;
+		$.each(listaProgramacionNoAlimentariosCache, function(i, item) {
+			if ($('#chk_no_ali_'+item.idProgramacionUbigeo).is(':checked')) {
+				indices.push(row);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				codigo = item.idProgramacionUbigeo;
+			}
+			row = row + 1;
+	    });	
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			programacionNoAlimentariosCache = listaProgramacionNoAlimentariosCache[indices];
+
+			$('#txt_no_ali_departamento').val(programacionNoAlimentariosCache.departamento);
+			$('#txt_no_ali_provincia').val(programacionNoAlimentariosCache.provincia);
+			$('#txt_no_ali_distrito').val(programacionNoAlimentariosCache.distrito);
+			$('#txt_no_ali_fam_afect').val(programacionNoAlimentariosCache.famAfect);
+			$('#txt_no_ali_fam_dam').val(programacionNoAlimentariosCache.famDam);
+			$('#txt_no_ali_tot_fam').val(programacionNoAlimentariosCache.totalFam);
+			$('#txt_no_ali_per_afect').val(programacionNoAlimentariosCache.persAfect);
+			$('#txt_no_ali_per_dam').val(programacionNoAlimentariosCache.persDam);
+			$('#txt_no_ali_tot_pers').val(programacionNoAlimentariosCache.totalPers);
+			
+			var contenido = '';
+			$.each(listaNoAlimentariosCache, function(i, item) {
+				contenido = contenido + '<div class="row">'+
+										'<label class="col-sm-6 control-label">'+item.nombreProducto+':</label>'+
+										'<div class="col-sm-2 form-group">';
+								
+				$.each(programacionNoAlimentariosCache.listaProducto, function(i, item_prod) {
+					if (item.idProducto == item_prod.idProducto) {
+//						contenido = contenido + '<input type="text" id="txt_no_ali_uni_'+item_prod.idProducto+'" onchange="sumarUnidadNoAlimentarios();" '+ 
+						contenido = contenido + '<input type="text" id="txt_no_ali_uni_'+item_prod.idProducto+'" '+ 
+									'class="form-control monto-format" value="'+obtieneParametro(item_prod.unidad)+'">';
+					}					
+			    });	
+								
+				contenido = contenido + '</div></div>';
+		    });			
+			$('#div_no_ali_unidades').html(contenido);
+			
+			$('#div_edi_pro_no_alimentarios').modal('show');
+		}
+		
+	});
+	
+	$('#btn_gra_pro_no_alimentarios').click(function(e) {
+		e.preventDefault();
+		
+		loadding(true);
+		
+		var arrIdProducto = [];
+		var arrUnidad = [];			
+		
+		$.each(listaNoAlimentariosCache, function(i, item) {			
+			var unidad = $('#txt_no_ali_uni_'+item.idProducto).val();
+			$.each(programacionNoAlimentariosCache.listaProducto, function(i, item_prod) {
+				if (item.idProducto == item_prod.idProducto && unidad != obtieneParametro(item_prod.unidad)) {
+					var indicador = false;
+					if (!esnulo(unidad) && !esnulo(item_prod.unidad)) {
+						if (parseFloat(formatMonto(unidad)) != parseFloat(item_prod.unidad)) {
+							indicador = true;
+						}
+					} else {
+						if (unidad != obtieneParametro(item_prod.unidad)) {
+							indicador = true;
+						}
+					}
+					if (indicador) {			
+						arrIdProducto.push(item.idProducto);
+						arrUnidad.push(formatMonto(unidad));
+					}
+				}					
+		    });
+	    });
+		
+		var params = { 
+			idProgramacionUbigeo : programacionNoAlimentariosCache.idProgramacionUbigeo,
+			arrIdProducto : arrIdProducto,
+			arrUnidad : arrUnidad
+		};
+
+		consultarAjax('POST', '/programacion-bah/programacion/actualizarDetalleProgramacionNoAlimentario', params, function(respuesta) {
+			$('#div_edi_pro_no_alimentarios').modal('hide');
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				loadding(false);
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarDetalleProgramacionNoAlimentario(true);
+				addSuccessMessage(null, respuesta.mensajeRespuesta);							
+			}
+		});
+		
+	});
+	
+	$('#btn_no_ali_eliminar').click(function(e) {
+		e.preventDefault();
+		
+		var arrIdDetalleProgramacionUbigeo = [];
+		$.each(listaProgramacionNoAlimentariosCache, function(i, item) {
+			if ($('#chk_no_ali_'+item.idProgramacionUbigeo).is(':checked')) {
+				arrIdDetalleProgramacionUbigeo.push(item.idProgramacionUbigeo);
+			}
+	    });	
+		
+		if (arrIdDetalleProgramacionUbigeo.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else {
+			var msg = '';
+			if (arrIdDetalleProgramacionUbigeo.length > 1) {
+				msg = 'Está seguro de eliminar los siguientes registros ?';
+			} else {
+				msg = 'Está seguro de eliminar el registro ?';
+			}
+			
+			$.SmartMessageBox({
+				title : msg,
+				content : '',
+				buttons : '[Cancelar][Aceptar]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'Aceptar') {
+	
+					loadding(true);
+					
+					var params = { 
+						arrIdDetalleProgramacionUbigeo : arrIdDetalleProgramacionUbigeo
+					};
+			
+					consultarAjax('POST', '/programacion-bah/programacion/eliminarDetalleProgramacionNoAlimentario', params, function(respuesta) {
+						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+							loadding(false);
+							addErrorMessage(null, respuesta.mensajeRespuesta);
+						} else {
+							listarDetalleProgramacionNoAlimentario(true);
+							addSuccessMessage(null, respuesta.mensajeRespuesta);							
+						}
+					});
+					
+				}	
+			});
+			
+		}
+		
+	});
+	
+	$('#btn_no_ali_exp_excel').click(function(e) {
+		e.preventDefault();
+		
+		var row = 0;
+		$('tr.item_no_ali').each(function() {	
+			row = row + 1;
+			if (row > 0) {
+				return false;
+			}
+		});
+			
+		if (row == 0) {
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			return;
+		}
+
+		loadding(true);
+		
+		var arrIdProducto = [];
+		var arrNombreProducto = [];
+		$.each(listaNoAlimentariosCache, function(i, item) {
+			arrIdProducto.push(item.idProducto);
+			arrNombreProducto.push(item.nombreProducto);
+	    });
+		
+		var arrUnidadProducto = [];
+		arrUnidadProducto.push($('#pro_no_ali_fam_afect').html());
+		arrUnidadProducto.push($('#pro_no_ali_fam_dam').html());
+		arrUnidadProducto.push($('#pro_no_ali_tot_fam').html());
+		arrUnidadProducto.push($('#pro_no_ali_per_afect').html());
+		arrUnidadProducto.push($('#pro_no_ali_per_dam').html());
+		arrUnidadProducto.push($('#pro_no_ali_tot_pers').html());
+		$.each(listaNoAlimentariosCache, function(i, item) {
+			arrUnidadProducto.push($('#td_no_ali_'+item.idProducto).html());
+	    });		
+//		arrUnidadProducto.push($('#pro_no_ali_total_tm').html());
+
+		var params = { 
+			idProgramacion : $('#hid_cod_programacion').val(),
+			arrIdProducto : arrIdProducto,
+			arrNombreProducto : arrNombreProducto,
+			arrUnidadProducto : arrUnidadProducto
+		};	
+		
+		var url = VAR_CONTEXT + '/programacion-bah/programacion/exportarExcelNoAlimentario';
 		$.fileDownload(url, {
 		    httpMethod : 'GET',
 		    data : params,
@@ -559,7 +967,8 @@ function inicializarDatos() {
 			$('#sel_ate_con').val(programacion.tipoAtencion);
 			$('#txt_observaciones').val(programacion.observacion);
 			
-			$('#txt_programacion').val($('#txt_descripcion').val());
+			$('#txt_ali_programacion').val($('#txt_descripcion').val());
+			$('#txt_no_ali_programacion').val($('#txt_descripcion').val());
 			$('#txt_pro_racion').val($('#txt_des_racion').val());
 			
 			listarDetalleProgramacionAlmacenes(programacion.almacenes);
@@ -573,9 +982,13 @@ function inicializarDatos() {
 			} else if (programacion.tipoAtencion == '2') { // No Alimentarios
 				$('#li_alimentos').addClass('disabled');
 				$('#ul_man_programacion li.disabled a').removeAttr('data-toggle');
+				listarProductoNoAlimentarioProgramacion(false);
+				listarDetalleProgramacionNoAlimentario(false);
 			} else if (programacion.tipoAtencion == '3') { // Ambos
 				listarProgramacionRacionOperativa(false);
 				listarDetalleProgramacionAlimento(false);
+				listarProductoNoAlimentarioProgramacion(false);
+				listarDetalleProgramacionNoAlimentario(false);
 			}
 			
 //			listarProductoProgramacion(false);			
@@ -663,9 +1076,9 @@ function listarDetalleProgramacionAlmacenes(respuesta) {
 		ordering : false,
 		info : false
 	});
+		
+	listaDetalleAlmacenesCache = verificarListaJson(respuesta);
 	
-	listaDetalleAlmacenesCache = respuesta;
-
 }
 
 function listarProgramacionRacionOperativa(indicador) {
@@ -738,7 +1151,7 @@ function listarDetalleRacionOperativa(respuesta) {
 		}
 	});
 	
-	listaProductosRacionCache = respuesta;
+	listaProductosRacionCache = verificarListaJson(respuesta);
 
 }
 
@@ -749,16 +1162,12 @@ function listarDetalleProgramacionAlimento(indicador) {
 		arrIdProducto.push(item.idProducto);
     });
 	
-	var val_nro_racion = $('#sel_nro_racion').val();
-	var arr_nro_racion = val_nro_racion.split('_');
-
 	var params = { 
 		idProgramacion : $('#hid_cod_programacion').val(),
-		idRacionOperativa : arr_nro_racion[0],
 		arrIdProducto : arrIdProducto		
 	};		
 
-	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarDetalleProgramacionAlimento', params, function(respuesta) {
+	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarProgramacionAlimento', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
@@ -780,7 +1189,7 @@ function listarDetalleProgramacionAlimento(indicador) {
 			row.append($('<th class="table-dinamic" />').text('Total (TM)'));
 			table.append(row);
 
-			if (respuesta.listaProgramacionAlimento.length > 0) {
+			if (respuesta.length > 0) {
 				var row_num = 1;
 				
 				var tot_persAfect = 0;
@@ -789,9 +1198,9 @@ function listarDetalleProgramacionAlimento(indicador) {
 				var tot_totalRaciones = 0;				
 				var tot_totalTm = 0;
 				
-				$.each(respuesta.listaProgramacionAlimento, function(index, item) {
+				$.each(respuesta, function(index, item) {
 					row = $('<tr class="item_ali" />');
-					row.append($('<td class="opc-right" />').html('<label class="checkbox"><input type="checkbox" id="chk_'+item.idProgramacionUbigeo+'"><i></i></label>'));
+					row.append($('<td class="opc-checkbox" />').html('<label class="checkbox"><input type="checkbox" id="chk_ali_'+item.idProgramacionUbigeo+'"><i></i></label>'));
 					row.append($('<td/>').html(row_num));
 					row.append($('<td/>').html(item.departamento));
 					row.append($('<td/>').html(item.provincia));
@@ -829,7 +1238,7 @@ function listarDetalleProgramacionAlimento(indicador) {
 			
 			$('#div_det_pro_alimentos').html(table);
 			
-			if (respuesta.listaProgramacionAlimento.length > 0) {
+			if (respuesta.length > 0) {
 				$.each(listaProductosRacionCache, function(i, item) {
 					var can_tot_unidad = 0;
 					$('tr.item_ali').each(function() {	
@@ -840,19 +1249,37 @@ function listarDetalleProgramacionAlimento(indicador) {
 				});
 			}
 			
-			listarResumenStock(respuesta.listaResumenStock);
-			
 			listaProgramacionAlimentosCache = respuesta;
-
-			if (indicador) {
-				loadding(false);
-			}
+			
+			listarResumenStockAlimento(indicador);
+			
 		}
 	});
 }
 
+function listarResumenStockAlimento(indicador) {
+	
+	var val_nro_racion = $('#sel_nro_racion').val();
+	var arr_nro_racion = val_nro_racion.split('_');
 
-function listarResumenStock(respuesta) {
+	var params = { 
+		idProgramacion : $('#hid_cod_programacion').val(),
+		idRacionOperativa : arr_nro_racion[0]	
+	};		
+
+	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarResumenStockAlimento', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleResumenStockAlimento(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}		
+	});
+}
+
+function listarDetalleResumenStockAlimento(respuesta) {
 	tbl_res_pro_alimentos.dataTable().fnDestroy();
 	
 	tbl_res_pro_alimentos.dataTable({
@@ -866,9 +1293,71 @@ function listarResumenStock(respuesta) {
 		}, {
 			data : 'nombreProducto'
 		}, {
-			data : 'cantidad'
+			data : 'totalStock'
 		}, {
-			data : 'cantidad'
+			data : 'totalConsumo'
+		}, {
+			data : 'totalSaldo'
+		} ],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : false,
+		paging : false,
+		ordering : false,
+		info : false
+	});
+}
+
+function listarProductoNoAlimentarioProgramacion(indicador) {
+	
+	var val_nro_racion = $('#sel_nro_racion').val();
+	var arr_nro_racion = val_nro_racion.split('_');
+
+	var params = { 
+		idProgramacion : $('#hid_cod_programacion').val(),
+		idRacionOperativa : arr_nro_racion[0]	
+	};		
+
+	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarProductoNoAlimentarioProgramacion', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleProductoNoAlimentarioProgramacion(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}		
+	});
+}
+
+function listarDetalleProductoNoAlimentarioProgramacion(respuesta) {
+	tbl_pro_no_alimentarios.dataTable().fnDestroy();
+	
+	tbl_pro_no_alimentarios.dataTable({
+		data : respuesta,
+		columns : [ {
+			data : 'idDetalleProductoNoAlimentario',
+			sClass : 'opc-center',
+			render: function(data, type, row) {
+				if (data != null) {
+					return '<label class="checkbox">'+
+								'<input type="checkbox"><i></i>'+
+						   '</label>';	
+				} else {
+					return '';	
+				}											
+			}
+		}, {	
+			data : 'idDetalleProductoNoAlimentario',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'nombreProducto'
+		}, {
+			data : 'distribuirPor'
 		}, {
 			data : 'cantidad'
 		} ],
@@ -880,7 +1369,207 @@ function listarResumenStock(respuesta) {
 		ordering : false,
 		info : false
 	});
+	
+	listaNoAlimentariosCache = verificarListaJson(respuesta);
 }
+
+function listarDetalleProgramacionNoAlimentario(indicador) {
+	
+	if (listaNoAlimentariosCache.length > 0) {
+		
+		var arrIdProducto = [];
+		$.each(listaNoAlimentariosCache, function(i, item) {
+			arrIdProducto.push(item.idProducto);
+	    });
+		
+		var params = { 
+			idProgramacion : $('#hid_cod_programacion').val(),
+			arrIdProducto : arrIdProducto		
+		};		
+
+		consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarProgramacionNoAlimentario', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				
+				var table = $('<table id="tbl_det_pro_no_alimentarios" />').addClass('table table-bordered table-hover tbl-responsive');
+				var row = $('<tr/>');
+				row.append($('<th class="table-dinamic" />').text('Sel'));
+				row.append($('<th class="table-dinamic" />').text('Nº'));
+				row.append($('<th class="table-dinamic" />').text('Departamento'));
+				row.append($('<th class="table-dinamic" />').text('Provincia'));
+				row.append($('<th class="table-dinamic" />').text('Distrito'));
+				row.append($('<th class="table-dinamic" />').text('Fam. Afect.'));
+				row.append($('<th class="table-dinamic" />').text('Fam. Dam.'));
+				row.append($('<th class="table-dinamic" />').text('Total Fam.'));
+				row.append($('<th class="table-dinamic" />').text('Pers. Afect.'));
+				row.append($('<th class="table-dinamic" />').text('Pers. Dam.'));
+				row.append($('<th class="table-dinamic" />').text('Total Pers.'));
+				$.each(listaNoAlimentariosCache, function(i, item) {
+					row.append($('<th class="table-dinamic" />').text(item.nombreProducto));
+			    });			
+//				row.append($('<th class="table-dinamic" />').text('Total (TM)'));
+				table.append(row);
+
+				if (respuesta.length > 0) {
+					var row_num = 1;
+					
+					var tot_famAfect = 0;
+					var tot_famDam = 0;
+					var tot_totalFam = 0;
+					var tot_persAfect = 0;
+					var tot_persDam = 0;
+					var tot_totalPers = 0;
+//					var tot_totalTm = 0;
+					
+					$.each(respuesta, function(index, item) {
+						row = $('<tr class="item_no_ali" />');
+						row.append($('<td class="opc-checkbox" />').html('<label class="checkbox"><input type="checkbox" id="chk_no_ali_'+item.idProgramacionUbigeo+'"><i></i></label>'));
+						row.append($('<td/>').html(row_num));
+						row.append($('<td/>').html(item.departamento));
+						row.append($('<td/>').html(item.provincia));
+						row.append($('<td/>').html(item.distrito));
+						row.append($('<td/>').html(item.famAfect));
+						row.append($('<td/>').html(item.famDam));
+						row.append($('<td/>').html(item.totalFam));
+						row.append($('<td/>').html(item.persAfect));
+						row.append($('<td/>').html(item.persDam));
+						row.append($('<td/>').html(item.totalPers));
+						$.each(item.listaProducto, function(i, item_prod) {
+							row.append($('<td class="pro_ali_'+item_prod.idProducto+'" />').html(item_prod.unidad));
+					    });					
+//						row.append($('<td/>').html(item.totalTm));
+						table.append(row);
+						row_num++;
+						
+						tot_famAfect = tot_famAfect + parseFloat(verificaParametroInt(item.famAfect));
+						tot_famDam = tot_famDam + parseFloat(verificaParametroInt(item.famDam));
+						tot_totalFam = tot_totalFam + parseFloat(verificaParametroInt(item.totalFam));
+						tot_persAfect = tot_persAfect + parseFloat(verificaParametroInt(item.persAfect));
+						tot_persDam = tot_persDam + parseFloat(verificaParametroInt(item.persDam));
+						tot_totalPers = tot_totalPers + parseFloat(verificaParametroInt(item.totalPers));
+//						tot_totalTm = tot_totalTm + parseFloat(verificaParametroInt(item.totalTm));
+					});
+					
+					row = $('<tr/>');
+					row.append($('<td class="opc-right" colspan="5" />').html("Total:"));
+					row.append($('<td id="pro_no_ali_fam_afect" />').html(tot_famAfect));
+					row.append($('<td id="pro_no_ali_fam_dam" />').html(tot_famDam));
+					row.append($('<td id="pro_no_ali_tot_fam" />').html(tot_totalFam));
+					row.append($('<td id="pro_no_ali_pers_afect" />').html(tot_persAfect));
+					row.append($('<td id="pro_no_ali_pers_dam" />').html(tot_persDam));
+					row.append($('<td id="pro_no_ali_tot_pers" />').html(tot_totalPers));
+					$.each(listaNoAlimentariosCache, function(i, item) {
+						row.append($('<td id="td_no_ali_'+item.idProducto+'" />').html(''));
+				    });
+//					row.append($('<td id="pro_no_ali_total_tm" />').html(tot_totalTm));
+					table.append(row);
+				}
+				
+				$('#div_det_pro_no_alimentarios').html(table);
+				
+				if (respuesta.length > 0) {
+					$.each(listaNoAlimentariosCache, function(i, item) {
+						var can_tot_unidad = 0;
+						$('tr.item_no_ali').each(function() {	
+							var can_unidad = $(this).find('.pro_no_ali_'+item.idProducto).html();
+							can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
+						});
+						$('#td_no_ali_'+item.idProducto).html(can_tot_unidad);
+					});
+				}
+				
+				listaProgramacionNoAlimentariosCache = respuesta;
+				
+				listarResumenStockNoAlimentario(indicador);
+				
+			}
+		});
+		
+	} else {
+		
+		var table = $('<table id="tbl_det_pro_no_alimentarios" />').addClass('table table-bordered table-hover tbl-responsive');
+		var row = $('<tr/>');
+		row.append($('<th class="table-dinamic" />').text('Sel'));
+		row.append($('<th class="table-dinamic" />').text('Nº'));
+		row.append($('<th class="table-dinamic" />').text('Departamento'));
+		row.append($('<th class="table-dinamic" />').text('Provincia'));
+		row.append($('<th class="table-dinamic" />').text('Distrito'));
+		row.append($('<th class="table-dinamic" />').text('Fam. Afect.'));
+		row.append($('<th class="table-dinamic" />').text('Fam. Dam.'));
+		row.append($('<th class="table-dinamic" />').text('Total Fam.'));
+		row.append($('<th class="table-dinamic" />').text('Pers. Afect.'));
+		row.append($('<th class="table-dinamic" />').text('Pers. Dam.'));
+		row.append($('<th class="table-dinamic" />').text('Total Pers.'));
+		$.each(listaNoAlimentariosCache, function(i, item) {
+			row.append($('<th class="table-dinamic" />').text(item.nombreProducto));
+	    });			
+//		row.append($('<th class="table-dinamic" />').text('Total (TM)'));
+		table.append(row);
+
+		$('#div_det_pro_no_alimentarios').html(table);
+		
+	}
+	
+}
+
+function listarResumenStockNoAlimentario(indicador) {
+	
+	var val_nro_racion = $('#sel_nro_racion').val();
+	var arr_nro_racion = val_nro_racion.split('_');
+
+	var params = { 
+		idProgramacion : $('#hid_cod_programacion').val(),
+		idRacionOperativa : arr_nro_racion[0]	
+	};		
+
+	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarResumenStockNoAlimentario', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleResumenStockNoAlimentario(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}		
+	});
+}
+
+function listarDetalleResumenStockNoAlimentario(respuesta) {
+	tbl_res_pro_no_alimentarios.dataTable().fnDestroy();
+	
+	tbl_res_pro_no_alimentarios.dataTable({
+		data : respuesta,
+		columns : [ {	
+			data : 'idProducto',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'nombreProducto'
+		}, {
+			data : 'totalStock'
+		}, {
+			data : 'totalConsumo'
+		}, {
+			data : 'totalSaldo'
+		} ],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : false,
+		paging : false,
+		ordering : false,
+		info : false
+	});
+}
+
+
+
+
+
+
 
 
 
@@ -964,4 +1653,43 @@ function sumarUnidadAlimentos() {
 		}			
     });
 	$('#txt_ali_tot_tm').val(formatMontoAll(total));
+}
+
+function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
+	var params = { 
+		idCategoria : idCategoria
+	};			
+	loadding(true);
+	consultarAjax('GET', '/gestion-almacenes/control-calidad/listarProductoXCategoria', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+	        $.each(respuesta, function(i, item) {
+	            options += '<option value="'+item.idProducto+'">'+item.nombreProducto+'</option>';
+	        });
+	        $('#sel_no_producto').html(options);
+	        if (codigoProducto != null) {
+	        	$('#sel_producto').val(codigoProducto);      	
+	        } else {
+//				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+	        }
+	        $('#sel_no_producto').select2().trigger('change');
+			$('#sel_no_producto').select2({
+				  dropdownParent: $('#div_pro_det_no_alimentarios')
+			});
+		}
+		loadding(false);		
+	});
+}
+
+function sumarUnidadNoAlimentarios() {
+	var total = 0;
+	$.each(listaNoAlimentariosCache, function(i, item) {			
+		var unidad = $('#txt_no_ali_uni_'+item.idProducto).val();
+		if (!esnulo(unidad)) {
+			total = total + parseFloat(unidad);
+		}			
+    });
+	$('#txt_no_ali_tot_tm').val(formatMontoAll(total));
 }

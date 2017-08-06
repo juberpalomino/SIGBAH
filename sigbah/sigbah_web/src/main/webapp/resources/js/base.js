@@ -1151,3 +1151,10 @@ function obtieneParametro(campo) {
 	}
 	return campo;
 }
+
+function verificarListaJson(lista) {
+	if (typeof lista === 'undefined') {
+	    return new Object();
+	}
+	return lista;
+}

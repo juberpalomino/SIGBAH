@@ -6,14 +6,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.com.sigbah.common.bean.DetalleProgramacionAlimentoBean;
+import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
+import pe.com.sigbah.common.bean.ProductoNoAlimentarioBean;
+import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
 import pe.com.sigbah.common.bean.ProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
+import pe.com.sigbah.common.bean.ProgramacionNoAlimentarioBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.ResumenStockAlimentoBean;
+import pe.com.sigbah.common.bean.ResumenStockNoAlimentarioBean;
 import pe.com.sigbah.dao.ProgramacionRequerimientoDao;
 import pe.com.sigbah.service.ProgramacionRequerimientoService;
 
@@ -136,11 +141,19 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	}
 
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#obtenerDetalleProgramacionAlimento(java.lang.Integer, java.lang.Integer, java.util.List)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarProgramacionAlimento(java.lang.Integer, java.util.List)
 	 */
 	@Override
-	public DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, Integer idRacionOperativa, List<Integer> arrIdProducto) throws Exception {
-		return programacionRequerimientoDao.obtenerDetalleProgramacionAlimento(idProgramacion, idRacionOperativa, arrIdProducto);
+	public List<ProgramacionAlimentoBean> listarProgramacionAlimento(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception {
+		return programacionRequerimientoDao.listarProgramacionAlimento(idProgramacion, arrIdProducto);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarResumenStockAlimento(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<ResumenStockAlimentoBean> listarResumenStockAlimento(Integer idProgramacion, Integer idRacionOperativa) throws Exception {
+		return programacionRequerimientoDao.listarResumenStockAlimento(idProgramacion, idRacionOperativa);
 	}
 
 	/* (non-Javadoc)
@@ -165,6 +178,94 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	@Override
 	public ProgramacionBean eliminarProgramacionAlimento(ProgramacionBean programacionBean) throws Exception {
 		return programacionRequerimientoDao.eliminarProgramacionAlimento(programacionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarProductoNoAlimentarioProgramacion(java.lang.Integer)
+	 */
+	@Override
+	public List<ProductoNoAlimentarioProgramacionBean> listarProductoNoAlimentarioProgramacion(Integer idProgramacion) throws Exception {
+		return programacionRequerimientoDao.listarProductoNoAlimentarioProgramacion(idProgramacion);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#grabarProductoNoAlimentarioProgramacion(pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioProgramacionBean grabarProductoNoAlimentarioProgramacion(ProductoNoAlimentarioProgramacionBean productoNoAlimentarioProgramacionBean) throws Exception {
+		return programacionRequerimientoDao.grabarProductoNoAlimentarioProgramacion(productoNoAlimentarioProgramacionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#eliminarProductoNoAlimentarioProgramacion(pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioProgramacionBean eliminarProductoNoAlimentarioProgramacion(ProductoNoAlimentarioProgramacionBean productoNoAlimentarioProgramacionBean) throws Exception {
+		return programacionRequerimientoDao.eliminarProductoNoAlimentarioProgramacion(productoNoAlimentarioProgramacionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#actualizarProgramacionNoAlimentario(pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioProgramacionBean actualizarProgramacionNoAlimentario(ProductoNoAlimentarioProgramacionBean productoNoAlimentarioProgramacionBean) throws Exception {
+		return programacionRequerimientoDao.actualizarProgramacionNoAlimentario(productoNoAlimentarioProgramacionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarProgramacionNoAlimentario(java.lang.Integer, java.util.List)
+	 */
+	@Override
+	public List<ProgramacionNoAlimentarioBean> listarProgramacionNoAlimentario(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception {
+		return programacionRequerimientoDao.listarProgramacionNoAlimentario(idProgramacion, arrIdProducto);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarResumenStockNoAlimentario(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<ResumenStockNoAlimentarioBean> listarResumenStockNoAlimentario(Integer idProgramacion, Integer idRacionOperativa) throws Exception {
+		return programacionRequerimientoDao.listarResumenStockNoAlimentario(idProgramacion, idRacionOperativa);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#actualizarDetalleProgramacionNoAlimentario(pe.com.sigbah.common.bean.ProductoNoAlimentarioBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioBean actualizarDetalleProgramacionNoAlimentario(ProductoNoAlimentarioBean productoNoAlimentarioBean) throws Exception {
+		return programacionRequerimientoDao.actualizarDetalleProgramacionNoAlimentario(productoNoAlimentarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#eliminarDetalleProgramacionNoAlimentario(pe.com.sigbah.common.bean.ProgramacionNoAlimentarioBean)
+	 */
+	@Override
+	public ProgramacionNoAlimentarioBean eliminarDetalleProgramacionNoAlimentario(ProgramacionNoAlimentarioBean programacionNoAlimentarioBean) throws Exception {
+		return programacionRequerimientoDao.eliminarDetalleProgramacionNoAlimentario(programacionNoAlimentarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarDocumentoProgramacion(pe.com.sigbah.common.bean.DocumentoProgramacionBean)
+	 */
+	@Override
+	public List<DocumentoProgramacionBean> listarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
+		return programacionRequerimientoDao.listarDocumentoProgramacion(documentoProgramacionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#grabarDocumentoProgramacion(pe.com.sigbah.common.bean.DocumentoProgramacionBean)
+	 */
+	@Override
+	public DocumentoProgramacionBean grabarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
+		return programacionRequerimientoDao.grabarDocumentoProgramacion(documentoProgramacionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#eliminarDocumentoProgramacion(pe.com.sigbah.common.bean.DocumentoProgramacionBean)
+	 */
+	@Override
+	public DocumentoProgramacionBean eliminarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
+		return programacionRequerimientoDao.eliminarDocumentoProgramacion(documentoProgramacionBean);
 	}
 
 }

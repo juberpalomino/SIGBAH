@@ -383,7 +383,7 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_can_alimentario').click(function(e) {
+	$('#btn_can_alimentario, #btn_clo_alimentarios').click(function(e) {
 		e.preventDefault();
 		frm_det_alimentarios.data('bootstrapValidator').resetForm();
 	});
@@ -558,7 +558,7 @@ $(document).ready(function() {
 		
 	});
 	
-	$('#btn_can_no_alimentario').click(function(e) {
+	$('#btn_can_no_alimentario, #btn_clo_no_alimentarios').click(function(e) {
 		e.preventDefault();
 		frm_det_no_alimentarios.data('bootstrapValidator').resetForm();
 	});

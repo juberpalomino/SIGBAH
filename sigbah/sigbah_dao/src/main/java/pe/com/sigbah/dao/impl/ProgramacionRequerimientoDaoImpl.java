@@ -21,28 +21,35 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
-import pe.com.sigbah.common.bean.DetalleProgramacionAlimentoBean;
+import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
+import pe.com.sigbah.common.bean.ProductoNoAlimentarioBean;
+import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
 import pe.com.sigbah.common.bean.ProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionAlmacenBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
+import pe.com.sigbah.common.bean.ProgramacionNoAlimentarioBean;
 import pe.com.sigbah.common.bean.RacionOperativaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
-import pe.com.sigbah.common.bean.ResumenStockBean;
+import pe.com.sigbah.common.bean.ResumenStockAlimentoBean;
+import pe.com.sigbah.common.bean.ResumenStockNoAlimentarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionRequerimientoDao;
+import pe.com.sigbah.mapper.ProductoNoAlimentarioProgramacionMapper;
 import pe.com.sigbah.mapper.ProgramacionAlimentoMapper;
 import pe.com.sigbah.mapper.ProgramacionAlmacenMapper;
 import pe.com.sigbah.mapper.ProgramacionMapper;
+import pe.com.sigbah.mapper.ProgramacionNoAlimentarioMapper;
 import pe.com.sigbah.mapper.ProgramacionRacionOperativaMapper;
-import pe.com.sigbah.mapper.RacionOperativaMapper;
 import pe.com.sigbah.mapper.ProgramacionRequerimientoMapper;
+import pe.com.sigbah.mapper.RacionOperativaMapper;
 import pe.com.sigbah.mapper.RegistroProgramacionMapper;
-import pe.com.sigbah.mapper.ResumenStockMapper;
+import pe.com.sigbah.mapper.ResumenStockAlimentoMapper;
+import pe.com.sigbah.mapper.ResumenStockNoAlimentarioMapper;
 
 /**
  * @className: ProgramacionRequerimientoDaoImpl.java
@@ -679,30 +686,27 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		LOGGER.info("[actualizarProgramacionRacionOperativa] Fin ");
 		return registroRacionOperativa;
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#obtenerDetalleProgramacionAlimento(java.lang.Integer, java.lang.Integer, java.util.List)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarProgramacionAlimento(java.lang.Integer, java.util.List)
 	 */
 	@Override
-	public DetalleProgramacionAlimentoBean obtenerDetalleProgramacionAlimento(Integer idProgramacion, Integer idRacionOperativa, List<Integer> arrIdProducto) throws Exception {
-		LOGGER.info("[obtenerDetalleProgramacionAlimento] Inicio ");
-		DetalleProgramacionAlimentoBean detalle = new DetalleProgramacionAlimentoBean();
+	public List<ProgramacionAlimentoBean> listarProgramacionAlimento(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception {
+		LOGGER.info("[listarProgramacionAlimento] Inicio ");
+		List<ProgramacionAlimentoBean> lista = new ArrayList<ProgramacionAlimentoBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
 			input_objParametros.addValue("PI_ID_PROG", idProgramacion, Types.NUMERIC);
-			input_objParametros.addValue("PI_ID_RACION", idRacionOperativa, Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
 			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
-			objJdbcCall.withProcedureName("USP_SEL_EDITAR_PIVOT_ALIMENTOS");
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PIVOT_ALIMENTOS");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_ID_PROG", new SqlParameter("PI_ID_PROG", Types.NUMERIC));
-			output_objParametros.put("PI_ID_RACION", new SqlParameter("PI_ID_RACION", Types.NUMERIC));
 			output_objParametros.put("PO_CURSOR_ALIMENTOS", new SqlOutParameter("PO_CURSOR_ALIMENTOS", OracleTypes.CURSOR, new ProgramacionAlimentoMapper(arrIdProducto)));
-			output_objParametros.put("PO_CURSOR_RESUMEN_STOCK", new SqlOutParameter("PO_CURSOR_RESUMEN_STOCK", OracleTypes.CURSOR, new ResumenStockMapper()));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
 			
@@ -712,20 +716,61 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
 				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
-				LOGGER.info("[obtenerDetalleProgramacionAlimento] Ocurrio un error en la operacion del USP_SEL_EDITAR_PIVOT_ALIMENTOS : "+mensajeRespuesta);
+				LOGGER.info("[listarProgramacionAlimento] Ocurrio un error en la operacion del USP_SEL_LISTAR_PIVOT_ALIMENTOS : "+mensajeRespuesta);
 				throw new Exception();
 			} else {
-				List<ProgramacionAlimentoBean> listaProgramacionAlimento = (List<ProgramacionAlimentoBean>) out.get("PO_CURSOR_ALIMENTOS");
-				detalle.setListaProgramacionAlimento(listaProgramacionAlimento);
-				List<ResumenStockBean> listaResumenStock = (List<ResumenStockBean>) out.get("PO_CURSOR_RESUMEN_STOCK");
-				detalle.setListaResumenStock(listaResumenStock);
+				lista = (List<ProgramacionAlimentoBean>) out.get("PO_CURSOR_ALIMENTOS");
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
-		LOGGER.info("[obtenerDetalleProgramacionAlimento] Fin ");
-		return detalle;
+		LOGGER.info("[listarProgramacionAlimento] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarResumenStockAlimento(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<ResumenStockAlimentoBean> listarResumenStockAlimento(Integer idProgramacion, Integer idRacionOperativa) throws Exception {
+		LOGGER.info("[listarResumenStockAlimento] Inicio ");
+		List<ResumenStockAlimentoBean> lista = new ArrayList<ResumenStockAlimentoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_PROG", idProgramacion, Types.NUMERIC);
+			input_objParametros.addValue("PI_ID_RACION", idRacionOperativa, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_STOCK_ALIMENTO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_PROG", new SqlParameter("PI_ID_PROG", Types.NUMERIC));
+			output_objParametros.put("PI_ID_RACION", new SqlParameter("PI_ID_RACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_RESUMEN_STOCK", new SqlOutParameter("PO_CURSOR_RESUMEN_STOCK", OracleTypes.CURSOR, new ResumenStockAlimentoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarResumenStockAlimento] Ocurrio un error en la operacion del USP_SEL_LISTAR_STOCK_ALIMENTO : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ResumenStockAlimentoBean>) out.get("PO_CURSOR_RESUMEN_STOCK");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarResumenStockAlimento] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -788,7 +833,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		ProgramacionAlimentoBean registroDetalleProgramacionAlimento = new ProgramacionAlimentoBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
-			input_objParametros.addValue("pi_fk_ide_programacion_ubigeo", programacionAlimentoBean.getIdProgramacionUbigeo(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PROGRAMACION_UBIGEO", programacionAlimentoBean.getIdProgramacionUbigeo(), Types.NUMERIC);
 //			input_objParametros.addValue("PI_USERNAME", programacionAlimentoBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -798,7 +843,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 			objJdbcCall.withProcedureName("USP_DEL_PROG_ALIMENTO");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("pi_fk_ide_programacion_ubigeo", new SqlParameter("pi_fk_ide_programacion_ubigeo", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PROGRAMACION_UBIGEO", new SqlParameter("PI_FK_IDE_PROGRAMACION_UBIGEO", Types.NUMERIC));
 //			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
@@ -871,6 +916,408 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		}		
 		LOGGER.info("[eliminarProgramacionAlimento] Fin ");
 		return registroProgramacion;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarProductoNoAlimentarioProgramacion(java.lang.Integer)
+	 */
+	@Override
+	public List<ProductoNoAlimentarioProgramacionBean> listarProductoNoAlimentarioProgramacion(Integer idProgramacion) throws Exception {
+		LOGGER.info("[listarProductoNoAlimentarioProgramacion] Inicio ");
+		List<ProductoNoAlimentarioProgramacionBean> lista = new ArrayList<ProductoNoAlimentarioProgramacionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_PROGRAMACION", idProgramacion, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PRODUCTOS_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PROGRAMACION", new SqlParameter("PI_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PO_PRODUCTOS_BNA", new SqlOutParameter("PO_PRODUCTOS_BNA", OracleTypes.CURSOR, new ProductoNoAlimentarioProgramacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoNoAlimentarioProgramacion] Ocurrio un error en la operacion del USP_SEL_LISTAR_PRODUCTOS_BNA : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProductoNoAlimentarioProgramacionBean>) out.get("PO_PRODUCTOS_BNA");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductoNoAlimentarioProgramacion] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#grabarProductoNoAlimentarioProgramacion(pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioProgramacionBean grabarProductoNoAlimentarioProgramacion(ProductoNoAlimentarioProgramacionBean productoNoAlimentarioProgramacionBean) throws Exception {
+		LOGGER.info("[grabarProductoNoAlimentarioProgramacion] Inicio ");
+		ProductoNoAlimentarioProgramacionBean registroProductoNoAlimentarioProgramacion = new ProductoNoAlimentarioProgramacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_PRODUCTO_BNA", productoNoAlimentarioProgramacionBean.getIdDetalleProductoNoAlimentario(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PROGRAMACION", productoNoAlimentarioProgramacionBean.getIdProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PRODUCTO", productoNoAlimentarioProgramacionBean.getIdProducto(), Types.NUMERIC);
+			input_objParametros.addValue("PI_CANTIDAD", productoNoAlimentarioProgramacionBean.getCantidad(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ENTREGA", productoNoAlimentarioProgramacionBean.getTipoEntrega(), Types.VARCHAR);
+			input_objParametros.addValue("PI_USERNAME", productoNoAlimentarioProgramacionBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_PRODUCTOS_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PRODUCTO_BNA", new SqlParameter("PI_IDE_PRODUCTO_BNA", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PROGRAMACION", new SqlParameter("PI_FK_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PRODUCTO", new SqlParameter("PI_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PI_CANTIDAD", new SqlParameter("PI_CANTIDAD", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ENTREGA", new SqlParameter("PI_TIPO_ENTREGA", Types.VARCHAR));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarProductoNoAlimentarioProgramacion] Ocurrio un error en la operacion del USP_INS_UPD_PRODUCTOS_BNA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoNoAlimentarioProgramacion.setCodigoRespuesta(codigoRespuesta);
+			registroProductoNoAlimentarioProgramacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarProductoNoAlimentarioProgramacion] Fin ");
+		return registroProductoNoAlimentarioProgramacion;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#eliminarProductoNoAlimentarioProgramacion(pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioProgramacionBean eliminarProductoNoAlimentarioProgramacion(ProductoNoAlimentarioProgramacionBean productoNoAlimentarioProgramacionBean) throws Exception {
+		LOGGER.info("[eliminarProductoNoAlimentarioProgramacion] Inicio ");
+		ProductoNoAlimentarioProgramacionBean registroProductoNoAlimentarioProgramacion = new ProductoNoAlimentarioProgramacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_PRODUCTO_BNA", productoNoAlimentarioProgramacionBean.getIdDetalleProductoNoAlimentario(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", productoNoAlimentarioProgramacionBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_PRODUCTO_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PRODUCTO_BNA", new SqlParameter("PI_IDE_PRODUCTO_BNA", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarProductoNoAlimentarioProgramacion] Ocurrio un error en la operacion del USP_DEL_PRODUCTO_BNA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoNoAlimentarioProgramacion.setCodigoRespuesta(codigoRespuesta);
+			registroProductoNoAlimentarioProgramacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarProductoNoAlimentarioProgramacion] Fin ");
+		return registroProductoNoAlimentarioProgramacion;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#actualizarProgramacionNoAlimentario(pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioProgramacionBean actualizarProgramacionNoAlimentario(ProductoNoAlimentarioProgramacionBean productoNoAlimentarioProgramacionBean) throws Exception {
+		LOGGER.info("[actualizarProgramacionNoAlimentario] Inicio ");
+		ProductoNoAlimentarioProgramacionBean registroProductoNoAlimentarioProgramacion = new ProductoNoAlimentarioProgramacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_PROGRAMACION", productoNoAlimentarioProgramacionBean.getIdProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", productoNoAlimentarioProgramacionBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_PROGRAMACION_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PROGRAMACION", new SqlParameter("PI_FK_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[actualizarProgramacionNoAlimentario] Ocurrio un error en la operacion del USP_INS_PROGRAMACION_BNA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoNoAlimentarioProgramacion.setCodigoRespuesta(codigoRespuesta);
+			registroProductoNoAlimentarioProgramacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[actualizarProgramacionNoAlimentario] Fin ");
+		return registroProductoNoAlimentarioProgramacion;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarProgramacionNoAlimentario(java.lang.Integer, java.util.List)
+	 */
+	@Override
+	public List<ProgramacionNoAlimentarioBean> listarProgramacionNoAlimentario(Integer idProgramacion, List<Integer> arrIdProducto) throws Exception {
+		LOGGER.info("[listarProgramacionNoAlimentario] Inicio ");
+		List<ProgramacionNoAlimentarioBean> lista = new ArrayList<ProgramacionNoAlimentarioBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_PROG", idProgramacion, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PIVOT_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_PROG", new SqlParameter("PI_ID_PROG", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_CANTIDADES_BNA", new SqlOutParameter("PO_CURSOR_CANTIDADES_BNA", OracleTypes.CURSOR, new ProgramacionNoAlimentarioMapper(arrIdProducto)));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProgramacionNoAlimentario] Ocurrio un error en la operacion del USP_SEL_LISTAR_PIVOT_BNA : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProgramacionNoAlimentarioBean>) out.get("PO_CURSOR_CANTIDADES_BNA");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProgramacionNoAlimentario] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarResumenStockNoAlimentario(java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<ResumenStockNoAlimentarioBean> listarResumenStockNoAlimentario(Integer idProgramacion, Integer idRacionOperativa) throws Exception {
+		LOGGER.info("[listarResumenStockNoAlimentario] Inicio ");
+		List<ResumenStockNoAlimentarioBean> lista = new ArrayList<ResumenStockNoAlimentarioBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_PROG", idProgramacion, Types.NUMERIC);
+//			input_objParametros.addValue("PI_ID_RACION", idRacionOperativa, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_STOCK_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_PROG", new SqlParameter("PI_ID_PROG", Types.NUMERIC));
+//			output_objParametros.put("PI_ID_RACION", new SqlParameter("PI_ID_RACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_RESUMEN_BNA", new SqlOutParameter("PO_CURSOR_RESUMEN_BNA", OracleTypes.CURSOR, new ResumenStockNoAlimentarioMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarResumenStockNoAlimentario] Ocurrio un error en la operacion del USP_SEL_LISTAR_STOCK_BNA : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ResumenStockNoAlimentarioBean>) out.get("PO_CURSOR_RESUMEN_BNA");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarResumenStockNoAlimentario] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#actualizarDetalleProgramacionNoAlimentario(pe.com.sigbah.common.bean.ProductoNoAlimentarioBean)
+	 */
+	@Override
+	public ProductoNoAlimentarioBean actualizarDetalleProgramacionNoAlimentario(ProductoNoAlimentarioBean productoNoAlimentarioBean) throws Exception {
+		LOGGER.info("[actualizarDetalleProgramacionNoAlimentario] Inicio ");
+		ProductoNoAlimentarioBean registroProductoNoAlimentario = new ProductoNoAlimentarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_PROGRAMACION_UBIGEO", productoNoAlimentarioBean.getIdProgramacionUbigeo(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PRODUCTO", productoNoAlimentarioBean.getIdProducto(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NRO_UNIDADES", productoNoAlimentarioBean.getUnidad(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", productoNoAlimentarioBean.getUsuarioRegistro(), Types.VARCHAR);			
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_UPD_PROGRAMACION_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PROGRAMACION_UBIGEO", new SqlParameter("PI_FK_IDE_PROGRAMACION_UBIGEO", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PRODUCTO", new SqlParameter("PI_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PI_NRO_UNIDADES", new SqlParameter("PI_NRO_UNIDADES", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[actualizarDetalleProgramacionNoAlimentario] Ocurrio un error en la operacion del USP_UPD_PROGRAMACION_BNA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoNoAlimentario.setCodigoRespuesta(codigoRespuesta);
+			registroProductoNoAlimentario.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[actualizarDetalleProgramacionNoAlimentario] Fin ");
+		return registroProductoNoAlimentario;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#eliminarDetalleProgramacionNoAlimentario(pe.com.sigbah.common.bean.ProgramacionNoAlimentarioBean)
+	 */
+	@Override
+	public ProgramacionNoAlimentarioBean eliminarDetalleProgramacionNoAlimentario(ProgramacionNoAlimentarioBean programacionNoAlimentarioBean) throws Exception {
+		LOGGER.info("[eliminarDetalleProgramacionNoAlimentario] Inicio ");
+		ProgramacionNoAlimentarioBean registroProductoNoAlimentario = new ProgramacionNoAlimentarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_PROGRAMACION_UBIGEO", programacionNoAlimentarioBean.getIdProgramacionUbigeo(), Types.NUMERIC);
+//			input_objParametros.addValue("PI_USERNAME", programacionNoAlimentarioBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_PROG_BNA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PROGRAMACION_UBIGEO", new SqlParameter("PI_FK_IDE_PROGRAMACION_UBIGEO", Types.NUMERIC));
+//			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarDetalleProgramacionNoAlimentario] Ocurrio un error en la operacion del USP_DEL_PROG_BNA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroProductoNoAlimentario.setCodigoRespuesta(codigoRespuesta);
+			registroProductoNoAlimentario.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarDetalleProgramacionNoAlimentario] Fin ");
+		return registroProductoNoAlimentario;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarDocumentoProgramacion(pe.com.sigbah.common.bean.DocumentoProgramacionBean)
+	 */
+	@Override
+	public List<DocumentoProgramacionBean> listarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#grabarDocumentoProgramacion(pe.com.sigbah.common.bean.DocumentoProgramacionBean)
+	 */
+	@Override
+	public DocumentoProgramacionBean grabarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#eliminarDocumentoProgramacion(pe.com.sigbah.common.bean.DocumentoProgramacionBean)
+	 */
+	@Override
+	public DocumentoProgramacionBean eliminarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

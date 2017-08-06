@@ -75,4 +75,39 @@ $(document).ready(function() {
 		}
 	});
 	
+	frm_pro_no_alimentarios.bootstrapValidator({
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			sel_no_cat_producto : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Categoria de Producto.'
+					}
+				}
+			},
+			sel_no_producto : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Producto.'
+					}
+				}
+			},
+			rb_distribuir : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Distribuir.'
+					}
+				}
+			},
+			txt_no_cantidad : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Cantidad.'
+					}
+				}
+			}
+		}
+	});
+	
 });

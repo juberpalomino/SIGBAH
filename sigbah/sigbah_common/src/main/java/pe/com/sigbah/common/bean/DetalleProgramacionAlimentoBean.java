@@ -12,7 +12,7 @@ public class DetalleProgramacionAlimentoBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	private List<ProgramacionAlimentoBean> listaProgramacionAlimento;
-	private List<ResumenStockBean> listaResumenStock;
+	private List<ResumenStockAlimentoBean> listaResumenStock;
 	
 	
 	/**
@@ -30,13 +30,13 @@ public class DetalleProgramacionAlimentoBean extends BaseOutputBean {
 	/**
 	 * @return the listaResumenStock
 	 */
-	public List<ResumenStockBean> getListaResumenStock() {
+	public List<ResumenStockAlimentoBean> getListaResumenStock() {
 		return listaResumenStock;
 	}
 	/**
 	 * @param listaResumenStock the listaResumenStock to set
 	 */
-	public void setListaResumenStock(List<ResumenStockBean> listaResumenStock) {
+	public void setListaResumenStock(List<ResumenStockAlimentoBean> listaResumenStock) {
 		this.listaResumenStock = listaResumenStock;
 	}
 	
