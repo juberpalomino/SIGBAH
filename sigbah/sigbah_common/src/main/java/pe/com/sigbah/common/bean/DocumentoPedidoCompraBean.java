@@ -1,7 +1,7 @@
 package pe.com.sigbah.common.bean;
 
 /**
- * @className: DocumentoControlCalidadBean.java
+ * @className: DocumentoPedidoCompraBean.java
  * @description: 
  * @date: 25 de jun. de 2017
  * @author: Junior Huaman Flores.

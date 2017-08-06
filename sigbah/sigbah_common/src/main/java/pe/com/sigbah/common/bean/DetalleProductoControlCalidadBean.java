@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * @className: ProductoControlCalidadBean.java
+ * @className: DetalleProductoControlCalidadBean.java
  * @description: 
  * @date: 25 de jun. de 2017
  * @author: Junior Huaman Flores.

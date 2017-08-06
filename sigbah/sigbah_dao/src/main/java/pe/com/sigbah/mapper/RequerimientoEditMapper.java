@@ -5,12 +5,11 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 
 
 /**
- * @className: RequerimientoMapper.java
+ * @className: RequerimientoEditMapper.java
  * @description: 
  * @date: 19 jul. 2017
  * @author: whr.

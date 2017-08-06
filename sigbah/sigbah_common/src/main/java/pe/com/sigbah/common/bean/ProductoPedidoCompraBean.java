@@ -3,7 +3,7 @@ package pe.com.sigbah.common.bean;
 import java.math.BigDecimal;
 
 /**
- * @className: ProductoControlCalidadBean.java
+ * @className: ProductoPedidoCompraBean.java
  * @description: 
  * @date: 25 de jun. de 2017
  * @author: Junior Huaman Flores.
