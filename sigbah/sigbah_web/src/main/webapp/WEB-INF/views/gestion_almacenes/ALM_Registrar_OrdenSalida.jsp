@@ -678,7 +678,7 @@
 				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title" id="h4_tit_documentos">Nuevo Documento</h4>
+				<h4 class="modal-title label-bold" id="h4_tit_documentos">Nuevo Documento</h4>
 			</div>
 			
 			<div class="modal-body">

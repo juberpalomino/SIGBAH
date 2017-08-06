@@ -9,8 +9,8 @@ package pe.com.sigbah.common.bean;
 public class DocumentoProgramacionBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
-	private Integer idDocumentoControlCalidad;
-	private Integer idControlCalidad;
+	private Integer idDocumentoProgramacion;
+	private Integer idProgramacion;
 	private Integer idTipoDocumento;
 	private String nombreDocumento;
 	private String nroDocumento;
@@ -18,6 +18,7 @@ public class DocumentoProgramacionBean extends BaseOutputBean {
 	private String observacion;
 	private String codigoArchivoAlfresco;
 	private String nombreArchivo;
+	private String indControl;
 
 	
 	/**
@@ -28,39 +29,39 @@ public class DocumentoProgramacionBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @param idDocumentoControlCalidad
+	 * @param idDocumentoProgramacion
 	 */
-	public DocumentoProgramacionBean(Integer idDocumentoControlCalidad) {
+	public DocumentoProgramacionBean(Integer idDocumentoProgramacion) {
 		super();
-		this.idDocumentoControlCalidad = idDocumentoControlCalidad;
+		this.idDocumentoProgramacion = idDocumentoProgramacion;
+	}
+	
+	/**
+	 * @return the idDocumentoProgramacion
+	 */
+	public Integer getIdDocumentoProgramacion() {
+		return idDocumentoProgramacion;
 	}
 
 	/**
-	 * @return the idDocumentoControlCalidad
+	 * @param idDocumentoProgramacion the idDocumentoProgramacion to set
 	 */
-	public Integer getIdDocumentoControlCalidad() {
-		return idDocumentoControlCalidad;
+	public void setIdDocumentoProgramacion(Integer idDocumentoProgramacion) {
+		this.idDocumentoProgramacion = idDocumentoProgramacion;
 	}
 
 	/**
-	 * @param idDocumentoControlCalidad the idDocumentoControlCalidad to set
+	 * @return the idProgramacion
 	 */
-	public void setIdDocumentoControlCalidad(Integer idDocumentoControlCalidad) {
-		this.idDocumentoControlCalidad = idDocumentoControlCalidad;
+	public Integer getIdProgramacion() {
+		return idProgramacion;
 	}
 
 	/**
-	 * @return the idControlCalidad
+	 * @param idProgramacion the idProgramacion to set
 	 */
-	public Integer getIdControlCalidad() {
-		return idControlCalidad;
-	}
-
-	/**
-	 * @param idControlCalidad the idControlCalidad to set
-	 */
-	public void setIdControlCalidad(Integer idControlCalidad) {
-		this.idControlCalidad = idControlCalidad;
+	public void setIdProgramacion(Integer idProgramacion) {
+		this.idProgramacion = idProgramacion;
 	}
 
 	/**
@@ -159,6 +160,20 @@ public class DocumentoProgramacionBean extends BaseOutputBean {
 	 */
 	public void setNombreArchivo(String nombreArchivo) {
 		this.nombreArchivo = nombreArchivo;
+	}
+
+	/**
+	 * @return the indControl
+	 */
+	public String getIndControl() {
+		return indControl;
+	}
+
+	/**
+	 * @param indControl the indControl to set
+	 */
+	public void setIndControl(String indControl) {
+		this.indControl = indControl;
 	}
 
 }

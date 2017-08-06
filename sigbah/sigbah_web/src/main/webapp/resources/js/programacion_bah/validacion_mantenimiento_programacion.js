@@ -110,4 +110,32 @@ $(document).ready(function() {
 		}
 	});
 	
+	frm_det_documentos.bootstrapValidator({
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			sel_tip_documento : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Tipo Documento.'
+					}
+				}
+			},
+			txt_nro_documento : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar N° Documento.'
+					}
+				}
+			},
+			txt_doc_fecha : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Fecha.'
+					}
+				}
+			}
+		}
+	});
+	
 });

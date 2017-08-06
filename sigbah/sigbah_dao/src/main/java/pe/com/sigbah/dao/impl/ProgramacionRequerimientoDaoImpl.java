@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionRequerimientoDao;
+import pe.com.sigbah.mapper.DocumentoProgramacionMapper;
+import pe.com.sigbah.mapper.EstadoProgramacionMapper;
 import pe.com.sigbah.mapper.ProductoNoAlimentarioProgramacionMapper;
 import pe.com.sigbah.mapper.ProgramacionAlimentoMapper;
 import pe.com.sigbah.mapper.ProgramacionAlmacenMapper;
@@ -375,8 +378,41 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 	 */
 	@Override
 	public List<EstadoProgramacionBean> listarEstadoProgramacion(EstadoProgramacionBean estadoProgramacionBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarEstadoProgramacion] Inicio ");
+		List<EstadoProgramacionBean> lista = new ArrayList<EstadoProgramacionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_PROGRAMACION", estadoProgramacionBean.getIdProgramacion(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_ESTADOS_PROG");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PROGRAMACION", new SqlParameter("PI_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_ESTADOS", new SqlOutParameter("PO_CURSOR_ESTADOS", OracleTypes.CURSOR, new EstadoProgramacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarEstadoProgramacion] Ocurrio un error en la operacion del USP_SEL_LISTAR_ESTADOS_PROG : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<EstadoProgramacionBean>) out.get("PO_CURSOR_ESTADOS");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarEstadoProgramacion] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -1298,8 +1334,44 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 	 */
 	@Override
 	public List<DocumentoProgramacionBean> listarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarDocumentoProgramacion] Inicio ");
+		List<DocumentoProgramacionBean> lista = new ArrayList<DocumentoProgramacionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_PROGRAMACION", documentoProgramacionBean.getIdProgramacion(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PROG_FILE");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PROGRAMACION", new SqlParameter("PI_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DOCUMENTOS", new SqlOutParameter("PO_CURSOR_DOCUMENTOS", OracleTypes.CURSOR, new DocumentoProgramacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentoProgramacion] Ocurrio un error en la operacion del USP_SEL_LISTAR_PROG_FILE : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DocumentoProgramacionBean>) out.get("PO_CURSOR_DOCUMENTOS");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDocumentoProgramacion] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -1307,8 +1379,60 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 	 */
 	@Override
 	public DocumentoProgramacionBean grabarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[grabarDocumentoProgramacion] Inicio ");
+		DocumentoProgramacionBean registroDocumentoProgramacion = new DocumentoProgramacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_PROGRAMACION", documentoProgramacionBean.getIdProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_ID_DOCUMENTO", documentoProgramacionBean.getIdDocumentoProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_TIP_DOCUMENTO", documentoProgramacionBean.getIdTipoDocumento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NRO_DOCUMENTO", StringUtils.upperCase(documentoProgramacionBean.getNroDocumento()), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_ALFRESCO", documentoProgramacionBean.getCodigoArchivoAlfresco(), Types.VARCHAR);
+			input_objParametros.addValue("PI_NOMB_ARCHIVO", documentoProgramacionBean.getNombreArchivo(), Types.VARCHAR);
+	        input_objParametros.addValue("PI_FEC_DOCUMENTO", DateUtil.obtenerFechaHoraParseada(documentoProgramacionBean.getFechaDocumento()), Types.DATE);		
+			input_objParametros.addValue("PI_USERNAME", documentoProgramacionBean.getUsuarioRegistro(), Types.VARCHAR);
+			input_objParametros.addValue("PI_CONTROL", documentoProgramacionBean.getIndControl(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_UPD_PROGRAMACION_FILE");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PROGRAMACION", new SqlParameter("PI_FK_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PI_ID_DOCUMENTO", new SqlParameter("PI_ID_DOCUMENTO", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_TIP_DOCUMENTO", new SqlParameter("PI_FK_IDE_TIP_DOCUMENTO", Types.NUMERIC));
+			output_objParametros.put("PI_NRO_DOCUMENTO", new SqlParameter("PI_NRO_DOCUMENTO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_ALFRESCO", new SqlParameter("PI_COD_ALFRESCO", Types.VARCHAR));
+			output_objParametros.put("PI_NOMB_ARCHIVO", new SqlParameter("PI_NOMB_ARCHIVO", Types.VARCHAR));
+			output_objParametros.put("PI_FEC_DOCUMENTO", new SqlParameter("PI_FEC_DOCUMENTO", Types.DATE));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarDocumentoProgramacion] Ocurrio un error en la operacion del USP_INS_UPD_PROGRAMACION_FILE : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroDocumentoProgramacion.setCodigoRespuesta(codigoRespuesta);
+			registroDocumentoProgramacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarDocumentoProgramacion] Fin ");
+		return registroDocumentoProgramacion;
 	}
 
 	/* (non-Javadoc)
@@ -1316,8 +1440,46 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 	 */
 	@Override
 	public DocumentoProgramacionBean eliminarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[eliminarDocumentoProgramacion] Inicio ");
+		DocumentoProgramacionBean registroDocumentoProgramacion = new DocumentoProgramacionBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_ID_DOCUMENTO", documentoProgramacionBean.getIdDocumentoProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", documentoProgramacionBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_PROGRAMACION_FILE");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_DOCUMENTO", new SqlParameter("PI_ID_DOCUMENTO", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarDocumentoProgramacion] Ocurrio un error en la operacion del USP_DEL_PROGRAMACION_FILE : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			registroDocumentoProgramacion.setCodigoRespuesta(codigoRespuesta);
+			registroDocumentoProgramacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarDocumentoProgramacion] Fin ");
+		return registroDocumentoProgramacion;
 	}
 	
 }

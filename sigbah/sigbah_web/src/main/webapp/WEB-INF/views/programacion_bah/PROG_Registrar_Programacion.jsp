@@ -274,7 +274,7 @@
 										<div class="row">
 											<label class="col-sm-2 control-label label-bold">Programación:</label>
 											<div class="col-sm-10 form-group">
-												<input type="text" id="txt_ali_programacion" class="form-control" disabled>
+												<input type="text" class="form-control" name="txt_programacion" disabled>
 											</div>
 										</div>
 																				
@@ -449,315 +449,327 @@
 								
 								<div class="tab-pane fade" id="div_no_alimentarios">
 								
-									<div class="row">
-										<label class="col-sm-2 control-label label-bold">Programación:</label>
-										<div class="col-sm-10 form-group">
-											<input type="text" id="txt_no_ali_programacion" class="form-control" disabled>
-										</div>
-									</div>
-									
-									<div class="panel-group smart-accordion-default" id="div_acc_no_alimentarios">
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<h4 class="panel-title">
-													<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_pro_no_alimentarios">
-														<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
-														<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-														Programación de Bienes No Alimentarios
-													</a>
-												</h4>
-											</div>
-											
-											<div id="div_col_pro_no_alimentarios" class="panel-collapse collapse in">
-												<div class="panel-body">
-												
-													<div class="row">														
-														<div class="col-sm-2 opc-center">
-															<button class="btn btn-primary" type="button" id="btn_pro_editar">
-																<i class="fa fa-edit"></i>
-																Editar
-															</button>
-														</div>
-														
-														<div class="col-sm-2 opc-center">
-															<button class="btn btn-primary" type="button" id="btn_pro_nuevo">
-																<i class="fa fa-file-o"></i>
-																Nuevo
-															</button>
-														</div>
-														
-														<div class="col-sm-2 opc-center">
-															<button class="btn btn-danger" type="button" id="btn_pro_eliminar">
-																<i class="fa fa-trash-o"></i>
-																Eliminar
-															</button>
-														</div>
-													</div>
-													
-													<div class="row">
-														<div class="col-sm-12 form-group">&nbsp;</div>
-													</div>
-	
-													<table id="tbl_pro_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
-														<thead>			                
-															<tr>
-																<th>Sel</th>
-																<th>Nº</th>
-																<th>Producto</th>
-																<th>Distribuir Por</th>
-																<th>Cantidad</th>
-															</tr>
-														</thead>
-													</table>
-													
-													<div class="row">
-														<div class="col-sm-8 form-group"></div>
-														<div class="col-sm-2 opc-center">
-															<button class="btn btn-primary" type="button" id="btn_no_ali_actualizar">
-																<i class="fa fa-refresh"></i>
-																Actualizar
-															</button>
-														</div>
-													</div>														
-												</div>
+									<form class="form-horizontal">
+								
+										<div class="row">
+											<label class="col-sm-2 control-label label-bold">Programación:</label>
+											<div class="col-sm-10 form-group">
+												<input type="text" class="form-control" name="txt_programacion" disabled>
 											</div>
 										</div>
 										
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<h4 class="panel-title">
-													<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_det_pro_no_alimentarios" class="collapsed">
-														<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
-														<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-														Detalle de la Programación No Alimentarios 
-													</a>
-												</h4>
-											</div>
-											<div id="div_col_det_pro_no_alimentarios" class="panel-collapse collapse">
-												<div class="panel-body">
+										<div class="panel-group smart-accordion-default" id="div_acc_no_alimentarios">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h4 class="panel-title">
+														<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_pro_no_alimentarios">
+															<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
+															<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+															Programación de Bienes No Alimentarios
+														</a>
+													</h4>
+												</div>
 												
-													<div class="row">
-														<div class="col-sm-2 opc-center">
-															<button class="btn btn-default" type="button" id="btn_no_ali_exp_excel">
-																<i class="fa fa-file-excel-o"></i>
-																Exportar Excel
-															</button>
+												<div id="div_col_pro_no_alimentarios" class="panel-collapse collapse in">
+													<div class="panel-body">
+													
+														<div class="row">														
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-primary" type="button" id="btn_pro_editar">
+																	<i class="fa fa-edit"></i>
+																	Editar
+																</button>
+															</div>
+															
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-primary" type="button" id="btn_pro_nuevo">
+																	<i class="fa fa-file-o"></i>
+																	Nuevo
+																</button>
+															</div>
+															
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-danger" type="button" id="btn_pro_eliminar">
+																	<i class="fa fa-trash-o"></i>
+																	Eliminar
+																</button>
+															</div>
 														</div>
 														
-														<div class="col-sm-2 opc-center">
-															<button class="btn btn-primary" type="button" id="btn_no_ali_editar">
-																<i class="fa fa-edit"></i>
-																Editar
-															</button>
+														<div class="row">
+															<div class="col-sm-12 form-group">&nbsp;</div>
 														</div>
-														
-														<div class="col-sm-2 opc-center">
-															<button class="btn btn-danger" type="button" id="btn_no_ali_eliminar">
-																<i class="fa fa-trash-o"></i>
-																Eliminar
-															</button>
-														</div>
-													</div>
-													
-													<div class="row">
-														<div class="col-sm-12 form-group">&nbsp;</div>
-													</div>
-													
-													<div id="div_det_pro_no_alimentarios" class="table-scroll">													
-														<table id="div_det_pro_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
+		
+														<table id="tbl_pro_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
 															<thead>			                
 																<tr>
 																	<th>Sel</th>
 																	<th>Nº</th>
-																	<th>Departamento</th>
-																	<th>Provincia</th>
-																	<th>Distrito</th>
-																	<th>Fam. Afect.</th>
-																	<th>Fam. Dam.</th>
-																	<th>Total Fam.</th>
-																	<th>Pers. Afect.</th>
-																	<th>Pers. Dam.</th>
-																	<th>Total Pers.</th>
+																	<th>Producto</th>
+																	<th>Distribuir Por</th>
+																	<th>Cantidad</th>
 																</tr>
 															</thead>
 														</table>
+														
+														<div class="row">
+															<div class="col-sm-8 form-group"></div>
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-primary" type="button" id="btn_no_ali_actualizar">
+																	<i class="fa fa-refresh"></i>
+																	Actualizar
+																</button>
+															</div>
+														</div>														
 													</div>
+												</div>
+											</div>
+											
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h4 class="panel-title">
+														<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_det_pro_no_alimentarios" class="collapsed">
+															<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
+															<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+															Detalle de la Programación No Alimentarios 
+														</a>
+													</h4>
+												</div>
+												<div id="div_col_det_pro_no_alimentarios" class="panel-collapse collapse">
+													<div class="panel-body">
 													
+														<div class="row">
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-default" type="button" id="btn_no_ali_exp_excel">
+																	<i class="fa fa-file-excel-o"></i>
+																	Exportar Excel
+																</button>
+															</div>
+															
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-primary" type="button" id="btn_no_ali_editar">
+																	<i class="fa fa-edit"></i>
+																	Editar
+																</button>
+															</div>
+															
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-danger" type="button" id="btn_no_ali_eliminar">
+																	<i class="fa fa-trash-o"></i>
+																	Eliminar
+																</button>
+															</div>
+														</div>
+														
+														<div class="row">
+															<div class="col-sm-12 form-group">&nbsp;</div>
+														</div>
+														
+														<div id="div_det_pro_no_alimentarios" class="table-scroll">													
+															<table id="div_det_pro_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
+																<thead>			                
+																	<tr>
+																		<th>Sel</th>
+																		<th>Nº</th>
+																		<th>Departamento</th>
+																		<th>Provincia</th>
+																		<th>Distrito</th>
+																		<th>Fam. Afect.</th>
+																		<th>Fam. Dam.</th>
+																		<th>Total Fam.</th>
+																		<th>Pers. Afect.</th>
+																		<th>Pers. Dam.</th>
+																		<th>Total Pers.</th>
+																	</tr>
+																</thead>
+															</table>
+														</div>
+														
+													</div>
+												</div>
+											</div>
+											
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h4 class="panel-title">
+														<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_res_no_alimentarios" class="collapsed">
+															<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
+															<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
+															Resumen Alimentos
+														</a>
+													</h4>
+												</div>
+												
+												<div id="div_col_res_no_alimentarios" class="panel-collapse collapse">
+													<div class="panel-body">
+														
+														<table id="tbl_res_pro_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
+															<thead>			                
+																<tr>
+																	<th>Nº</th>
+																	<th>Producto</th>
+																	<th>Stock</th>
+																	<th>Total</th>
+																	<th>Saldo</th>
+																</tr>
+															</thead>
+														</table>
+														
+													</div>
 												</div>
 											</div>
 										</div>
 										
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<h4 class="panel-title">
-													<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_res_no_alimentarios" class="collapsed">
-														<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
-														<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-														Resumen Alimentos
-													</a>
-												</h4>
-											</div>
-											
-											<div id="div_col_res_no_alimentarios" class="panel-collapse collapse">
-												<div class="panel-body">
-													
-													<table id="tbl_res_pro_no_alimentarios" class="table table-bordered table-hover tbl-responsive">
-														<thead>			                
-															<tr>
-																<th>Nº</th>
-																<th>Producto</th>
-																<th>Stock</th>
-																<th>Total</th>
-																<th>Saldo</th>
-															</tr>
-														</thead>
-													</table>
-													
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-md-12 opc-center">
+													<button class="btn btn-default btn_retornar" type="button">
+														<i class="fa fa-mail-forward"></i>
+														Retornar
+													</button>
 												</div>
 											</div>
 										</div>
-									</div>
-									
-									<div class="form-actions">
-										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
-											</div>
-										</div>
-									</div>
+										
+									</form>
 									
 								</div>
 								
 								<div class="tab-pane fade" id="div_documentos">
-									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Relación de Documentos</h2>
-											
-											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_doc_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Nuevo">
-													<i class="fa fa-file-o"></i>
-												</a>
-												<a href="#" id="href_doc_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Editar">
-													<i class="fa fa-edit"></i>
-												</a>
-												<a href="#" id="href_doc_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
-												</a>
-											</div>
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-
-												<table id="tbl_det_documentos" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th></th>
-															<th>Nº</th>
-															<th>Tipo Documento</th>
-															<th>Nro Documento</th>
-															<th>Fecha</th>
-														</tr>
-													</thead>
-												</table>
-
-											</div>
-											<!-- end widget content -->
-						
-										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<div class="form-actions">
+								
+									<form class="form-horizontal">
+								
 										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
+											<label class="col-sm-2 control-label label-bold">Programación:</label>
+											<div class="col-sm-10 form-group">
+												<input type="text" class="form-control" name="txt_programacion" disabled>
 											</div>
 										</div>
-									</div>
+										
+										<!-- Widget ID (each widget will need unique ID)-->
+										<div class="jarviswidget jarviswidget-color-blueLight">
+										
+											<header>
+												<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+												<h2>Relación de Documentos</h2>
+												
+												<div class="jarviswidget-ctrls" role="menu">   
+													<a href="#" id="href_doc_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Nuevo">
+														<i class="fa fa-file-o"></i>
+													</a>
+													<a href="#" id="href_doc_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Editar">
+														<i class="fa fa-edit"></i>
+													</a>
+													<a href="#" id="href_doc_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Eliminar">
+														<i class="fa fa-trash-o"></i>
+													</a>
+												</div>
+											</header>
+							
+											<!-- widget div-->
+											<div>
+																
+												<!-- widget content -->
+												<div class="widget-body">
+	
+													<table id="tbl_det_documentos" class="table table-bordered table-hover tbl-responsive">
+														<thead>			                
+															<tr>
+																<th></th>
+																<th>Nº</th>
+																<th>Tipo Documento</th>
+																<th>Nro Documento</th>
+																<th>Fecha</th>
+																<th>Nombre Archivo</th>
+															</tr>
+														</thead>
+													</table>
+	
+												</div>
+												<!-- end widget content -->
+							
+											</div>
+											<!-- end widget div -->
+							
+										</div>
+										<!-- end widget -->
+										
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-md-12 opc-center">
+													<button class="btn btn-default btn_retornar" type="button">
+														<i class="fa fa-mail-forward"></i>
+														Retornar
+													</button>
+												</div>
+											</div>
+										</div>
+										
+									</form>
 									
 								</div>
 								
 								<div class="tab-pane fade" id="div_estados">
-									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Relación de Estados</h2>
-											
-											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_doc_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Nuevo">
-													<i class="fa fa-file-o"></i>
-												</a>
-												<a href="#" id="href_doc_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Editar">
-													<i class="fa fa-edit"></i>
-												</a>
-												<a href="#" id="href_doc_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
-												</a>
-											</div>
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-
-												<table id="tbl_det_estados" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th></th>
-															<th>Nº</th>
-															<th>Tipo Documento</th>
-															<th>Nro Documento</th>
-															<th>Fecha</th>
-														</tr>
-													</thead>
-												</table>
-
-											</div>
-											<!-- end widget content -->
-						
-										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<div class="form-actions">
+								
+									<form class="form-horizontal">
+								
 										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
+											<label class="col-sm-2 control-label label-bold">Programación:</label>
+											<div class="col-sm-10 form-group">
+												<input type="text" class="form-control" name="txt_programacion" disabled>
 											</div>
 										</div>
-									</div>
+										
+										<!-- Widget ID (each widget will need unique ID)-->
+										<div class="jarviswidget jarviswidget-color-blueLight">
+										
+											<header>
+												<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+												<h2>Estados de la Programación del Requerimiento</h2>
+											</header>
+							
+											<!-- widget div-->
+											<div>
+																
+												<!-- widget content -->
+												<div class="widget-body">
+	
+													<table id="tbl_det_estados" class="table table-bordered table-hover tbl-responsive">
+														<thead>			                
+															<tr>
+																<th>Nº</th>
+																<th>Estado</th>
+																<th>Fecha</th>
+																<th>Observaciones</th>
+																<th>Ejecutado por</th>
+															</tr>
+														</thead>
+													</table>
+	
+												</div>
+												<!-- end widget content -->
+							
+											</div>
+											<!-- end widget div -->
+							
+										</div>
+										<!-- end widget -->
+										
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-md-12 opc-center">
+													<button class="btn btn-default btn_retornar" type="button">
+														<i class="fa fa-mail-forward"></i>
+														Retornar
+													</button>
+												</div>
+											</div>
+										</div>
+										
+									</form>
 									
 								</div>
 							</div>
@@ -1035,6 +1047,96 @@
 				&nbsp; &nbsp;
 				
 				<button type="button" class="btn btn-default" data-dismiss="modal">
+					<i class="fa fa-mail-forward"></i>
+					Cancelar
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal -->
+<div id="div_det_documentos" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title label-bold" id="h4_tit_documentos">Nuevo Documento</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<form id="frm_det_documentos" class="form-horizontal" role="form">
+							
+							<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
+							<input type="hidden" id="hid_cod_act_alfresco" name="hid_cod_act_alfresco">
+							<input type="hidden" id="hid_cod_ind_alfresco" name="hid_cod_ind_alfresco">
+						
+							<div class="form-group">																				
+								<label class="col-sm-3 control-label">Tipo Documento:</label>
+								<div class="col-sm-8">
+									<select id="sel_tip_documento" name="sel_tip_documento" class="form-control">
+										<option value="">Seleccione</option>
+										<c:forEach items="${lista_tipo_documento}" var="item">
+											<option value="${item.vcodigo}">${item.descripcion}</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>								
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">N° Documento:</label>
+								<div class="col-sm-4">
+									<input type="text" name="txt_nro_documento" id="txt_nro_documento" class="form-control upperValue" maxlength="18">
+								</div>								
+							</div>										
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Fecha:</label>
+								<div class="col-sm-4 smart-form">
+									<label class="input"> 
+										<i class="icon-append fa fa-calendar"></i>
+										<input type="text" name="txt_doc_fecha" id="txt_doc_fecha" class="datepicker" readonly>
+									</label>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Subir Archivo:</label>
+								<div class="col-sm-7 smart-form">
+									<div class="input input-file">
+										<span id="sp_sub_archivo" class="button">
+											<input type="file" id="fil_sub_archivo" name="fil_sub_archivo">
+											Cargar
+										</span>
+										<input type="text" id="txt_lee_sub_archivo" name="txt_lee_sub_archivo" readonly>
+									</div>
+								</div>
+								<div class="col-sm-2">
+									<a href="#" id="href_eli_archivo" class="btn btn-default txt-color-red" rel="tooltip" 
+										data-placement="right" data-original-title="Eliminar Archivo" data-html="true">
+										<i class="fa fa-eraser fa-lg"></i>
+									</a>
+								</div>							
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_gra_documento">
+					<i class="fa fa-floppy-o"></i>
+					Grabar
+				</button>
+				
+				&nbsp; &nbsp;
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_documento">
 					<i class="fa fa-mail-forward"></i>
 					Cancelar
 				</button>

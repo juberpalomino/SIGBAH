@@ -169,6 +169,8 @@ private static final long serialVersionUID = 1L;
         	model.addAttribute("listaAlmacen", getParserObject(listaAlmacen));
         	
         	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.TWO_INT)));
+        	
+        	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
 
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
@@ -843,22 +845,19 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	/**
-	 * @param request
-	 * @param response
+	 * @param arrIdDocumentoProgramacion
 	 * @return objeto en formato json
 	 */
 	@RequestMapping(value = "/eliminarDocumentoProgramacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object eliminarDocumentoProgramacion(HttpServletRequest request, HttpServletResponse response) {
+	public Object eliminarDocumentoProgramacion(@RequestParam(value="arrIdDocumentoProgramacion[]") List<Integer> arrIdDocumentoProgramacion) {
 		DocumentoProgramacionBean documento = null;
 		try {			
-			String[] arrIdDetalleProgramacion = request.getParameter("arrIdDocumentoProgramacion").split(Constantes.UNDERLINE);
-			
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-			for (String codigo : arrIdDetalleProgramacion) {				
-				DocumentoProgramacionBean documentoProgramacionBean = new DocumentoProgramacionBean(getInteger(codigo));
+			for (Integer codigo : arrIdDocumentoProgramacion) {				
+				DocumentoProgramacionBean documentoProgramacionBean = new DocumentoProgramacionBean(codigo);
 
 	        	documentoProgramacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				

@@ -182,6 +182,7 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
+		var nombreProgramacion = '';
 		tbl_mnt_programacion.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_programacion.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -191,6 +192,7 @@ $(document).ready(function() {
 				}
 				var idProgramacion = listaProgramacionCache[index].idProgramacion;
 				codigo = codigo + idProgramacion + '_';
+				nombreProgramacion = listaProgramacionCache[index].nombreProgramacion;
 			}
 		});
 		
@@ -212,6 +214,7 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					$('#hid_cod_programacion').val(codigo);
+					$('#txt_programacion').val(nombreProgramacion);
 					$('#txt_observacion').val('');
 					var options = '';
 			        $.each(respuesta, function(i, item) {

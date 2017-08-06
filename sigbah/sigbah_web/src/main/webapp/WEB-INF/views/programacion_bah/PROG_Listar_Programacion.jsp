@@ -200,6 +200,12 @@
 						<form id="frm_gra_estado" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_programacion" name="hid_cod_programacion">
+							
+							<div class="form-group">																				
+								<div class="col-sm-12">
+									<input type="text" class="form-control" id="txt_programacion" disabled>
+								</div>
+							</div>
 						
 							<div class="form-group">																				
 								<label class="col-sm-3 control-label">Estado:</label>

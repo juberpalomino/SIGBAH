@@ -8,6 +8,8 @@ var listaNoAlimentariosCache = new Object();
 var listaProgramacionNoAlimentariosCache = new Object();
 var programacionNoAlimentariosCache = new Object();
 
+var listaDocumentosCache = new Object();
+
 var frm_dat_generales = $('#frm_dat_generales');
 
 var tbl_det_almacenes = $('#tbl_det_almacenes');
@@ -19,8 +21,10 @@ var tbl_pro_no_alimentarios = $('#tbl_pro_no_alimentarios');
 var frm_pro_no_alimentarios = $('#frm_pro_no_alimentarios');
 var tbl_res_pro_no_alimentarios = $('#tbl_res_pro_no_alimentarios');
 
-//var tbl_det_documentos = $('#tbl_det_documentos');
-//var frm_det_documentos = $('#frm_det_documentos');
+var tbl_det_documentos = $('#tbl_det_documentos');
+var frm_det_documentos = $('#frm_det_documentos');
+
+var tbl_det_estados = $('#tbl_det_estados');
 
 $(document).ready(function() {
 	
@@ -149,8 +153,7 @@ $(document).ready(function() {
 						$('#btn_alm_agregar').prop('disabled', false);
 						$('#btn_alm_eliminar').prop('disabled', false);
 						
-						$('#txt_ali_programacion').val(respuesta.codigoProgramacion+'-'+$('#txt_descripcion').val());
-						$('#txt_no_ali_programacion').val(respuesta.codigoProgramacion+'-'+$('#txt_descripcion').val());
+						$('input[name="txt_programacion"]').val(respuesta.codigoProgramacion+' - '+$('#txt_descripcion').val());
 						$('#txt_pro_racion').val($('#txt_des_racion').val());
 						
 						programacion.idRacion = arr_nro_racion[0];
@@ -928,6 +931,210 @@ $(document).ready(function() {
 		});
 
 	});
+	
+	$('#href_doc_nuevo').click(function(e) {
+		e.preventDefault();
+
+		$('#h4_tit_no_alimentarios').html('Nuevo Documento');
+		$('#frm_det_documentos').trigger('reset');
+		
+		$('#txt_doc_fecha').datepicker('setDate', new Date());
+		$('#hid_cod_documento').val('');
+		$('#hid_cod_act_alfresco').val('');
+		$('#hid_cod_ind_alfresco').val('');
+		$('#fil_sub_archivo').val(null);
+		$('#div_det_documentos').modal('show');
+		
+	});
+	
+	$('#href_doc_editar').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+			}
+		});
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			
+			var obj = listaDocumentosCache[indices[0]];
+			
+			$('#h4_tit_documentos').html('Actualizar Documento');
+			$('#frm_det_documentos').trigger('reset');
+			
+			$('#hid_cod_documento').val(obj.idDocumentoProgramacion);			
+			$('#sel_tip_documento').val(obj.idTipoDocumento);
+			$('#txt_nro_documento').val(obj.nroDocumento);
+			$('#txt_doc_fecha').val(obj.fechaDocumento);
+			$('#hid_cod_act_alfresco').val(obj.codigoArchivoAlfresco);
+			$('#hid_cod_ind_alfresco').val('');
+			$('#txt_lee_sub_archivo').val(obj.nombreArchivo);
+			$('#fil_sub_archivo').val(null);
+			
+			$('#div_det_documentos').modal('show');
+		}
+		
+	});
+	
+	$('#href_doc_eliminar').click(function(e) {
+		e.preventDefault();
+		
+		var arrIdDocumentoProgramacion = [];
+		tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_det_documentos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				arrIdDocumentoProgramacion.push(listaDocumentosCache[index].idDocumentoProgramacion);
+			}
+		});
+
+		if (arrIdDocumentoProgramacion.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else {
+			var msg = '';
+			if (arrIdDocumentoProgramacion.length > 1) {
+				msg = 'Está seguro de eliminar los siguientes registros ?';
+			} else {
+				msg = 'Está seguro de eliminar el registro ?';
+			}
+			
+			$.SmartMessageBox({
+				title : msg,
+				content : '',
+				buttons : '[Cancelar][Aceptar]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'Aceptar') {
+	
+					loadding(true);
+					
+					var params = { 
+						arrIdDocumentoProgramacion : arrIdDocumentoProgramacion
+					};
+			
+					consultarAjax('POST', '/programacion-bah/programacion/eliminarDocumentoProgramacion', params, function(respuesta) {
+						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+							loadding(false);
+							addErrorMessage(null, respuesta.mensajeRespuesta);
+						} else {
+							listarDocumentoProgramacion(true);
+							addSuccessMessage(null, respuesta.mensajeRespuesta);							
+						}
+					});
+					
+				}	
+			});
+			
+		}
+		
+	});
+	
+	$('#btn_gra_documento').click(function(e) {
+		e.preventDefault();
+		
+		var bootstrapValidator = frm_det_documentos.data('bootstrapValidator');
+		bootstrapValidator.validate();
+		if (bootstrapValidator.isValid()) {			
+			loadding(true);
+			
+			var indControl = null;
+			var idDocumentoProgramacion = $('#hid_cod_documento').val();
+			if (esnulo(idDocumentoProgramacion)) {
+				indControl = 'I'; // I= INSERT
+			} else {
+				indControl = 'U'; // U= UPDATE
+			}
+			
+			var params = { 
+				idDocumentoProgramacion : idDocumentoProgramacion,
+				idProgramacion : $('#hid_cod_programacion').val(),
+				idTipoDocumento : $('#sel_tip_documento').val(),
+				nroDocumento : $('#txt_nro_documento').val(),
+				fechaDocumento : $('#txt_doc_fecha').val(),
+				nombreArchivo : $('#txt_lee_sub_archivo').val(),
+				indControl : indControl
+			};
+			
+			var cod_ind_alfresco = $('#hid_cod_ind_alfresco').val();
+			if (cod_ind_alfresco == '1' || cod_ind_alfresco == '2') { // Archivo cargado
+				var file_name = $('#fil_sub_archivo').val();
+				var file_data = null;
+				if (!esnulo(file_name) && typeof file_name !== 'undefined') {
+					file_data = $('#fil_sub_archivo').prop('files')[0];
+				}
+				
+				var formData = new FormData();
+				formData.append('file_doc', file_data);
+				// Carpeta contenedor, ubicado en config.properties
+		    	formData.append('uploadDirectory', 'params.alfresco.uploadDirectory.programacion');
+		    	
+				consultarAjaxFile('POST', '/common/archivo/cargarArchivo', formData, function(resArchivo) {
+					if (resArchivo == NOTIFICACION_ERROR) {
+						$('#div_det_documentos').modal('hide');
+						frm_det_documentos.data('bootstrapValidator').resetForm();
+						loadding(false);
+						addErrorMessage(null, mensajeCargaArchivoError);						
+					} else {
+						
+						params.codigoArchivoAlfresco = resArchivo;
+
+						grabarDetalleDocumento(params);					
+					}
+				});
+				
+			} else { // Archivo no cargado
+				
+				params.codigoArchivoAlfresco = $('#hid_cod_act_alfresco').val();
+
+				grabarDetalleDocumento(params);				
+			}
+		}
+		
+	});
+	
+	$('#btn_can_documento, #btn_clo_documentos').click(function(e) {
+		e.preventDefault();
+		frm_det_documentos.data('bootstrapValidator').resetForm();
+	});
+	
+	$('#fil_sub_archivo').change(function(e) {
+		e.preventDefault();
+	    var file_name = $(this).val();
+	    var file_read = file_name.split('\\').pop();
+	    $('#txt_lee_sub_archivo').val($.trim(file_read).replace(/ /g, '_'));
+	    if (esnulo($('#hid_cod_documento').val())) {
+	    	$('#hid_cod_ind_alfresco').val('1'); // Nuevo registro
+	    } else {
+	    	$('#hid_cod_ind_alfresco').val('2'); // Registro modificado
+	    }
+	    frm_det_documentos.bootstrapValidator('revalidateField', 'txt_lee_sub_archivo');	    
+	});
+	
+	$('#href_eli_archivo').click(function(e) {
+		e.preventDefault();
+
+		$('#hid_cod_act_alfresco').val('');
+		$('#hid_cod_ind_alfresco').val('');
+		$('#fil_sub_archivo').val(null);
+		$('#txt_lee_sub_archivo').val('');
+		
+	});
+	
+	tbl_det_documentos.on('click', '.btn_exp_doc', function(e) {
+		e.preventDefault();
+		
+		var id = $(this).attr('id');
+		var name = $(this).attr('name');
+		if (!esnulo(id) && !esnulo(name)) {
+			descargarDocumento(id, name);
+		} else {
+			addInfoMessage(null, 'No dispone de documento adjunto asociado.');
+		}
+		
+	});
 
 });
 
@@ -967,8 +1174,7 @@ function inicializarDatos() {
 			$('#sel_ate_con').val(programacion.tipoAtencion);
 			$('#txt_observaciones').val(programacion.observacion);
 			
-			$('#txt_ali_programacion').val($('#txt_descripcion').val());
-			$('#txt_no_ali_programacion').val($('#txt_descripcion').val());
+			$('input[name="txt_programacion"]').val(programacion.codigoProgramacion+' - '+$('#txt_descripcion').val());
 			$('#txt_pro_racion').val($('#txt_des_racion').val());
 			
 			listarDetalleProgramacionAlmacenes(programacion.almacenes);
@@ -990,9 +1196,9 @@ function inicializarDatos() {
 				listarProductoNoAlimentarioProgramacion(false);
 				listarDetalleProgramacionNoAlimentario(false);
 			}
-			
-//			listarProductoProgramacion(false);			
-//			listarDocumentoProgramacion(false);
+					
+			listarDocumentoProgramacion(false);
+			listarEstadoProgramacion(false);
 			
 		} else {
 			
@@ -1014,9 +1220,8 @@ function inicializarDatos() {
 			$('#btn_alm_eliminar').prop('disabled', true);
 			
 			listarDetalleProgramacionAlmacenes(new Object());
-//			listarDetalleAlimentarios(new Object());
-//			listarDetalleNoAlimentarios(new Object());
-//			listarDetalleDocumentos(new Object());
+			listarDetalleDocumentos(new Object());
+			listarDetalleEstadoProgramacion(new Object());
 
 		}
 		
@@ -1157,104 +1362,126 @@ function listarDetalleRacionOperativa(respuesta) {
 
 function listarDetalleProgramacionAlimento(indicador) {
 	
-	var arrIdProducto = [];
-	$.each(listaProductosRacionCache, function(i, item) {
-		arrIdProducto.push(item.idProducto);
-    });
+	if (listaProductosRacionCache.length > 0) {
 	
-	var params = { 
-		idProgramacion : $('#hid_cod_programacion').val(),
-		arrIdProducto : arrIdProducto		
-	};		
-
-	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarProgramacionAlimento', params, function(respuesta) {
-		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-			addErrorMessage(null, respuesta.mensajeRespuesta);
-		} else {
-			
-			var table = $('<table id="tbl_det_pro_alimentos" />').addClass('table table-bordered table-hover tbl-responsive');
-			var row = $('<tr/>');
-			row.append($('<th class="table-dinamic" />').text('Sel'));
-			row.append($('<th class="table-dinamic" />').text('Nº'));
-			row.append($('<th class="table-dinamic" />').text('Departamento'));
-			row.append($('<th class="table-dinamic" />').text('Provincia'));
-			row.append($('<th class="table-dinamic" />').text('Distrito'));
-			row.append($('<th class="table-dinamic" />').text('Pers. Afect.'));
-			row.append($('<th class="table-dinamic" />').text('Pers. Dam.'));
-			row.append($('<th class="table-dinamic" />').text('Total Pers.'));
-			row.append($('<th class="table-dinamic" />').text('Total Raciones'));
-			$.each(listaProductosRacionCache, function(i, item) {
-				row.append($('<th class="table-dinamic" />').text(item.nombreProducto));
-		    });			
-			row.append($('<th class="table-dinamic" />').text('Total (TM)'));
-			table.append(row);
-
-			if (respuesta.length > 0) {
-				var row_num = 1;
+		var arrIdProducto = [];
+		$.each(listaProductosRacionCache, function(i, item) {
+			arrIdProducto.push(item.idProducto);
+		});
+		
+		var params = { 
+			idProgramacion : $('#hid_cod_programacion').val(),
+			arrIdProducto : arrIdProducto		
+		};		
+		
+		consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarProgramacionAlimento', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
 				
-				var tot_persAfect = 0;
-				var tot_persDam = 0;
-				var tot_totalPers = 0;
-				var tot_totalRaciones = 0;				
-				var tot_totalTm = 0;
-				
-				$.each(respuesta, function(index, item) {
-					row = $('<tr class="item_ali" />');
-					row.append($('<td class="opc-checkbox" />').html('<label class="checkbox"><input type="checkbox" id="chk_ali_'+item.idProgramacionUbigeo+'"><i></i></label>'));
-					row.append($('<td/>').html(row_num));
-					row.append($('<td/>').html(item.departamento));
-					row.append($('<td/>').html(item.provincia));
-					row.append($('<td/>').html(item.distrito));
-					row.append($('<td/>').html(item.persAfect));
-					row.append($('<td/>').html(item.persDam));
-					row.append($('<td/>').html(item.totalPers));
-					row.append($('<td/>').html(item.totalRaciones));
-					$.each(item.listaProducto, function(i, item_prod) {
-						row.append($('<td class="pro_ali_'+item_prod.idProducto+'" />').html(item_prod.unidad));
-				    });					
-					row.append($('<td/>').html(item.totalTm));
-					table.append(row);
-					row_num++;
-					
-					tot_persAfect = tot_persAfect + parseFloat(verificaParametroInt(item.persAfect));
-					tot_persDam = tot_persDam + parseFloat(verificaParametroInt(item.persDam));
-					tot_totalPers = tot_totalPers + parseFloat(verificaParametroInt(item.totalPers));
-					tot_totalRaciones = tot_totalRaciones + parseFloat(verificaParametroInt(item.totalRaciones));
-					tot_totalTm = tot_totalTm + parseFloat(verificaParametroInt(item.totalTm));
-				});
-				
-				row = $('<tr/>');
-				row.append($('<td class="opc-right" colspan="5" />').html("Total:"));
-				row.append($('<td id="pro_ali_per_afect" />').html(tot_persAfect));
-				row.append($('<td id="pro_ali_per_dam" />').html(tot_persDam));
-				row.append($('<td id="pro_ali_tot_pers" />').html(tot_totalPers));
-				row.append($('<td id="pro_ali_tot_raciones" />').html(tot_totalRaciones));
+				var table = $('<table id="tbl_det_pro_alimentos" />').addClass('table table-bordered table-hover tbl-responsive');
+				var row = $('<tr/>');
+				row.append($('<th class="table-dinamic" />').text('Sel'));
+				row.append($('<th class="table-dinamic" />').text('Nº'));
+				row.append($('<th class="table-dinamic" />').text('Departamento'));
+				row.append($('<th class="table-dinamic" />').text('Provincia'));
+				row.append($('<th class="table-dinamic" />').text('Distrito'));
+				row.append($('<th class="table-dinamic" />').text('Pers. Afect.'));
+				row.append($('<th class="table-dinamic" />').text('Pers. Dam.'));
+				row.append($('<th class="table-dinamic" />').text('Total Pers.'));
+				row.append($('<th class="table-dinamic" />').text('Total Raciones'));
 				$.each(listaProductosRacionCache, function(i, item) {
-					row.append($('<td id="td_ali_'+item.idProducto+'" />').html(''));
-			    });
-				row.append($('<td id="pro_ali_total_tm" />').html(tot_totalTm));
+					row.append($('<th class="table-dinamic" />').text(item.nombreProducto));
+			    });			
+				row.append($('<th class="table-dinamic" />').text('Total (TM)'));
 				table.append(row);
-			}
-			
-			$('#div_det_pro_alimentos').html(table);
-			
-			if (respuesta.length > 0) {
-				$.each(listaProductosRacionCache, function(i, item) {
-					var can_tot_unidad = 0;
-					$('tr.item_ali').each(function() {	
-						var can_unidad = $(this).find('.pro_ali_'+item.idProducto).html();
-						can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
+		
+				if (respuesta.length > 0) {
+					var row_num = 1;
+					
+					var tot_persAfect = 0;
+					var tot_persDam = 0;
+					var tot_totalPers = 0;
+					var tot_totalRaciones = 0;				
+					var tot_totalTm = 0;
+					
+					$.each(respuesta, function(index, item) {
+						row = $('<tr class="item_ali" />');
+						row.append($('<td class="opc-checkbox" />').html('<label class="checkbox"><input type="checkbox" id="chk_ali_'+item.idProgramacionUbigeo+'"><i></i></label>'));
+						row.append($('<td/>').html(row_num));
+						row.append($('<td/>').html(item.departamento));
+						row.append($('<td/>').html(item.provincia));
+						row.append($('<td/>').html(item.distrito));
+						row.append($('<td/>').html(item.persAfect));
+						row.append($('<td/>').html(item.persDam));
+						row.append($('<td/>').html(item.totalPers));
+						row.append($('<td/>').html(item.totalRaciones));
+						$.each(item.listaProducto, function(i, item_prod) {
+							row.append($('<td class="pro_ali_'+item_prod.idProducto+'" />').html(item_prod.unidad));
+					    });					
+						row.append($('<td/>').html(item.totalTm));
+						table.append(row);
+						row_num++;
+						
+						tot_persAfect = tot_persAfect + parseFloat(verificaParametroInt(item.persAfect));
+						tot_persDam = tot_persDam + parseFloat(verificaParametroInt(item.persDam));
+						tot_totalPers = tot_totalPers + parseFloat(verificaParametroInt(item.totalPers));
+						tot_totalRaciones = tot_totalRaciones + parseFloat(verificaParametroInt(item.totalRaciones));
+						tot_totalTm = tot_totalTm + parseFloat(verificaParametroInt(item.totalTm));
 					});
-					$('#td_ali_'+item.idProducto).html(can_tot_unidad);
-				});
+					
+					row = $('<tr/>');
+					row.append($('<td class="opc-right" colspan="5" />').html("Total:"));
+					row.append($('<td id="pro_ali_per_afect" />').html(tot_persAfect));
+					row.append($('<td id="pro_ali_per_dam" />').html(tot_persDam));
+					row.append($('<td id="pro_ali_tot_pers" />').html(tot_totalPers));
+					row.append($('<td id="pro_ali_tot_raciones" />').html(tot_totalRaciones));
+					$.each(listaProductosRacionCache, function(i, item) {
+						row.append($('<td id="td_ali_'+item.idProducto+'" />').html(''));
+				    });
+					row.append($('<td id="pro_ali_total_tm" />').html(tot_totalTm));
+					table.append(row);
+				}
+				
+				$('#div_det_pro_alimentos').html(table);
+				
+				if (respuesta.length > 0) {
+					$.each(listaProductosRacionCache, function(i, item) {
+						var can_tot_unidad = 0;
+						$('tr.item_ali').each(function() {	
+							var can_unidad = $(this).find('.pro_ali_'+item.idProducto).html();
+							can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
+						});
+						$('#td_ali_'+item.idProducto).html(can_tot_unidad);
+					});
+				}
+				
+				listaProgramacionAlimentosCache = respuesta;
+				
+				listarResumenStockAlimento(indicador);
+				
 			}
-			
-			listaProgramacionAlimentosCache = respuesta;
-			
-			listarResumenStockAlimento(indicador);
-			
-		}
-	});
+		});
+		
+	} else {
+		
+		var table = $('<table id="tbl_det_pro_alimentos" />').addClass('table table-bordered table-hover tbl-responsive');
+		var row = $('<tr/>');
+		row.append($('<th class="table-dinamic" />').text('Sel'));
+		row.append($('<th class="table-dinamic" />').text('Nº'));
+		row.append($('<th class="table-dinamic" />').text('Departamento'));
+		row.append($('<th class="table-dinamic" />').text('Provincia'));
+		row.append($('<th class="table-dinamic" />').text('Distrito'));
+		row.append($('<th class="table-dinamic" />').text('Pers. Afect.'));
+		row.append($('<th class="table-dinamic" />').text('Pers. Dam.'));
+		row.append($('<th class="table-dinamic" />').text('Total Pers.'));
+		row.append($('<th class="table-dinamic" />').text('Total Raciones'));		
+		row.append($('<th class="table-dinamic" />').text('Total (TM)'));
+		table.append(row);
+		
+		$('#div_det_pro_alimentos').html(table);
+	}
+		
 }
 
 function listarResumenStockAlimento(indicador) {
@@ -1565,14 +1792,6 @@ function listarDetalleResumenStockNoAlimentario(respuesta) {
 	});
 }
 
-
-
-
-
-
-
-
-
 function obtenerRequerimiento(codigo) {
 	if (!esnulo(codigo)) {
 		var arr = codigo.split('_');
@@ -1692,4 +1911,152 @@ function sumarUnidadNoAlimentarios() {
 		}			
     });
 	$('#txt_no_ali_tot_tm').val(formatMontoAll(total));
+}
+
+function listarDocumentoProgramacion(indicador) {
+	var params = { 
+		idProgramacion : $('#hid_cod_programacion').val()
+	};			
+	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarDocumentoProgramacion', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleDocumentos(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}
+	});
+}
+
+function listarDetalleDocumentos(respuesta) {
+
+	tbl_det_documentos.dataTable().fnDestroy();
+	
+	tbl_det_documentos.dataTable({
+		data : respuesta,
+		columns : [ {
+			data : 'idDocumentoProgramacion',
+			sClass : 'opc-center',
+			render: function(data, type, row) {
+				if (data != null) {
+					return '<label class="checkbox">'+
+								'<input type="checkbox"><i></i>'+
+							'</label>';	
+				} else {
+					return '';	
+				}											
+			}
+		}, {	
+			data : 'idDocumentoProgramacion',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'nombreDocumento'
+		}, {
+			data : 'nroDocumento',
+			render: function(data, type, row) {
+				if (data != null) {
+					return '<button type="button" id="'+row.codigoArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
+						   'class="btn btn-link input-sm btn_exp_doc">'+data+'</button>';
+				} else {
+					return '';	
+				}											
+			}
+		}, {
+			data : 'fechaDocumento'
+		}, {
+			data : 'nombreArchivo'
+		} ],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : false,
+		paging : false,
+		ordering : false,
+		info : true
+	});
+	
+	listaDocumentosCache = respuesta;
+
+}
+
+function grabarDetalleDocumento(params) {
+	consultarAjax('POST', '/programacion-bah/programacion/grabarDocumentoProgramacion', params, function(respuesta) {
+		$('#div_det_documentos').modal('hide');
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			loadding(false);			
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDocumentoProgramacion(true);
+			addSuccessMessage(null, respuesta.mensajeRespuesta);	
+		}
+		frm_det_documentos.data('bootstrapValidator').resetForm();
+	});
+}
+
+function descargarDocumento(codigo, nombre) {	
+	loadding(true);
+	var url = VAR_CONTEXT + '/common/archivo/exportarArchivo/'+codigo+'/'+nombre+'/';	
+	$.fileDownload(url).done(function(respuesta) {
+		loadding(false);	
+		if (respuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, mensajeReporteError);
+		} else {
+			addInfoMessage(null, mensajeReporteExito);
+		}		
+	}).fail(function (respuesta) {
+		loadding(false);
+		addErrorMessage(null, mensajeReporteError);
+	});	
+}
+
+function listarEstadoProgramacion(indicador) {
+	
+	var params = { 
+		idProgramacion : $('#hid_cod_programacion').val()
+	};		
+
+	consultarAjaxSincrono('GET', '/programacion-bah/programacion/listarEstadoProgramacion', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarDetalleEstadoProgramacion(respuesta);
+			if (indicador) {
+				loadding(false);
+			}
+		}		
+	});
+}
+
+function listarDetalleEstadoProgramacion(respuesta) {
+	tbl_det_estados.dataTable().fnDestroy();
+	
+	tbl_det_estados.dataTable({
+		data : respuesta,
+		columns : [ {	
+			data : 'idEstado',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'nombreEstado'
+		}, {
+			data : 'fechaEstado'
+		}, {
+			data : 'observacion'
+		}, {
+			data : 'usuario'
+		} ],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : false,
+		paging : false,
+		ordering : false,
+		info : true
+	});
 }
