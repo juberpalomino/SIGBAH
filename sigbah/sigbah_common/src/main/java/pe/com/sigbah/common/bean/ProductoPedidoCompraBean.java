@@ -14,6 +14,7 @@ public class ProductoPedidoCompraBean extends BaseOutputBean {
 	private Integer idDetallePedidoCompra;
 	private Integer idPedidoCompra;
 	private Integer idProducto;
+	private Integer idCategoria;
 	private String nombreProducto;
 	private BigDecimal cantidad;
 	private BigDecimal precioUnitario;
@@ -216,6 +217,28 @@ public class ProductoPedidoCompraBean extends BaseOutputBean {
 	 */
 	public void setImporteTotal(BigDecimal importeTotal) {
 		this.importeTotal = importeTotal;
+	}
+
+
+
+
+
+	/**
+	 * @return the idCategoria
+	 */
+	public Integer getIdCategoria() {
+		return idCategoria;
+	}
+
+
+
+
+
+	/**
+	 * @param idCategoria the idCategoria to set
+	 */
+	public void setIdCategoria(Integer idCategoria) {
+		this.idCategoria = idCategoria;
 	}
 
 	

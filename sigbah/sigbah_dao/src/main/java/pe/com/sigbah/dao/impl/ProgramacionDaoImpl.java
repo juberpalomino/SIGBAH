@@ -43,14 +43,16 @@ import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionDao;
 import pe.com.sigbah.mapper.DocumentoPedidoCompraMapper;
 import pe.com.sigbah.mapper.EmergenciaMapper;
+import pe.com.sigbah.mapper.PedidoCompraMapper;
 import pe.com.sigbah.mapper.ProductoPedidoCompraMapper;
 import pe.com.sigbah.mapper.ProductoRacionMapper;
 import pe.com.sigbah.mapper.RacionMapper;
 import pe.com.sigbah.mapper.RegistroAlimentariaEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroCabeceraEmergenciaMapper;
-import pe.com.sigbah.mapper.RegistroControlCalidadMapper;
 import pe.com.sigbah.mapper.RegistroLocalidadEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroNoAlimentariaEmergenciaMapper;
+import pe.com.sigbah.mapper.RegistroPedidoCompraMapper;
+import pe.com.sigbah.mapper.RegistroRacionMapper;
 import pe.com.sigbah.mapper.RequerimientoDetalleMapper;
 import pe.com.sigbah.mapper.RequerimientoEditMapper;
 import pe.com.sigbah.mapper.RequerimientoMapper;
@@ -669,8 +671,10 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
 			input_objParametros.addValue("PI_COD_ANIO", racionBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", Utils.getParam( racionBean.getCodMesRacion()), Types.VARCHAR);
 			input_objParametros.addValue("PI_IDE_DDI", racionBean.getIdDdi(), Types.INTEGER);
 			input_objParametros.addValue("PI_TIPO_RACION", Utils.getParam(racionBean.getTipoRacion()), Types.VARCHAR);
+			
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -680,6 +684,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.INTEGER));
 			output_objParametros.put("PI_TIPO_RACION", new SqlParameter("PI_TIPO_RACION", Types.VARCHAR));
 			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new RacionMapper()));
@@ -1020,8 +1025,8 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
 			input_objParametros.addValue("PI_COD_ANIO", pedidoBean.getCodAnio(), Types.VARCHAR);
-			input_objParametros.addValue("PI_COD_MES", pedidoBean.getFkIdeDdi(), Types.VARCHAR);
-			input_objParametros.addValue("PI_ID_ESTADO", pedidoBean.getFkIdeDdi(), Types.INTEGER);
+			input_objParametros.addValue("PI_COD_MES", pedidoBean.getCodMes(), Types.VARCHAR);
+			input_objParametros.addValue("PI_ID_ESTADO", pedidoBean.getCodEstado(), Types.INTEGER);
 			
             
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -1034,9 +1039,9 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PI_ID_ESTADO", new SqlParameter("PI_ID_ESTADO", Types.INTEGER));
-			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new RacionMapper()));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new PedidoCompraMapper()));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
-			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR)); 
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
@@ -1178,7 +1183,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_IDE_RAC_OPERATIVA", new SqlParameter("PI_IDE_RAC_OPERATIVA", Types.NUMERIC));
-			output_objParametros.put("PO_LR_RECORDSET1", new SqlOutParameter("PO_LR_RECORDSET1", OracleTypes.CURSOR, new RegistroControlCalidadMapper()));
+			output_objParametros.put("PO_LR_RECORDSET1", new SqlOutParameter("PO_LR_RECORDSET1", OracleTypes.CURSOR, new RegistroRacionMapper()));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
 			
@@ -1280,7 +1285,8 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			input_objParametros.addValue("PI_IDE_PEDIDO_COMPRA", pedidoCompraBean.getIdPedidoCom(), Types.NUMERIC);
 			input_objParametros.addValue("PI_NOM_PEDIDO_COMPRA", pedidoCompraBean.getDescripcion(), Types.VARCHAR);//whr verificar
 			input_objParametros.addValue("PI_IDE_ESTADO", pedidoCompraBean.getCodEstado(), Types.NUMERIC);
-			input_objParametros.addValue("PI_COD_ANIO", pedidoCompraBean.getCodAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_ANIO", pedidoCompraBean.getCodAnio(), Types.VARCHAR);  
+			input_objParametros.addValue("PI_COD_MES", pedidoCompraBean.getCodMes(), Types.VARCHAR);
 			input_objParametros.addValue("PI_COD_PEDIDO", pedidoCompraBean.getCodPedido(), Types.VARCHAR);
 			input_objParametros.addValue("PI_COD_DDI", pedidoCompraBean.getCodDdi(), Types.VARCHAR);
 			input_objParametros.addValue("PI_FEC_PEDIDO", DateUtil.obtenerFechaHoraParseada(pedidoCompraBean.getFecPedido()), Types.DATE);
@@ -1290,6 +1296,12 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			input_objParametros.addValue("PI_USERNAME", pedidoCompraBean.getUsuarioRegistro(), Types.VARCHAR);
 			input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
             
+			 if(pedidoCompraBean.getIdPedidoCom()== 0 || pedidoCompraBean.getIdPedidoCom().equals(null)){
+				 input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+			 }else{
+				 input_objParametros.addValue("PI_CONTROL", "U", Types.VARCHAR);
+			 }
+			 
             objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
@@ -1301,6 +1313,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			output_objParametros.put("PI_NOM_PEDIDO_COMPRA", new SqlParameter("PI_NOM_PEDIDO_COMPRA", Types.VARCHAR));
 			output_objParametros.put("PI_IDE_ESTADO", new SqlParameter("PI_IDE_ESTADO", Types.NUMERIC));
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PI_COD_PEDIDO", new SqlParameter("PI_COD_PEDIDO", Types.VARCHAR));
 			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
 			output_objParametros.put("PI_FEC_PEDIDO", new SqlParameter("PI_FEC_PEDIDO", Types.DATE));
@@ -1516,13 +1529,13 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			input_objParametros.addValue("PI_PRECIO_UNITARIO", productoPedidoCompraBean.getPrecioUnitario(), Types.NUMERIC);
 			
 			input_objParametros.addValue("PI_USERNAME", productoPedidoCompraBean.getUsuarioRegistro(), Types.VARCHAR);			
-			 if(productoPedidoCompraBean.getIdDetallePedidoCompra().equals("0") || productoPedidoCompraBean.getIdDetallePedidoCompra().equals(null)){
+			 if(productoPedidoCompraBean.getIdDetallePedidoCompra()== 0 || productoPedidoCompraBean.getIdDetallePedidoCompra().equals(null)){
 				 input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
 			 }else{
 				 input_objParametros.addValue("PI_CONTROL", "U", Types.VARCHAR);
 			 }
-			 
 		
+                     
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
@@ -1536,7 +1549,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			output_objParametros.put("PI_CANTIDAD", new SqlParameter("PI_CANTIDAD", Types.NUMERIC));
 			output_objParametros.put("PI_PRECIO_UNITARIO", new SqlParameter("PI_PRECIO_UNITARIO", Types.NUMERIC));
 			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
-			output_objParametros.put("PI_CONTROL", new SqlOutParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -1574,7 +1587,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		List<ProductoPedidoCompraBean> lista = new ArrayList<ProductoPedidoCompraBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
-			input_objParametros.addValue("PI_FK_IDE_PEDIDO_COMPRA", producto.getIdPedidoCompra(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PEDIDO_COMPRA", producto.getIdDetallePedidoCompra(), Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -1608,5 +1621,107 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		}		
 		LOGGER.info("[listarProductoPedidoCompra] Fin ");
 		return lista;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#eliminarProductoPedidoCompra(pe.com.sigbah.common.bean.ProductoPedidoCompraBean)
+	 */
+	@Override
+	public ProductoPedidoCompraBean eliminarProductoPedidoCompra(ProductoPedidoCompraBean productoPedidoCompraBean)throws Exception {
+		LOGGER.info("[eliminarProductoPedidoCompra] Inicio ");
+		ProductoPedidoCompraBean registroProductooPedidoCompra = new ProductoPedidoCompraBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_DET_PEDIDO_COMPRA", productoPedidoCompraBean.getIdDetallePedidoCompra(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", productoPedidoCompraBean.getUsuarioRegistro(), Types.VARCHAR);
+
+            objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_DEL_PRODUCTO_PEDIDO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_DET_PEDIDO_COMPRA", new SqlParameter("PI_IDE_DET_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[eliminarProductoPedidoCompra] Ocurrio un error en la operacion del USP_DEL_PRODUCTO_PEDIDO : "+mensajeRespuesta);
+				throw new Exception();
+			}
+			
+			registroProductooPedidoCompra.setCodigoRespuesta(codigoRespuesta);
+			registroProductooPedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[eliminarProductoPedidoCompra] Fin ");
+		return registroProductooPedidoCompra;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#obtenerPedidoCompra(java.lang.Integer)
+	 */
+	@Override
+	public PedidoCompraBean obtenerPedidoCompra(Integer idPedidoCompra) throws Exception {
+		LOGGER.info("[obtenerPedidoCompra] Inicio ");
+		PedidoCompraBean pedidoCompra = new PedidoCompraBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_PEDIDO_COMPRA", idPedidoCompra, Types.NUMERIC);
+			
+                    
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_EDITAR_PEDIDO_COMPRA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PEDIDO_COMPRA", new SqlParameter("PI_IDE_PEDIDO_COMPRA", Types.NUMERIC));
+			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new RegistroPedidoCompraMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerPedidoCompra] Ocurrio un error en la operacion del USP_SEL_EDITAR_PEDIDO_COMPRA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<PedidoCompraBean> lista = (List<PedidoCompraBean>) out.get("PO_LR_RECORDSET");
+			if (!Utils.isEmpty(lista)) {
+				pedidoCompra = lista.get(0);
+			}
+			
+			pedidoCompra.setCodigoRespuesta(codigoRespuesta);
+			pedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerPedidoCompra] Fin ");
+		return pedidoCompra;
 	}
 }

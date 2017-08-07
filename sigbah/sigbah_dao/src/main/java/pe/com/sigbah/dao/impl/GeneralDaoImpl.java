@@ -1461,11 +1461,11 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	public List<ItemBean> listarRacion(ItemBean itemBean) throws Exception {
 		ItemBean item = new ItemBean();
 		List<ItemBean> lista = new ArrayList<ItemBean>();
-			item.setIcodigo(1);
+			item.setVcodigo("C");
 			item.setDescripcion("Cruda");
 			lista.add(item);
 			item = new ItemBean();
-			item.setIcodigo(2);
+			item.setVcodigo("F");
 			item.setDescripcion("Fria");
 			lista.add(item);
 		return lista;

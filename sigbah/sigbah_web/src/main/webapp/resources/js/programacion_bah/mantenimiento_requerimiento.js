@@ -206,7 +206,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 		} else {
 			loadding(true);
-			
+			var mensaje="";
 			for (var i = 0; i < indices.length; i++) {
 				var params = { 
 						fkIdRequerimiento : requerimiento.codRequerimiento,
@@ -226,11 +226,12 @@ $(document).ready(function() {
 					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 						addErrorMessage(null, respuesta.mensajeRespuesta);
 					} else {
-						addSuccessMessage(null, respuesta.mensajeRespuesta);	
+						mensaje=	addSuccessMessage(null, respuesta.mensajeRespuesta);	
 					}
 					loadding(false);
 				});
 			}
+			addSuccessMessage(null, mensaje);
 		}
 });
 	
@@ -249,7 +250,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 		} else {
 			loadding(true);
-			
+			var mensaje="";
 			for (var i = 0; i < indices.length; i++) {
 				var params = { 
 						fkIdRequerimiento : requerimiento.codRequerimiento,
@@ -262,11 +263,12 @@ $(document).ready(function() {
 					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 						addErrorMessage(null, respuesta.mensajeRespuesta);
 					} else {
-						addSuccessMessage(null, respuesta.mensajeRespuesta);	
+						mensaje=	addSuccessMessage(null, respuesta.mensajeRespuesta);	
 					}
 					loadding(false);
 				});
 			}
+			addSuccessMessage(null, mensaje);	
 		}
 });	
 		

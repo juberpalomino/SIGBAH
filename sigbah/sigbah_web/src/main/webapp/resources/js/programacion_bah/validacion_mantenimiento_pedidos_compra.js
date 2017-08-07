@@ -42,7 +42,7 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_lis_producto : {
+			sel_producto : {
 				validators : {
 					notEmpty : {
 						message : 'Debe seleccionar Producto.'

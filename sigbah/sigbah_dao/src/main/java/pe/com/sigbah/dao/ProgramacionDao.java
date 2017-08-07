@@ -218,4 +218,17 @@ public interface ProgramacionDao {
 	 */
 	public abstract List<ProductoPedidoCompraBean> listarProductoPedidoCompra(ProductoPedidoCompraBean producto)throws Exception;
 
+	/**
+	 * @param productoPedidoCompraBean
+	 * @return
+	 */
+	public abstract ProductoPedidoCompraBean eliminarProductoPedidoCompra(
+			ProductoPedidoCompraBean productoPedidoCompraBean)throws Exception;
+
+	/**
+	 * @param idPedidoCompra
+	 * @return
+	 */
+	public abstract PedidoCompraBean obtenerPedidoCompra(Integer idPedidoCompra)throws Exception;
+
 }

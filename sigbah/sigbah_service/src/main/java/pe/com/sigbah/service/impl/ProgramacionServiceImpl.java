@@ -276,4 +276,21 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 			throws Exception {
 		return programacionDao.listarProductoPedidoCompra(producto);
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#eliminarProductoPedidoCompra(pe.com.sigbah.common.bean.ProductoPedidoCompraBean)
+	 */
+	@Override
+	public ProductoPedidoCompraBean eliminarProductoPedidoCompra(ProductoPedidoCompraBean productoPedidoCompraBean)
+			throws Exception {
+		return programacionDao.eliminarProductoPedidoCompra(productoPedidoCompraBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerPedidoCompra(java.lang.Integer)
+	 */
+	@Override
+	public PedidoCompraBean obtenerPedidoCompra(Integer idPedidoCompra) throws Exception {
+		return programacionDao.obtenerPedidoCompra(idPedidoCompra);
+	}
 }

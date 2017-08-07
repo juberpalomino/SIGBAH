@@ -29,8 +29,9 @@ public class ProductoPedidoCompraMapper implements RowMapper<ProductoPedidoCompr
 		producto.setCantidad(rs.getBigDecimal("CANTIDAD"));
 		producto.setPrecioUnitario(rs.getBigDecimal("PRECIO_UNITARIO"));
 		producto.setImporteTotal(rs.getBigDecimal("IMPORTE_TOTAL"));
-		
-		
+		producto.setIdCategoria(rs.getInt("FK_IDE_CATEGORIA_BAH"));
+	
+         
 		return producto;
 	}
 

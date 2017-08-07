@@ -11,7 +11,7 @@ $(document).ready(function() {
 
 			var params = { 
 				codAnio : $('#sel_anio').val(),
-				fkIdeDdi : $('#sel_mes').val(),
+				codMes : $('#sel_mes').val(),
 				codEstado : $('#sel_estado').val()
 			};
 			
@@ -79,39 +79,41 @@ $(document).ready(function() {
 		});
 
 	});
-//	$('#href_editar').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		var codigo = '';
-//		tbl_mnt_ped_compra.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_ped_compra.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);				
-//				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-//				if (!esnulo(codigo)) {
-//					return false;
-//				}
-//				var idRequerimiento = listaPedidoCompraCache[index].idRequerimiento;
-//				codigo = codigo + idRequerimiento + '_';
-//			}
-//		});
-//		
-//		if (!esnulo(codigo)) {
-//			codigo = codigo.substring(0, codigo.length - 1);
-//		}
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-//		} else {
-//			loadding(true);
-//			var url = VAR_CONTEXT + '/programacion-bath/racion/mantenimientoRacion/';
-//			$(location).attr('href', url + codigo);
-//		}
-//		
-//	});
-//	
+	
+	
+	$('#href_editar').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		var codigo = '';
+		tbl_mnt_ped_compra.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_ped_compra.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idPedido = listaPedidoCompraCache[index].idPedidoCom;
+				codigo = codigo + idPedido + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			loadding(true);
+			var url = VAR_CONTEXT + '/programacion-bath/pedido/mantenimientoPedido/';
+			$(location).attr('href', url + codigo);
+		}
+		
+	});
+	
 
 //	
 //	$('#href_exp_copiar').click(function(e) {
@@ -254,19 +256,19 @@ function listarPedidoCompra(respuesta) {
 		}, {
 			data : 'codAnio'
 		}, {
-			data : 'fkIdeDdi'
+			data : 'nomMes'
 		}, {
-			data : 'codPedido'
+			data : 'numPedidoCompra'
 		}, {
 			data : 'fecPedido'
 		}, {
-			data : 'dde'
+			data : 'descripcion'
 		}, {
-			data : 'tipFenomeno'
+			data : 'dee'
 		} , {
-			data : 'NomEstado'
+			data : 'nomEstado'
 		}],
-	
+		
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},

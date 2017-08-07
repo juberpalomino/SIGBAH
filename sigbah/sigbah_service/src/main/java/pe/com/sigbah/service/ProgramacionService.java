@@ -247,5 +247,18 @@ public interface ProgramacionService {
 	 */
 	public abstract List<ProductoPedidoCompraBean> listarProductoPedidoCompra(ProductoPedidoCompraBean producto) throws Exception;
 	
+	/**
+	 * @param productoPedidoCompraBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ProductoPedidoCompraBean eliminarProductoPedidoCompra(ProductoPedidoCompraBean productoPedidoCompraBean) throws Exception;
+	
+	/**
+	 * @param idPedidoCompra
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract PedidoCompraBean obtenerPedidoCompra(Integer idPedidoCompra) throws Exception;
 	
 }

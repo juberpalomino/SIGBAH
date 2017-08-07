@@ -65,7 +65,7 @@
 										<select id="sel_tipo_racion" name="sel_tipo_racion" class="form-control">
 											<option value="">Todos</option>
 											<c:forEach items="${lista_racion}" var="item">
-											    <option value="${item.icodigo}">${item.descripcion}</option>
+											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>

@@ -2,6 +2,7 @@ package pe.com.sigbah.web.controller.programacion_bah;
 
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
-import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
@@ -112,13 +113,13 @@ private static final long serialVersionUID = 1L;
 	@ResponseBody
 	public String exportarExcel(@PathVariable("codAnio") String codAnio, 
 								@PathVariable("codMes") String codMes, 
-								@PathVariable("codEstado") Integer codEstado, 
+								@PathVariable("codEstado") String codEstado, 
 								HttpServletResponse response) {
 	    try {
 	    	PedidoCompraBean pedidoCompraBean = new PedidoCompraBean();
 	    	pedidoCompraBean.setCodAnio(verificaParametro(codAnio));
 	    	pedidoCompraBean.setCodMes(verificaParametro(codMes));
-	    	pedidoCompraBean.setiEstado(codEstado);
+	    	pedidoCompraBean.setCodEstado(codEstado);
 	    	
 			List<PedidoCompraBean> lista = programacionService.listarPedidosCompra(pedidoCompraBean);
 	    	
@@ -162,8 +163,9 @@ private static final long serialVersionUID = 1L;
         	ListaRespuestaRequerimientoBean respuestaEdicion = new ListaRespuestaRequerimientoBean();
         	if (!isNullInteger(codigo)) {// editar
         		
-//        		respuestaEdicion = programacionService.obtenerRequerimiento(usuarioBean.getCodigoAnio(),usuarioBean.getCodigoDdi(),codigo); 
-//        		model.addAttribute("requerimiento", getParserObject(respuestaEdicion.getLstCabecera().get(0)));
+        		pedido = programacionService.obtenerPedidoCompra(codigo); 
+        		
+        		model.addAttribute("pedido", getParserObject(pedido));
 //        		model.addAttribute("lista_requerimiento", getParserObject(respuestaEdicion.getLstDetalle()));
         	  		
         	} else {//nuevo
@@ -225,8 +227,14 @@ private static final long serialVersionUID = 1L;
         	pedidoBean.setFkIdeDdi(usuarioBean.getIdDdi());
         	pedidoBean.setCodAnio(anioActual);
         	pedidoBean.setCodDdi(usuarioBean.getCodigoDdi());
+        	DateUtil.obtenerFechaHoraParseada(pedidoBean.getFecPedido()) ; 
+        	
+        	
+        	SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
+        	String mes= dateFormat.format(DateUtil.obtenerFechaHoraParseada(pedidoBean.getFecPedido()));
+        	pedidoBean.setCodMes(mes);
 			if (!isNullInteger(pedidoBean.getIdPedidoCom())) {				
-//				pedido = programacionService.actualizarRegistroRacion(pedidoBean);				
+				pedido = programacionService.insertarRegistroPedido(pedidoBean);				
 			} else {			
 				pedido = programacionService.insertarRegistroPedido(pedidoBean);			
 			}
@@ -368,5 +376,46 @@ private static final long serialVersionUID = 1L;
 		return lista;
 	}
 	
+	@RequestMapping(value = "/eliminarProductoPedidoCompra", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object eliminarProductoPedidoCompra(HttpServletRequest request, HttpServletResponse response) {
+		ProductoPedidoCompraBean producto = null;
+		try {			
+			String[] arrIdProductoPedidoCompra = request.getParameter("arrIdProductoPedidoCompra").split(Constantes.UNDERLINE);
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+			for (String codigo : arrIdProductoPedidoCompra) {				
+				ProductoPedidoCompraBean productoPedidoCompraBean = new ProductoPedidoCompraBean(getInteger(codigo));
+
+				productoPedidoCompraBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+				producto = programacionService.eliminarProductoPedidoCompra(productoPedidoCompraBean);				
+			}
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
 	
+	@RequestMapping(value = "/listarProductoXCategoria", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProductoXCategoria(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoBean> lista = null;
+		try {			
+			ProductoBean producto = new ProductoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(producto, request.getParameterMap());			
+			lista = generalService.listarCatologoProductos(new ProductoBean(null, producto.getIdCategoria()));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
 }

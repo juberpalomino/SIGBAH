@@ -245,36 +245,61 @@ $(document).ready(function() {
 //		
 //	});
 	
-
-	
 	$('#sel_cat_producto').change(function() {
-		var codigo = $(this).val();		
-//		var ddi = $(txt_codDdi).val();
-		if (!esnulo(codigo)) {						
-			var params = { 
-				idProducto : codigo,
-				idCategoria : codigo
-			};			
-			loadding(true);
-			consultarAjax('GET', '/donaciones/registro-donaciones/listarProductosXCategoria', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-					console.log("SI ERROR");
-				} else {
-					var options = '<option value="">Seleccione</option>';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
-			        });
-			        $('#sel_lis_producto').html(options);
-				}
-				loadding(false);
-				frm_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
-			});
+		var idCategoria = $(this).val();		
+		if (!esnulo(idCategoria)) {					
+			cargarProducto(idCategoria, null, null);
 		} else {
 			$('#sel_lis_producto').html('');
-			frm_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
+//			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_producto');
 		}
 	});
+
+
+	
+//	$('#sel_cat_producto').change(function() {
+//		var codigo = $(this).val();		
+////		var ddi = $(txt_codDdi).val();
+//		if (!esnulo(codigo)) {						
+//			var params = { 
+//				idProducto : codigo,
+//				idCategoria : codigo
+//			};			
+//			loadding(true);
+//			consultarAjax('GET', '/programacion-bath/pedido/listarProductoXCategoria', params, function(respuesta) {
+//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+//					addErrorMessage(null, respuesta.mensajeRespuesta);
+//					console.log("SI ERROR");
+//				} else {
+//					var options = '<option value="">Seleccione</option>';
+//			        $.each(respuesta, function(i, item) {
+//			            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
+//			        });
+//			        $('#sel_producto').html(options);
+//			      
+//			        	var arr = $('#sel_producto').val().split('_');
+//						if (arr.length > 1) {
+//							$('#txt_uni_medida').val(arr[1]);
+//							
+//						} else {
+//							$('#txt_uni_medida').val('');
+//							
+//						}
+////						frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+//			      
+//			        $('#sel_producto').select2().trigger('change');
+//					$('#sel_producto').select2({
+//						  dropdownParent: $('#div_pro_det_productos')
+//					});
+//				}
+//				loadding(false);
+//				frm_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
+//			});
+//		} else {
+//			$('#sel_lis_producto').html('');
+//			frm_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
+//		}
+//	});
 
 	$('#sel_lis_producto').change(function() {
 		var codigo = $(this).val();	
@@ -295,6 +320,12 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		frm_productos.trigger('reset');
+		limpiarFormularioProducto();
+		$('#sel_lis_producto').html('');
+		if ($('#sel_lis_producto').hasClass('select2-hidden-accessible')) {
+			$('#sel_lis_producto').select2('destroy');
+		}
+		
 		$('#txt_desc_pedido').val(pedido.codPedidoConcate+": "+$('#txt_descripcion').val());
 		$('#hid_cod_producto').val('');//para nuevo
 		$('#div_det_productos').modal('show');
@@ -362,10 +393,15 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			loadding(true);
-			
+			var idProducto = null;
+			var val_producto = $('#sel_lis_producto').val();
+			if (!esnulo(val_producto)) {
+				var arr = val_producto.split('_');
+				idProducto = arr[0];
+			}
 			var params = {  
 					idDetallePedidoCompra : $('#hid_cod_producto').val(),
-//					fkIdProducto : $('#sel_cat_producto').val(),
+					idProducto :idProducto, 
 					idPedidoCompra : pedido.idPedidoCom,
 					unidadMedida : $('#txt_unidad_med').val(),
 					cantidad : $('#txt_cantidad').val(),
@@ -379,7 +415,8 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					listarProductoPedidoCompra(true);					
-					addSuccessMessage(null, respuesta.mensajeRespuesta);					
+					addSuccessMessage(null, respuesta.mensajeRespuesta);	
+					$('#div_det_productos').modal('hide');
 				}
 				frm_productos.data('bootstrapValidator').resetForm();
 				loadding(false);
@@ -495,7 +532,103 @@ $(document).ready(function() {
 		}
 		
 	});
+	
+	$('#href_prod_eliminar').click(function(e) {
+		e.preventDefault();
+		
+		var indices = [];
+		var codigo = '';
+		tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+				var idProductoPedidoCompra = listaProductosCache[index].idDetallePedidoCompra;
+				codigo = codigo + idProductoPedidoCompra + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else {
+			var msg = '';
+			if (indices.length > 1) {
+				msg = 'Está seguro de eliminar los siguientes registros ?';
+			} else {
+				msg = 'Está seguro de eliminar el registro ?';
+			}
+			
+			$.SmartMessageBox({
+				title : msg,
+				content : '',
+				buttons : '[Cancelar][Aceptar]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'Aceptar') {
+	
+					loadding(true);
+					var params = { 
+						arrIdProductoPedidoCompra : codigo
+					};
+					consultarAjax('POST', '/programacion-bath/pedido/eliminarProductoPedidoCompra', params, function(respuesta) {
+						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+							loadding(false);
+							addErrorMessage(null, respuesta.mensajeRespuesta);
+						} else {
+							listarProductoPedidoCompra(true);
+							addSuccessMessage(null, respuesta.mensajeRespuesta);	
+							loadding(false); 
+						}
+					});
+					
+				}	
+			});
+			
+		}
+		
+	});
+	
+	$('#href_prod_editar').click(function(e) {
+		e.preventDefault();
 
+		var indices = [];
+		tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);
+			}
+		});
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			
+			var obj = listaProductosCache[indices[0]];
+			
+			$('#h4_tit_alimentarios').html('Actualizar Documento');
+			limpiarFormularioProducto();
+			
+			$('#hid_cod_producto').val(obj.idDetallePedidoCompra);			
+			$('#sel_lis_producto').val(obj.idProducto);
+//			$('#txt_num_doc').val(obj.idPedidoCompra);
+			
+			$('#txt_unidad_med').val(obj.unidadMedida);
+			$('#sel_cat_producto').val(obj.idCategoria);
+			
+			var val_producto = obj.idProducto+'_'+obj.unidadMedida;
+			cargarProducto(obj.idCategoria, val_producto);
+			
+			$('#txt_cantidad').val(obj.cantidad);
+			$('#txt_pre_unitario').val(obj.precioUnitario);
+			$('#txt_imp_total').val(obj.importeTotal);
+			
+			$('#div_det_productos').modal('show');
+			
+		}
+	});
+	
 	$('#href_doc_editar').click(function(e) {
 		e.preventDefault();
 
@@ -726,141 +859,47 @@ function listarDetalleDocumentos(respuesta) {
 
 }
 
+function cargarProducto(idCategoria, codigoProducto) {
+	var params = { 
+		idCategoria : idCategoria
+	};			
+	loadding(true);
+	consultarAjax('GET', '/programacion-bath/pedido/listarProductoXCategoria', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options = '<option value="">Seleccione</option>';
+	        $.each(respuesta, function(i, item) {
+				var det_option = '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">';
+				det_option = det_option + item.nombreProducto+'</option>';				
+	            options += det_option;
+	        });
+	        $('#sel_lis_producto').html(options);
+	        if (codigoProducto != null) {
+	        	$('#sel_lis_producto').val(codigoProducto);      	
+	        } else {
+	        	var arr = $('#sel_lis_producto').val().split('_');
+				if (arr.length > 1) {
+					$('#txt_unidad_med').val(arr[1]);
+				} else {
+					$('#txt_unidad_med').val('');
+				}
+//				frm_productos.bootstrapValidator('revalidateField', 'sel_producto');
+	        }
+	        $('#sel_lis_producto').select2().trigger('change');
+			$('#sel_lis_producto').select2({
+				  dropdownParent: $('#div_pro_det_productos')
+			});
+		}
+		loadding(false);		
+	});
+}
 
-
-//
-//function llenarProductos(codigo) {
-//		
-//			var params = { 
-//					idRacion : codigo
-//			};
-//			
-//			loadding(true);
-//			
-//			consultarAjax('GET', '/programacion-bath/racion/listarProductos', params, function(respuesta) {
-//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, respuesta.mensajeRespuesta);
-//				} else {
-//					addSuccessMessage(null, respuesta.mensajeRespuesta);
-//					 listarProductos(respuesta);
-//				}
-//				loadding(false);
-//			});
-//	
-//}
-//
-//
-//function listarProductos(respuesta) {
-//
-//	tbl_mnt_productos.dataTable().fnDestroy();
-//	tbl_mnt_productos.dataTable({
-//			data : respuesta,
-//			columns : [ {
-//					data : 'fkIdProducto',
-//					sClass : 'opc-center',
-//					render: function(data, type, row) {
-//						if (data != null) {
-//							return '<label class="checkbox">'+
-//										'<input type="checkbox"><i></i>'+
-//									'</label>';	
-//						} else {
-//							return '';	
-//						}											
-//					}	
-//				}, {	
-//					data : 'fkIdProducto',
-//					render : function(data, type, full, meta) {
-//						var row = meta.row + 1;
-//						return row;											
-//					}
-//				}, {data : 'nombProducto'}, 
-//				{data : 'pesoUnitarioPres'}, 
-//				{data : 'cantRacionKg'}
-//			],
-//			language : {
-//				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
-//			},
-//			bFilter : false,
-//			paging : false,
-//			ordering : false,
-//			info : false,
-//			iDisplayLength : 15,
-//			aLengthMenu : [
-//				[15, 50, 100],
-//				[15, 50, 100]
-//			],
-//			columnDefs : [
-//				{ width : '55%', targets : 2 },
-//				{ width : '15%', targets : 3 },
-//				{ width : '15%', targets : 4 }
-//			]
-//		});
-//		
-//	listaProductoCache = respuesta;
-//
-//	}
-//
-//
-//function listarDetalleRequerimiento(respuesta) {
-//
-//	tbl_mnt_racion_ope.dataTable().fnDestroy();
-//	tbl_mnt_racion_ope.dataTable({
-//			data : respuesta,
-//			columns : [ {
-//					data : 'idEmergencia',
-//					sClass : 'opc-center',
-//					render: function(data, type, row) {
-//						if (data != null) {
-//							return '<label class="checkbox">'+
-//										'<input type="checkbox"><i></i>'+
-//									'</label>';	
-//						} else {
-//							return '';	
-//						}											
-//					}	
-//				}, {	
-//					data : 'idEmergencia',
-//					render : function(data, type, full, meta) {
-//						var row = meta.row + 1;
-//						return row;											
-//					}
-//				}, {data : 'desDepartamento'}, 
-//				{data : 'desProvincia'}, 
-//				{data : 'desDistrito'}, 
-//				{data : 'idEmergencia'},
-//				{data : 'poblacionINEI'},
-//				{data : 'famAfectado'},
-//				{data : 'famDamnificado'},
-//				{data : 'totalFam'},
-//				{data : 'persoAfectado'},
-//				{data : 'persoDamnificado'},
-//				{data : 'totalPerso'},
-//				{data : 'famAfectadoReal'},
-//				{data : 'famDamnificadoReal'},
-//				{data : 'totalFamReal'},
-//				{data : 'persoAfectadoReal'}, 
-//				{data : 'persoDamnificadoReal'}, 
-//				{data : 'totalPersoReal'}
-//			],
-//			language : {
-//				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
-//			},
-//			bFilter : false,
-//			paging : false,
-//			ordering : false,
-//			info : false,
-//			iDisplayLength : 15,
-//			aLengthMenu : [
-//				[15, 50, 100],
-//				[15, 50, 100]
-//			],
-//			columnDefs : [
-//				{ width : '15%', targets : 3 },
-//				{ width : '15%', targets : 4 },
-//				{ width : '15%', targets : 5 }
-//			]
-//		});
-//		
-//	listaRacionCache = respuesta;
-//
-//	}
+function limpiarFormularioProducto() {
+	$('#sel_cat_producto').val('');
+	$('#sel_producto').val('');
+	$('#txt_unidad_med').val('');
+	$('#txt_cantidad').val('');
+	$('#txt_pre_unitario').val('');
+	$('#txt_imp_total').val('');
+}

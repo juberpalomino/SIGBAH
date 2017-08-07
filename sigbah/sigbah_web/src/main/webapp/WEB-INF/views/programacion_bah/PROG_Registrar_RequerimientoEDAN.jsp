@@ -190,7 +190,7 @@
 											<div class="col-sm-2">
 												<input type="text" id="txt_nro_req" class="form-control" >
 											</div>
-											<div class="col-sm-2">
+											<div class="col-sm-5">
 												<input type="text" id="txt_des_req" class="form-control" >
 											</div>
 										</div>		

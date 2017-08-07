@@ -52,7 +52,7 @@
 									
 									<label class="col-sm-1 control-label">Mes:</label>
 									<div class="col-sm-2 form-group">
-										<select id="sel_ddi" name="sel_ddi" class="form-control">
+										<select id="sel_mes" name="sel_mes" class="form-control">
 											<c:forEach items="${lista_mes}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -135,11 +135,11 @@
 										<th></th>
 										<th>Nº</th>
 										<th>Año</th>
-										<th>DDI</th>
-										<th>Nro. pedido compra</th>
-										<th>Fecha pedido compra</th>
+										<th>Mes</th>
+										<th>N° pedido compra</th>
+										<th>Fecha</th>
+										<th>Descripción</th>
 										<th>DDE</th>
-										<th>Emergencia</th>
 										<th>Estado</th>
 									</tr>
 								</thead>

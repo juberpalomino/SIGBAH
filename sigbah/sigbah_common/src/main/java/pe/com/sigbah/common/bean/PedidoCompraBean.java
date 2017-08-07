@@ -32,6 +32,7 @@ public class PedidoCompraBean extends BaseOutputBean {
 	private String codPedidoPor;
 	private String descPedidoPor;
 	private String tipPedido;
+	private String declaratoriaDee;
 	/**
 	 * 
 	 */
@@ -321,6 +322,20 @@ public class PedidoCompraBean extends BaseOutputBean {
 	 */
 	public void setTipPedido(String tipPedido) {
 		this.tipPedido = tipPedido;
+	}
+
+	/**
+	 * @return the declaratoriaDee
+	 */
+	public String getDeclaratoriaDee() {
+		return declaratoriaDee;
+	}
+
+	/**
+	 * @param declaratoriaDee the declaratoriaDee to set
+	 */
+	public void setDeclaratoriaDee(String declaratoriaDee) {
+		this.declaratoriaDee = declaratoriaDee;
 	}
 
 	
