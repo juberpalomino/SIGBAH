@@ -1294,14 +1294,8 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			input_objParametros.addValue("PI_FK_IDE_DEE", pedidoCompraBean.getDee(), Types.NUMERIC);
 			input_objParametros.addValue("PI_FK_IDE_DDI", pedidoCompraBean.getFkIdeDdi(), Types.NUMERIC);
 			input_objParametros.addValue("PI_USERNAME", pedidoCompraBean.getUsuarioRegistro(), Types.VARCHAR);
-			input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
-            
-			 if(pedidoCompraBean.getIdPedidoCom()== 0 || pedidoCompraBean.getIdPedidoCom().equals(null)){
-				 input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
-			 }else{
-				 input_objParametros.addValue("PI_CONTROL", "U", Types.VARCHAR);
-			 }
-			 
+			input_objParametros.addValue("PI_CONTROL",pedidoCompraBean.getControl(), Types.VARCHAR);
+           
             objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
@@ -1713,7 +1707,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			if (!Utils.isEmpty(lista)) {
 				pedidoCompra = lista.get(0);
 			}
-			
+
 			pedidoCompra.setCodigoRespuesta(codigoRespuesta);
 			pedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
 			

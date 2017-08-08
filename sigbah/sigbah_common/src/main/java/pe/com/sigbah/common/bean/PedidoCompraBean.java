@@ -33,6 +33,7 @@ public class PedidoCompraBean extends BaseOutputBean {
 	private String descPedidoPor;
 	private String tipPedido;
 	private String declaratoriaDee;
+	private String control;
 	/**
 	 * 
 	 */
@@ -336,6 +337,20 @@ public class PedidoCompraBean extends BaseOutputBean {
 	 */
 	public void setDeclaratoriaDee(String declaratoriaDee) {
 		this.declaratoriaDee = declaratoriaDee;
+	}
+
+	/**
+	 * @return the control
+	 */
+	public String getControl() {
+		return control;
+	}
+
+	/**
+	 * @param control the control to set
+	 */
+	public void setControl(String control) {
+		this.control = control;
 	}
 
 	

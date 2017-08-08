@@ -215,8 +215,8 @@ function inicializarDatos() {
 	
 	$('#li_pro_bah').addClass('active');
 	$('#ul_pro_bah').css('display', 'block');
-	$('#li_req_edan').attr('class', 'active');
-	$('#li_req_edan').closest('li').children('a').attr('href', '#');
+	$('#li_rac_ope').attr('class', 'active');
+	$('#li_rac_ope').closest('li').children('a').attr('href', '#');
 	
 
 	

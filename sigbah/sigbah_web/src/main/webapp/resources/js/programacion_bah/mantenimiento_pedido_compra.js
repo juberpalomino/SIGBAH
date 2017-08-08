@@ -665,6 +665,8 @@ $(document).ready(function() {
 		}
 	});
 	
+
+	
 //	
 //	tbl_det_documentos.on('click', '.btn_exp_doc', function(e) {
 //		e.preventDefault();
@@ -682,31 +684,49 @@ $(document).ready(function() {
 });
 
 function inicializarDatos() {
+	$('#li_pro_bah').addClass('active');
+	$('#ul_pro_bah').css('display', 'block');
+	$('#li_ped_compra').attr('class', 'active');
+	$('#li_ped_compra').closest('li').children('a').attr('href', '#');
 	
-	$('#div_tabla_prod').hide();//ocultamos la tabla
+	
+//	$('#div_tabla_prod').hide();//ocultamos la tabla
 
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-		//inicializar los valores
-		$('#txt_num_pedido').val(pedido.codPedidoConcate);
-		$('#txt_fecha_pedido').val(pedido.fecPedido);
 		
-		$('#li_productos').addClass('disabled'); //Desactivamos tab producto
-		$('#li_productos').closest('li').children('a').removeAttr('data-toggle');
-		
-		$('#li_documentos').addClass('disabled'); //Desactivamos tab documento
-		$('#li_documentos').closest('li').children('a').removeAttr('data-toggle');
-		
-//		$('#txt_desc_pedido').val(pedido.codPedidoConcate);
-//		$('#txt_desc_pedido_doc').val(pedido.codPedidoConcate);
-		
-		if (!esnulo(pedido.codPedido)) {
-			
 
+		
+		if (!esnulo(pedido.idPedidoCom)) {
+			$('#hid_cod_ped_compra').val(pedido.idPedidoCom);//usamos paa el listado de detalle productos y documentos
 			
+			$('#txt_num_pedido').val(pedido.numPedidoCompra);
+			$('#txt_fecha_pedido').val(pedido.fecPedido);
+			$('#lista_estado').val(pedido.iEstado);
+			$('#sel_pedidoPor').val(pedido.tipPedido);
+			$('#txt_descripcion').val(pedido.descripcion);
+			$('#sel_dee').val(pedido.dee);
+			
+			listarProductoPedidoCompra(false);
+			listarDocumentoPedidoCompra(false);
+			
+			$('#li_productos').attr('class', '');
+			$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
+			
+			$('#li_documentos').attr('class', '');
+			$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
+		
 		} else {
+			//inicializar los valores
+			$('#txt_num_pedido').val(pedido.codPedidoConcate);
+			$('#txt_fecha_pedido').val(pedido.fecPedido);
 			
+			$('#li_productos').addClass('disabled'); //Desactivamos tab producto
+			$('#li_productos').closest('li').children('a').removeAttr('data-toggle');
+			
+			$('#li_documentos').addClass('disabled'); //Desactivamos tab documento
+			$('#li_documentos').closest('li').children('a').removeAttr('data-toggle');
 
 		}
 	}
@@ -747,7 +767,7 @@ function listarDocumentoPedidoCompra(indicador) {
 
 function listarProductoPedidoCompra(indicador) {
 	var params = { 
-			idDetallePedidoCompra : $('#hid_cod_ped_compra').val()
+			idDetallePedidoCompra : $('#hid_cod_ped_compra').val() 
 	};			
 	consultarAjaxSincrono('GET', '/programacion-bath/pedido/listarProductoPedidoCompra', params, function(respuesta) {
 		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {

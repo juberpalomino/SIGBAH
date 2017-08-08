@@ -207,7 +207,7 @@
 									<!-- end widget -->
 									
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_afectados">
+										<button type="button" class="btn btn-default btn_retornar" data-dismiss="modal" id="btn_can_afectados">
 											<i class="fa fa-mail-forward"></i>
 											Retornar
 										</button>
@@ -269,7 +269,7 @@
 									<!-- end widget -->
 									
 									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_afectados">
+										<button type="button" class="btn btn-default btn_retornar" data-dismiss="modal" id="btn_can_afectados">
 											<i class="fa fa-mail-forward"></i>
 											Retornar
 										</button>

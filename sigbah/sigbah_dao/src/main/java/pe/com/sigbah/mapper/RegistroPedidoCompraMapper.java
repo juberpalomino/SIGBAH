@@ -24,6 +24,7 @@ public class RegistroPedidoCompraMapper implements RowMapper<PedidoCompraBean> {
 	public PedidoCompraBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		PedidoCompraBean pedido = new PedidoCompraBean();
 		
+		pedido.setIdPedidoCom(rs.getInt("IDE_PEDIDO_COMPRA"));
 		pedido.setCodPedido(rs.getString("COD_PEDIDO"));
 		pedido.setFkIdeDdi(rs.getInt("FK_IDE_DDI"));
 		pedido.setNumPedidoCompra(rs.getString("NRO_PEDIDO"));

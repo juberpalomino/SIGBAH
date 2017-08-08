@@ -165,7 +165,6 @@ private static final long serialVersionUID = 1L;
         		
         		pedido = programacionService.obtenerPedidoCompra(codigo); 
         		
-        		model.addAttribute("pedido", getParserObject(pedido));
 //        		model.addAttribute("lista_requerimiento", getParserObject(respuestaEdicion.getLstDetalle()));
         	  		
         	} else {//nuevo
@@ -181,9 +180,10 @@ private static final long serialVersionUID = 1L;
         		Date fecha_hora = Calendar.getInstance().getTime();
         		pedido.setFecPedido(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
         		
-    			model.addAttribute("pedido", getParserObject(pedido));
+    			
         	}
-	
+        	model.addAttribute("pedido", getParserObject(pedido));
+        	
         	model.addAttribute("lista_estado", generalService.listarEstadoPedidoCompra(new ItemBean()));
         	model.addAttribute("lista_dee", generalService.listarDee(new ItemBean()));
         	
@@ -227,15 +227,15 @@ private static final long serialVersionUID = 1L;
         	pedidoBean.setFkIdeDdi(usuarioBean.getIdDdi());
         	pedidoBean.setCodAnio(anioActual);
         	pedidoBean.setCodDdi(usuarioBean.getCodigoDdi());
-        	DateUtil.obtenerFechaHoraParseada(pedidoBean.getFecPedido()) ; 
-        	
         	
         	SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
         	String mes= dateFormat.format(DateUtil.obtenerFechaHoraParseada(pedidoBean.getFecPedido()));
         	pedidoBean.setCodMes(mes);
-			if (!isNullInteger(pedidoBean.getIdPedidoCom())) {				
+			if (!isNullInteger(pedidoBean.getIdPedidoCom())) {			
+				pedidoBean.setControl("U");
 				pedido = programacionService.insertarRegistroPedido(pedidoBean);				
 			} else {			
+				pedidoBean.setControl("I");
 				pedido = programacionService.insertarRegistroPedido(pedidoBean);			
 			}
 			pedido.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
