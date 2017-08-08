@@ -98,7 +98,8 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					addSuccessMessage(null, respuesta.mensajeRespuesta);
-				}
+					cargarRacion(true);
+				} 
 				loadding(false);
 			});
 		
