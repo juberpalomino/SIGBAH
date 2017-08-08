@@ -7,6 +7,7 @@ import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
+import pe.com.sigbah.common.bean.DocumentoDonacionIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
@@ -112,7 +113,7 @@ public interface DonacionService {
 	
 	public abstract RegionDonacionBean eliminarRegionDonacion(RegionDonacionBean regionDonacionBean) throws Exception;
 	
-	public abstract List<ItemBean> listarReporteDonacion(Integer idDonacion) throws Exception;
+	public abstract List<DonacionesBean> listarReporteDonacion(Integer idDonacion) throws Exception;
 	
 	public abstract DonacionesBean actualizarEstadoDonacion(DonacionesBean donacionesBean) throws Exception;
 	
@@ -531,6 +532,106 @@ public interface DonacionService {
 	 * @throws Exception
 	 */
 	public abstract List<DetalleGuiaRemisionBean> listarDetalleGuiaRemision(Integer idGuiaRemision, String tipoOrigen) throws Exception;
+
+
+	/**
+	 * @param idDonacion
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionBean> listarReporteDonacionProductos(Integer idDonacion) throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DonacionesIngresoBean> listarReporteDonacionIngreso(Integer idIngreso)	throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionIngresoBean> listarProductosReporteDonacionIngreso(Integer idIngreso) throws Exception;
+
+
+	/**
+	 * @param idSalida
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DonacionesSalidaBean> listarReporteDonacionSalida(Integer idSalida) throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionSalidaBean> listarProductosReporteDonacionSalida(Integer idIngreso) throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @param idDdi
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DonacionesIngresoBean> listarReporteDonacionIngresoNacional(Integer idIngreso, Integer idDdi) throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @param idDdi
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionIngresoBean> listarProductoReporteDonacionIngresoNacional(Integer idIngreso, Integer idDdi) throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @param idDdi
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DonacionesIngresoBean> listarReporteDonacionIngresoInternacional(Integer idIngreso, Integer idDdi) throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @param idDdi
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<ProductoDonacionIngresoBean> listarProductoReporteDonacionIngresoInternacional(Integer idIngreso,Integer idDdi) throws Exception;
+
+
+	/**
+	 * @param idDonacion
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<RegionDonacionBean> listarReporteDonacionRegiones(Integer idDonacion) throws Exception;
+
+
+	/**
+	 * @param idIngreso
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DocumentoDonacionIngresoBean> listarDocumentosReporteDonacionIngreso(Integer idIngreso) throws Exception;
+
+
+	/**
+	 * @param idSalida
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DocumentoSalidaBean> listarDocumentosReporteDonacionSalida(Integer idSalida) throws Exception;
 
 
 

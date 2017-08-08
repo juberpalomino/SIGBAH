@@ -29,7 +29,7 @@ public class UsuarioMapper implements RowMapper<UsuarioBean> {
 		usuarioBean.setIdDdi(rs.getInt("IDE_DDI"));
 		usuarioBean.setCodigoDdi(rs.getString("COD_DDI"));
 		usuarioBean.setNombreDdi(rs.getString("NOM_DDI"));
-		usuarioBean.setNombreDdi(rs.getString("EMAIL"));
+		usuarioBean.setEmail(rs.getString("EMAIL"));
 //		usuarioBean.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
 //		usuarioBean.setCodigoAlmacen(StringUtils.trimToEmpty(rs.getString("COD_ALMACEN")));
 //		usuarioBean.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));

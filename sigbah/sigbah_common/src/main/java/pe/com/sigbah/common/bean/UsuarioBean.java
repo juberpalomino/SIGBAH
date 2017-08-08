@@ -24,6 +24,7 @@ public class UsuarioBean implements Serializable {
 	private String password;
 	private String sessionId;
 	private String codigoAnio;
+	private String email;
 	
 	
 	/**
@@ -258,6 +259,20 @@ public class UsuarioBean implements Serializable {
 				+ nombreUsuario + ", idDdi=" + idDdi + ", codigoDdi=" + codigoDdi + ", nombreDdi=" + nombreDdi
 				+ ", idAlmacen=" + idAlmacen + ", codigoAlmacen=" + codigoAlmacen + ", nombreAlmacen=" + nombreAlmacen
 				+ ", password=" + password + ", sessionId=" + sessionId + ", codigoAnio=" + codigoAnio + "]";
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

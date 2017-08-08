@@ -11,6 +11,7 @@ import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
+import pe.com.sigbah.common.bean.DocumentoDonacionIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
@@ -170,7 +171,7 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	}
 	
 	@Override
-	public List<ItemBean> listarReporteDonacion(Integer idDonacion) throws Exception {
+	public List<DonacionesBean> listarReporteDonacion(Integer idDonacion) throws Exception {
 		return donacionDao.listarReporteDonacion(idDonacion);
 	}
 	
@@ -443,5 +444,65 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	@Override
 	public CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception {
 		return donacionDao.grabarCierreStock(cierreStockBean);
+	}
+	
+	@Override
+	public List<ProductoDonacionBean> listarReporteDonacionProductos(Integer idDonacion) throws Exception {
+		return donacionDao.listarReporteDonacionProductos(idDonacion);
+	}
+	
+	@Override
+	public List<DonacionesIngresoBean> listarReporteDonacionIngreso(Integer idIngreso) throws Exception {
+		return donacionDao.listarReporteDonacionIngreso(idIngreso);
+	}
+	
+	@Override
+	public List<ProductoDonacionIngresoBean> listarProductosReporteDonacionIngreso(Integer idIngreso) throws Exception {
+		return donacionDao.listarProductosReporteDonacionIngreso(idIngreso);
+	}
+	
+	@Override
+	public List<DonacionesSalidaBean> listarReporteDonacionSalida(Integer idSalida) throws Exception {
+		return donacionDao.listarReporteDonacionSalida(idSalida);
+	}
+	
+	@Override
+	public List<ProductoDonacionSalidaBean> listarProductosReporteDonacionSalida(Integer idIngreso) throws Exception {
+		return donacionDao.listarProductosReporteDonacionSalida(idIngreso);
+	}
+	
+	@Override
+	public List<DonacionesIngresoBean> listarReporteDonacionIngresoNacional(Integer idIngreso, Integer idDdi) throws Exception {
+		return donacionDao.listarReporteDonacionIngresoNacional(idIngreso, idDdi);
+	}
+	
+	@Override
+	public List<ProductoDonacionIngresoBean> listarProductoReporteDonacionIngresoNacional(Integer idIngreso, Integer idDdi) throws Exception {
+		return donacionDao.listarProductoReporteDonacionIngresoNacional(idIngreso, idDdi);
+	}
+	
+	@Override
+	public List<DonacionesIngresoBean> listarReporteDonacionIngresoInternacional(Integer idIngreso, Integer idDdi) throws Exception {
+		return donacionDao.listarReporteDonacionIngresoInternacional(idIngreso, idDdi);
+	}
+	
+	@Override
+	public List<ProductoDonacionIngresoBean> listarProductoReporteDonacionIngresoInternacional(Integer idIngreso, Integer idDdi) throws Exception {
+		return donacionDao.listarProductoReporteDonacionIngresoInternacional(idIngreso, idDdi);
+	}
+	
+	@Override
+	public List<RegionDonacionBean> listarReporteDonacionRegiones(Integer idDonacion) throws Exception {
+		return donacionDao.listarReporteDonacionRegiones(idDonacion);
+	} 
+	
+	@Override
+	public List<DocumentoDonacionIngresoBean> listarDocumentosReporteDonacionIngreso(Integer idIngreso) throws Exception {
+		return donacionDao.listarDocumentosReporteDonacionIngreso(idIngreso);
+	}
+	
+	@Override
+	public List<DocumentoSalidaBean> listarDocumentosReporteDonacionSalida(Integer idSalida) throws Exception {
+		return donacionDao.listarDocumentosReporteDonacionSalida(idSalida);
 	}
 }

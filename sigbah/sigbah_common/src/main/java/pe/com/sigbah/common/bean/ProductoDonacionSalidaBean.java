@@ -28,7 +28,8 @@ public class ProductoDonacionSalidaBean extends BaseOutputBean {
 	
 	private Double pesoNetoUnitario;
 	private Double pesoBrutoUnitario;
-
+	private String nombreEnvase;
+	private Integer nroLote;
 	
 	private Integer idDdi;
 	private String codDdi;
@@ -203,6 +204,34 @@ public class ProductoDonacionSalidaBean extends BaseOutputBean {
 
 	public void setPesoBrutoUnitario(Double pesoBrutoUnitario) {
 		this.pesoBrutoUnitario = pesoBrutoUnitario;
+	}
+
+	/**
+	 * @return the nombreEnvase
+	 */
+	public String getNombreEnvase() {
+		return nombreEnvase;
+	}
+
+	/**
+	 * @param nombreEnvase the nombreEnvase to set
+	 */
+	public void setNombreEnvase(String nombreEnvase) {
+		this.nombreEnvase = nombreEnvase;
+	}
+
+	/**
+	 * @return the nroLote
+	 */
+	public Integer getNroLote() {
+		return nroLote;
+	}
+
+	/**
+	 * @param nroLote the nroLote to set
+	 */
+	public void setNroLote(Integer nroLote) {
+		this.nroLote = nroLote;
 	}
 
 

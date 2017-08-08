@@ -30,6 +30,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
+import pe.com.sigbah.common.bean.DocumentoDonacionIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
@@ -57,9 +58,22 @@ import pe.com.sigbah.mapper.CartillaInventarioMapper;
 import pe.com.sigbah.mapper.CierreStockMapper;
 import pe.com.sigbah.mapper.ControlCalidadDonIngresoMapper;
 import pe.com.sigbah.mapper.DatosDonacionMapper;
+import pe.com.sigbah.mapper.DetalleDocumentoDonacionIngresoMapper;
+import pe.com.sigbah.mapper.DetalleDocumentoDonacionSalidaMapper;
+import pe.com.sigbah.mapper.DetalleDonacionesIngresoInterNacionalMapper;
+import pe.com.sigbah.mapper.DetalleDonacionesIngresoMapper;
+import pe.com.sigbah.mapper.DetalleDonacionesIngresoNacionalMapper;
+import pe.com.sigbah.mapper.DetalleDonacionesMapper;
+import pe.com.sigbah.mapper.DetalleDonacionesSalidaMapper;
 import pe.com.sigbah.mapper.DetalleEstadoCartillaInventarioMapper;
 import pe.com.sigbah.mapper.DetalleGuiaRemisionMapper;
 import pe.com.sigbah.mapper.DetalleProductoControlCalidadMapper;
+import pe.com.sigbah.mapper.DetalleProductoDonacionIngresoInterNacionalMapper;
+import pe.com.sigbah.mapper.DetalleProductoDonacionIngresoMapper;
+import pe.com.sigbah.mapper.DetalleProductoDonacionIngresoNacionalMapper;
+import pe.com.sigbah.mapper.DetalleProductoDonacionMapper;
+import pe.com.sigbah.mapper.DetalleProductoDonacionSalidaMapper;
+import pe.com.sigbah.mapper.DetalleRegionesDonacionMapper;
 import pe.com.sigbah.mapper.DocumentoDonacionIngresoMapper;
 import pe.com.sigbah.mapper.DocumentoDonacionMapper;
 import pe.com.sigbah.mapper.DocumentoDonacionSalidaMapper;
@@ -1322,28 +1336,24 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 	
 
 	@Override
-	public List<ItemBean> listarReporteDonacion(Integer idControlCalidad) throws Exception {
+	public List<DonacionesBean> listarReporteDonacion(Integer idDonacion) throws Exception {
 		LOGGER.info("[listarReporteDonacion] Inicio ");
-		List<ItemBean> lista = new ArrayList<ItemBean>();
+		List<DonacionesBean> lista = new ArrayList<DonacionesBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
-			input_objParametros.addValue("PI_ANIO", idControlCalidad, Types.VARCHAR);
-			input_objParametros.addValue("PI_DDI", idControlCalidad, Types.NUMERIC);
-			input_objParametros.addValue("PI_ID_DONACION", idControlCalidad, Types.NUMERIC);
+			input_objParametros.addValue("PI_ID_DONACION", idDonacion, Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
-			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
 			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
 			objJdbcCall.withProcedureName("USP_SEL_REPORT_SOLICITUD_APROB");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("PI_ANIO", new SqlParameter("PI_ANIO", Types.VARCHAR));
-			output_objParametros.put("PI_DDI", new SqlParameter("PI_DDI", Types.NUMERIC));
 			output_objParametros.put("PI_ID_DONACION", new SqlParameter("PI_ID_DONACION", Types.NUMERIC));
-			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleProductoControlCalidadMapper()));
-			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoControlCalidadMapper()));
-			output_objParametros.put("PO_CURSOR_REGIONES", new SqlOutParameter("PO_CURSOR_REGIONES", OracleTypes.CURSOR, new DetalleProductoControlCalidadMapper()));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionMapper()));
+			output_objParametros.put("PO_CURSOR_REGIONES", new SqlOutParameter("PO_CURSOR_REGIONES", OracleTypes.CURSOR, new DetalleRegionesDonacionMapper()));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
 			
@@ -1359,15 +1369,107 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
     			throw new Exception();
     		}
 			
-			lista = (List<ItemBean>) out.get("PO_CURSOR_DATA_GENERAL");
-			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
-			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			lista = (List<DonacionesBean>) out.get("PO_CURSOR_DATA_GENERAL");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new Exception();
 		}		
 		LOGGER.info("[listarReporteDonacion] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<ProductoDonacionBean> listarReporteDonacionProductos(Integer idDonacion) throws Exception {
+		LOGGER.info("[listarReporteDonacionProductos] Inicio ");
+		List<ProductoDonacionBean> lista = new ArrayList<ProductoDonacionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_DONACION", idDonacion, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_SOLICITUD_APROB");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_DONACION", new SqlParameter("PI_ID_DONACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionMapper()));
+			output_objParametros.put("PO_CURSOR_REGIONES", new SqlOutParameter("PO_CURSOR_REGIONES", OracleTypes.CURSOR, new DetalleRegionesDonacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDonacionProductos] Ocurrio un error en la operacion del USP_SEL_REPORT_SOLICITUD_APROB : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProductoDonacionBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDonacionProductos] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<RegionDonacionBean> listarReporteDonacionRegiones(Integer idDonacion) throws Exception {
+		LOGGER.info("[listarReporteDonacionRegiones] Inicio ");
+		List<RegionDonacionBean> lista = new ArrayList<RegionDonacionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_DONACION", idDonacion, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_SOLICITUD_APROB");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_DONACION", new SqlParameter("PI_ID_DONACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionMapper()));
+			output_objParametros.put("PO_CURSOR_REGIONES", new SqlOutParameter("PO_CURSOR_REGIONES", OracleTypes.CURSOR, new DetalleRegionesDonacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDonacionRegiones] Ocurrio un error en la operacion del USP_SEL_REPORT_SOLICITUD_APROB : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<RegionDonacionBean>) out.get("PO_CURSOR_REGIONES");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDonacionRegiones] Fin ");
 		return lista;
 	}
 	
@@ -2356,6 +2458,332 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		return registroDocumentoDonacion;
 	}
 	
+	@Override
+	public List<DonacionesIngresoBean> listarReporteDonacionIngreso(Integer idIngreso) throws Exception {
+		LOGGER.info("[listarReporteDonacionIngreso] Inicio ");
+		List<DonacionesIngresoBean> lista = new ArrayList<DonacionesIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ORDEN_INGRESO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_INGRESO", new SqlParameter("pi_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesIngresoMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionIngresoMapper()));
+			output_objParametros.put("PO_CURSOR_DOCUMENTOS", new SqlOutParameter("PO_CURSOR_DOCUMENTOS", OracleTypes.CURSOR, new DetalleDocumentoDonacionIngresoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDonacionIngreso] Ocurrio un error en la operacion del USP_SEL_REPORT_ORDEN_INGRESO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DonacionesIngresoBean>) out.get("PO_CURSOR_DATA_GENERAL");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDonacionIngreso] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<ProductoDonacionIngresoBean> listarProductosReporteDonacionIngreso(Integer idIngreso) throws Exception {
+		LOGGER.info("[listarProductosReporteDonacionIngreso] Inicio ");
+		List<ProductoDonacionIngresoBean> lista = new ArrayList<ProductoDonacionIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ORDEN_INGRESO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_INGRESO", new SqlParameter("pi_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesIngresoMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionIngresoMapper()));
+			output_objParametros.put("PO_CURSOR_DOCUMENTOS", new SqlOutParameter("PO_CURSOR_DOCUMENTOS", OracleTypes.CURSOR, new DetalleDocumentoDonacionIngresoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductosReporteDonacionIngreso] Ocurrio un error en la operacion del USP_SEL_REPORT_ORDEN_INGRESO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProductoDonacionIngresoBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductosReporteDonacionIngreso] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<DocumentoDonacionIngresoBean> listarDocumentosReporteDonacionIngreso(Integer idIngreso) throws Exception {
+		LOGGER.info("[listarDocumentosReporteDonacionIngreso] Inicio ");
+		List<DocumentoDonacionIngresoBean> lista = new ArrayList<DocumentoDonacionIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ORDEN_INGRESO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_INGRESO", new SqlParameter("pi_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesIngresoMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionIngresoMapper()));
+			output_objParametros.put("PO_CURSOR_DOCUMENTOS", new SqlOutParameter("PO_CURSOR_DOCUMENTOS", OracleTypes.CURSOR, new DetalleDocumentoDonacionIngresoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentosReporteDonacionIngreso] Ocurrio un error en la operacion del USP_SEL_REPORT_ORDEN_INGRESO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DocumentoDonacionIngresoBean>) out.get("PO_CURSOR_DOCUMENTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarDocumentosReporteDonacionIngreso] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<DonacionesIngresoBean> listarReporteDonacionIngresoNacional(Integer idIngreso, Integer idDdi) throws Exception {
+		LOGGER.info("[listarReporteDonacionIngresoNacional] Inicio ");
+		List<DonacionesIngresoBean> lista = new ArrayList<DonacionesIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_DDI", idDdi, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ACTAENTREGA_NAC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_INGRESO", new SqlParameter("PI_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesIngresoNacionalMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionIngresoNacionalMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDonacionIngresoNacional] Ocurrio un error en la operacion del USP_SEL_REPORT_ACTAENTREGA_NAC : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DonacionesIngresoBean>) out.get("PO_CURSOR_DATA_GENERAL");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDonacionIngresoNacional] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<ProductoDonacionIngresoBean> listarProductoReporteDonacionIngresoNacional(Integer idIngreso, Integer idDdi) throws Exception {
+		LOGGER.info("[listarProductoReporteDonacionIngresoNacional] Inicio ");
+		List<ProductoDonacionIngresoBean> lista = new ArrayList<ProductoDonacionIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_DDI", idDdi, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ACTAENTREGA_NAC");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_INGRESO", new SqlParameter("PI_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesIngresoNacionalMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionIngresoNacionalMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoReporteDonacionIngresoNacional] Ocurrio un error en la operacion del USP_SEL_REPORT_ACTAENTREGA_NAC : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProductoDonacionIngresoBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductoReporteDonacionIngresoNacional] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<DonacionesIngresoBean> listarReporteDonacionIngresoInternacional(Integer idIngreso, Integer idDdi) throws Exception {
+		LOGGER.info("[listarReporteDonacionIngresoInternacional] Inicio ");
+		List<DonacionesIngresoBean> lista = new ArrayList<DonacionesIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_DDI", idDdi, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ACTAENTREGA_INT");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_INGRESO", new SqlParameter("PI_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesIngresoInterNacionalMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionIngresoInterNacionalMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDonacionIngresoInternacional] Ocurrio un error en la operacion del USP_SEL_REPORT_ACTAENTREGA_INT : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DonacionesIngresoBean>) out.get("PO_CURSOR_DATA_GENERAL");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDonacionIngresoInternacional] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<ProductoDonacionIngresoBean> listarProductoReporteDonacionIngresoInternacional(Integer idIngreso, Integer idDdi) throws Exception {
+		LOGGER.info("[listarProductoReporteDonacionIngresoInternacional] Inicio ");
+		List<ProductoDonacionIngresoBean> lista = new ArrayList<ProductoDonacionIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_INGRESO", idIngreso, Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_DDI", idDdi, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ACTAENTREGA_INT");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_INGRESO", new SqlParameter("PI_IDE_INGRESO", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DATA_GENERAL", new SqlOutParameter("PO_CURSOR_DATA_GENERAL", OracleTypes.CURSOR, new DetalleDonacionesIngresoInterNacionalMapper()));
+			output_objParametros.put("PO_CURSOR_PRODUCTOS", new SqlOutParameter("PO_CURSOR_PRODUCTOS", OracleTypes.CURSOR, new DetalleProductoDonacionIngresoInterNacionalMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoReporteDonacionIngresoInternacional] Ocurrio un error en la operacion del USP_SEL_REPORT_ACTAENTREGA_INT : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProductoDonacionIngresoBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductoReporteDonacionIngresoInternacional] Fin ");
+		return lista;
+	}
+	
 	
 	/////////////////////////////////////////////////////////////////////////////////
 	///////ORDENES DE SALIDA////////////////////////////////////////////////////////
@@ -3162,6 +3590,144 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		}		
 		LOGGER.info("[eliminarDocumentoSalidaDonacion] Fin ");
 		return registroDocumentoDonacion;
+	}
+	
+	@Override
+	public List<DonacionesSalidaBean> listarReporteDonacionSalida(Integer idSalida) throws Exception {
+		LOGGER.info("[listarReporteDonacionSalida] Inicio ");
+		List<DonacionesSalidaBean> lista = new ArrayList<DonacionesSalidaBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_SALIDA", idSalida, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ORDEN_SALIDA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_SALIDA", new SqlParameter("PI_IDE_SALIDA", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DG", new SqlOutParameter("PO_CURSOR_DG", OracleTypes.CURSOR, new DetalleDonacionesSalidaMapper()));
+			output_objParametros.put("PO_CURSOR_FILE", new SqlOutParameter("PO_CURSOR_FILE", OracleTypes.CURSOR, new DetalleDocumentoDonacionSalidaMapper()));
+			output_objParametros.put("PO_CURSOR_PROD", new SqlOutParameter("PO_CURSOR_PROD", OracleTypes.CURSOR, new DetalleProductoDonacionSalidaMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDonacionSalida] Ocurrio un error en la operacion del USP_SEL_REPORT_ORDEN_SALIDA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DonacionesSalidaBean>) out.get("PO_CURSOR_DG");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDonacionSalida] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<ProductoDonacionSalidaBean> listarProductosReporteDonacionSalida(Integer idSalida) throws Exception {
+		LOGGER.info("[listarProductosReporteDonacionSalida] Inicio ");
+		List<ProductoDonacionSalidaBean> lista = new ArrayList<ProductoDonacionSalidaBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_SALIDA", idSalida, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ORDEN_SALIDA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_SALIDA", new SqlParameter("PI_IDE_SALIDA", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DG", new SqlOutParameter("PO_CURSOR_DG", OracleTypes.CURSOR, new DetalleDonacionesSalidaMapper()));
+			output_objParametros.put("PO_CURSOR_FILE", new SqlOutParameter("PO_CURSOR_FILE", OracleTypes.CURSOR, new DetalleDocumentoDonacionSalidaMapper()));
+			output_objParametros.put("PO_CURSOR_PROD", new SqlOutParameter("PO_CURSOR_PROD", OracleTypes.CURSOR, new DetalleProductoDonacionSalidaMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductosReporteDonacionSalida] Ocurrio un error en la operacion del USP_SEL_REPORT_ORDEN_SALIDA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<ProductoDonacionSalidaBean>) out.get("PO_CURSOR_PROD");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductosReporteDonacionSalida] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public List<DocumentoSalidaBean> listarDocumentosReporteDonacionSalida(Integer idSalida) throws Exception {
+		LOGGER.info("[listarDocumentosReporteDonacionSalida] Inicio ");
+		List<DocumentoSalidaBean> lista = new ArrayList<DocumentoSalidaBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_SALIDA", idSalida, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_ORDEN_SALIDA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_SALIDA", new SqlParameter("PI_IDE_SALIDA", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_DG", new SqlOutParameter("PO_CURSOR_DG", OracleTypes.CURSOR, new DetalleDonacionesSalidaMapper()));
+			output_objParametros.put("PO_CURSOR_FILE", new SqlOutParameter("PO_CURSOR_FILE", OracleTypes.CURSOR, new DetalleDocumentoDonacionSalidaMapper()));
+			output_objParametros.put("PO_CURSOR_PROD", new SqlOutParameter("PO_CURSOR_PROD", OracleTypes.CURSOR, new DetalleProductoDonacionSalidaMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarDocumentosReporteDonacionSalida] Ocurrio un error en la operacion del USP_SEL_REPORT_ORDEN_SALIDA : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<DocumentoSalidaBean>) out.get("PO_CURSOR_FILE");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_PRODUCTOS");
+//			lista = (List<ItemBean>) out.get("PO_CURSOR_REGIONES");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductosReporteDonacionSalida] Fin ");
+		return lista;
 	}
 	
 	

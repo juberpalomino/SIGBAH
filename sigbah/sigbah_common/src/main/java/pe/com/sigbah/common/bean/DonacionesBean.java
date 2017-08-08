@@ -34,10 +34,17 @@ public class DonacionesBean extends BaseOutputBean {
 	private String textob;
 	private String tipoDonacion;
 	private Integer idDee;
+	private String nombreSistema;
+	private String versionSistema;
 	
 	private String textoCodigo;  
 	private String nombreDeclaratoria;
 	private String representante;
+	private String numDocumento;
+	private String nombrePersonal;
+	private String nombreOficina;
+	private String nombreOrigen;
+	private String oficinaResponsable;
 	 
 	/**
 	 * @return the codigoAnio
@@ -385,6 +392,90 @@ public class DonacionesBean extends BaseOutputBean {
 	 */
 	public void setRepresentante(String representante) {
 		this.representante = representante;
+	}
+	/**
+	 * @return the numDocumento
+	 */
+	public String getNumDocumento() {
+		return numDocumento;
+	}
+	/**
+	 * @param numDocumento the numDocumento to set
+	 */
+	public void setNumDocumento(String numDocumento) {
+		this.numDocumento = numDocumento;
+	}
+	/**
+	 * @return the nombrePersonal
+	 */
+	public String getNombrePersonal() {
+		return nombrePersonal;
+	}
+	/**
+	 * @param nombrePersonal the nombrePersonal to set
+	 */
+	public void setNombrePersonal(String nombrePersonal) {
+		this.nombrePersonal = nombrePersonal;
+	}
+	/**
+	 * @return the nombreOficina
+	 */
+	public String getNombreOficina() {
+		return nombreOficina;
+	}
+	/**
+	 * @param nombreOficina the nombreOficina to set
+	 */
+	public void setNombreOficina(String nombreOficina) {
+		this.nombreOficina = nombreOficina;
+	}
+	/**
+	 * @return the nombreOrigen
+	 */
+	public String getNombreOrigen() {
+		return nombreOrigen;
+	}
+	/**
+	 * @param nombreOrigen the nombreOrigen to set
+	 */
+	public void setNombreOrigen(String nombreOrigen) {
+		this.nombreOrigen = nombreOrigen;
+	}
+	/**
+	 * @return the oficinaResponsable
+	 */
+	public String getOficinaResponsable() {
+		return oficinaResponsable;
+	}
+	/**
+	 * @param oficinaResponsable the oficinaResponsable to set
+	 */
+	public void setOficinaResponsable(String oficinaResponsable) {
+		this.oficinaResponsable = oficinaResponsable;
+	}
+	/**
+	 * @return the nombreSistema
+	 */
+	public String getNombreSistema() {
+		return nombreSistema;
+	}
+	/**
+	 * @param nombreSistema the nombreSistema to set
+	 */
+	public void setNombreSistema(String nombreSistema) {
+		this.nombreSistema = nombreSistema;
+	}
+	/**
+	 * @return the versionSistema
+	 */
+	public String getVersionSistema() {
+		return versionSistema;
+	}
+	/**
+	 * @param versionSistema the versionSistema to set
+	 */
+	public void setVersionSistema(String versionSistema) {
+		this.versionSistema = versionSistema;
 	}
 	 
 	

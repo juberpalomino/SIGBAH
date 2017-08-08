@@ -21,8 +21,37 @@ $(document).ready(function() {
 	
 	inicializarDatos();
 	
+	$('#txt_fec_entrega').datepicker().on('changeDate', function(e) {
+		e.preventDefault();
+		var fecha = $(this).val();
+		var fechaRegistro = $('#txt_fecha').val();
+		if (!esnulo(fecha)) {
+
+		    if (comparafecha(fecha, fechaRegistro)=='2') {
+		    	addWarnMessage(null, 'La fecha de entrega debe ser mayor o igual a la fecha de registro.');
+		    	$('#txt_fec_entrega').val('');
+		    	$('#'+$(this).attr('id')).focus();
+		    } else {
+		    	
+		    }
+		}
+		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
+	});
+	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
+		var fecha = $(this).val();
+		var fecha2 = $('#txt_fec_entrega').val();
+		if (!esnulo(fecha)) {
+			console.log(comparafecha(fecha2, fecha));
+		    if (comparafecha(fecha2, fecha)=='2') {
+		    	addWarnMessage(null, 'La fecha de entrega debe ser mayor o igual a la fecha de registro.');
+		    	$('#txt_fecha').val('');
+		    	$('#'+$(this).attr('id')).focus();
+		    } else {
+		    	
+		    }
+		}
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
@@ -468,7 +497,7 @@ $(document).ready(function() {
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
 						
-			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.unidadMedida+'_'+obj.pesoNetoUnitario+'_'+obj.pesoBrutoUnitario+'_'+obj.idDonacion);
+			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.unidadMedida+'_'+obj.pesoNetoUnitario+'_'+obj.pesoBrutoUnitario+'_'+obj.idDonacion+'_'+obj.precioUnitario);
 			
 			$('#txt_uni_medida').val(obj.unidadMedida);
 			//$('#txt_fec_vencimiento').val(obj.fecVencimiento);
@@ -607,17 +636,21 @@ $(document).ready(function() {
 				$('#txt_peso_unitario').val(arr[2]);
 				$('#txt_peso_bruto').val(arr[3]);
 				$('#hid_donacion_pro').val(arr[4]);
+				$('#txt_precio').val(arr[5]);
+				
 			} else {
 				$('#txt_uni_medida').val('');
 				$('#txt_peso_unitario').val('');
 				$('#txt_peso_bruto').val('');
 				$('#hid_donacion_pro').val('');
+				$('#txt_precio').val('');
 			}	
 		} else {
 			$('#txt_uni_medida').val('');
 			$('#txt_peso_unitario').val('');
 			$('#txt_peso_bruto').val('');
 			$('#hid_donacion_pro').val('');
+			$('#txt_precio').val('');
 		}
 	});
 	
@@ -631,26 +664,34 @@ $(document).ready(function() {
 				addErrorMessage(null, respuesta.mensajeRespuesta);
 			} else {
 				var options = '';
+				options += '<option value="">Seleccione</option>';
 		        $.each(respuesta, function(i, item) {
-		            options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'_'+item.pesoNetoUnitario+'_'+item.pesoBrutoUnitario+'_'+item.idDonacion+'">'+item.nombreProducto+'</option>';
+		            options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'_'+item.pesoNetoUnitario+'_'+item.pesoBrutoUnitario+'_'+item.idDonacion+'_'+item.precioUnitario+'">'+item.nombreProducto+'</option>';
 		        });
 		        $('#sel_producto').html(options);
 		        if (codigoProducto != null) {
 		        	$('#sel_producto').val(codigoProducto);
-					        	
-		        } else {
 		        	var arr = $('#sel_producto').val().split('_');
 					if (arr.length > 1) {
 						$('#txt_uni_medida').val(arr[1]);
 						$('#txt_peso_unitario').val(arr[2]);
 						$('#txt_peso_bruto').val(arr[3]);
 						$('#hid_donacion_pro').val(arr[4]);
+						$('#txt_precio').val(arr[5]);
+
 					} else {
 						$('#txt_uni_medida').val('');
 						$('#txt_peso_unitario').val('');
 						$('#txt_peso_bruto').val('');
 						$('#hid_donacion_pro').val('');
-					}
+						$('#txt_precio').val('');
+					}        	
+		        } else {
+		        	$('#txt_uni_medida').val('');
+					$('#txt_peso_unitario').val('');
+					$('#txt_peso_bruto').val('');
+					$('#hid_donacion_pro').val('');
+					$('#txt_precio').val('');
 		        	frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 		        }
 			}
@@ -881,13 +922,19 @@ $(document).ready(function() {
 		var cantidad =  $(this).val();
 		var pre_unitario = $('#txt_precio').val();
 		
-		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
-			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
-			$('#txt_imp_total').val(formatMontoAll(imp_total));
-		} else {
-			$('#txt_imp_total').val('');
-		}
-//		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+		if(cantidad!='0'){
+			if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
+				var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
+				$('#txt_imp_total').val(formatMontoAll(imp_total));
+			} else {
+				$('#txt_imp_total').val('');
+			}
+		}else{
+			addWarnMessage(null, 'La cantidad no debe ser 0.');
+	    	$('#txt_cantidad').val('');
+	    	$('#'+$(this).attr('id')).focus();
+		}		
+		frm_det_productos.bootstrapValidator('revalidateField', 'txt_cantidad');
 	});
 	
 	$('#txt_precio').change(function() {	
@@ -900,7 +947,7 @@ $(document).ready(function() {
 		} else {
 			$('#txt_imp_total').val('');
 		}
-//		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	});
 	
 	var cantidad = $(this).val();
@@ -1340,7 +1387,7 @@ function cargarProducto(idCategoria, codigoProducto) {
 			console.log("CODIGO: "+codigoProducto);
 			var options = '<option value="">Seleccione</option>';
 	        $.each(respuesta, function(i, item) {
-	        	options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'_'+item.pesoNetoUnitario+'_'+item.pesoBrutoUnitario+'_'+item.idDonacion+'">'+item.nombreProducto+'</option>';
+	        	options += '<option value="'+item.idProducto+'_'+item.unidadMedida+'_'+item.pesoNetoUnitario+'_'+item.pesoBrutoUnitario+'_'+item.idDonacion+'_'+item.precioUnitario+'">'+item.nombreProducto+'</option>';
 	        });
 	        $('#sel_producto').html(options);
 	        if (codigoProducto != null) {

@@ -40,6 +40,13 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 	private String tipoOrigen;
 	private String nombreTipoDonacion;
 	private Integer idSalida;
+	private String dia;
+	private String mes;
+	private String anio;
+	private String nroDocumento;
+	private String responsableAlmacen;
+	private String nombreSistema;
+	private String versionSistema;
 	
 	private String codigoEstado;
 	private Integer idPaisDonante;
@@ -558,6 +565,90 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 
 	public Integer getIdSalida() {
 		return idSalida;
+	}
+	/**
+	 * @return the dia
+	 */
+	public String getDia() {
+		return dia;
+	}
+	/**
+	 * @param dia the dia to set
+	 */
+	public void setDia(String dia) {
+		this.dia = dia;
+	}
+	/**
+	 * @return the mes
+	 */
+	public String getMes() {
+		return mes;
+	}
+	/**
+	 * @param mes the mes to set
+	 */
+	public void setMes(String mes) {
+		this.mes = mes;
+	}
+	/**
+	 * @return the anio
+	 */
+	public String getAnio() {
+		return anio;
+	}
+	/**
+	 * @param anio the anio to set
+	 */
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+	/**
+	 * @return the nroDocumento
+	 */
+	public String getNroDocumento() {
+		return nroDocumento;
+	}
+	/**
+	 * @param nroDocumento the nroDocumento to set
+	 */
+	public void setNroDocumento(String nroDocumento) {
+		this.nroDocumento = nroDocumento;
+	}
+	/**
+	 * @return the responsableAlmacen
+	 */
+	public String getResponsableAlmacen() {
+		return responsableAlmacen;
+	}
+	/**
+	 * @param responsableAlmacen the responsableAlmacen to set
+	 */
+	public void setResponsableAlmacen(String responsableAlmacen) {
+		this.responsableAlmacen = responsableAlmacen;
+	}
+	/**
+	 * @return the nombreSistema
+	 */
+	public String getNombreSistema() {
+		return nombreSistema;
+	}
+	/**
+	 * @param nombreSistema the nombreSistema to set
+	 */
+	public void setNombreSistema(String nombreSistema) {
+		this.nombreSistema = nombreSistema;
+	}
+	/**
+	 * @return the versionSistema
+	 */
+	public String getVersionSistema() {
+		return versionSistema;
+	}
+	/**
+	 * @param versionSistema the versionSistema to set
+	 */
+	public void setVersionSistema(String versionSistema) {
+		this.versionSistema = versionSistema;
 	}
 	
 

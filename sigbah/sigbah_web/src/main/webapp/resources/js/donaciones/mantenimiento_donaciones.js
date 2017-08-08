@@ -320,7 +320,7 @@ $(document).ready(function() {
 		$('#frm_det_productos').trigger('reset');
 		$('#hid_cod_producto').val('');
 		$('#div_det_productos').modal('show');
-	
+		limpiarFormuProductos();
 		$('#sel_lis_producto').html('');
 		
 	});
@@ -360,7 +360,7 @@ $(document).ready(function() {
 			$('#txt_imp_soles').val(obj.monSoles);
 			$('#txt_imp_dolares').val(obj.monDolares);
 			$('#sel_monedas').val(obj.idMoneda);
-			
+			console.log("cantidad: "+obj.cantidad);
 			$('#div_det_productos').modal('show');
 		}
 		
@@ -582,6 +582,9 @@ $(document).ready(function() {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
+					
+					
+					
 					var options = '<option value="">Seleccione</option>';
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.icodigo+'">'+item.descripcion+'</option>';
@@ -617,6 +620,7 @@ $(document).ready(function() {
 			        });
 			        $('#sel_lis_producto').html(options);
 				}
+				limpiarFormuProductos();
 				loadding(false);
 				frm_det_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
 			});
@@ -638,10 +642,10 @@ $(document).ready(function() {
 		}
 		frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_pais');
 	});
-	
+
 	$('#sel_lis_producto').change(function() {
 		var codigo = $(this).val();	
-		console.log(codigo);
+		limpiarFormuProductos();
 		if (!esnulo(codigo)) {
 			var arr = codigo.split('_');
 			if (arr.length > 1) {
@@ -652,6 +656,49 @@ $(document).ready(function() {
 		} else {
 			$('#txt_uni_medida_pro').val('');
 		}
+	});
+	
+	$('#sel_monedas').change(function() {
+		var codigo = $(this).val();	
+
+		if (!esnulo(codigo)) {
+			if (codigo == '127') {
+				$('#txt_imp_dolares').prop('disabled', true);
+				$('#txt_imp_soles').prop('disabled', true);
+				$('#txt_imp_soles').val(formatMontoAll($('#txt_imp_origen').val()));
+				$('#txt_imp_dolares').val('');
+			} else {
+				$('#txt_imp_soles').prop('disabled', false);
+				$('#txt_imp_dolares').prop('disabled', false);
+			}			
+		} else {
+			$('#txt_imp_origen').val('');
+			$('#txt_imp_soles').val('');
+			$('#txt_imp_dolares').val('');
+		}
+	});
+	
+	$('#txt_imp_origen').change(function() {	
+		var origen =  $(this).val();
+		var tipo = $('#sel_monedas').val();
+		
+		if (!esnulo(origen) && tipo=='127') {
+			$('#txt_imp_soles').val(formatMontoAll(origen));
+		} else {
+			$('#txt_imp_soles').val('');
+		}
+//		frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+	});
+	
+	$('#txt_cantidad').change(function() {	
+		var cantidad =  $(this).val();
+		console.log("CANTIDAD: "+cantidad);
+		if(cantidad=='0'){
+			addWarnMessage(null, 'La cantidad no debe ser 0.');
+	    	$('#txt_cantidad').val('');
+	    	$('#'+$(this).attr('id')).focus();
+		}	
+		frm_det_productos.bootstrapValidator('revalidateField', 'txt_cantidad');
 	});
 	
 });
@@ -944,8 +991,7 @@ function cargarProducto(idCategoria, codigoProducto) {
 	        });
 	        $('#sel_lis_producto').html(options);
 	        if (codigoProducto != null) {
-	        	$('#sel_lis_producto').val(codigoProducto);
-//				cargarLote(codigoProducto, codigoLote);				
+	        	$('#sel_lis_producto').val(codigoProducto);			
 	        } else {
 	        	var arr = $('#sel_lis_producto').val().split('_');
 				if (arr.length > 1) {
@@ -1249,3 +1295,14 @@ function actualizarCampos(concatenado, idDonacion){
 	
 }
 
+function limpiarFormuProductos(){
+//	$('#txt_uni_medida_pro').val('');
+//	$('#txt_fec_vencimiento').val('');
+//	$('#txt_cantidad').val('');
+//	$('#sel_monedas').val('');
+//	$('#txt_imp_origen').val('');
+//	$('#txt_imp_soles').val('');
+//	$('#txt_imp_dolares').val('');
+//	$('#sel_monedas').val('');
+	
+}

@@ -26,6 +26,8 @@ public class ProductoDonacionIngresoBean extends BaseOutputBean {
 	private String codDdi;
 	private Integer idAlmacen;
 	private String codAlmacen;
+	private String nombreEnvase;
+	private String estadoConservacion;
 
 	/**
 	 * 
@@ -147,6 +149,34 @@ public class ProductoDonacionIngresoBean extends BaseOutputBean {
 
 	public void setCodAlmacen(String codAlmacen) {
 		this.codAlmacen = codAlmacen;
+	}
+
+	/**
+	 * @return the nombreEnvase
+	 */
+	public String getNombreEnvase() {
+		return nombreEnvase;
+	}
+
+	/**
+	 * @param nombreEnvase the nombreEnvase to set
+	 */
+	public void setNombreEnvase(String nombreEnvase) {
+		this.nombreEnvase = nombreEnvase;
+	}
+
+	/**
+	 * @return the estadoConservacion
+	 */
+	public String getEstadoConservacion() {
+		return estadoConservacion;
+	}
+
+	/**
+	 * @param estadoConservacion the estadoConservacion to set
+	 */
+	public void setEstadoConservacion(String estadoConservacion) {
+		this.estadoConservacion = estadoConservacion;
 	}
 
 

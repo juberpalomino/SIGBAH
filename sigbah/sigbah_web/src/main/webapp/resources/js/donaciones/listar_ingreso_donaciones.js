@@ -189,7 +189,8 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		var indices = [];
-		var codigo = ''
+		var codigo = '';
+		var tipoDonacion = '';
 			tbl_mnt_con_donaciones.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_con_donaciones.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -197,8 +198,11 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idDonacion = listaDonacionesCache[index].idDonacion;
+				var idDonacion = listaDonacionesCache[index].idIngreso;
 				codigo = codigo + idDonacion + '_';
+				
+				var idTipoDon = listaDonacionesCache[index].idMovimiento;
+				tipoDonacion = tipoDonacion + idTipoDon + '_';
 			}
 		});
 		
@@ -206,29 +210,77 @@ $(document).ready(function() {
 			codigo = codigo.substring(0, codigo.length - 1);
 		}
 		
+		if (!esnulo(tipoDonacion)) {
+			tipoDonacion = tipoDonacion.substring(0, tipoDonacion.length - 1);
+		}
+		
 		if (indices.length == 0) {
 			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 		} else if (indices.length > 1) {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
-			loadding(true);
-			var url = VAR_CONTEXT + '/donaciones/registro-donaciones/exportarPdf/'+codigo;
-			$.fileDownload(url).done(function(respuesta) {
-				loadding(false);	
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else {
-					addInfoMessage(null, mensajeReporteExito);
-				}
-			}).fail(function (respuesta) {
-				loadding(false);
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else if (respuesta == NOTIFICACION_VALIDACION) {
-					addWarnMessage(null, mensajeReporteValidacion);
-				}
-			});
+			console.log("TIPO yDONACION: "+tipoDonacion);
+			if(tipoDonacion=='11' || tipoDonacion=='12' || tipoDonacion=='13'){
+				
+				$('#hid_codigo_in').val(codigo);
+				$('#hid_codigo_tipo').val(tipoDonacion);
+				$('#chk_gui_remision').prop('checked', false);
+				$('#chk_man_carga').prop('checked', false);
+				$('#chk_act_ent_recepcion').prop('checked', false);
+				$('#div_imp_pdf').modal('show');
+			}else{
+
+				loadding(true);
+				var url = VAR_CONTEXT + '/donacionesIngreso/registro-donacionesIngreso/exportarPdf/'+codigo;
+				$.fileDownload(url).done(function(respuesta) {
+					loadding(false);	
+					if (respuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, mensajeReporteError);
+					} else {
+						addInfoMessage(null, mensajeReporteExito);
+					}
+				}).fail(function (respuesta) {
+					loadding(false);
+					if (respuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, mensajeReporteError);
+					} else if (respuesta == NOTIFICACION_VALIDACION) {
+						addWarnMessage(null, mensajeReporteValidacion);
+					}
+				});
+			}
 		}
+	});
+	
+	$('#btn_exportar').click(function(e) {
+		e.preventDefault();
+		var codigo = $('#hid_codigo_in').val();
+		var tipo = $('#hid_codigo_tipo').val();
+		var ind_gui = $('#chk_gui_remision').is(':checked') ? '1' : '0';
+		var ind_man = $('#chk_man_carga').is(':checked') ? '1' : '0';
+		var url = VAR_CONTEXT + '/donacionesIngreso/registro-donacionesIngreso/exportarPdfActa/'+codigo+'/'+tipo+'/'+ind_gui+'/'+ind_man;
+		
+		if ((ind_gui == '0' && ind_man == '0') || 
+				(ind_gui == '1' && ind_man == '1') || 
+				(ind_gui == '0' && ind_man == '0') ) {
+			addWarnMessage(null, 'Debe de Seleccionar un tipo de reporte.');
+			return;
+		}
+		loadding(true);
+		$.fileDownload(url).done(function(respuesta) {
+			loadding(false);	
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else {
+				addInfoMessage(null, mensajeReporteExito);
+			}
+		}).fail(function (respuesta) {
+			loadding(false);
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else if (respuesta == NOTIFICACION_VALIDACION) {
+				addWarnMessage(null, mensajeReporteValidacion);
+			}
+		});
 	});
 	
 	function cargarEstados() {
@@ -519,9 +571,9 @@ function listarDonacionIngreso(respuesta) {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
+		info : false,
 		iDisplayLength : 15,
 		aLengthMenu : [
 			[15, 50, 100],

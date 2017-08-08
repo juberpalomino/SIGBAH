@@ -247,5 +247,63 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- Modal -->
+<div id="div_imp_pdf" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title label-bold1">IMPRIMIR</h4>
+				<input type="hidden" id="hid_codigo_in" name="hid_codigo_in">
+				<input type="hidden" id="hid_codigo_tipo" name="hid_codigo_tipo">
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<form class="form-horizontal" role="form">
+							
+							<div class="row">
+								<label class="col-sm-5 control-label">Orden Ingreso</label>
+								<div class="col-sm-7 smart-form">
+									<label class="checkbox">
+										<input type="checkbox" name="chk_gui_remision" id="chk_gui_remision"><i></i>
+									</label>
+								</div>
+							</div>
+							
+							<div class="row">
+								<label class="col-sm-5 control-label">Acta de Entrega Recepción</label>
+								<div class="col-sm-7 smart-form">
+									<label class="checkbox">
+										<input type="checkbox" name="chk_man_carga" id="chk_man_carga"><i></i>
+									</label>
+								</div>
+							</div>
+
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_exportar">
+					<i class="fa fa-file-pdf-o"></i>
+					Exportar
+				</button>
+
+				&nbsp; &nbsp;
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					<i class="fa fa-mail-forward"></i>
+					Cancelar
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- inline scripts related to this page -->
 <script src="${pageContext.request.contextPath}/resources/js/donaciones/listar_ingreso_donaciones.js"></script>

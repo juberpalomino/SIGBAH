@@ -21,9 +21,38 @@ $(document).ready(function() {
 	
 	inicializarDatos();
 	
+	$('#txt_fec_llegada').datepicker().on('changeDate', function(e) {
+		e.preventDefault();
+		var fecha = $(this).val();
+		var fechaRegistro = $('#txt_fecha').val();
+		if (!esnulo(fecha)) {
+			console.log(comparafecha(fecha, fechaRegistro));
+		    if (comparafecha(fecha, fechaRegistro)=='1') {
+		    	addWarnMessage(null, 'La fecha de llegada debe ser menor o igual a la fecha de registro.');
+		    	$('#txt_fec_llegada').val('');
+		    	$('#'+$(this).attr('id')).focus();
+		    } else {
+		    	
+		    }
+		}
+		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
+	});
+	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
-		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
+		var fecha = $(this).val();
+		var fecha2 = $('#txt_fec_llegada').val();
+		if (!esnulo(fecha)) {
+			console.log(comparafecha(fecha2, fecha));
+		    if (comparafecha(fecha2, fecha)=='1') {
+		    	addWarnMessage(null, 'La fecha de llegada debe ser menor o igual a la fecha de registro.');
+		    	$('#txt_fecha').val('');
+		    	$('#'+$(this).attr('id')).focus();
+		    } else {
+		    	
+		    }
+		}
+		frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fecha');	
 	});
 	
 	$('#txt_doc_fecha').datepicker().on('changeDate', function(e) {
@@ -398,7 +427,8 @@ $(document).ready(function() {
 			
 			$('#hid_cod_producto').val(obj.idIngresoDet);
 			
-			$('#sel_cat_producto').val(obj.idCategoria);
+			$('#sel_cat_producto').val(obj.idProducto+'_'+obj.unidadMedida+'_'+parseFloat(obj.precioUnitario));
+			console.log("LALA:"+obj.idProducto+'_'+obj.unidadMedida+'_'+parseFloat(obj.precioUnitario));
 //			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.unidadMedida);
 			
 			$('#txt_uni_medida').val(obj.unidadMedida);
@@ -407,7 +437,8 @@ $(document).ready(function() {
 			$('#sel_monedas').val(obj.idMoneda);
 			$('#txt_imp_origen').val(obj.monOrigen);
 			$('#txt_imp_soles').val(obj.monSoles);
-			$('#txt_imp_dolares').val(obj.monDolares);
+			$('#txt_precio').val(obj.precioUnitario);
+			$('#txt_imp_total').val(obj.importeTotal);
 			
 			$('#div_det_productos').modal('show');
 		}

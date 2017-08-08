@@ -57,6 +57,10 @@ public class DonacionesSalidaBean extends BaseOutputBean {
 	private String codProvincia;
 	private String codDepartamento;
 	private String codDistrito;
+	private String nombreSistema;
+	private String nomAlmacenOrigen;
+	private String nomAlmacenDestino;
+	private String versionSistema;
 	
 //	private String codigoEstado;
 //	private Integer idPaisDonante;
@@ -744,6 +748,54 @@ public class DonacionesSalidaBean extends BaseOutputBean {
 
 	public void setCodDistrito(String codDistrito) {
 		this.codDistrito = codDistrito;
+	}
+	/**
+	 * @return the nombreSistema
+	 */
+	public String getNombreSistema() {
+		return nombreSistema;
+	}
+	/**
+	 * @param nombreSistema the nombreSistema to set
+	 */
+	public void setNombreSistema(String nombreSistema) {
+		this.nombreSistema = nombreSistema;
+	}
+	/**
+	 * @return the nomAlmacenOrigen
+	 */
+	public String getNomAlmacenOrigen() {
+		return nomAlmacenOrigen;
+	}
+	/**
+	 * @param nomAlmacenOrigen the nomAlmacenOrigen to set
+	 */
+	public void setNomAlmacenOrigen(String nomAlmacenOrigen) {
+		this.nomAlmacenOrigen = nomAlmacenOrigen;
+	}
+	/**
+	 * @return the nomAlmacenDestino
+	 */
+	public String getNomAlmacenDestino() {
+		return nomAlmacenDestino;
+	}
+	/**
+	 * @param nomAlmacenDestino the nomAlmacenDestino to set
+	 */
+	public void setNomAlmacenDestino(String nomAlmacenDestino) {
+		this.nomAlmacenDestino = nomAlmacenDestino;
+	}
+	/**
+	 * @return the versionSistema
+	 */
+	public String getVersionSistema() {
+		return versionSistema;
+	}
+	/**
+	 * @param versionSistema the versionSistema to set
+	 */
+	public void setVersionSistema(String versionSistema) {
+		this.versionSistema = versionSistema;
 	}
 
 }

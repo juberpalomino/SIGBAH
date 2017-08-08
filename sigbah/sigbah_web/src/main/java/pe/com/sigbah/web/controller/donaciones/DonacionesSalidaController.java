@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
@@ -1152,26 +1153,33 @@ public class DonacionesSalidaController extends BaseController {
 	@ResponseBody
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
-			List<DetalleProductoControlCalidadBean> lista = logisticaService.listarDetalleProductoControlCalidad(codigo);
-			if (isEmpty(lista)) {
+			List<DonacionesSalidaBean> lista = donacionService.listarReporteDonacionSalida(codigo);
+			List<ProductoDonacionSalidaBean> listaProductos = donacionService.listarProductosReporteDonacionSalida(codigo);
+			List<DocumentoSalidaBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionSalida(codigo);
+			if (isEmpty(lista) || isEmpty(listaProductos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
-			DetalleProductoControlCalidadBean producto = lista.get(0);
+			DonacionesSalidaBean general = lista.get(0);
 
 			ExportarArchivo printer = new ExportarArchivo();
 			StringBuilder jasperFile = new StringBuilder();
 			jasperFile.append(getPath(request));
 			jasperFile.append(File.separator);
-			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-			} else {
-				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-			}
+			jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
+			jasperFile.append("Orden_Salida.jrxml");
 			
+			String ruta = getPath(request)+File.separator+Constantes.REPORT_PATH_DONACIONES;
+//			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
+//				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
+//			} else {
+//				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
+//			}
+			
+			JRBeanCollectionDataSource ListaDocumentos = new JRBeanCollectionDataSource(listaDocumentos);
+//			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
-			// Agregando los parámetros del reporte
+			// Agregando los parÃ¡metros del reporte
 			StringBuilder logo_indeci_path = new StringBuilder();
 			logo_indeci_path.append(getPath(request));
 			logo_indeci_path.append(File.separator);
@@ -1192,21 +1200,22 @@ public class DonacionesSalidaController extends BaseController {
 			logo_check_min_path.append(File.separator);
 			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
 			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroControlCalidad());
-			parameters.put("P_DDI", producto.getNombreDdi());			
-			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
-			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
-			parameters.put("P_TIPO_CONTROL", producto.getTipoControlCalidad());
-			parameters.put("P_ALMACEN_ORIGEN_DESTINO", producto.getNombreAlmacen());
-			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
-			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
-			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
-			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
-
-			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
+			parameters.put("P_NRO_ORDEN_INGRESO", general.getNroOrdenSalida());
+			parameters.put("P_DDI", general.getNombreDdi());			
+			parameters.put("P_FECHA_EMISION", general.getFechaEmision());
+			parameters.put("P_ALMACEN_ORIGEN", general.getNomAlmacenOrigen());
+			parameters.put("P_OBSERVACION", general.getObservacion());
+			parameters.put("P_TIPO_MOVIMIENTO", general.getNombreMovimiento());
+			parameters.put("P_ALMACEN_DESTINO", general.getNomAlmacenDestino());
+			parameters.put("LISTA_DOCUMENTOS", ListaDocumentos);
+			parameters.put("SR_RUTA_DOCUMENTOS", ruta);
+			parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
+			parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
+			
+			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
 			InputStream input = new ByteArrayInputStream(array);
 	        
-	        String file_name = "Reporte_Control_Calidad";
+	        String file_name = "Orden_Salida_Donacion";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 	    	
 	        response.resetBuffer();
@@ -1233,6 +1242,7 @@ public class DonacionesSalidaController extends BaseController {
 	    	return Constantes.COD_ERROR_GENERAL;
 	    } 
 	}
+
 	
 	///////////////SALIDA//////////////////
 	

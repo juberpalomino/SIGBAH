@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
@@ -1086,22 +1087,28 @@ public class DonacionesIngresoController extends BaseController {
 	@ResponseBody
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
-			List<DetalleProductoControlCalidadBean> lista = logisticaService.listarDetalleProductoControlCalidad(codigo);
-			if (isEmpty(lista)) {
+	    	
+			List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
+			List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
+			List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
+			if (isEmpty(lista) || isEmpty(listaProductos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
-			DetalleProductoControlCalidadBean producto = lista.get(0);
-
+			DonacionesIngresoBean general = lista.get(0);
 			ExportarArchivo printer = new ExportarArchivo();
 			StringBuilder jasperFile = new StringBuilder();
 			jasperFile.append(getPath(request));
 			jasperFile.append(File.separator);
-			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-			} else {
-				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-			}
+			jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
+			jasperFile.append("Orden_Ingreso.jrxml");
+			
+			String ruta = getPath(request)+File.separator+Constantes.REPORT_PATH_DONACIONES;
+//			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
+//				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
+//			} else {
+//				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
+//			}
+			JRBeanCollectionDataSource ListaDocumentos = new JRBeanCollectionDataSource(listaDocumentos);
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
@@ -1126,21 +1133,21 @@ public class DonacionesIngresoController extends BaseController {
 			logo_check_min_path.append(File.separator);
 			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
 			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroControlCalidad());
-			parameters.put("P_DDI", producto.getNombreDdi());			
-			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
-			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
-			parameters.put("P_TIPO_CONTROL", producto.getTipoControlCalidad());
-			parameters.put("P_ALMACEN_ORIGEN_DESTINO", producto.getNombreAlmacen());
-			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
-			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
-			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
-			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
+			parameters.put("P_NRO_ORDEN_INGRESO", general.getNroOrdenIngreso());
+			parameters.put("P_DDI", general.getNombreDdi());			
+			parameters.put("P_FECHA_EMISION", general.getFechaEmision());
+			parameters.put("P_ALMACEN_ORIGEN", general.getNombreAlmacen());
+			parameters.put("P_OBSERVACION", general.getObservacion());
+			parameters.put("P_TIPO_MOVIMIENTO", general.getNombreMovimiento());
+			parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
+			parameters.put("LISTA_DOCUMENTOS", ListaDocumentos);
+			parameters.put("SR_RUTA_DOCUMENTOS", ruta);
+			parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
 
-			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
+			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
 			InputStream input = new ByteArrayInputStream(array);
 	        
-	        String file_name = "Reporte_Control_Calidad";
+	        String file_name = "Orden_Ingreso_Donacion";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 	    	
 	        response.resetBuffer();
@@ -1162,6 +1169,261 @@ public class DonacionesIngresoController extends BaseController {
 	    	output.close();
 
 	    	return Constantes.COD_EXITO_GENERAL;
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
+	
+	@RequestMapping(value = "/exportarPdfActa/{codigo}/{tipo}/{ind_gui}/{ind_man}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarPdfActa(@PathVariable("codigo") Integer codigo, 
+			@PathVariable("tipo") Integer tipo,
+			@PathVariable("ind_gui") Integer ind_orden,
+			@PathVariable("ind_man") Integer ind_acta,
+			HttpServletRequest request, HttpServletResponse response) {
+	    try {
+	    	
+	    	if(ind_orden==1){
+	    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
+				List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
+				List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
+				if (isEmpty(lista) || isEmpty(listaProductos)) {
+					return Constantes.COD_VALIDACION_GENERAL;
+				}			
+				DonacionesIngresoBean general = lista.get(0);
+
+				ExportarArchivo printer = new ExportarArchivo();
+				StringBuilder jasperFile = new StringBuilder();
+				jasperFile.append(getPath(request));
+				jasperFile.append(File.separator);
+				jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
+				jasperFile.append("Orden_Ingreso.jrxml");
+				
+				String ruta = getPath(request)+File.separator+Constantes.REPORT_PATH_DONACIONES;
+//				if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
+//					jasperFile.append("Control_Calidad_Alimentaria.jrxml");
+//				} else {
+//					jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
+//				}
+				JRBeanCollectionDataSource ListaDocumentos = new JRBeanCollectionDataSource(listaDocumentos);
+				
+				Map<String, Object> parameters = new HashMap<String, Object>();
+
+				// Agregando los parámetros del reporte
+				StringBuilder logo_indeci_path = new StringBuilder();
+				logo_indeci_path.append(getPath(request));
+				logo_indeci_path.append(File.separator);
+				logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
+				parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
+				StringBuilder logo_wfp_path = new StringBuilder();
+				logo_wfp_path.append(getPath(request));
+				logo_wfp_path.append(File.separator);
+				logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
+				parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
+				StringBuilder logo_check_path = new StringBuilder();
+				logo_check_path.append(getPath(request));
+				logo_check_path.append(File.separator);
+				logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+				parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
+				StringBuilder logo_check_min_path = new StringBuilder();
+				logo_check_min_path.append(getPath(request));
+				logo_check_min_path.append(File.separator);
+				logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+				parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
+				parameters.put("P_NRO_ORDEN_INGRESO", general.getNroOrdenIngreso());
+				parameters.put("P_DDI", general.getNombreDdi());			
+				parameters.put("P_FECHA_EMISION", general.getFechaEmision());
+				parameters.put("P_ALMACEN_ORIGEN", general.getNombreAlmacen());
+				parameters.put("P_OBSERVACION", general.getObservacion());
+				parameters.put("P_TIPO_MOVIMIENTO", general.getNombreMovimiento());
+				parameters.put("LISTA_DOCUMENTOS", ListaDocumentos);
+				parameters.put("SR_RUTA_DOCUMENTOS", ruta);
+				parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
+				parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
+
+				byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
+				InputStream input = new ByteArrayInputStream(array);
+		        
+		        String file_name = "Orden_Ingreso_Donacion";
+				file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+		    	
+		        response.resetBuffer();
+	            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+	            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+				response.setHeader("Pragma", "no-cache");
+				response.setHeader("Cache-Control", "no-store");
+				response.setHeader("Pragma", "private");
+				response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+				response.setDateHeader("Expires", 1);
+				
+				byte[] buffer = new byte[4096];
+		    	int n = 0;
+
+		    	OutputStream output = response.getOutputStream();
+		    	while ((n = input.read(buffer)) != -1) {
+		    	    output.write(buffer, 0, n);
+		    	}
+		    	output.close();
+
+		    	return Constantes.COD_EXITO_GENERAL;
+	    	}else{
+	    		
+	    		if(tipo==12 || tipo==13){
+	    			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+		    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
+					List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductoReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
+					if (isEmpty(lista) || isEmpty(listaProductos)) {
+						return Constantes.COD_VALIDACION_GENERAL;
+					}			
+					DonacionesIngresoBean general = lista.get(0);
+
+					ExportarArchivo printer = new ExportarArchivo();
+					StringBuilder jasperFile = new StringBuilder();
+					jasperFile.append(getPath(request));
+					jasperFile.append(File.separator);
+					jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
+					jasperFile.append("Acta_Entrega_Nacional.jrxml");
+					
+					Map<String, Object> parameters = new HashMap<String, Object>();
+
+					// Agregando los parámetros del reporte
+					StringBuilder logo_indeci_path = new StringBuilder();
+					logo_indeci_path.append(getPath(request));
+					logo_indeci_path.append(File.separator);
+					logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
+					parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
+					StringBuilder logo_wfp_path = new StringBuilder();
+					logo_wfp_path.append(getPath(request));
+					logo_wfp_path.append(File.separator);
+					logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
+					parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
+					StringBuilder logo_check_path = new StringBuilder();
+					logo_check_path.append(getPath(request));
+					logo_check_path.append(File.separator);
+					logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+					parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
+					StringBuilder logo_check_min_path = new StringBuilder();
+					logo_check_min_path.append(getPath(request));
+					logo_check_min_path.append(File.separator);
+					logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+					parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
+					parameters.put("D_CIUDAD", general.getNombreDdi());
+					parameters.put("D_DIAS", general.getDia());			
+					parameters.put("D_MES", general.getMes());
+					parameters.put("D_ANIO", general.getAnio());
+					parameters.put("D_NOM_ALMACEN", general.getNombreAlmacen());
+					parameters.put("D_NOM_DONANTE", general.getNombreDonante());
+					parameters.put("D_NUM_DOCUMENTO", general.getNroDocumento());
+					parameters.put("D_FECHA_EMISION", general.getFechaEmision());
+					parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
+					parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
+
+					byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
+					InputStream input = new ByteArrayInputStream(array);
+			        
+			        String file_name = "Acta_Nacional";
+					file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+			    	
+			        response.resetBuffer();
+		            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+		            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+					response.setHeader("Pragma", "no-cache");
+					response.setHeader("Cache-Control", "no-store");
+					response.setHeader("Pragma", "private");
+					response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+					response.setDateHeader("Expires", 1);
+					
+					byte[] buffer = new byte[4096];
+			    	int n = 0;
+
+			    	OutputStream output = response.getOutputStream();
+			    	while ((n = input.read(buffer)) != -1) {
+			    	    output.write(buffer, 0, n);
+			    	}
+			    	output.close();
+
+			    	return Constantes.COD_EXITO_GENERAL;
+	    		}else{
+	    			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+		    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
+					List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductoReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
+					if (isEmpty(lista) || isEmpty(listaProductos)) {
+						return Constantes.COD_VALIDACION_GENERAL;
+					}			
+					DonacionesIngresoBean general = lista.get(0);
+
+					ExportarArchivo printer = new ExportarArchivo();
+					StringBuilder jasperFile = new StringBuilder();
+					jasperFile.append(getPath(request));
+					jasperFile.append(File.separator);
+					jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
+					jasperFile.append("Acta_Entrega_Internacional.jrxml");
+					
+					Map<String, Object> parameters = new HashMap<String, Object>();
+
+					// Agregando los parámetros del reporte
+					StringBuilder logo_indeci_path = new StringBuilder();
+					logo_indeci_path.append(getPath(request));
+					logo_indeci_path.append(File.separator);
+					logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
+					parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
+					StringBuilder logo_wfp_path = new StringBuilder();
+					logo_wfp_path.append(getPath(request));
+					logo_wfp_path.append(File.separator);
+					logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
+					parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
+					StringBuilder logo_check_path = new StringBuilder();
+					logo_check_path.append(getPath(request));
+					logo_check_path.append(File.separator);
+					logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+					parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
+					StringBuilder logo_check_min_path = new StringBuilder();
+					logo_check_min_path.append(getPath(request));
+					logo_check_min_path.append(File.separator);
+					logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
+					parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
+					parameters.put("D_CIUDAD", general.getNombreDdi());
+					parameters.put("D_DIAS", general.getDia());			
+					parameters.put("D_MES", general.getMes());
+					parameters.put("D_ANIO", general.getAnio());
+					parameters.put("D_NOM_ALMACEN", general.getNombreAlmacen());
+					parameters.put("D_NOM_DONANTE", general.getNombreDonante());
+					parameters.put("D_NUM_DOCUMENTO", general.getNroDocumento());
+					parameters.put("D_JEFE_ALMACEN", general.getResponsableAlmacen());
+					parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
+					parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
+
+					byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
+					InputStream input = new ByteArrayInputStream(array);
+			        
+			        String file_name = "Acta_Internacional";
+					file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+			    	
+			        response.resetBuffer();
+		            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+		            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+					response.setHeader("Pragma", "no-cache");
+					response.setHeader("Cache-Control", "no-store");
+					response.setHeader("Pragma", "private");
+					response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+					response.setDateHeader("Expires", 1);
+					
+					byte[] buffer = new byte[4096];
+			    	int n = 0;
+
+			    	OutputStream output = response.getOutputStream();
+			    	while ((n = input.read(buffer)) != -1) {
+			    	    output.write(buffer, 0, n);
+			    	}
+			    	output.close();
+
+			    	return Constantes.COD_EXITO_GENERAL;
+	    		}
+	    		
+	    	}
+	    	
+			
 	    } catch (Exception e) {
 	    	LOGGER.error(e.getMessage(), e);
 	    	return Constantes.COD_ERROR_GENERAL;

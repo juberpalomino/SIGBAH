@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
@@ -1091,22 +1093,32 @@ public class DonacionesController extends BaseController {
 	@ResponseBody
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
-			List<DetalleProductoControlCalidadBean> lista = logisticaService.listarDetalleProductoControlCalidad(codigo);
-			if (isEmpty(lista)) {
+			List<DonacionesBean> lista = donacionService.listarReporteDonacion(codigo);
+			List<ProductoDonacionBean> listaProductos = donacionService.listarReporteDonacionProductos(codigo);
+			List<RegionDonacionBean> listaRegiones = donacionService.listarReporteDonacionRegiones(codigo);
+			if (isEmpty(lista) || isEmpty(listaProductos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
-			DetalleProductoControlCalidadBean producto = lista.get(0);
+			DonacionesBean producto = lista.get(0);
 
 			ExportarArchivo printer = new ExportarArchivo();
 			StringBuilder jasperFile = new StringBuilder();
 			jasperFile.append(getPath(request));
 			jasperFile.append(File.separator);
-			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-			} else {
-				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-			}
+			jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
+			jasperFile.append("Solicitud_Aprobacion.jrxml");
+			
+			
+			
+			String ruta = getPath(request)+File.separator+Constantes.REPORT_PATH_DONACIONES;
+			System.out.println("RUTA: "+ruta);
+//			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
+//				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
+//			} else {
+//				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
+//			}
+			
+			JRBeanCollectionDataSource ListaRegiones = new JRBeanCollectionDataSource(listaRegiones);
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
@@ -1131,21 +1143,22 @@ public class DonacionesController extends BaseController {
 			logo_check_min_path.append(File.separator);
 			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
 			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroControlCalidad());
-			parameters.put("P_DDI", producto.getNombreDdi());			
-			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
-			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
-			parameters.put("P_TIPO_CONTROL", producto.getTipoControlCalidad());
-			parameters.put("P_ALMACEN_ORIGEN_DESTINO", producto.getNombreAlmacen());
-			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
-			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
-			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
-			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
+			parameters.put("D_FECHA_EMISION", producto.getFechaEmision());
+			parameters.put("D_NOM_DONANTE", producto.getNombreDonante());			
+			parameters.put("D_NUM_DOCUMENTO", producto.getNumDocumento());
+			parameters.put("D_FINALIDAD", producto.getFinalidad());
+			parameters.put("D_BLOQUE_TEXTO1", producto.getTextoa());
+			parameters.put("D_BLOQUE_TEXTO2", producto.getTextob());
+			parameters.put("D_OFICINA_RESPONSABLE", producto.getOficinaResponsable());
+			parameters.put("LISTA_REGIONES", ListaRegiones);
+			parameters.put("SR_RUTA_REGIONES", ruta);
+			parameters.put("D_NOMBRE_SISTEMA", producto.getNombreSistema());
+			parameters.put("D_VERSION_SISTEMA", producto.getVersionSistema());
 
-			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
+			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
 			InputStream input = new ByteArrayInputStream(array);
 	        
-	        String file_name = "Reporte_Control_Calidad";
+	        String file_name = "FichaPropuestaDonacion";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 	    	
 	        response.resetBuffer();

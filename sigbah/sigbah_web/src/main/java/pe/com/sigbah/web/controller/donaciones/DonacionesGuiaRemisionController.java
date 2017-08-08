@@ -320,13 +320,13 @@ public class DonacionesGuiaRemisionController extends BaseController {
 				}
 	    		generarReporteGuiaRemision(listaGuiaRemision, request, response);
 	    	} else if (ind_man.equals(Constantes.ONE_STRING)) {
-	    		listaManifiestoCarga = logisticaService.listarDetalleManifiestoCarga(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+	    		listaManifiestoCarga = logisticaService.listarDetalleManifiestoCarga(codigo, Constantes.TIPO_ORIGEN_DONACIONES);
 	    		if (isEmpty(listaManifiestoCarga)) {
 					return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 				}
 	    		generarReporteManifiestoCarga(listaManifiestoCarga, request, response);
 	    	} else if (ind_act.equals(Constantes.ONE_STRING)) {
-	    		listaActaEntrega = logisticaService.listarDetalleActaEntrega(codigo, Constantes.TIPO_ORIGEN_ALMACENES);
+	    		listaActaEntrega = logisticaService.listarDetalleActaEntrega(codigo, Constantes.TIPO_ORIGEN_DONACIONES);
 	    		if (isEmpty(listaActaEntrega)) {
 					return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 				}
@@ -359,7 +359,7 @@ public class DonacionesGuiaRemisionController extends BaseController {
 		StringBuilder jasperFile = new StringBuilder();
 		jasperFile.append(getPath(request));
 		jasperFile.append(File.separator);
-		jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
+		jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
 		jasperFile.append("Guia_Remision.jrxml");
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();

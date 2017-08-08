@@ -197,7 +197,7 @@ $(document).ready(function() {
 				if (!esnulo(codigo)) {
 					return false;
 				}
-				var idDonacion = listaDonacionesCache[index].idDonacion;
+				var idDonacion = listaDonacionesCache[index].idSalida;
 				codigo = codigo + idDonacion + '_';
 			}
 		});
@@ -212,7 +212,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/donaciones/registro-donaciones/exportarPdf/'+codigo;
+			var url = VAR_CONTEXT + '/donacionesSalida/registro-donacionesSalida/exportarPdf/'+codigo;
 			$.fileDownload(url).done(function(respuesta) {
 				loadding(false);	
 				if (respuesta == NOTIFICACION_ERROR) {

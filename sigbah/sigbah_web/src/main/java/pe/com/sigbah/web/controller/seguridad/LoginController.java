@@ -17,6 +17,7 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.AlmacenBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
+import pe.com.sigbah.common.bean.DonacionesIngresoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
@@ -96,6 +97,12 @@ public class LoginController extends BaseController {
 	            			return listaAlmacenUsuario;
 	            		}
 	            	} else {
+	            		if(listaAlmacenUsuario.size() == 1){
+	            			AlmacenBean almacen = listaAlmacenUsuario.get(0);
+		            		usuario.setIdAlmacen(almacen.getIdAlmacen());
+	            			usuario.setCodigoAlmacen(almacen.getCodigoAlmacen());
+	            			usuario.setNombreAlmacen(almacen.getNombreAlmacen());
+	            		}
 	            		usuario.setCodigoAnio(String.valueOf(DateUtil.getAnioActual()));
 	            		context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
 	            		indicador = Constantes.ONE_STRING;
