@@ -23,28 +23,7 @@ $(document).ready(function() {
 	$('#btn_aceptar').click(function(e) {
 		e.preventDefault();
 		
-		var bootstrapValidator = frm_req_edan.data('bootstrapValidator');
-		bootstrapValidator.validate();
-		if (bootstrapValidator.isValid()) {
-			var params = { 
-				codAnio : $('#sel_anio').val(),
-				codMes : $('#sel_mes').val(),
-//				idDdi : $('#sel_ddi').val(),
-				idFenomeno : $('#sel_fenomeno').val()
-			};
-			
-			loadding(true);
-			
-			consultarAjax('GET', '/programacion-bath/requerimiento/listarRequerimientos', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarRequerimiento(respuesta);
-				}
-				loadding(false);
-			});
-			
-		}
+		cargarRequerimientos(true);
 		
 	});
 	
@@ -187,8 +166,36 @@ function inicializarDatos() {
 	$('#li_req_edan').attr('class', 'active');
 	$('#li_req_edan').closest('li').children('a').attr('href', '#');
 	
-
+	if (indicador == '1') { // Retorno
+		cargarRequerimiento(true);
+	} else {
+		cargarRequerimiento(new Object());
+	}
 	
+}
+
+function cargarRequerimiento(indicador) {
+	
+	var params = { 
+			codAnio : $('#sel_anio').val(),
+			codMes : $('#sel_mes').val(),
+			idFenomeno : $('#sel_fenomeno').val()
+		};
+	
+	if (indicador) {
+			loadding(true);
+	}
+		
+	loadding(true);
+	
+	consultarAjax('GET', '/programacion-bath/requerimiento/listarRequerimientos', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			listarRequerimiento(respuesta);
+		}
+		loadding(false);
+	});
 }
 
 function listarRequerimiento(respuesta) {

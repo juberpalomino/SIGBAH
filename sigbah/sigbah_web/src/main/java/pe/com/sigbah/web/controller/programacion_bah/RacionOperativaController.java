@@ -123,31 +123,6 @@ private static final long serialVersionUID = 1L;
 	
 
 	
-//	@RequestMapping(value = "/mantenimientoRacion/{codigo}/{codigoAnio}", method = RequestMethod.GET)
-//    public String mantenimientoEmergencia(@PathVariable("codigo") Integer codigo,
-//    									  @PathVariable("codigoAnio") String codigoAnio,
-//    									  Model model) {
-//        try {
-//        	ListaRespuestaEmergenciaBean detalle = new ListaRespuestaEmergenciaBean();
-//        	
-//        	// Retorno los datos de session
-//        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-//        	
-//        	detalle = programacionService.obtenerRegistroEmergencia(codigo,  codigoAnio);
-//    		model.addAttribute("cabecera", getParserObject(detalle.getLstCabecera().get(0)));
-//    		model.addAttribute("lista_localidad", getParserObject(detalle.getLstLocalidad()));
-//    		model.addAttribute("lista_alimentaria", getParserObject(detalle.getLstAlimentaria()));
-//    		model.addAttribute("lista_no_alimentaria", getParserObject(detalle.getLstNoAlimentaria()));
-//    		
-//
-//            
-//        } catch (Exception e) {
-//        	LOGGER.error(e.getMessage(), e);
-//        	model.addAttribute("base", getBaseRespuesta(null));
-//        }
-//        return "mantenimiento_emergencias-sinpad";
-//    }
-	
 	
 	/**
 	 * @param codigo
@@ -201,9 +176,7 @@ private static final long serialVersionUID = 1L;
         	if (!isNullInteger(codigo)) {// editar
         		
         		racion = programacionService.obtenerRegistroRacion(codigo); 
-//        		model.addAttribute("producto", getParserObject(respuestaEdicion.getLstCabecera().get(0)));
-//        		model.addAttribute("lista_producto", getParserObject(respuestaEdicion.getLstDetalle()));
-        		model.addAttribute("racion", getParserObject(racion));
+
         	} else {//nuevo
 
         		RacionBean parametros = new RacionBean();
@@ -216,9 +189,11 @@ private static final long serialVersionUID = 1L;
         		Date fecha_hora = Calendar.getInstance().getTime();
         		racion.setFechaRacion(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
         		
-    			model.addAttribute("racion", getParserObject(racion));
+    			
         	}
 	
+        	model.addAttribute("racion", getParserObject(racion));
+        	
         	model.addAttribute("lista_racion", generalService.listarRacion(new ItemBean()));
         	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));//whr consultar
         	
@@ -255,9 +230,11 @@ private static final long serialVersionUID = 1L;
 			racionBean.setIdDdi(usuarioBean.getIdDdi());
 			racionBean.setCodAnio(anioActual);
 			
-			if (!isNullInteger(racionBean.getIdRacionOpe())) {				
-				racion = programacionService.actualizarRegistroRacion(racionBean);				
+			if (!isNullInteger(racionBean.getIdRacionOpe())) {		
+				racionBean.setControl("U");
+				racion = programacionService.insertarRegistroRacion(racionBean);				
 			} else {			
+				racionBean.setControl("I");
 				racion = programacionService.insertarRegistroRacion(racionBean);			
 			}
 			racion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));

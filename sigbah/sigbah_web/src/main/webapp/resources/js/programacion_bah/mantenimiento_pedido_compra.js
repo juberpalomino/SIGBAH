@@ -29,7 +29,7 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {
 			var codigo = $('#hid_cod_ped_compra').val();
 			var params = {
-//				tipoRacion : $('#txt_num_pedido').val(),
+					idPedidoCom :codigo,
 					codPedido :pedido.codPedido,
 					fecPedido : $('#txt_fecha_pedido').val(),
 					codEstado : $('#sel_estado').val(),  
@@ -78,39 +78,6 @@ $(document).ready(function() {
 
 
 	
-	
-	
-//	$('#btn_grabar_doc').click(function(e) {
-//		e.preventDefault();
-//		
-//		var bootstrapValidator = frm_documento.data('bootstrapValidator');
-//		bootstrapValidator.validate();
-//		if (bootstrapValidator.isValid()) {
-//			var codigo = $('#hid_cod_producto').val();
-//			var params = {
-//					idDetaRacion : codigo,
-//					fkIdProducto : $('#sel_producto').val(),
-//					pesoUnitarioPres : formatMonto($('#txt_uni_pres').val()),
-//					cantRacionKg : formatMonto($('#txt_gr_aprox').val()),
-//					idRacion : racion.idRacionOpe
-//			};
-//			
-//			loadding(true);
-//			
-//			consultarAjax('POST', '/programacion-bath/racion/grabarProducto', params, function(respuesta) {
-//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, respuesta.mensajeRespuesta);
-//				} else {
-//					
-//						addSuccessMessage(null, respuesta.mensajeRespuesta);
-//						$('#div_det_productos').modal('hide');
-//						llenarProductos(racion.idRacionOpe);
-//				}
-//				loadding(false);
-//			});			
-//		}
-//	});
-	
 	$('.btn_retornar').click(function(e) {
 		e.preventDefault();
 
@@ -121,129 +88,6 @@ $(document).ready(function() {
 	});
 	
 
-	
-	
-	
-//	$('#href_editar_prod').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);
-//			}
-//		});
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-//		} else {
-//			
-//			var obj = listaProductoCache[indices[0]];
-//			$('#hid_cod_producto').val(obj.idDetaRacion);
-//			$('#sel_producto').val(obj.fkIdProducto);
-//			$('#txt_uni_pres').val(obj.pesoUnitarioPres);
-//			$('#txt_gr_aprox').val(obj.cantRacionKg); 
-//			
-//			$('#div_det_productos').modal('show');
-//		}
-//		
-//	});
-
-
-//	
-//	$('#href_exp_excel_prod').click(function(e) {
-//		e.preventDefault();
-//		
-//		var row = $('#tbl_mnt_productos > tbody > tr').length;
-//		var empty = null;
-//		$('tr.odd').each(function() {		
-//			empty = $(this).find('.dataTables_empty').text();
-//			return false;
-//		});					
-//		if (!esnulo(empty) || row < 1) {
-//			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
-//			return;
-//		}
-//
-//		loadding(true);
-//		
-//		var idRacionOpe = racion.idRacionOpe;
-//		var url = VAR_CONTEXT + '/programacion-bath/racion/exportarExcelProducto/';
-//		url += verificaParametro(idRacionOpe);
-//		
-//		$.fileDownload(url).done(function(respuesta) {
-//			loadding(false);	
-//			if (respuesta == NOTIFICACION_ERROR) {
-//				addErrorMessage(null, mensajeReporteError);
-//			} else {
-//				addInfoMessage(null, mensajeReporteExito);
-//			}
-//		}).fail(function (respuesta) {
-//			loadding(false);
-//			addErrorMessage(null, mensajeReporteError);
-//		});
-//
-//	});
-
-	
-//	$('#href_eliminar_prod').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		var codigo = '';
-//		tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_productos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);
-//				var idProducto = listaProductoCache[index].idDetaRacion;
-//				codigo = codigo + idProducto + '_';
-//			}
-//		});
-//		
-//		if (!esnulo(codigo)) {
-//			codigo = codigo.substring(0, codigo.length - 1);
-//		}
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else {
-//			var msg = '';
-//			if (indices.length > 1) {
-//				msg = 'Está seguro de eliminar los siguientes registros ?';
-//			} else {
-//				msg = 'Está seguro de eliminar el registro ?';
-//			}
-//			
-//			$.SmartMessageBox({
-//				title : msg,
-//				content : '',
-//				buttons : '[Cancelar][Aceptar]'
-//			}, function(ButtonPressed) {
-//				if (ButtonPressed === 'Aceptar') {
-//	
-//					loadding(true);
-//					
-//					var params = { 
-//							arrIdProducto : codigo
-//					};
-//			
-//					consultarAjax('POST', '/programacion-bath/racion/eliminarProductoRacion', params, function(respuesta) {
-//						if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//							loadding(false);
-//							addErrorMessage(null, respuesta.mensajeRespuesta);
-//						} else {
-//							llenarProductos(racion.idRacionOpe);
-//							addSuccessMessage(null, respuesta.mensajeRespuesta);							
-//						}
-//					});
-//					
-//				}	
-//			});
-//			
-//		}
-//		
-//	});
 	
 	$('#sel_cat_producto').change(function() {
 		var idCategoria = $(this).val();		
@@ -256,50 +100,7 @@ $(document).ready(function() {
 	});
 
 
-	
-//	$('#sel_cat_producto').change(function() {
-//		var codigo = $(this).val();		
-////		var ddi = $(txt_codDdi).val();
-//		if (!esnulo(codigo)) {						
-//			var params = { 
-//				idProducto : codigo,
-//				idCategoria : codigo
-//			};			
-//			loadding(true);
-//			consultarAjax('GET', '/programacion-bath/pedido/listarProductoXCategoria', params, function(respuesta) {
-//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, respuesta.mensajeRespuesta);
-//					console.log("SI ERROR");
-//				} else {
-//					var options = '<option value="">Seleccione</option>';
-//			        $.each(respuesta, function(i, item) {
-//			            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
-//			        });
-//			        $('#sel_producto').html(options);
-//			      
-//			        	var arr = $('#sel_producto').val().split('_');
-//						if (arr.length > 1) {
-//							$('#txt_uni_medida').val(arr[1]);
-//							
-//						} else {
-//							$('#txt_uni_medida').val('');
-//							
-//						}
-////						frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
-//			      
-//			        $('#sel_producto').select2().trigger('change');
-//					$('#sel_producto').select2({
-//						  dropdownParent: $('#div_pro_det_productos')
-//					});
-//				}
-//				loadding(false);
-//				frm_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
-//			});
-//		} else {
-//			$('#sel_lis_producto').html('');
-//			frm_productos.bootstrapValidator('revalidateField', 'sel_lis_producto');
-//		}
-//	});
+
 
 	$('#sel_lis_producto').change(function() {
 		var codigo = $(this).val();	
@@ -664,22 +465,7 @@ $(document).ready(function() {
 			
 		}
 	});
-	
 
-	
-//	
-//	tbl_det_documentos.on('click', '.btn_exp_doc', function(e) {
-//		e.preventDefault();
-//		
-//		var id = $(this).attr('id');
-//		var name = $(this).attr('name');
-//		if (!esnulo(id) && !esnulo(name)) {
-//			descargarDocumento(id, name);
-//		} else {
-//			addInfoMessage(null, 'No dispone de documento adjunto asociado.');
-//		}
-//		
-//	});
 	
 });
 
@@ -689,9 +475,6 @@ function inicializarDatos() {
 	$('#li_ped_compra').attr('class', 'active');
 	$('#li_ped_compra').closest('li').children('a').attr('href', '#');
 	
-	
-//	$('#div_tabla_prod').hide();//ocultamos la tabla
-
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {

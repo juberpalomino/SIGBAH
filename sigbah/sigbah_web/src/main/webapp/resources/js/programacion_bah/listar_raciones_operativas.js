@@ -9,22 +9,7 @@ $(document).ready(function() {
 	$('#btn_aceptar').click(function(e) {
 		e.preventDefault();
 
-			var params = { 
-				codAnio : $('#sel_anio').val(),
-				codMesRacion : $('#sel_mes').val(),
-				tipoRacion : $('#sel_tipo_racion').val()
-			};
-			
-			loadding(true);
-			
-			consultarAjax('GET', '/programacion-bath/racion/listarRaciones', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarRacion(respuesta);
-				}
-				loadding(false);
-			});
+		cargarRacion(true);
 		
 	});
 	
@@ -163,51 +148,7 @@ $(document).ready(function() {
 
 	});
 	
-//	$('#href_imprimir').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		var codigo = '';
-//		tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_rac_oper.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);				
-//				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-//				if (!esnulo(codigo)) {
-//					return false;
-//				}
-//				var idEmergencia = listaRequerimientoEdanCache[index].idEmergencia;
-//				codigo = codigo + idEmergencia + '_';
-//			}
-//		});
-//		
-//		if (!esnulo(codigo)) {
-//			codigo = codigo.substring(0, codigo.length - 1);
-//		}
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-//		} else {
-//			loadding(true);
-//			var url = VAR_CONTEXT + '/programacion-bath/emergencia/exportarPdf/'+codigo;
-//			$.fileDownload(url).done(function(respuesta) {
-//				loadding(false);	
-//				if (respuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, mensajeReporteError);
-//				} else {
-//					addInfoMessage(null, mensajeReporteExito);
-//				}
-//			}).fail(function (respuesta) {
-//				loadding(false);
-//				if (respuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, mensajeReporteError);
-//				} else if (respuesta == NOTIFICACION_VALIDACION) {
-//					addWarnMessage(null, mensajeReporteValidacion);
-//				}
-//			});
-//		}
-//	});
+
 	
 });
 
@@ -218,9 +159,38 @@ function inicializarDatos() {
 	$('#li_rac_ope').attr('class', 'active');
 	$('#li_rac_ope').closest('li').children('a').attr('href', '#');
 	
-
+	if (indicador == '1') { // Retorno
+		cargarRacion(true);
+	} else {
+		cargarRacion(new Object());
+	}
 	
 }
+
+function cargarRacion(indicador) {
+	
+	var params = { 
+		codAnio : $('#sel_anio').val(),
+		codMesRacion : $('#sel_mes').val(),
+		tipoRacion : $('#sel_tipo_racion').val()
+	};
+	
+		if (indicador) {
+			loadding(true);
+		}
+		
+		loadding(true);
+		
+		consultarAjax('GET', '/programacion-bath/racion/listarRaciones', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarRacion(respuesta);
+			}
+			loadding(false);
+		});
+}
+
 
 function listarRacion(respuesta) {
 

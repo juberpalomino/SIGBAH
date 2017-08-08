@@ -25,6 +25,7 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {
 			var codigo = $('#hid_cod_raciones').val();
 			var params = {
+				idRacionOpe :codigo,
 				tipoRacion : $('#sel_tipo_racion').val(),
 				codRacion : $('#txt_cod_racion').val(),
 				nombreRacion : $('#txt_nom_racion').val(),  
@@ -239,19 +240,6 @@ $(document).ready(function() {
 		
 	});
 
-//	
-//	tbl_det_documentos.on('click', '.btn_exp_doc', function(e) {
-//		e.preventDefault();
-//		
-//		var id = $(this).attr('id');
-//		var name = $(this).attr('name');
-//		if (!esnulo(id) && !esnulo(name)) {
-//			descargarDocumento(id, name);
-//		} else {
-//			addInfoMessage(null, 'No dispone de documento adjunto asociado.');
-//		}
-//		
-//	});
 	
 });
 
@@ -262,19 +250,26 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-		//inicializar los valores
-		$('#txt_cod_racion').val(racion.codRacion);
-		$('#txt_fecha').val(racion.fechaRacion);
 		
-		
-		if (!esnulo(racion.codRacion)) {
+		if (!esnulo(racion.idRacionOpe)) {//editar
+				$('#hid_cod_raciones').val(racion.idRacionOpe);//usamos paa el listado de detalle productos y documentos
 			
+				$('#sel_tipo_racion').val(racion.tipoRacion);
+				$('#txt_cod_racion').val(racion.codRacion);
+				$('#txt_nom_racion').val(racion.nombreRacion);
+				$('#txt_num_dias').val(racion.diasAtencion);
+				$('#txt_fecha').val(racion.fechaRacion);
+				
+				llenarProductos(racion.idRacionOpe);
+//				listarDocumentoPedidoCompra(false);
+				
+				$('#div_tabla_prod').show();
+			} else {//nuevo
+				//inicializar los valores
+				$('#txt_cod_racion').val(racion.codRacion);
+				$('#txt_fecha').val(racion.fechaRacion);
 
-			
-		} else {
-			
-
-		}
+			}
 	}
 	
 }

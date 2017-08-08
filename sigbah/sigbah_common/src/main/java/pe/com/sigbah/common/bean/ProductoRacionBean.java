@@ -19,6 +19,7 @@ public class ProductoRacionBean extends BaseOutputBean {
 	private BigDecimal cantRacionKg;
 	private String codAnio;
 	private String nombProducto;
+	private String control;
 	
 	
 	/**
@@ -162,6 +163,24 @@ public class ProductoRacionBean extends BaseOutputBean {
 	 */
 	public void setNombProducto(String nombProducto) {
 		this.nombProducto = nombProducto;
+	}
+
+
+
+	/**
+	 * @return the control
+	 */
+	public String getControl() {
+		return control;
+	}
+
+
+
+	/**
+	 * @param control the control to set
+	 */
+	public void setControl(String control) {
+		this.control = control;
 	}
 	
 	

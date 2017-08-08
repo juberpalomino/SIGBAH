@@ -832,7 +832,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			input_objParametros.addValue("PI_FEC_RACION", DateUtil.obtenerFechaHoraParseada(racionBean.getFechaRacion()), Types.DATE);
 			input_objParametros.addValue("PI_TIP_RACION", racionBean.getTipoRacion(), Types.VARCHAR);
 			input_objParametros.addValue("PI_COD_ANIO", racionBean.getCodAnio(), Types.VARCHAR);
-			input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+			input_objParametros.addValue("PI_CONTROL", racionBean.getControl(), Types.VARCHAR);
 			input_objParametros.addValue("PI_USERNAME", racionBean.getUsuarioRegistro(), Types.VARCHAR);
 			
             objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -868,7 +868,10 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
     			throw new Exception();
     		}
 		
-			registroRacion.setIdRacionOpe(((BigDecimal)  out.get("PO_IDE_RAC_OPERATIVA")).intValue());
+			if( racionBean.getControl()=="I"){
+				registroRacion.setIdRacionOpe(((BigDecimal)  out.get("PO_IDE_RAC_OPERATIVA")).intValue());
+			}
+			
 			registroRacion.setCodigoRespuesta(codigoRespuesta);
 			registroRacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
 	
@@ -1331,8 +1334,11 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 				LOGGER.info("[insertarRegistroPedido] Ocurrio un error en la operacion del USP_INS_UPD_PEDIDO_COMPRA : "+mensajeRespuesta);
     			throw new Exception();
     		}
+			if( pedidoCompraBean.getControl()=="I"){
+				pedidoCompra.setIdPedidoCom(((BigDecimal)  out.get("PO_IDE_PEDIDO_COMPRA")).intValue());
+			}
 		
-			pedidoCompra.setIdPedidoCom(((BigDecimal)  out.get("PO_IDE_PEDIDO_COMPRA")).intValue());
+			
 			pedidoCompra.setCodigoRespuesta(codigoRespuesta);
 			pedidoCompra.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
 	

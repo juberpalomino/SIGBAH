@@ -21,7 +21,7 @@ public class RacionBean extends BaseOutputBean {
 	private String nombreRacion;
 	private String diasAtencion;
 	private Integer idDdi;
-	
+	private String control;
 	/**
 	 * 
 	 */
@@ -175,6 +175,20 @@ public class RacionBean extends BaseOutputBean {
 	 */
 	public void setCodMesRacion(String codMesRacion) {
 		this.codMesRacion = codMesRacion;
+	}
+
+	/**
+	 * @return the control
+	 */
+	public String getControl() {
+		return control;
+	}
+
+	/**
+	 * @param control the control to set
+	 */
+	public void setControl(String control) {
+		this.control = control;
 	}
 	
 	

@@ -250,9 +250,9 @@
 				
 				&nbsp; &nbsp;
 				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_prod">
+				<button type="button" class="btn btn-default btn_retornar" data-dismiss="modal" id="btn_can_prod">
 					<i class="fa fa-mail-forward"></i>
-					Cancelar
+					Retornar
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
