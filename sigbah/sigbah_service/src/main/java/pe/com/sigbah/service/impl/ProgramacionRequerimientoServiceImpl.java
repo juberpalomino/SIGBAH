@@ -268,4 +268,12 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 		return programacionRequerimientoDao.eliminarDocumentoProgramacion(documentoProgramacionBean);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#obtenerRegistroCabeceraProgramacion(java.lang.Integer)
+	 */
+	@Override
+	public ProgramacionBean obtenerRegistroCabeceraProgramacion(Integer idProgramacion) throws Exception {
+		return programacionRequerimientoDao.obtenerRegistroCabeceraProgramacion(idProgramacion);
+	}
+
 }

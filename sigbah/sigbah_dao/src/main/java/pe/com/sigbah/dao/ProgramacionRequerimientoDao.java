@@ -230,5 +230,12 @@ public interface ProgramacionRequerimientoDao {
 	 * @throws Exception
 	 */
 	public abstract DocumentoProgramacionBean eliminarDocumentoProgramacion(DocumentoProgramacionBean documentoProgramacionBean) throws Exception;
+	
+	/**
+	 * @param idProgramacion
+	 * @return Objeto.
+	 * @throws Exception
+	 */
+	public abstract ProgramacionBean obtenerRegistroCabeceraProgramacion(Integer idProgramacion) throws Exception;
 
 }

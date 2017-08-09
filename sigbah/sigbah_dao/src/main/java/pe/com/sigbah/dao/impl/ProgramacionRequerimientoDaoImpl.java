@@ -50,6 +50,7 @@ import pe.com.sigbah.mapper.ProgramacionNoAlimentarioMapper;
 import pe.com.sigbah.mapper.ProgramacionRacionOperativaMapper;
 import pe.com.sigbah.mapper.ProgramacionRequerimientoMapper;
 import pe.com.sigbah.mapper.RacionOperativaMapper;
+import pe.com.sigbah.mapper.RegistroCabeceraProgramacionMapper;
 import pe.com.sigbah.mapper.RegistroProgramacionMapper;
 import pe.com.sigbah.mapper.ResumenStockAlimentoMapper;
 import pe.com.sigbah.mapper.ResumenStockNoAlimentarioMapper;
@@ -1480,6 +1481,57 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		}		
 		LOGGER.info("[eliminarDocumentoProgramacion] Fin ");
 		return registroDocumentoProgramacion;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#obtenerRegistroCabeceraProgramacion(java.lang.Integer)
+	 */
+	@Override
+	public ProgramacionBean obtenerRegistroCabeceraProgramacion(Integer idProgramacion) throws Exception {
+		LOGGER.info("[obtenerRegistroCabeceraProgramacion] Inicio ");
+		ProgramacionBean programacion = new ProgramacionBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_PROGRAMACION", idProgramacion, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REPORT_PROGRAMACION");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_PROGRAMACION", new SqlParameter("PI_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_CABECERA", new SqlOutParameter("PO_CURSOR_CABECERA", OracleTypes.CURSOR, new RegistroCabeceraProgramacionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerRegistroCabeceraProgramacion] Ocurrio un error en la operacion del USP_REPORT_PROGRAMACION : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<ProgramacionBean> lista = (List<ProgramacionBean>) out.get("PO_CURSOR_CABECERA");
+			if (!Utils.isEmpty(lista)) {
+				programacion = lista.get(0);
+			}
+			
+			programacion.setCodigoRespuesta(codigoRespuesta);
+			programacion.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerRegistroCabeceraProgramacion] Fin ");
+		return programacion;
 	}
 	
 }

@@ -1,7 +1,11 @@
 package pe.com.sigbah.web.controller.programacion_bah;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -895,6 +899,60 @@ private static final long serialVersionUID = 1L;
 	}	
 	
 	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/obtenerEstadosProgramacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object obtenerEstadosProgramacion(HttpServletRequest request, HttpServletResponse response) {
+		List<EstadoUsuarioBean> lista = null;
+		try {			
+			// Retorno los datos de session
+           	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+           	EstadoUsuarioBean estadoUsuarioBean = new EstadoUsuarioBean();
+           	estadoUsuarioBean.setIdUsuario(usuarioBean.getIdUsuario());
+           	estadoUsuarioBean.setNombreModulo(Constantes.MODULO_PROGRAMACION);
+			lista = administracionService.listarEstadoUsuario(estadoUsuarioBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarEstadoProgramacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarEstadoProgramacion(HttpServletRequest request, HttpServletResponse response) {
+		EstadoProgramacionBean producto = null;
+		try {
+			EstadoProgramacionBean estadoProgramacionBean = new EstadoProgramacionBean();
+			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(estadoProgramacionBean, request.getParameterMap());	
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+
+        	estadoProgramacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
+				
+			producto = programacionRequerimientoService.grabarEstadoProgramacion(estadoProgramacionBean);				
+
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
+	}
+	
+	/**
 	 * @param codigoAnio 
 	 * @param codigoMes 
 	 * @param idDdi
@@ -948,150 +1006,114 @@ private static final long serialVersionUID = 1L;
 	    } 
 	}
 	
-//	/**
-//	 * @param codigo 
-//	 * @param request 
-//	 * @param response
-//	 * @return Objeto.
-//	 */
-//	@RequestMapping(value = "/exportarPdf/{codigo}", method = RequestMethod.GET)
-//	@ResponseBody
-//	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
-//	    try {
-//			List<DetalleProductoProgramacionBean> lista = programacionRequerimientoService.listarDetalleProductoProgramacion(codigo);
-//			if (isEmpty(lista)) {
-//				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
-//			}			
-//			DetalleProductoProgramacionBean producto = lista.get(0);
-//
-//			ExportarArchivo printer = new ExportarArchivo();
-//			StringBuilder jasperFile = new StringBuilder();
-//			jasperFile.append(getPath(request));
-//			jasperFile.append(File.separator);
-//			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-//			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-//				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-//			} else {
-//				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-//			}
-//			
-//			Map<String, Object> parameters = new HashMap<String, Object>();
-//
-//			// Agregando los parámetros del reporte
-//			StringBuilder logo_indeci_path = new StringBuilder();
-//			logo_indeci_path.append(getPath(request));
-//			logo_indeci_path.append(File.separator);
-//			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-//			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-//			StringBuilder logo_wfp_path = new StringBuilder();
-//			logo_wfp_path.append(getPath(request));
-//			logo_wfp_path.append(File.separator);
-//			logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-//			parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-//			StringBuilder logo_check_path = new StringBuilder();
-//			logo_check_path.append(getPath(request));
-//			logo_check_path.append(File.separator);
-//			logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-//			parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-//			StringBuilder logo_check_min_path = new StringBuilder();
-//			logo_check_min_path.append(getPath(request));
-//			logo_check_min_path.append(File.separator);
-//			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-//			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-//			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroProgramacion());
-//			parameters.put("P_DDI", producto.getNombreDdi());			
-//			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
-//			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
-//			parameters.put("P_TIPO_CONTROL", producto.getTipoProgramacion());
-//			parameters.put("P_ALMACEN_ORIGEN_DESTINO", producto.getNombreAlmacen());
-//			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
-//			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
-//			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
-//			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
-//
-//			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
-//			InputStream input = new ByteArrayInputStream(array);
-//	        
-//	        String file_name = "Reporte_Control_Calidad";
-//			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-//	    	
-//	        response.resetBuffer();
-//            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-//            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-//			response.setHeader("Pragma", "no-cache");
-//			response.setHeader("Cache-Control", "no-store");
-//			response.setHeader("Pragma", "private");
-//			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-//			response.setDateHeader("Expires", 1);
-//			
-//			byte[] buffer = new byte[4096];
-//	    	int n = 0;
-//
-//	    	OutputStream output = response.getOutputStream();
-//	    	while ((n = input.read(buffer)) != -1) {
-//	    	    output.write(buffer, 0, n);
-//	    	}
-//	    	output.close();
-//
-//	    	return Constantes.COD_EXITO_GENERAL;
-//	    } catch (Exception e) {
-//	    	LOGGER.error(e.getMessage(), e);
-//	    	return Constantes.COD_ERROR_GENERAL;
-//	    } 
-//	}
-	
 	/**
-	 * @param request
+	 * @param idProgramacion 
+	 * @param request 
 	 * @param response
-	 * @return objeto en formato json
+	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/obtenerEstadosProgramacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/exportarPdf/{idProgramacion}", method = RequestMethod.GET)
 	@ResponseBody
-	public Object obtenerEstadosProgramacion(HttpServletRequest request, HttpServletResponse response) {
-		List<EstadoUsuarioBean> lista = null;
-		try {			
-			// Retorno los datos de session
-           	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-           	EstadoUsuarioBean estadoUsuarioBean = new EstadoUsuarioBean();
-           	estadoUsuarioBean.setIdUsuario(usuarioBean.getIdUsuario());
-           	estadoUsuarioBean.setNombreModulo(Constantes.MODULO_PROGRAMACION);
-			lista = administracionService.listarEstadoUsuario(estadoUsuarioBean);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
-	@RequestMapping(value = "/grabarEstadoProgramacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object grabarEstadoProgramacion(HttpServletRequest request, HttpServletResponse response) {
-		EstadoProgramacionBean producto = null;
-		try {
-			EstadoProgramacionBean estadoProgramacionBean = new EstadoProgramacionBean();
+	public String exportarPdf(@PathVariable("idProgramacion") Integer idProgramacion, HttpServletRequest request, HttpServletResponse response) {
+	    try {
+	    	ProgramacionBean programacion = programacionRequerimientoService.obtenerRegistroCabeceraProgramacion(idProgramacion);
+	    	
+	    	List<RacionOperativaBean> listaRacion = null;
+	    	List<ProductoNoAlimentarioProgramacionBean> listaProductoNoAlimentario = null;
+	    	List<ProgramacionAlimentoBean> listaAlimento = null;
+	    	List<ProgramacionNoAlimentarioBean> listaNoAlimentario = null;
+	    	List<Integer> arrIdProductoRacion = null;
+	    	List<Integer> arrIdProductoNoAlimentario = null;
+	    	if (programacion.getTipoAtencion().equals(Constantes.ONE_INT)) { // Alimentos
+	    		listaRacion = programacionRequerimientoService.listarProgramacionRacionOperativa(programacion.getIdRacion());
+	    		if (!isEmpty(listaRacion)) {
+	    			arrIdProductoRacion = new ArrayList<Integer>();
+	    			for (RacionOperativaBean racion : listaRacion) {
+	    				arrIdProductoRacion.add(racion.getIdProducto());
+	    			}	    			
+	    			listaAlimento = programacionRequerimientoService.listarProgramacionAlimento(idProgramacion, arrIdProductoRacion);
+	    		} else {
+	    			listaRacion = new ArrayList<RacionOperativaBean>();
+	    		}
+	    	} else if (programacion.getTipoAtencion().equals(Constantes.TWO_INT)) { // No Alimentos
+	    		listaProductoNoAlimentario = programacionRequerimientoService.listarProductoNoAlimentarioProgramacion(idProgramacion);
+	    		if (!isEmpty(listaProductoNoAlimentario)) {
+	    			arrIdProductoNoAlimentario = new ArrayList<Integer>();
+	    			for (ProductoNoAlimentarioProgramacionBean producto : listaProductoNoAlimentario) {
+	    				arrIdProductoNoAlimentario.add(producto.getIdProducto());
+	    			}	    			
+	    			listaNoAlimentario = programacionRequerimientoService.listarProgramacionNoAlimentario(idProgramacion, arrIdProductoNoAlimentario);
+	    		} else {
+	    			listaProductoNoAlimentario = new ArrayList<ProductoNoAlimentarioProgramacionBean>();
+	    		}
+	    	} else if (programacion.getTipoAtencion().equals(Constantes.THREE_INT)) { // Ambos
+	    		listaRacion = programacionRequerimientoService.listarProgramacionRacionOperativa(programacion.getIdRacion());
+	    		if (!isEmpty(listaRacion)) {
+	    			arrIdProductoRacion = new ArrayList<Integer>();
+	    			for (RacionOperativaBean racion : listaRacion) {
+	    				arrIdProductoRacion.add(racion.getIdProducto());
+	    			}	    			
+	    			listaAlimento = programacionRequerimientoService.listarProgramacionAlimento(idProgramacion, arrIdProductoRacion);
+	    		} else {
+	    			listaRacion = new ArrayList<RacionOperativaBean>();
+	    		}
+	    		
+	    		listaProductoNoAlimentario = programacionRequerimientoService.listarProductoNoAlimentarioProgramacion(idProgramacion);
+	    		if (!isEmpty(listaProductoNoAlimentario)) {
+	    			arrIdProductoNoAlimentario = new ArrayList<Integer>();
+	    			for (ProductoNoAlimentarioProgramacionBean producto : listaProductoNoAlimentario) {
+	    				arrIdProductoNoAlimentario.add(producto.getIdProducto());
+	    			}	    			
+	    			listaNoAlimentario = programacionRequerimientoService.listarProgramacionNoAlimentario(idProgramacion, arrIdProductoNoAlimentario);
+	    		} else {
+	    			listaProductoNoAlimentario = new ArrayList<ProductoNoAlimentarioProgramacionBean>();
+	    		}
+	    	}
+
+	    	StringBuilder file_path = new StringBuilder();
+	    	file_path.append(getPath(request));
+	    	file_path.append(File.separator);
+	    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
+	    	file_path.append(File.separator);
+	    	file_path.append(Calendar.getInstance().getTime().getTime());
+	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
+	    	
+	    	String file_name = "Programacion";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(estadoProgramacionBean, request.getParameterMap());	
+			ReporteProgramacion reporte = new ReporteProgramacion();
+			reporte.generaPDFReporteProgramacion(file_path.toString(), programacion, listaRacion, listaAlimento, listaProductoNoAlimentario, listaNoAlimentario);
 			
-			// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+	    	
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			baos = convertPDFToByteArrayOutputStream(file_path.toString());
+			
+			// Captured backflow
+	        OutputStream out = response.getOutputStream();
+	        baos.writeTo(out); // We write in that flow
+	        out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	File file_temp = new File(file_path.toString());
+    		if (file_temp.delete()) {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" se borra el archivo temporal.");
+    		} else {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+    		}
 
-        	estadoProgramacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-				
-			producto = programacionRequerimientoService.grabarEstadoProgramacion(estadoProgramacionBean);				
-
-			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
-
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return producto;
+	    	return Constantes.COD_EXITO_GENERAL;
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
 	}
 	
 }

@@ -1,7 +1,11 @@
 package pe.com.sigbah.web.report.programacion_bah;
 
+import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -15,12 +19,27 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
+import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
 import pe.com.sigbah.common.bean.ProgramacionAlimentoBean;
 import pe.com.sigbah.common.bean.ProgramacionBean;
 import pe.com.sigbah.common.bean.ProgramacionNoAlimentarioBean;
+import pe.com.sigbah.common.bean.RacionOperativaBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
+import pe.com.sigbah.common.util.Utils;
 
 /**
  * @className: ReporteProgramacion.java
@@ -545,6 +564,763 @@ public class ReporteProgramacion implements Serializable {
     		throw new Exception();
     	}
 		return wb;
+	}
+
+	/**
+	 * @param ruta 
+	 * @param programacion
+	 * @param listaRacion
+	 * @param listaAlimento
+	 * @param listaProductoNoAlimentario
+	 * @param listaNoAlimentario
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteProgramacion(String ruta, 
+											 ProgramacionBean programacion,
+											 List<RacionOperativaBean> listaRacion, 
+											 List<ProgramacionAlimentoBean> listaAlimento,
+											 List<ProductoNoAlimentarioProgramacionBean> listaProductoNoAlimentario,
+											 List<ProgramacionNoAlimentarioBean> listaNoAlimentario) throws Exception {
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte
+			float[] ftit = {20, 15, 65};			
+			
+			float[] f1 = {100};
+			
+			BaseColor header = new BaseColor(242, 242, 242);
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font hide = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.WHITE);
+			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			   
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(ftit);
+			
+			String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));			
+			Image img = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			cell = new PdfPCell(img, true);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0");
+			det_encabezado.append("\n");
+			det_encabezado.append("FECHA : ");
+			Date fecha_hora = Calendar.getInstance().getTime();
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+			det_encabezado.append("\n");
+			det_encabezado.append("HORA : ");
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+			p = new Paragraph(det_encabezado.toString(), encabezado);
+			pdet = new Paragraph("        .", hide);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Programación de Requerimiento", titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin	
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("N° ".concat(programacion.getNroProgramacion()), normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Fecha: ".concat(programacion.getFechaProgramacion()), normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Nombre : ", negrita);
+			pdet = new Paragraph(programacion.getNombreProgramacion(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("N° DEE: ", negrita);
+			pdet = new Paragraph(programacion.getNroDee(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("Región Destino : ", negrita);
+			pdet = new Paragraph(programacion.getNombreRegion(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+			
+			if (programacion.getTipoAtencion().equals(Constantes.ONE_INT) || 
+					programacion.getTipoAtencion().equals(Constantes.THREE_INT)) { // Alimentos ó  Ambos
+				
+				// float[] f9 = {5, 25, 10, 10, 10, 10, 10, 10, 10};
+				
+				// Bloque Inicio
+				table = new PdfPTable(1);
+				table.setWidths(f1);
+				
+				p = new Paragraph("Alimentos", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setBorder(PdfPCell.NO_BORDER);
+				cell.setBackgroundColor(header);
+				table.addCell(cell);
+				
+				document.add(table);
+				// Bloque Fin
+				
+				
+				document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+				
+			
+				int can_alimentos = 9 + listaRacion.size();
+				
+				// Bloque Inicio
+				table = new PdfPTable(can_alimentos);
+//				table.setWidths(f9);
+				
+				p = new Paragraph("N°", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Región", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Provincia", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Distrito", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Pers. Afect.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Pers. Dam.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Total Pers.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Total Raciones", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+								
+				for (RacionOperativaBean racion : listaRacion) {
+			        p = new Paragraph(racion.getNombreProducto(), negrita);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					table.addCell(cell);
+		        }
+				
+				p = new Paragraph("Total (TM)", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				document.add(table);
+				// Bloque Fin
+				
+				
+				// Bloque Inicio
+				int row_pro = 1;
+				if (!Utils.isEmpty(listaAlimento) ) {
+					
+					BigDecimal cantitadTotalPersAfect = BigDecimal.ZERO;
+					BigDecimal cantitadTotalPersDam = BigDecimal.ZERO;
+					BigDecimal cantitadTotalTotalPers = BigDecimal.ZERO;
+					BigDecimal cantitadTotalTotalRaciones = BigDecimal.ZERO;
+					BigDecimal cantitadTotalTotalTm = BigDecimal.ZERO;
+					//Definimos un array de filas x columnas
+					BigDecimal arrayAlimento[][] = new BigDecimal[listaAlimento.size()][can_alimentos];
+					List<BigDecimal> arrUnidadProducto = new ArrayList<BigDecimal>();
+					
+					for (ProgramacionAlimentoBean alimento : listaAlimento) {
+					
+						table = new PdfPTable(can_alimentos);
+//						table.setWidths(f9);
+						
+						p = new Paragraph(String.valueOf(row_pro), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+					
+						p = new Paragraph(alimento.getDepartamento(), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(alimento.getProvincia(), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(alimento.getDistrito(), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(alimento.getPersAfect()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(alimento.getPersDam()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(alimento.getTotalPers()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(alimento.getTotalRaciones()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						int index = 0;
+				        for (ProductoAlimentoBean producto : alimento.getListaProducto()) {
+					        p = new Paragraph(getString(producto.getUnidad()), normal);
+							cell = new PdfPCell(p);
+							cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+							cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+							table.addCell(cell);
+							// Asignamos un valor al array, en la fila 0 columna 1
+							arrayAlimento[row_pro - 1][index] = producto.getUnidad() == null ? BigDecimal.ZERO : producto.getUnidad();							
+							index++;
+				        }						
+						
+						p = new Paragraph(getString(alimento.getTotalTm()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						document.add(table);	             
+						
+						row_pro++;
+						
+						cantitadTotalPersAfect = cantitadTotalPersAfect.add(alimento.getPersAfect() == null ? BigDecimal.ZERO : alimento.getPersAfect());
+						cantitadTotalPersDam = cantitadTotalPersDam.add(alimento.getPersDam() == null ? BigDecimal.ZERO : alimento.getPersDam());
+						cantitadTotalTotalPers = cantitadTotalTotalPers.add(alimento.getTotalPers() == null ? BigDecimal.ZERO : alimento.getTotalPers());
+						cantitadTotalTotalRaciones = cantitadTotalTotalRaciones.add(alimento.getTotalRaciones() == null ? BigDecimal.ZERO : alimento.getTotalRaciones());
+						cantitadTotalTotalTm = cantitadTotalTotalTm.add(alimento.getTotalTm() == null ? BigDecimal.ZERO : alimento.getTotalTm());
+					}
+					
+					
+					// Bloque Inicio
+					table = new PdfPTable(can_alimentos);
+//					table.setWidths(f9);
+					
+					p = new Paragraph("Cantidad Total", normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(4);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalPersAfect.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalPersDam.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalTotalPers.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalTotalRaciones.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+										
+					// Recorremos el array multidimensional
+			        for (int j = 0; j < listaRacion.size(); j++) {			        		
+			        	BigDecimal cantitadTotalUnidad = BigDecimal.ZERO;
+					    for (int i = 0; i < arrayAlimento.length; i++) {			        		
+					    	cantitadTotalUnidad = cantitadTotalUnidad.add(arrayAlimento[i][j]);
+			        	}
+					    arrUnidadProducto.add(cantitadTotalUnidad);
+			        }
+								
+					for (BigDecimal unidad : arrUnidadProducto) {
+				        p = new Paragraph(unidad.toString(), negrita);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setColspan(1);
+			            cell.setRowspan(1);
+						table.addCell(cell);
+			        }
+					
+					p = new Paragraph(cantitadTotalTotalTm.toString(), negrita);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					document.add(table);
+					// Bloque Fin
+					
+					
+				}
+				// Bloque Fin
+				
+				document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+				
+	    	}
+			
+			if (programacion.getTipoAtencion().equals(Constantes.TWO_INT) || 
+					programacion.getTipoAtencion().equals(Constantes.THREE_INT)) { // No Alimentarios ó  Ambos
+				
+				// float[] f9 = {5, 25, 10, 10, 10, 10, 10, 10, 10};
+				
+				// Bloque Inicio
+				table = new PdfPTable(1);
+				table.setWidths(f1);
+				
+				p = new Paragraph("Bienes No Alimentarios", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setBorder(PdfPCell.NO_BORDER);
+				cell.setBackgroundColor(header);
+				table.addCell(cell);
+				
+				document.add(table);
+				// Bloque Fin
+				
+				
+				document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+				
+			
+				int can_no_alimentarios = 10 + listaProductoNoAlimentario.size();
+				
+				// Bloque Inicio
+				table = new PdfPTable(can_no_alimentarios);
+//				table.setWidths(f10);
+				
+				p = new Paragraph("N°", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Región", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Provincia", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Distrito", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Fam. Afect.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Fam. Dam.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Total Fam.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Pers. Afect.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Pers. Dam.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph("Total Pers.", negrita);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+								
+				for (ProductoNoAlimentarioProgramacionBean producto : listaProductoNoAlimentario) {
+			        p = new Paragraph(producto.getNombreProducto(), negrita);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					table.addCell(cell);
+		        }
+
+				document.add(table);
+				// Bloque Fin
+				
+				
+				// Bloque Inicio
+				int row_pro = 1;
+				if (!Utils.isEmpty(listaNoAlimentario) ) {
+					
+					BigDecimal cantitadTotalFamAfect = BigDecimal.ZERO;
+					BigDecimal cantitadTotalFamDam = BigDecimal.ZERO;
+					BigDecimal cantitadTotalTotalFam = BigDecimal.ZERO;
+					BigDecimal cantitadTotalPersAfect = BigDecimal.ZERO;
+					BigDecimal cantitadTotalPersDam = BigDecimal.ZERO;
+					BigDecimal cantitadTotalTotalPers = BigDecimal.ZERO;
+					//Definimos un array de filas x columnas
+					BigDecimal arrayNoAlimento[][] = new BigDecimal[listaNoAlimentario.size()][can_no_alimentarios];
+					List<BigDecimal> arrUnidadProducto = new ArrayList<BigDecimal>();
+					
+					for (ProgramacionNoAlimentarioBean noAlimentario : listaNoAlimentario) {
+					
+						table = new PdfPTable(can_no_alimentarios);
+//						table.setWidths(f10);
+						
+						p = new Paragraph(String.valueOf(row_pro), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+					
+						p = new Paragraph(noAlimentario.getDepartamento(), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(noAlimentario.getProvincia(), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(noAlimentario.getDistrito(), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(noAlimentario.getFamAfect()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(noAlimentario.getFamDam()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(noAlimentario.getTotalFam()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(noAlimentario.getPersAfect()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(noAlimentario.getPersDam()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(getString(noAlimentario.getTotalPers()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						int index = 0;
+				        for (ProductoAlimentoBean producto : noAlimentario.getListaProducto()) {
+					        p = new Paragraph(getString(producto.getUnidad()), normal);
+							cell = new PdfPCell(p);
+							cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+							cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+							table.addCell(cell);
+							// Asignamos un valor al array, en la fila 0 columna 1
+							arrayNoAlimento[row_pro - 1][index] = producto.getUnidad() == null ? BigDecimal.ZERO : producto.getUnidad();							
+							index++;
+				        }						
+
+						document.add(table);	             
+						
+						row_pro++;
+						
+						cantitadTotalFamAfect = cantitadTotalFamAfect.add(noAlimentario.getFamAfect() == null ? BigDecimal.ZERO : noAlimentario.getFamAfect());
+						cantitadTotalFamDam = cantitadTotalFamDam.add(noAlimentario.getFamDam() == null ? BigDecimal.ZERO : noAlimentario.getFamDam());
+						cantitadTotalTotalFam = cantitadTotalTotalFam.add(noAlimentario.getTotalFam() == null ? BigDecimal.ZERO : noAlimentario.getTotalFam());
+						cantitadTotalPersAfect = cantitadTotalPersAfect.add(noAlimentario.getPersAfect() == null ? BigDecimal.ZERO : noAlimentario.getPersAfect());
+						cantitadTotalPersDam = cantitadTotalPersDam.add(noAlimentario.getPersDam() == null ? BigDecimal.ZERO : noAlimentario.getPersDam());
+						cantitadTotalTotalPers = cantitadTotalTotalPers.add(noAlimentario.getTotalPers() == null ? BigDecimal.ZERO : noAlimentario.getTotalPers());
+					}
+					
+					
+					// Bloque Inicio
+					table = new PdfPTable(can_no_alimentarios);
+//					table.setWidths(f10);
+					
+					p = new Paragraph("Cantidad Total", normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(4);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalFamAfect.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalFamDam.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalTotalFam.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalPersAfect.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalPersDam.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+					
+					p = new Paragraph(cantitadTotalTotalPers.toString(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setColspan(1);
+		            cell.setRowspan(1);
+					table.addCell(cell);
+
+					// Recorremos el array multidimensional
+			        for (int j = 0; j < listaProductoNoAlimentario.size(); j++) {			        		
+			        	BigDecimal cantitadTotalUnidad = BigDecimal.ZERO;
+					    for (int i = 0; i < arrayNoAlimento.length; i++) {			        		
+					    	cantitadTotalUnidad = cantitadTotalUnidad.add(arrayNoAlimento[i][j]);
+			        	}
+					    arrUnidadProducto.add(cantitadTotalUnidad);
+			        }
+								
+					for (BigDecimal unidad : arrUnidadProducto) {
+				        p = new Paragraph(unidad.toString(), negrita);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setColspan(1);
+			            cell.setRowspan(1);
+						table.addCell(cell);
+			        }
+					
+					document.add(table);
+					// Bloque Fin
+					
+				}
+				// Bloque Fin
+				
+				
+	    	}
+				
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
 	}
     
 }
