@@ -290,9 +290,9 @@
 										
 										&nbsp; &nbsp;
 										
-										<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_afectados">
+										<button type="button" class="btn btn-default btn_retornar" data-dismiss="modal" id="btn_can_afectados">
 											<i class="fa fa-mail-forward"></i>
-											Cancelar
+											Retornar
 										</button>
 									</div>
 									
@@ -442,7 +442,7 @@
 
 <!-- Modal  Agregar EMERGENCIAS ACTIVAS-->
 <div id="div_det_prog_emerg" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-85-large">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">

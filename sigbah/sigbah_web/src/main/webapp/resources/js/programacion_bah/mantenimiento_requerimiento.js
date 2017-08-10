@@ -88,7 +88,8 @@ $(document).ready(function() {
 						
 					} else { 
 						
-						addSuccessMessage(null, 'Se genero el N° Requerimiento '+$('#txt_num_requerimiento').val());   
+						addSuccessMessage(null, 'Se genero el N° Requerimiento '+$('#txt_num_requerimiento').val());
+						requerimiento.idRequerimiento=respuesta.idRequerimiento;
 						$('#li_damnificados').attr('class', '');
 						$('#li_damnificados').closest('li').children('a').attr('data-toggle', 'tab');
 						
@@ -271,9 +272,9 @@ $(document).ready(function() {
 					loadding(false);
 				});
 			}
-			if(mensaje){
+//			if(mensaje){
 				addSuccessMessage(null, mensaje);	
-			}
+//			}
 			
 		}
 });	
@@ -361,41 +362,7 @@ $('#btn_aceptar_ubigeo').click(function(e) {
 			}
 			
 		});
-		
-//		$('#btn_gra_actualiza_emer').click(function(e) {
-//			e.preventDefault();
-//			
-//			var bootstrapValidator = frm_afecta_damni.data('bootstrapValidator');
-//			bootstrapValidator.validate();
-//			if (bootstrapValidator.isValid()) {
-//				var params = { 
-//		//			idEmergencia : $('#hid_cod_dam_afec').val(),
-//					fkIdRequerimiento : $('#hid_cod_dam_afec').val(), 
-//					famAfectadoReal : $('#txt_fam_afec').val(),
-//					famDamnificadoReal : $('#txt_fam_dam').val(),
-//					persoAfectadoReal : $('#txt_per_afec').val(),
-//					persoDamnificadoReal :  $('#txt_per_dam').val()
-//				};
-//				
-//				loadding(true);
-//				
-//				consultarAjax('POST','/programacion-bah/requerimiento/actualizarDamnificados', params, function(respuesta) {
-//					console.log("pasooooooooooooo whr");
-//					$('#div_mod_actualiza_emer').modal('hide');
-//					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//						loadding(false);
-//						addErrorMessage(null, respuesta.mensajeRespuesta);
-//					} else {
-//						cargarRequerimientoDetalle(true);
-//						
-//						addSuccessMessage(null, respuesta.mensajeRespuesta);	
-//					}
-//					frm_afecta_damni.data('bootstrapValidator').resetForm();
-//				});
-//				
-//			}
-//			
-//		});
+
 		
 		$('#btn_can_actualiza_emer').click(function(e) {
 			e.preventDefault();

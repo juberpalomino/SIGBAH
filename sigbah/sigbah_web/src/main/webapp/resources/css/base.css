@@ -100,6 +100,10 @@ table.dataTable thead .sorting_desc {
         width: 80%;
         /* either % (e.g. 60%) or px (400px) */
     }
+     .modal-85-large {
+        width: 85%;
+        /* either % (e.g. 60%) or px (400px) */
+    }
 }
 
 .select2-container {
@@ -134,5 +138,6 @@ table.dataTable thead .sorting_desc {
     font-size: 20px;
     text-align: left;
 }
+
 
     

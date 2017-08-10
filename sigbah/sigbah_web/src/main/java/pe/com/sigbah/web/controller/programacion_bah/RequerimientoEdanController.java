@@ -121,8 +121,11 @@ private static final long serialVersionUID = 1L;
 	    	RequerimientoBean requerimientoBean = new RequerimientoBean();
 	    	requerimientoBean.setCodAnio(verificaParametro(codAnio));
 	    	requerimientoBean.setCodMes(verificaParametro(codMes));
-	    	
 	    	requerimientoBean.setIdFenomeno(codFenomeno);
+	    	
+	    	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+	    	requerimientoBean.setFkIdeDdi(Integer.parseInt(usuarioBean.getCodigoDdi()));
+	    	
 			List<RequerimientoBean> lista = programacionService.listarRequerimiento(requerimientoBean);
 	    	
 			String file_name = "Reporte_Requerimiento";
@@ -249,7 +252,7 @@ private static final long serialVersionUID = 1L;
 			
 			if (!isNullInteger(requerimientoBean.getIdRequerimiento())) {		
 				requerimientoBean.setControl("U");
-				requerimiento = programacionService.actualizarRegistroRequerimiento(requerimientoBean);				
+				requerimiento = programacionService.insertarRegistroRequerimiento(requerimientoBean);				
 			} else {			
 				requerimientoBean.setControl("I");
 				requerimiento = programacionService.insertarRegistroRequerimiento(requerimientoBean);			
