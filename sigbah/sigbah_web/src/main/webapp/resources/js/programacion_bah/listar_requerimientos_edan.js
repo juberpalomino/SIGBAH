@@ -23,7 +23,8 @@ $(document).ready(function() {
 	$('#btn_aceptar').click(function(e) {
 		e.preventDefault();
 		
-		cargarRequerimientos(true);
+//		cargarRequerimientos(true); 
+		cargarRequerimiento(true);
 		
 	});
 	

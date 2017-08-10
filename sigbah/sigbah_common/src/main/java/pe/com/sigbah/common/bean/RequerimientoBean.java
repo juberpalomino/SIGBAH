@@ -33,6 +33,7 @@ public class RequerimientoBean extends BaseOutputBean {
 	private String codDpto;
 	private Integer idProvincia;
 	private String codProvincia;
+	private String control;
 	/**
 	 * 
 	 */
@@ -311,6 +312,18 @@ public class RequerimientoBean extends BaseOutputBean {
 	 */
 	public void setNomMes(String nomMes) {
 		this.nomMes = nomMes;
+	}
+	/**
+	 * @return the control
+	 */
+	public String getControl() {
+		return control;
+	}
+	/**
+	 * @param control the control to set
+	 */
+	public void setControl(String control) {
+		this.control = control;
 	}
 	
 	

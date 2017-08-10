@@ -47,46 +47,39 @@ $(document).ready(function() {
 	});
 	
 	
-//	frm_det_prog_ubigeo.bootstrapValidator({
-//		framework : 'bootstrap',
-//		excluded : [':disabled', ':hidden'],
-//		fields : {
-//			sel_anio : { 
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Año.'
-//					}
-//				}
-//			},
-//			sel_mes : { 
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Mes.'
-//					}
-//				}
-//			},
-//			sel_departamento : { 
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar departamento.'
-//					}
-//				}
-//			},
-//			sel_provincia : { 
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Provincia.'
-//					}
-//				}
-//			},
-//			sel_fenomeno : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe seleccionar Fenómeno.'
-//					}
-//				}
-//			}	
-//		}
-//	});
+	frm_afecta_damni.bootstrapValidator({
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			txt_fam_afec : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Fam. Afec.'
+					}
+				}
+			},
+			txt_fam_dam : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Fam. Dam.'
+					}
+				}
+			},
+			txt_per_afec : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Pers. Afec.'
+					}
+				}
+			},
+			txt_per_dam : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Pers. Dam.'
+					}
+				}
+			}
+		}
+	});
 	
 });

@@ -60,6 +60,15 @@
 										</select>
 									</div>
 									
+									<label class="col-sm-2 control-label">Estado:</label>
+									<div class="col-sm-2 form-group">
+										<select id="sel_estado" name="sel_estado" class="form-control">
+											<c:forEach items="${lista_estado}" var="item">
+											    <option value="${item.icodigo}">${item.descripcion}</option>
+											</c:forEach>
+										</select>
+									</div>
+									
 									<div class="col-sm-1 opc-center">
 										<button class="btn btn-primary" type="button" id="btn_aceptar">
 											<i class="fa fa-search"></i>

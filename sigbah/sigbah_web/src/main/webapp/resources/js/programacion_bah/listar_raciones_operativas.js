@@ -223,6 +223,8 @@ function listarRacion(respuesta) {
 		}, {
 			data : 'nombreMesRacion'
 		}, {
+			data : 'codRacion'
+		}, {
 			data : 'fechaRacion'
 		}, {
 			data : 'tipoRacion'

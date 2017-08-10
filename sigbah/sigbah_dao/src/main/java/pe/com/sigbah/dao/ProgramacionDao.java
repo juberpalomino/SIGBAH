@@ -231,4 +231,16 @@ public interface ProgramacionDao {
 	 */
 	public abstract PedidoCompraBean obtenerPedidoCompra(Integer idPedidoCompra)throws Exception;
 
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 */
+	public abstract List<EmergenciaBean> listarRequerimientoDetalle(RequerimientoBean requerimientoBean)throws Exception;
+
+	/**
+	 * @param emergenciaBean
+	 * @return
+	 */
+	public abstract EmergenciaBean actualizarDamnificados(EmergenciaBean emergenciaBean)throws Exception;
+
 }

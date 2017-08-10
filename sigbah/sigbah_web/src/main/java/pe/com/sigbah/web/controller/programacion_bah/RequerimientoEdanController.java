@@ -1,6 +1,7 @@
 package pe.com.sigbah.web.controller.programacion_bah;
 
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
+import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
@@ -243,9 +247,11 @@ private static final long serialVersionUID = 1L;
         	
         	requerimientoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-			if (!isNullInteger(requerimientoBean.getIdRequerimiento())) {				
+			if (!isNullInteger(requerimientoBean.getIdRequerimiento())) {		
+				requerimientoBean.setControl("U");
 				requerimiento = programacionService.actualizarRegistroRequerimiento(requerimientoBean);				
 			} else {			
+				requerimientoBean.setControl("I");
 				requerimiento = programacionService.insertarRegistroRequerimiento(requerimientoBean);			
 			}
 			requerimiento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
@@ -425,6 +431,59 @@ private static final long serialVersionUID = 1L;
 		}
 		return ubigeo;
     }
+	
+	
+	@RequestMapping(value = "/listarRequerimientoDetalle", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarRequerimientoDetalle(HttpServletRequest request, HttpServletResponse response) {
+		List<EmergenciaBean> lista = null;
+		try {			
+			RequerimientoBean documento = new RequerimientoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(documento, request.getParameterMap());			
+			lista = programacionService.listarRequerimientoDetalle(documento);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	
+	@RequestMapping(value = "/actualizarDamnificados", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object actualizarDamnificados(HttpServletRequest request, HttpServletResponse response) {
+		
+		System.out.println("okkkkkkkkkkkkk");
+		EmergenciaBean emergencia = null;
+		try {			
+			EmergenciaBean emergenciaBean = new EmergenciaBean();
+
+			// Convierte los vacios en nulos en los enteros
+			IntegerConverter con_integer = new IntegerConverter(null);			
+			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
+			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
+			// Convierte los vacios en nulos en los decimales
+			BigDecimalConverter con_decimal = new BigDecimalConverter(null);
+			beanUtilsBean.getConvertUtils().register(con_decimal, BigDecimal.class);
+			// Copia los parametros del cliente al objeto
+			beanUtilsBean.populate(emergenciaBean, request.getParameterMap());
+			
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	emergenciaBean.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+        	emergencia = programacionService.actualizarDamnificados(emergenciaBean);
+			
+        	emergencia.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return emergencia;
+	}
 	
 	
 }

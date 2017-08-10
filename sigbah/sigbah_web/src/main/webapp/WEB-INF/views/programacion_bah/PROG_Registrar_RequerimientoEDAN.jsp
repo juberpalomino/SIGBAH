@@ -235,7 +235,15 @@
 						
 										<!-- widget div-->
 										<div>
-															
+												<div class="row">
+													<div class="col-sm-2 opc-center">
+														<button class="btn btn-primary" type="button" id="btn_pro_editar">
+															<i class="fa fa-edit"></i>
+															Editar
+														</button>
+													</div>
+													
+												</div>			
 											<!-- widget content -->
 											<div class="widget-body">
 
@@ -591,7 +599,80 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- MODAL  ACTUALIZAR AFECTADOS/DAMNIFICADOS-->
+<div id="div_mod_actualiza_emer" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" id="btn_clo_no_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title label-bold" id="h4_tit_afectados">Afectados y damnificados</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<form id="frm_afecta_damni" class="form-horizontal" role="form">
+							
+							<input type="hidden" id="hid_cod_dam_afec" name="hid_cod_dam_afec">
+							
+							<div class="row">																				
+								<label class="col-sm-3 control-label">Fam. Afect. Real:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_fam_afec" id="txt_fam_afec" class="form-control only-numbers-format" >
+								</div>
+							</div>
+							
+							<div class="row">																				
+								<label class="col-sm-3 control-label">Fam. Dam. Real:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_fam_dam" id="txt_fam_dam" class="form-control only-numbers-format" >
+								</div>
+							</div>
+						
+							<div class="row">&nbsp;</div>									
 
+							<div class="row">																				
+								<label class="col-sm-3 control-label">Pers. Afect. Real:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_per_afec" id="txt_per_afec" class="form-control only-numbers-format" >
+								</div>
+							</div>
+							
+							<div class="row">																				
+								<label class="col-sm-3 control-label">Pers. Dam. Real:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" name="txt_per_dam" id="txt_per_dam" class="form-control only-numbers-format" >
+								</div>
+							</div>
+							
+							<div class="row">																				
+								<button type="button" class="btn btn-primary" id="btn_gra_actualiza_emer">
+									<i class="fa fa-floppy-o"></i>
+									Grabar
+								</button>
+								
+								&nbsp; &nbsp;
+								
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_actualiza_emer">
+									<i class="fa fa-mail-forward"></i>
+									Cancelar
+								</button>
+							</div>
+							
+							
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
 <script> var requerimiento = JSON.parse('${requerimiento}'); </script>

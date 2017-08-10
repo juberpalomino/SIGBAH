@@ -58,7 +58,7 @@ $(document).ready(function() {
 
 						$('#btn_grabar_dat_gen').attr("disabled", true); //deshabilitamos boton grabar
 //						pedido.codPedidoConcate=pedido.codPedidoConcate+": "+$('#txt_descripcion').val();
-						$('#hid_cod_ped_compra').val(respuesta.idPedidoCom); 
+						$('#hid_cod_ped_compra').val(respuesta.idPedidoCom); //usado para el listado de los detalles
 						
 						
 						
@@ -481,7 +481,7 @@ function inicializarDatos() {
 		
 
 		
-		if (!esnulo(pedido.idPedidoCom)) {
+		if (!esnulo(pedido.idPedidoCom)) {//editar
 			$('#hid_cod_ped_compra').val(pedido.idPedidoCom);//usamos paa el listado de detalle productos y documentos
 			
 			$('#txt_num_pedido').val(pedido.numPedidoCompra);
@@ -500,7 +500,7 @@ function inicializarDatos() {
 			$('#li_documentos').attr('class', '');
 			$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
 		
-		} else {
+		} else {//nuevo
 			//inicializar los valores
 			$('#txt_num_pedido').val(pedido.codPedidoConcate);
 			$('#txt_fecha_pedido').val(pedido.fecPedido);

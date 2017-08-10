@@ -261,4 +261,18 @@ public interface ProgramacionService {
 	 */
 	public abstract PedidoCompraBean obtenerPedidoCompra(Integer idPedidoCompra) throws Exception;
 	
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<EmergenciaBean> listarRequerimientoDetalle(RequerimientoBean requerimientoBean) throws Exception;
+	
+	/**
+	 * @param emergenciaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract EmergenciaBean actualizarDamnificados(EmergenciaBean emergenciaBean) throws Exception;
+	
 }

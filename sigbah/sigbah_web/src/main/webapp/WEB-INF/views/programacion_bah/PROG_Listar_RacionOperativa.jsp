@@ -133,6 +133,7 @@
 										<th>Nº</th>
 										<th>Año</th>
 										<th>Mes</th>
+										<th>Nº Ración</th>
 										<th>Fecha</th>
 										<th>Tipo Ración</th>
 										<th>Nombre Ración</th>
