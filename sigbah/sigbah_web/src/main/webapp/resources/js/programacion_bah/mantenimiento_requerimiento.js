@@ -205,7 +205,7 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 		} else {
 			loadding(true);
-			var mensaje="";
+			var mensaje='';
 			for (var i = 0; i < indices.length; i++) {
 				var params = { 
 						fkIdRequerimiento : $('#hid_cod_requerimiento').val(), 
@@ -232,7 +232,7 @@ $(document).ready(function() {
 					loadding(false);
 				});
 			}
-			if(mensaje){//muestra solo 1 vez el msj
+			if(!esnulo(mensaje)){//muestra solo 1 vez el msj
 				addSuccessMessage(null, mensaje);	
 			}
 		}
@@ -272,9 +272,9 @@ $(document).ready(function() {
 					loadding(false);
 				});
 			}
-//			if(mensaje){
+			if(!esnulo(mensaje)){
 				addSuccessMessage(null, mensaje);	
-//			}
+			}
 			
 		}
 });	
@@ -425,12 +425,15 @@ function inicializarDatos() {
 			$('#li_damnificados').attr('class', '');
 			$('#li_damnificados').closest('li').children('a').attr('data-toggle', 'tab');
 			
-			$('#hid_cod_requerimiento').val(pedido.idRequerimiento);//usamos paa el listado de detalle requerimientos
+			$('#hid_cod_requerimiento').val(requerimiento.idRequerimiento);//usamos paa el listado de detalle requerimientos
 			
-
 			$('#txt_descripcion').val(requerimiento.nomRequerimiento);
 			$('#txt_observaciones').val(requerimiento.observacion);
+			$('#sel_region').val(requerimiento.fkIdeRegion);
+			$('#sel_fenomeno').val(requerimiento.fkIdeFenomeno);
+			$('input[name=rb_req_sinpad][value="'+requerimiento.flgSinpad+'"]').prop('checked', true);
 			
+			listarDetalleRequerimiento(lista_requerimiento);
 //			listarProductoPedidoCompra(false);
 //			listarDocumentoPedidoCompra(false);
 			

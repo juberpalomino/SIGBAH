@@ -22,7 +22,7 @@ public class RequerimientoEditMapper implements RowMapper<RequerimientoBean> {
 	@Override
 	public RequerimientoBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		RequerimientoBean requerimiento = new RequerimientoBean();
-		
+		requerimiento.setIdRequerimiento(rs.getInt("IDE_REQUERIMIENTO"));	
 		requerimiento.setCodAnio(rs.getString("COD_ANIO"));
 		requerimiento.setFkIdeDdi(rs.getInt("FK_IDE_DDI"));
 		requerimiento.setNombreDdi(rs.getString("NOMBRE_DDI"));
