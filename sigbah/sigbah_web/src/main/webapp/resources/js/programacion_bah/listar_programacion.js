@@ -220,7 +220,7 @@ $(document).ready(function() {
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.idEstado+'">'+item.nombreEstado+'</option>';
 			        });
-			        $('#sel_estado').html(options);
+			        $('#sel_pro_estado').html(options);
 					$('#div_gra_estado').modal('show');
 				}
 				loadding(false);

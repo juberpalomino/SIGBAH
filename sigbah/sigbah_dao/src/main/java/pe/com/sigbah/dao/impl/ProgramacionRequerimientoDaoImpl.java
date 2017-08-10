@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
+import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
 import pe.com.sigbah.common.bean.ProductoNoAlimentarioBean;
 import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
@@ -42,6 +43,7 @@ import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionRequerimientoDao;
 import pe.com.sigbah.mapper.DocumentoProgramacionMapper;
 import pe.com.sigbah.mapper.EstadoProgramacionMapper;
+import pe.com.sigbah.mapper.EstadoUsuarioMapper;
 import pe.com.sigbah.mapper.ProductoNoAlimentarioProgramacionMapper;
 import pe.com.sigbah.mapper.ProgramacionAlimentoMapper;
 import pe.com.sigbah.mapper.ProgramacionAlmacenMapper;
@@ -1532,6 +1534,53 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		}		
 		LOGGER.info("[obtenerRegistroCabeceraProgramacion] Fin ");
 		return programacion;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarEstadoUsuario(pe.com.sigbah.common.bean.EstadoUsuarioBean)
+	 */
+	@Override
+	public List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception {
+		LOGGER.info("[listarEstadoUsuario] Inicio ");
+		List<EstadoUsuarioBean> lista = new ArrayList<EstadoUsuarioBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_USER", estadoUsuarioBean.getIdUsuario(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_PROGRAMACION", estadoUsuarioBean.getIdProgramacion(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_ESTADOS_POR_USUARIO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_USER", new SqlParameter("PI_ID_USER", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_PROGRAMACION", new SqlParameter("PI_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_ESTADOS", new SqlOutParameter("PO_CURSOR_ESTADOS", OracleTypes.CURSOR, new EstadoUsuarioMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarEstadoUsuario] Ocurrio un error en la operacion del USP_SEL_ESTADOS_POR_USUARIO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<EstadoUsuarioBean>) out.get("PO_CURSOR_ESTADOS");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarEstadoUsuario] Fin ");
+		return lista;
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
+import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
 import pe.com.sigbah.common.bean.ProductoNoAlimentarioBean;
 import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
@@ -274,6 +275,14 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	@Override
 	public ProgramacionBean obtenerRegistroCabeceraProgramacion(Integer idProgramacion) throws Exception {
 		return programacionRequerimientoDao.obtenerRegistroCabeceraProgramacion(idProgramacion);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarEstadoUsuario(pe.com.sigbah.common.bean.EstadoUsuarioBean)
+	 */
+	@Override
+	public List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception {
+		return programacionRequerimientoDao.listarEstadoUsuario(estadoUsuarioBean);
 	}
 
 }

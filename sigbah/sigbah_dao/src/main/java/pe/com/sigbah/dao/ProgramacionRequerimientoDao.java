@@ -4,6 +4,7 @@ import java.util.List;
 
 import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
+import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ProductoAlimentoBean;
 import pe.com.sigbah.common.bean.ProductoNoAlimentarioBean;
 import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
@@ -237,5 +238,12 @@ public interface ProgramacionRequerimientoDao {
 	 * @throws Exception
 	 */
 	public abstract ProgramacionBean obtenerRegistroCabeceraProgramacion(Integer idProgramacion) throws Exception;
+	
+	/**
+	 * @param estadoUsuarioBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception;
 
 }

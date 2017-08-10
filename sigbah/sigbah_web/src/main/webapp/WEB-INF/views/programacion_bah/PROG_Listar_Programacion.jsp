@@ -210,7 +210,7 @@
 							<div class="form-group">																				
 								<label class="col-sm-3 control-label">Estado:</label>
 								<div class="col-sm-8">
-									<select id="sel_estado" name="sel_estado" class="form-control">
+									<select id="sel_pro_estado" name="sel_pro_estado" class="form-control">
 									</select>
 								</div>
 							</div>																		

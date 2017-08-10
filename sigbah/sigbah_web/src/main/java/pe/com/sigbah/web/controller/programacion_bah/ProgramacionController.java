@@ -44,7 +44,6 @@ import pe.com.sigbah.common.bean.ResumenStockAlimentoBean;
 import pe.com.sigbah.common.bean.ResumenStockNoAlimentarioBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.service.AdministracionService;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.ProgramacionRequerimientoService;
 import pe.com.sigbah.web.controller.common.BaseController;
@@ -68,9 +67,6 @@ private static final long serialVersionUID = 1L;
 	
 	@Autowired 
 	private GeneralService generalService;
-	
-	@Autowired 
-	private AdministracionService administracionService;
 	
 	/**
 	 * @param indicador
@@ -899,21 +895,20 @@ private static final long serialVersionUID = 1L;
 	}	
 	
 	/**
-	 * @param request
-	 * @param response
+	 * @param idProgramacion 
 	 * @return objeto en formato json
 	 */
 	@RequestMapping(value = "/obtenerEstadosProgramacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Object obtenerEstadosProgramacion(HttpServletRequest request, HttpServletResponse response) {
+	public Object obtenerEstadosProgramacion(@RequestParam(value="idProgramacion") Integer idProgramacion) {
 		List<EstadoUsuarioBean> lista = null;
 		try {			
 			// Retorno los datos de session
            	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
            	EstadoUsuarioBean estadoUsuarioBean = new EstadoUsuarioBean();
            	estadoUsuarioBean.setIdUsuario(usuarioBean.getIdUsuario());
-           	estadoUsuarioBean.setNombreModulo(Constantes.MODULO_PROGRAMACION);
-			lista = administracionService.listarEstadoUsuario(estadoUsuarioBean);
+           	estadoUsuarioBean.setIdProgramacion(idProgramacion);
+			lista = programacionRequerimientoService.listarEstadoUsuario(estadoUsuarioBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);

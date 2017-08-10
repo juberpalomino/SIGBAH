@@ -12,6 +12,7 @@ public class EstadoUsuarioBean extends BaseOutputBean {
 	private Integer idEstado;
 	private String nombreEstado;
 	private String nombreModulo;
+	private Integer idProgramacion;
 	
 	/**
 	 * 
@@ -60,6 +61,20 @@ public class EstadoUsuarioBean extends BaseOutputBean {
 	 */
 	public void setNombreModulo(String nombreModulo) {
 		this.nombreModulo = nombreModulo;
+	}
+
+	/**
+	 * @return the idProgramacion
+	 */
+	public Integer getIdProgramacion() {
+		return idProgramacion;
+	}
+
+	/**
+	 * @param idProgramacion the idProgramacion to set
+	 */
+	public void setIdProgramacion(Integer idProgramacion) {
+		this.idProgramacion = idProgramacion;
 	}
 
 }
