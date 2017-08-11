@@ -38,22 +38,50 @@ $(document).ready(function() {
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
+//	$('#txt_fecha').datepicker().on('changeDate', function(e) {
+//		e.preventDefault();
+//		var fecha = $(this).val();
+//		var fecha2 = $('#txt_fec_llegada').val();
+//		if (!esnulo(fecha)) {
+//			console.log(comparafecha(fecha2, fecha));
+//		    if (comparafecha(fecha2, fecha)=='1') {
+//		    	addWarnMessage(null, 'La fecha de llegada debe ser menor o igual a la fecha de registro.');
+//		    	$('#txt_fecha').val('');
+//		    	$('#'+$(this).attr('id')).focus();
+//		    } else {
+//		    	
+//		    }
+//		}
+//		frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fecha');	
+//	});
+	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
 		var fecha = $(this).val();
 		var fecha2 = $('#txt_fec_llegada').val();
 		if (!esnulo(fecha)) {
-			console.log(comparafecha(fecha2, fecha));
-		    if (comparafecha(fecha2, fecha)=='1') {
-		    	addWarnMessage(null, 'La fecha de llegada debe ser menor o igual a la fecha de registro.');
+			var mes = fecha.substring(3, 5);
+		    var anio = fecha.substring(6, 10);	
+		    if (mes != donaciones.mes || anio != donaciones.anio) {
+		    	$('#hid_val_fec_trabajo').val('0');
+		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
 		    	$('#txt_fecha').val('');
 		    	$('#'+$(this).attr('id')).focus();
 		    } else {
 		    	
+		    	if (comparafecha(fecha2, fecha)=='1') {
+			    	addWarnMessage(null, 'La fecha de llegada debe ser menor o igual a la fecha de registro.');
+			    	$('#txt_fecha').val('');
+			    	$('#'+$(this).attr('id')).focus();
+			    } else {
+			    	
+			    }
+		    	$('#hid_val_fec_trabajo').val('1');
 		    }
 		}
-		frm_dat_generales.bootstrapValidator('revalidateField', 'txt_fecha');	
+		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
+	
 	
 	$('#txt_doc_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
@@ -106,7 +134,10 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
-		
+		if ($('#hid_val_fec_trabajo').val() == '0') {
+	    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+	    	return;
+		}
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
@@ -522,7 +553,7 @@ $(document).ready(function() {
 				idIngresoDet : $('#hid_cod_producto').val(),
 				idProducto : idProducto,
 				//idDonacion : $('#hid_id_donacion').val(),
-				cantidad : formatMonto($('#txt_cantidad').val()),
+				cantidad : ($('#txt_cantidad').val()),
 				precioUnitario : $('#txt_precio').val(),
 				importeTotal : $('#txt_imp_total').val(),
 				fecVencimiento : $('#txt_fec_vencimiento').val(),
@@ -801,8 +832,6 @@ function inicializarDatos() {
 		$('#txt_idDdi').val(donaciones.idDdi);
 		$('#txt_fecha').val(donaciones.fechaEmision);
 		//$('#txt_dee').val(donaciones.nombreDdi);
-		
-		
 
 		if (!esnulo(donaciones.idIngreso)) {
 			$('#hid_id_ingreso').val(donaciones.idIngreso);	
@@ -938,6 +967,19 @@ function inicializarDatos() {
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
 			
 			$('#txt_fecha').datepicker('setDate', new Date());
+			
+			var fecha = $('#txt_fecha').val();
+			if (!esnulo(fecha)) {
+				var mes = fecha.substring(3, 5);
+			    var anio = fecha.substring(6, 10);	
+			    if (mes != donaciones.mes || anio != donaciones.anio) {
+			    	$('#hid_val_fec_trabajo').val('0');
+			    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+			    	$('#'+$(this).attr('id')).focus();
+			    } else {
+			    	$('#hid_val_fec_trabajo').val('1');
+			    }
+			}
 			
 			var val_donante = $('#sel_donante').val();		
 			if (!esnulo(val_donante)) {
@@ -1114,7 +1156,7 @@ function listarProductoDonacion(indicador) {
 }
 
 function listarDetalleProductos(respuesta) {
-
+	
 	tbl_det_productos.dataTable().fnDestroy();
 	
 	tbl_det_productos.dataTable({

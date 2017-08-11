@@ -1,7 +1,10 @@
 package pe.com.sigbah.web.controller.donaciones;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -136,8 +139,9 @@ public class DonacionCartillaInventarioController extends BaseController {
         		parametros.setCodigoAnio(anioActual);
         		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
         		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());
+        		parametros.setCodigoAlmacen(usuarioBean.getCodigoAlmacen());
         		parametros.setTipoOrigen(Constantes.TIPO_ORIGEN_DONACIONES);
-        		CartillaInventarioBean respuestaCorrelativo = logisticaService.obtenerCorrelativoCartillaInventario(parametros);
+        		CartillaInventarioBean respuestaCorrelativo = donacionService.obtenerCorrelativoCartillaInventario(parametros);
       
         		correlativo.append(respuestaCorrelativo.getNroCartilla());
         		
@@ -554,84 +558,63 @@ public class DonacionCartillaInventarioController extends BaseController {
 	 * @param response
 	 * @return Objeto.
 	 */
-	@RequestMapping(value = "/exportarPdf/{codigo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/exportarPdf/{codigo}/{indicador}", method = RequestMethod.GET)
 	@ResponseBody
-	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
+	public String exportarPdf(@PathVariable("codigo") Integer codigo,
+							  @PathVariable("indicador") String indicador,
+							  HttpServletRequest request, 
+							  HttpServletResponse response) {
 	    try {
-//			List<DetalleProductoCartillaInventarioBean> lista = logisticaService.listarDetalleProductoCartillaInventario(codigo);
-//			if (isEmpty(lista)) {
-//				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
-//			}			
-//			DetalleProductoCartillaInventarioBean producto = lista.get(0);
-//
-//			ExportarArchivo printer = new ExportarArchivo();
-//			StringBuilder jasperFile = new StringBuilder();
-//			jasperFile.append(getPath(request));
-//			jasperFile.append(File.separator);
-//			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-//			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-//				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-//			} else {
-//				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-//			}
-//			
-//			Map<String, Object> parameters = new HashMap<String, Object>();
-//
-//			// Agregando los parámetros del reporte
-//			StringBuilder logo_indeci_path = new StringBuilder();
-//			logo_indeci_path.append(getPath(request));
-//			logo_indeci_path.append(File.separator);
-//			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-//			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-//			StringBuilder logo_wfp_path = new StringBuilder();
-//			logo_wfp_path.append(getPath(request));
-//			logo_wfp_path.append(File.separator);
-//			logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-//			parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-//			StringBuilder logo_check_path = new StringBuilder();
-//			logo_check_path.append(getPath(request));
-//			logo_check_path.append(File.separator);
-//			logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-//			parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-//			StringBuilder logo_check_min_path = new StringBuilder();
-//			logo_check_min_path.append(getPath(request));
-//			logo_check_min_path.append(File.separator);
-//			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-//			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-//			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroCartillaInventario());
-//			parameters.put("P_DDI", producto.getNombreDdi());			
-//			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
-//			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
-//			parameters.put("P_TIPO_CONTROL", producto.getTipoCartillaInventario());
-//			parameters.put("P_ALMACEN_ORIGEN_DESTINO", producto.getNombreAlmacen());
-//			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
-//			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
-//			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
-//			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
-//
-//			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
-//			InputStream input = new ByteArrayInputStream(array);
-//	        
-//	        String file_name = "Reporte_Control_Calidad";
-//			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-//	    	
-//	        response.resetBuffer();
-//            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-//            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-//			response.setHeader("Pragma", "no-cache");
-//			response.setHeader("Cache-Control", "no-store");
-//			response.setHeader("Pragma", "private");
-//			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-//			response.setDateHeader("Expires", 1);
-//			
-//			byte[] buffer = new byte[4096];
-//	    	int n = 0;
-//
-//	    	OutputStream output = response.getOutputStream();
-//	    	while ((n = input.read(buffer)) != -1) {
-//	    	    output.write(buffer, 0, n);
-//	    	}
-//	    	output.close();
+	    	ProductoCartillaInventarioBean productoCartillaInventarioBean = new ProductoCartillaInventarioBean();
+	    	productoCartillaInventarioBean.setIdCartilla(codigo);
+			List<ProductoCartillaInventarioBean> listaProducto = logisticaService.listarProductoCartillaInventario(productoCartillaInventarioBean);			
+			if (isEmpty(listaProducto)) {
+				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+			}			
+			CartillaInventarioBean cartillaInventario = logisticaService.obtenerRegistroCartillaInventario(codigo);
+
+			StringBuilder file_path = new StringBuilder();
+	    	file_path.append(getPath(request));
+	    	file_path.append(File.separator);
+	    	file_path.append(Constantes.UPLOAD_PATH_FILE_TEMP);
+	    	file_path.append(File.separator);
+	    	file_path.append(Calendar.getInstance().getTime().getTime());
+	    	file_path.append(Constantes.EXTENSION_FORMATO_PDF);
+	    	
+	    	String file_name = "ReporteCartillaInventario";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+			
+			ReporteCartillaInventario reporte = new ReporteCartillaInventario();
+			if (indicador.equals(Constantes.ONE_STRING)) { // Reporte Formato A
+				reporte.generaPDFReporteCartillaInventarioA(file_path.toString(), cartillaInventario, listaProducto);
+			} else if (indicador.equals(Constantes.TWO_STRING)) { // Reporte Formato B
+				reporte.generaPDFReporteCartillaInventarioB(file_path.toString(), cartillaInventario, listaProducto);
+			}
+			
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+	    	
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			baos = convertPDFToByteArrayOutputStream(file_path.toString());
+			
+			// Captured backflow
+	        OutputStream out = response.getOutputStream();
+	        baos.writeTo(out); // We write in that flow
+	        out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	File file_temp = new File(file_path.toString());
+    		if (file_temp.delete()) {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" se borra el archivo temporal.");
+    		} else {
+    			LOGGER.info("[exportarPdf] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+    		}
 
 	    	return Constantes.COD_EXITO_GENERAL;
 	    } catch (Exception e) {

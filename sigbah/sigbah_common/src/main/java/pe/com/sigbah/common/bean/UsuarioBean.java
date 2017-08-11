@@ -25,6 +25,7 @@ public class UsuarioBean implements Serializable {
 	private String sessionId;
 	private String codigoAnio;
 	private String email;
+	private String codigoMes;
 	
 	
 	/**
@@ -258,7 +259,7 @@ public class UsuarioBean implements Serializable {
 		return "UsuarioBean [idUsuario=" + idUsuario + ", usuario=" + usuario + ", cargo=" + cargo + ", nombreUsuario="
 				+ nombreUsuario + ", idDdi=" + idDdi + ", codigoDdi=" + codigoDdi + ", nombreDdi=" + nombreDdi
 				+ ", idAlmacen=" + idAlmacen + ", codigoAlmacen=" + codigoAlmacen + ", nombreAlmacen=" + nombreAlmacen
-				+ ", password=" + password + ", sessionId=" + sessionId + ", codigoAnio=" + codigoAnio + "]";
+				+ ", password=" + password + ", sessionId=" + sessionId + ", codigoAnio=" + codigoAnio + ", codigoMes="+codigoMes+"]";
 	}
 
 	/**
@@ -273,6 +274,20 @@ public class UsuarioBean implements Serializable {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	/**
+	 * @return the codigoMes
+	 */
+	public String getCodigoMes() {
+		return codigoMes;
+	}
+
+	/**
+	 * @param codigoMes the codigoMes to set
+	 */
+	public void setCodigoMes(String codigoMes) {
+		this.codigoMes = codigoMes;
 	}
 	
 }

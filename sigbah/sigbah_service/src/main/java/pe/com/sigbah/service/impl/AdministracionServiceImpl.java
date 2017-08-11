@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sigbah.common.bean.AlmacenBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ModuloBean;
@@ -58,6 +59,11 @@ public class AdministracionServiceImpl implements AdministracionService, Seriali
 	@Override
 	public List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception {
 		return administracionDao.listarEstadoUsuario(estadoUsuarioBean);
+	}
+	
+	@Override
+	public CierreStockBean obtenerMesTrabajo(Integer idAlmacen) throws Exception {
+		return administracionDao.obtenerMesTrabajo(idAlmacen);
 	}
 
 }

@@ -634,6 +634,7 @@ $(document).ready(function() {
 		var codigo = $(this).val();		
 		if(codigo==1){
 			$('#sel_ori_pais').val(179);
+			frm_dat_generales.bootstrapValidator('revalidateField', 'sel_ori_pais');
 			$('#sel_ori_pais').prop('disabled', true);
 			
 		}else{
@@ -663,6 +664,8 @@ $(document).ready(function() {
 
 		if (!esnulo(codigo)) {
 			if (codigo == '127') {
+//				frm_det_productos.bootstrapValidator('revalidateField', 'txt_imp_dolares');
+//				frm_det_productos.bootstrapValidator('revalidateField', 'txt_imp_soles');
 				$('#txt_imp_dolares').prop('disabled', true);
 				$('#txt_imp_soles').prop('disabled', true);
 				$('#txt_imp_soles').val(formatMontoAll($('#txt_imp_origen').val()));
@@ -676,6 +679,8 @@ $(document).ready(function() {
 			$('#txt_imp_soles').val('');
 			$('#txt_imp_dolares').val('');
 		}
+		frm_det_productos.bootstrapValidator('revalidateField', 'txt_imp_dolares');
+		frm_det_productos.bootstrapValidator('revalidateField', 'txt_imp_soles');
 	});
 	
 	$('#txt_imp_origen').change(function() {	

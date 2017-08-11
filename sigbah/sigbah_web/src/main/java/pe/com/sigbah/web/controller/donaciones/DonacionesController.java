@@ -91,7 +91,7 @@ public class DonacionesController extends BaseController {
         	model.addAttribute("lista_est_donacion", donacionService.listarEstadoDonacionUsuario(new ItemBean(usuarioBean.getIdUsuario(), "DONACION")));
         	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
         	
-        	//model.addAttribute("lista_estado", generalService.listarEstadoDonacion(new ItemBean()));
+        	model.addAttribute("lista_estado", generalService.listarEstadoDonacion(new ItemBean()));
         	model.addAttribute("txt_cod_ddi", usuarioBean.getCodigoDdi());
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
@@ -137,8 +137,7 @@ public class DonacionesController extends BaseController {
         	DonacionesBean datoDonaciones=new DonacionesBean();
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-        	System.out.println("CODIGOOOO: "+codigo);
-        	System.out.println("CODIGOOOO: "+!isNullInteger(codigo));
+
         	if (!isNullInteger(codigo)) {
         		System.out.println("ENTRO A MODIFICAR ");
         		donacionesBean = donacionService.obtenerDonacionXIdDonacion(codigo);
@@ -1096,6 +1095,7 @@ public class DonacionesController extends BaseController {
 			List<DonacionesBean> lista = donacionService.listarReporteDonacion(codigo);
 			List<ProductoDonacionBean> listaProductos = donacionService.listarReporteDonacionProductos(codigo);
 			List<RegionDonacionBean> listaRegiones = donacionService.listarReporteDonacionRegiones(codigo);
+
 			if (isEmpty(lista) || isEmpty(listaProductos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
@@ -1107,17 +1107,10 @@ public class DonacionesController extends BaseController {
 			jasperFile.append(File.separator);
 			jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
 			jasperFile.append("Solicitud_Aprobacion.jrxml");
-			
-			
-			
+
 			String ruta = getPath(request)+File.separator+Constantes.REPORT_PATH_DONACIONES;
 			System.out.println("RUTA: "+ruta);
-//			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-//				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-//			} else {
-//				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-//			}
-			
+
 			JRBeanCollectionDataSource ListaRegiones = new JRBeanCollectionDataSource(listaRegiones);
 			
 			Map<String, Object> parameters = new HashMap<String, Object>();
@@ -1150,7 +1143,11 @@ public class DonacionesController extends BaseController {
 			parameters.put("D_BLOQUE_TEXTO1", producto.getTextoa());
 			parameters.put("D_BLOQUE_TEXTO2", producto.getTextob());
 			parameters.put("D_OFICINA_RESPONSABLE", producto.getOficinaResponsable());
-			parameters.put("LISTA_REGIONES", ListaRegiones);
+			if(ListaRegiones==null){
+				parameters.put("LISTA_REGIONES", "");
+			}else{
+				parameters.put("LISTA_REGIONES", ListaRegiones);
+			}
 			parameters.put("SR_RUTA_REGIONES", ruta);
 			parameters.put("D_NOMBRE_SISTEMA", producto.getNombreSistema());
 			parameters.put("D_VERSION_SISTEMA", producto.getVersionSistema());

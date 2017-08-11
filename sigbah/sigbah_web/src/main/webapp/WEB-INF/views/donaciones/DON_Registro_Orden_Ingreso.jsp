@@ -57,6 +57,7 @@
 									
 										<input type="hidden" id="hid_id_ingreso" name="hid_id_ingreso">
 										<input type="hidden" id="hid_id_donacion" name="hid_id_donacion">
+										<input type="hidden" id="hid_val_fec_trabajo" name="hid_val_fec_trabajo">
 										<div class="header-form opc-center">	
 											<strong>Orden Ingreso</strong>
 										</div>
@@ -631,7 +632,7 @@
 				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_documentos">Nuevo Documento</h4>
+				<h4 class="modal-title label-bold1" id="h4_tit_documentos">Nuevo Documento</h4>
 			</div>
 			
 			<div class="modal-body">
@@ -714,7 +715,7 @@
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_productos">Nuevo Producto</h4>
+				<h4 class="modal-title label-bold1" id="h4_tit_productos">Nuevo Producto</h4>
 			</div>
 			
 			<div class="modal-body">

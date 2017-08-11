@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SR_Orden_Ingreso" pageWidth="360" pageHeight="802" columnWidth="360" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b5ebc95d-fbb7-408c-96f3-dc6f6796f417">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SR_Orden_Ingreso" pageWidth="270" pageHeight="802" columnWidth="270" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b5ebc95d-fbb7-408c-96f3-dc6f6796f417">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
@@ -34,7 +34,7 @@
 	<columnHeader>
 		<band height="16" splitType="Stretch">
 			<staticText>
-				<reportElement x="40" y="1" width="185" height="15" uuid="bddbdbf4-62c5-42d0-aae1-607789102145">
+				<reportElement x="30" y="1" width="120" height="15" uuid="bddbdbf4-62c5-42d0-aae1-607789102145">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -47,7 +47,7 @@
 				<text><![CDATA[TIPO DOCUMENTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="1" width="39" height="15" uuid="8b92a448-8c7c-407f-aa79-012b87ed9f64">
+				<reportElement x="0" y="1" width="30" height="15" uuid="8b92a448-8c7c-407f-aa79-012b87ed9f64">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -60,7 +60,7 @@
 				<text><![CDATA[N°]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="225" y="1" width="80" height="15" uuid="d4d5a967-bf0b-43ba-ba07-a86ea259607c">
+				<reportElement x="150" y="1" width="67" height="15" uuid="d4d5a967-bf0b-43ba-ba07-a86ea259607c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -73,7 +73,7 @@
 				<text><![CDATA[N° Documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="305" y="1" width="55" height="15" uuid="e2c0b33a-e503-4fb3-aadc-eb0660fe7c4e">
+				<reportElement x="217" y="1" width="53" height="15" uuid="e2c0b33a-e503-4fb3-aadc-eb0660fe7c4e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -90,20 +90,20 @@
 	<detail>
 		<band height="19" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="40" height="19" uuid="51a4bd9a-2140-436f-a053-e88898eba424"/>
+				<reportElement x="0" y="0" width="30" height="19" uuid="51a4bd9a-2140-436f-a053-e88898eba424"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="40" y="0" width="185" height="19" uuid="b8af9671-c956-4eda-a139-bea66d71e305"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="120" height="19" uuid="b8af9671-c956-4eda-a139-bea66d71e305"/>
 				<textFieldExpression><![CDATA[$F{nombreDocumento}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="225" y="0" width="80" height="19" uuid="31b92d45-10c9-4408-a82c-f52e5853cf49"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="150" y="0" width="67" height="19" uuid="31b92d45-10c9-4408-a82c-f52e5853cf49"/>
 				<textFieldExpression><![CDATA[$F{nroDocumento}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="305" y="0" width="55" height="19" uuid="b6053524-9a2b-4e89-970e-56f6c66edf0a"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="217" y="0" width="53" height="19" uuid="b6053524-9a2b-4e89-970e-56f6c66edf0a"/>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 		</band>

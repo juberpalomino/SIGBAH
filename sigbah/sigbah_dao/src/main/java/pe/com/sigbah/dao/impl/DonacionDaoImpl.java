@@ -2102,6 +2102,8 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			input_objParametros.addValue("PI_IDE_ALMACEN", productoDonacionIngresoBean.getIdAlmacen(), Types.NUMERIC);
 			input_objParametros.addValue("PI_COD_ALMACEN", productoDonacionIngresoBean.getCodAlmacen(), Types.VARCHAR);
 			input_objParametros.addValue("PI_ID_DONACION", productoDonacionIngresoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", productoDonacionIngresoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", productoDonacionIngresoBean.getCodigoMes(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -2123,6 +2125,8 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
 			output_objParametros.put("PI_COD_ALMACEN", new SqlParameter("PI_COD_ALMACEN", Types.VARCHAR));
 			output_objParametros.put("PI_ID_DONACION", new SqlParameter("PI_ID_DONACION", Types.NUMERIC));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
 
@@ -2167,6 +2171,8 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			input_objParametros.addValue("PI_IDE_ALMACEN", productoDonacionIngresoBean.getIdAlmacen(), Types.NUMERIC);
 			input_objParametros.addValue("PI_COD_ALMACEN", productoDonacionIngresoBean.getCodAlmacen(), Types.VARCHAR);
 			input_objParametros.addValue("PI_ID_DONACION", productoDonacionIngresoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", productoDonacionIngresoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", productoDonacionIngresoBean.getCodigoMes(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -2188,6 +2194,8 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
 			output_objParametros.put("PI_COD_ALMACEN", new SqlParameter("PI_COD_ALMACEN", Types.VARCHAR));
 			output_objParametros.put("PI_ID_DONACION", new SqlParameter("PI_ID_DONACION", Types.NUMERIC));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
 
@@ -3200,6 +3208,10 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			input_objParametros.addValue("PI_USERNAME", productoDonacionSalidaBean.getUsuarioRegistro(), Types.VARCHAR);
 			input_objParametros.addValue("PI_FLG_ACTIVO", "1", Types.VARCHAR);
 			input_objParametros.addValue("PI_CONTROL", "I", Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_DDI", productoDonacionSalidaBean.getIdDdi(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_ALMACEN", productoDonacionSalidaBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", productoDonacionSalidaBean.getAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", productoDonacionSalidaBean.getMes(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -3219,6 +3231,10 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
 			output_objParametros.put("PI_FLG_ACTIVO", new SqlParameter("PI_FLG_ACTIVO", Types.VARCHAR));
 			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
 
@@ -3261,6 +3277,10 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			input_objParametros.addValue("PI_USERNAME", productoDonacionSalidaBean.getUsuarioRegistro(), Types.VARCHAR);
 			input_objParametros.addValue("PI_FLG_ACTIVO", "1", Types.VARCHAR);
 			input_objParametros.addValue("PI_CONTROL", "U", Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_DDI", productoDonacionSalidaBean.getIdDdi(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_ALMACEN", productoDonacionSalidaBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ANIO", productoDonacionSalidaBean.getAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES", productoDonacionSalidaBean.getMes(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -3280,6 +3300,10 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
 			output_objParametros.put("PI_FLG_ACTIVO", new SqlParameter("PI_FLG_ACTIVO", Types.VARCHAR));
 			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
 
@@ -3730,6 +3754,51 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		return lista;
 	}
 	
+	
+	@Override
+	public ItemBean validaStockProducto(ItemBean itemBean) throws Exception {
+		LOGGER.info("[validaStockProducto] Inicio ");
+		ItemBean mensajeStock = new ItemBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_PRODUCTO", itemBean.getIcodigo(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_ALMACEN", itemBean.getIcodigoParam2(), Types.NUMERIC);
+			input_objParametros.addValue("PI_CANTIDAD", itemBean.getIcodigoParam3(), Types.NUMERIC);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_VALIDA_STOCK_PRODUCTO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PRODUCTO", new SqlParameter("PI_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_CANTIDAD", new SqlParameter("PI_CANTIDAD", Types.NUMERIC));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[validaStockProducto] Ocurrio un error en la operacion del USP_SEL_VALIDA_STOCK_PRODUCTO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			mensajeStock.setCodigoRespuesta(codigoRespuesta);
+			mensajeStock.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[validaStockProducto] Fin ");
+		return mensajeStock;
+	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////GUIA DE REMISION////////////////////////////////////////////////////////////////////
@@ -4630,6 +4699,58 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		return registroProductoCartillaInventario;
 	}
 	
+	@Override
+	public CartillaInventarioBean obtenerCorrelativoCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		LOGGER.info("[obtenerCorrelativoCartillaInventario] Inicio ");
+		CartillaInventarioBean detalleUsuarioBean = new CartillaInventarioBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_COD_ANIO", cartillaInventarioBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_DDI", cartillaInventarioBean.getCodigoDdi(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", cartillaInventarioBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_COD_ALMACEN", cartillaInventarioBean.getCodigoAlmacen(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_DONACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_GEN_NRO_CARTILLA_INV");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_DDI", new SqlParameter("PI_COD_DDI", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_COD_ALMACEN", new SqlParameter("PI_COD_ALMACEN", Types.VARCHAR));
+			output_objParametros.put("PO_NRO_CARTILLA", new SqlOutParameter("PO_NRO_CARTILLA", Types.VARCHAR));
+			output_objParametros.put("PO_COD_CARTILLA", new SqlOutParameter("PO_COD_CARTILLA", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerCorrelativoCartillaInventario] Ocurrio un error en la operacion del USP_SEL_GEN_NRO_CARTILLA_INV : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			detalleUsuarioBean.setNroCartilla((String) out.get("PO_NRO_CARTILLA"));
+			detalleUsuarioBean.setCodigoCartilla((String) out.get("PO_COD_CARTILLA"));
+			detalleUsuarioBean.setCodigoRespuesta(codigoRespuesta);
+			detalleUsuarioBean.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerCorrelativoCartillaInventario] Fin ");
+		return detalleUsuarioBean;
+	}
+	
 	
 	///////////////////////////////////////////////////////////////////////////
 	/////////////////////CIERRE MENSUAL//////////////////////////////////////
@@ -4735,11 +4856,12 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 		CierreStockBean registroCierreStock = new CierreStockBean();
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_IDE_DDI", cierreStockBean.getIdDdi(), Types.NUMERIC);
 			input_objParametros.addValue("PI_IDE_ALMACEN", cierreStockBean.getIdAlmacen(), Types.NUMERIC);
 			input_objParametros.addValue("PI_COD_ANIO", cierreStockBean.getCodigoAnio(), Types.VARCHAR);
 			input_objParametros.addValue("PI_COD_MES", cierreStockBean.getCodigoMes(), Types.VARCHAR);			
 			input_objParametros.addValue("PI_FLG_CIERRE_DON", cierreStockBean.getFlagCierreAlmacen(), Types.VARCHAR);			
-			input_objParametros.addValue("PI_FK_IDE_RESPONSABLE_DON", cierreStockBean.getIdResponsable(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_RESPONSABLE_ALM", cierreStockBean.getIdResponsable(), Types.NUMERIC);
 			input_objParametros.addValue("PI_OBSERVACION", cierreStockBean.getObservacion(), Types.VARCHAR);
 			input_objParametros.addValue("PI_USUARIO", cierreStockBean.getUsuarioRegistro(), Types.VARCHAR);
 
@@ -4750,11 +4872,12 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			objJdbcCall.withProcedureName("USP_INS_UPD_CIERRE_ALMACEN");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));	
 			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));			
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
 			output_objParametros.put("PI_FLG_CIERRE_DON", new SqlParameter("PI_FLG_CIERRE_DON", Types.VARCHAR));
-			output_objParametros.put("PI_FK_IDE_RESPONSABLE_DON", new SqlParameter("PI_FK_IDE_RESPONSABLE_DON", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_RESPONSABLE_ALM", new SqlParameter("PI_FK_IDE_RESPONSABLE_ALM", Types.NUMERIC));
 			output_objParametros.put("PI_OBSERVACION", new SqlParameter("PI_OBSERVACION", Types.VARCHAR));
 			output_objParametros.put("PI_USUARIO", new SqlParameter("PI_USUARIO", Types.VARCHAR));;
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));

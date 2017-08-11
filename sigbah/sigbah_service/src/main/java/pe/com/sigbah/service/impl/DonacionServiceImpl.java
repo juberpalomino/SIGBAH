@@ -505,4 +505,14 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	public List<DocumentoSalidaBean> listarDocumentosReporteDonacionSalida(Integer idSalida) throws Exception {
 		return donacionDao.listarDocumentosReporteDonacionSalida(idSalida);
 	}
+	
+	@Override
+	public CartillaInventarioBean obtenerCorrelativoCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception {
+		return donacionDao.obtenerCorrelativoCartillaInventario(cartillaInventarioBean);
+	}
+	
+	@Override
+	public ItemBean validaStockProducto(ItemBean itemBean) throws Exception {
+		return donacionDao.validaStockProducto(itemBean);
+	}
 }

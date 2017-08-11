@@ -7,6 +7,7 @@ import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ModuloBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 
 /**
  * @className: AdministracionService.java
@@ -43,5 +44,12 @@ public interface AdministracionService {
 	 * @throws Exception
 	 */
 	public abstract List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception;
+
+	/**
+	 * @param idAlmacen
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract CierreStockBean obtenerMesTrabajo(Integer idAlmacen) throws Exception;
 
 }

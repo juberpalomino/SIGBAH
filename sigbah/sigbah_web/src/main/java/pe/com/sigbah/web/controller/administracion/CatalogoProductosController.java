@@ -1,4 +1,4 @@
-package pe.com.sigbah.web.controller.donaciones;
+package pe.com.sigbah.web.controller.administracion;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -35,13 +35,16 @@ import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
+import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoDonacionBean;
 import pe.com.sigbah.common.bean.ProductoDonacionIngresoBean;
+import pe.com.sigbah.common.bean.ProductoDonacionSalidaBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.RegionDonacionBean;
+import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.ExportarArchivo;
@@ -55,17 +58,18 @@ import pe.com.sigbah.web.report.donaciones.ReporteDonaciones;
 import pe.com.sigbah.web.report.gestion_almacenes.ReporteControlCalidad;
 import pe.com.sigbah.common.bean.DonacionesBean;
 import pe.com.sigbah.common.bean.DonacionesIngresoBean;
+import pe.com.sigbah.common.bean.DonacionesSalidaBean;
 
 
 /**
- * @className: DonacionesIngresoController.java
+ * @className: CatalogoProductosController.java
  * @description: 
- * @date: 20/07/2017
+ * @date: 11/08/2017
  * @author: ARCHY.
  */
 @Controller
-@RequestMapping("/donacionesIngreso/registro-donacionesIngreso")
-public class DonacionesIngresoController extends BaseController {
+@RequestMapping("/administracion/catalogo-productos")
+public class CatalogoProductosController extends BaseController {
 
 	private static final long serialVersionUID = 1L;
 	@Autowired 
@@ -83,18 +87,17 @@ public class DonacionesIngresoController extends BaseController {
 	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
     public String inicio(Model model) {
         try {       
-        	System.out.println("DONACIONES INGRESO");
         	// Retorno los datos de session
            	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
         	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
-        	model.addAttribute("lista_ddi", listaDdi);
-        	model.addAttribute("lista_est_donacion", donacionService.listarEstadoDonacionUsuario(new ItemBean(usuarioBean.getIdUsuario(), "DONACION")));
-        	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
+        	//model.addAttribute("lista_ddi", listaDdi);
+        	//model.addAttribute("lista_est_donacion", donacionService.listarEstadoDonacionUsuario(new ItemBean(usuarioBean.getIdUsuario(), "DONACION")));
+        	//model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
         	
-        	model.addAttribute("lista_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.ONE_INT,Constantes.ONE_INT)));
+        	model.addAttribute("lista_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.ONE_INT,Constantes.TWO_INT)));
         	
         	//model.addAttribute("lista_estado", generalService.listarEstadoDonacion(new ItemBean()));
         	model.addAttribute("txt_cod_ddi", usuarioBean.getCodigoDdi());
@@ -104,7 +107,7 @@ public class DonacionesIngresoController extends BaseController {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "listar-donaciones-ingreso";
+        return "listar-donaciones-salida";
     }
 	
 	/**
@@ -115,18 +118,14 @@ public class DonacionesIngresoController extends BaseController {
 	@RequestMapping(value = "/listarDonaciones", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarDonaciones(HttpServletRequest request, HttpServletResponse response) {
-		List<DonacionesIngresoBean> lista = null;
+		List<DonacionesSalidaBean> lista = null;
 		try {
 			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-			DonacionesIngresoBean donacionesIngresoBean = new DonacionesIngresoBean();	
+			DonacionesSalidaBean donacionesSalidaBean = new DonacionesSalidaBean();	
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(donacionesIngresoBean, request.getParameterMap());
-			donacionesIngresoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
-			System.out.println(donacionesIngresoBean.getCodigoAnio());
-			System.out.println(donacionesIngresoBean.getCodigoMes());
-			System.out.println(donacionesIngresoBean.getIdAlmacen());
-			System.out.println(donacionesIngresoBean.getIdMovimiento());
-			lista = donacionService.listarIngresoDonaciones(donacionesIngresoBean);
+			BeanUtils.populate(donacionesSalidaBean, request.getParameterMap());
+			donacionesSalidaBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+			lista = donacionService.listarSalidaDonaciones(donacionesSalidaBean);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -143,9 +142,9 @@ public class DonacionesIngresoController extends BaseController {
     public String mantenimientoDonaciones(@PathVariable("codigo") Integer codigo,@PathVariable("codigo") Integer dato, Model model) {
         try {
         	
-        	DonacionesIngresoBean donacionesBean = new DonacionesIngresoBean();
+        	DonacionesSalidaBean donacionesBean = new DonacionesSalidaBean();
         	List<ItemBean> listaDee1=null;
-        	DonacionesIngresoBean datoDonaciones=new DonacionesIngresoBean();
+        	DonacionesSalidaBean datoDonaciones=new DonacionesSalidaBean();
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	String codDdi = usuarioBean.getCodigoDdi();
@@ -153,23 +152,30 @@ public class DonacionesIngresoController extends BaseController {
         	Integer idAlmacen = usuarioBean.getIdAlmacen();
         	String codAlmacen = usuarioBean.getCodigoAlmacen();
         	String anioActual = generalService.obtenerAnioActual();
+        	String codiAnio = usuarioBean.getCodigoAnio();
         	
-        	//Para año y mes de trabajo
         	donacionesBean.setAnio(usuarioBean.getCodigoAnio());
         	donacionesBean.setMes(usuarioBean.getCodigoMes());
-        	
         	if (!isNullInteger(codigo)) {
         	
-        		donacionesBean = donacionService.obtenerDonacionIngresoXIdIngreso(codigo);
-        		donacionesBean.setNombreTipoDonacion(donacionesBean.getNombreTipoDonacion()==null?null:donacionesBean.getNombreTipoDonacion().trim());
-        		donacionesBean.setNombreDdi(usuarioBean.getNombreDdi());
-        		donacionesBean.setIdDdi(usuarioBean.getIdDdi());
-            	donacionesBean.setCodigoDdi(usuarioBean.getCodigoDdi());
-            	donacionesBean.setTextoCodigo(usuarioBean.getIdDdi()+"-"+usuarioBean.getCodigoAlmacen()+"-"+donacionesBean.getNroOrdenIngreso());
-            	System.out.println("Almacen: "+donacionesBean.getIdAlmacen());
-            	System.out.println("DOnacion: "+donacionesBean.getIdDonacion());
-            	System.out.println("Movimiento: "+donacionesBean.getIdTipoMovimiento());
-            	model.addAttribute("lista_productos_donacion", donacionService.listarProductosDonacion(donacionesBean));
+        		donacionesBean = donacionService.obtenerDonacionSalidaXIdSalida(codigo);
+//        		donacionesBean.setNombreTipoDonacion(donacionesBean.getNombreTipoDonacion()==null?null:donacionesBean.getNombreTipoDonacion().trim());
+//        		donacionesBean.setNombreDdi(usuarioBean.getNombreDdi());
+//        		donacionesBean.setIdDdi(usuarioBean.getIdDdi());
+//            	donacionesBean.setCodigoDdi(usuarioBean.getCodigoDdi());
+//            	donacionesBean.setTextoCodigo(usuarioBean.getIdDdi()+"-"+usuarioBean.getCodigoAlmacen()+"-"+donacionesBean.getNroOrdenIngreso());
+//            	System.out.println("Almacen: "+donacionesBean.getIdAlmacen());
+//            	System.out.println("DOnacion: "+donacionesBean.getIdDonacion());
+//            	System.out.println("Movimiento: "+donacionesBean.getIdTipoMovimiento());
+//            	model.addAttribute("lista_productos_donacion", donacionService.listarProductosDonacion(donacionesBean));
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
             	
 //            	donacionesBean.setTextoCodigo(usuarioBean.getIdDdi()+"-"+donacionesBean.getCodigoDonacion());
 //        		//model.addAttribute("lista_chofer", generalService.listarChofer(new ItemBean(controlCalidad.getIdEmpresaTransporte())));
@@ -188,7 +194,7 @@ public class DonacionesIngresoController extends BaseController {
 //        		model.addAttribute("listaNoAlimentarios", getParserObject(listaAlimentarios));
         		
         	} else {
-        		DonacionesIngresoBean parametros = new DonacionesIngresoBean();
+        		DonacionesSalidaBean parametros = new DonacionesSalidaBean();
             	
             	
             	parametros.setCodigoAnio(anioActual);
@@ -196,25 +202,70 @@ public class DonacionesIngresoController extends BaseController {
             	parametros.setCodigoDdi(codDdi);
             	parametros.setIdAlmacen(idAlmacen);
             	parametros.setCodAlmacen(codAlmacen);
-            	DonacionesIngresoBean datosDonacion = donacionService.obtenerCorrelativoOrdenIngreso(parametros);
+            	DonacionesSalidaBean datosDonacion = donacionService.obtenerCorrelativoOrdenSalida(parametros);
             	
             	donacionesBean.setIdDdi(idDdi);
             	donacionesBean.setCodigoDdi(codDdi);
             	//donacionesBean.setCodigoDonacion(datosDonacion.getCodigoDonacion());
-            	donacionesBean.setTextoCodigo(datosDonacion.getCodIngreso());
+            	//donacionesBean.setTextoCodigo(datosDonacion.getCodSalida());
             	donacionesBean.setCodigoAnio(anioActual);
             	donacionesBean.setNombreDdi(usuarioBean.getNombreDdi());
-            	donacionesBean.setNroOrdenIngreso("");
-            	donacionesBean.setCodIngreso(datosDonacion.getCodIngreso());
+            	donacionesBean.setNroOrdenSalida(datosDonacion.getNroOrdenSalida());
+            	donacionesBean.setCodSalida(datosDonacion.getCodSalida());
+           
+            	//enviar 0 para listar dee
 
+            	//model.addAttribute("lista_dee", generalService.listarDee(new ItemBean(Constantes.ZERO_INT)));
+            	
             	listaDee1 = generalService.listarDee(new ItemBean(Constantes.ONE_INT));
 
             	//model.addAttribute("lista_proce_pais", generalService.listarPais(new ItemBean(Constantes.ZERO_INT)));
 
             	datoDonaciones.setIdDdi(idDdi);
-            	datoDonaciones.setTipoDonante("1");
+            	//datoDonaciones.setTipoDonante("1");
             	
             	
+            	
+
+            	//model.addAttribute("lista_donadores", donacionService.listarDonadores(datoDonaciones));
+            	
+            	//model.addAttribute("lista_oficinas", generalService.listarOficinas(new ItemBean(Constantes.ZERO_INT)));
+            	
+            	//model.addAttribute("nombreDee", listaDee1.get(0).getDescripcion());
+            	
+//        		StringBuilder correlativo = new StringBuilder();
+//        		correlativo.append(usuarioBean.getCodigoDdi());
+//        		correlativo.append(Constantes.SEPARADOR);
+//        		correlativo.append(usuarioBean.getCodigoAlmacen());
+//        		correlativo.append(Constantes.SEPARADOR);
+//        		
+//        		ControlCalidadBean parametros = new ControlCalidadBean();
+//        		String anioActual = generalService.obtenerAnioActual();
+//        		parametros.setCodigoAnio(anioActual);
+//        		parametros.setCodigoDdi(usuarioBean.getCodigoDdi());
+//        		parametros.setIdAlmacen(usuarioBean.getIdAlmacen());   
+        		
+        		//ControlCalidadBean respuestaCorrelativo = logisticaService.obtenerCorrelativoControlCalidad(parametros);
+        	      
+        	//	correlativo.append(respuestaCorrelativo.getNroControlCalidad());
+        		
+//        		controlCalidad.setNroControlCalidad(correlativo.toString());        		
+//        		
+//        		ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
+//        		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
+//        		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
+//        		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
+//        		if (!isEmpty(listaAlmacenActivo)) {
+//        			controlCalidad.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+//        			controlCalidad.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+//        			controlCalidad.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+//        			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+//        			controlCalidad.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+//        		}
+//        		
+//            	controlCalidad.setIdDdi(usuarioBean.getIdDdi());
+//        		controlCalidad.setCodigoDdi(usuarioBean.getCodigoDdi());
+//        		controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
         	}
         	
         	if (!Utils.isNullInteger(donacionesBean.getIdDonacion())) {
@@ -226,19 +277,29 @@ public class DonacionesIngresoController extends BaseController {
         	}
         	//////////////////
         	
-        	model.addAttribute("lista_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.ONE_INT,Constantes.ONE_INT)));
-        	
-        	model.addAttribute("lista_codigo_donacion", donacionService.listarCodigoDonacion(new ItemBean(idDdi,anioActual)));
-        	
-        	model.addAttribute("lista_control_calidad", donacionService.listarControCalidad(new ItemBean(anioActual,codDdi)));
-        	
-        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(0)));
-        	
-        	model.addAttribute("lista_medio_transporte", generalService.listarMedioTransporte(new ItemBean()));
+        	model.addAttribute("lista_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.ONE_INT,Constantes.TWO_INT)));
         	
         	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(idDdi)));
         	
-        	model.addAttribute("lista_salida", donacionService.listarSalida(new ItemBean(idAlmacen)));
+        	model.addAttribute("lista_ddi", generalService.listarDdi(new ItemBean(Constantes.ZERO_INT)));
+        	
+        	model.addAttribute("lista_departamento", generalService.listarDepartamentos(new UbigeoBean()));
+        	
+        	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean(Constantes.ZERO_INT)));
+        	
+        	//model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(idDdi)));
+        	
+//        	model.addAttribute("lista_codigo_donacion", donacionService.listarCodigoDonacion(new ItemBean(idDdi,anioActual)));
+//        	
+//        	model.addAttribute("lista_control_calidad", donacionService.listarControCalidad(new ItemBean(anioActual,codDdi)));
+//        	
+//        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(0)));
+
+        	model.addAttribute("lista_medio_transporte", generalService.listarMedioTransporte(new ItemBean()));
+//        	
+//        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(idDdi)));
+//        	
+//        	model.addAttribute("lista_salida", donacionService.listarSalida(new ItemBean(idAlmacen)));
         	
         	
         	
@@ -257,15 +318,40 @@ public class DonacionesIngresoController extends BaseController {
         	
         	//model.addAttribute("nombreDee", listaDee1.get(0).getDescripcion());
         	
-        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.THREE_INT)));
+        	model.addAttribute("lista_categoria", generalService.listarCategoria(new ItemBean(Constantes.ZERO_INT)));
         	//falta pintar
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean(Constantes.ZERO_INT)));
-        	   
+        	
+        	//Para estados
+        	
+//
+//        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.THREE_INT)));
+//        	
+//        	model.addAttribute("lista_orden_compra", logisticaService.listarOrdenCompra());
+//        	
+//        	model.addAttribute("lista_tipo_control", generalService.listarTipoControlCalidad(new ItemBean()));
+//        	
+//        	model.addAttribute("lista_personal", generalService.listarPersonal(new ItemBean(usuarioBean.getIdDdi())));
+//        	
+//        	model.addAttribute("lista_proveedor", generalService.listarProveedor(new ItemBean()));
+//        	  
+//        	ItemBean parametroEmpresaTransporte = new ItemBean();
+//        	parametroEmpresaTransporte.setIcodigo(usuarioBean.getIdDdi());
+//        	parametroEmpresaTransporte.setIcodigoParam2(Constantes.ONE_INT);
+//        	model.addAttribute("lista_empresa_transporte", generalService.listarEmpresaTransporte(parametroEmpresaTransporte));
+//        	
+//        	model.addAttribute("lista_producto", generalService.listarCatologoProductos(new ProductoBean(null, Constantes.FIVE_INT)));
+//        	
+//        	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean()));
+//     
+//        	
+//        	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
+            
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "registrar-donaciones-ingreso";
+        return "registrar-donaciones-salida";
     }
 	
 	/**
@@ -297,40 +383,18 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarProductosAlGrabar", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public Object listarProductosAlGrabar(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoDonacionBean> lista = null;
-		try {			
-			
-			DonacionesIngresoBean donacionesBean = new DonacionesIngresoBean();		
-			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(donacionesBean, request.getParameterMap());
-			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-			donacionesBean.setIdAlmacen(usuarioBean.getIdAlmacen());
-			lista = donacionService.listarProductosDonacion(donacionesBean);
-			
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			return getBaseRespuesta(null);
-		}
-		return lista;
-	}
-	
-	/**
-	 * @param request
-	 * @param response
-	 * @return objeto en formato json
-	 */
 	@RequestMapping(value = "/listarProductosXCategoria", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarProductoXCategoria(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoBean> lista = null;
+		List<ProductoDonacionSalidaBean> lista = null;
 		try {			
-			ProductoBean producto = new ProductoBean();			
+			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			ProductoDonacionSalidaBean producto = new ProductoDonacionSalidaBean();			
 			// Copia los parametros del cliente al objeto
-			BeanUtils.populate(producto, request.getParameterMap());			
-			lista = generalService.listarCatologoProductos(new ProductoBean(Constantes.ZERO_INT, producto.getIdCategoria()));
+			BeanUtils.populate(producto, request.getParameterMap());
+			producto.setIdAlmacen(usuarioBean.getIdAlmacen());
+			
+			lista = donacionService.listarProductosDonacionSalida(producto);
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -361,34 +425,35 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarDonacionesIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarDonacionesSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarDonacion(HttpServletRequest request, HttpServletResponse response) {
-		DonacionesIngresoBean donaciones = null;
+		DonacionesSalidaBean donaciones = null;
 		System.out.println("ENTRO A GUARDAR");
 		try {			
-			DonacionesIngresoBean donacionesIngresoBean = new DonacionesIngresoBean();
+			DonacionesSalidaBean donacionesSalidaBean = new DonacionesSalidaBean();
 			
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);
 			BeanUtilsBean beanUtilsBean = new BeanUtilsBean();
 			beanUtilsBean.getConvertUtils().register(con_integer, Integer.class);
 			// Copia los parametros del cliente al objeto
-			beanUtilsBean.populate(donacionesIngresoBean, request.getParameterMap());
-			System.out.println("ANIO: "+donacionesIngresoBean.getCodigoAnio());
+			beanUtilsBean.populate(donacionesSalidaBean, request.getParameterMap());
+			System.out.println("ANIO: "+donacionesSalidaBean.getCodigoAnio());
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
-        	donacionesIngresoBean.setUsuarioRegistro(usuarioBean.getUsuario());
-        	donacionesIngresoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
-        	donacionesIngresoBean.setCodAlmacen(usuarioBean.getCodigoAlmacen());
-        	donacionesIngresoBean.setTipoOrigen("D");
-			if (!isNullInteger(donacionesIngresoBean.getIdIngreso())) {
+        	donacionesSalidaBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	donacionesSalidaBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+        	donacionesSalidaBean.setCodAlmacen(usuarioBean.getCodigoAlmacen());
+        	donacionesSalidaBean.setCodigoDdi(usuarioBean.getCodigoDdi());
+        	donacionesSalidaBean.setTipoOrigen("D");
+			if (!isNullInteger(donacionesSalidaBean.getIdSalida())) {
 				//donacionesBean =donacionService.obtenerDonacionXIdDonacion(donacionesBean.getIdDonacion());
-				donaciones = donacionService.actualizarRegistroDonacionIngreso(donacionesIngresoBean);
+				donaciones = donacionService.actualizarRegistroDonacionSalida(donacionesSalidaBean);
 				donaciones.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 			} else {			
-				donaciones = donacionService.insertarRegistroDonacionIngreso(donacionesIngresoBean);			
+				donaciones = donacionService.insertarRegistroDonacionSalida(donacionesSalidaBean);			
 			}
 			
 		} catch (Exception e) {
@@ -732,12 +797,12 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarProductoDonacionIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarProductoDonacionSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		ProductoDonacionIngresoBean productoDonacion = null;
+		ProductoDonacionSalidaBean productoDonacion = new ProductoDonacionSalidaBean();
 		try {			
-			ProductoDonacionIngresoBean productoDonacionBean = new ProductoDonacionIngresoBean();
+			ProductoDonacionSalidaBean productoDonacionBean = new ProductoDonacionSalidaBean();
 
 			// Convierte los vacios en nulos en los enteros
 			IntegerConverter con_integer = new IntegerConverter(null);			
@@ -757,18 +822,33 @@ public class DonacionesIngresoController extends BaseController {
         	productoDonacionBean.setCodDdi(usuarioBean.getCodigoDdi());
         	productoDonacionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
         	productoDonacionBean.setCodAlmacen(usuarioBean.getCodigoAlmacen());
-        	productoDonacionBean.setCodigoAnio(usuarioBean.getCodigoAnio());
-        	productoDonacionBean.setCodigoMes(usuarioBean.getCodigoMes());
-        	System.out.println("IDINGRESODET: "+productoDonacionBean.getIdIngresoDet());
-        	if(productoDonacionBean.getIdIngresoDet().equals("") || productoDonacionBean.getIdIngresoDet()==0){
-        		productoDonacion = donacionService.insertarProductoDonacionIngreso(productoDonacionBean);
-        	}else{
-        		productoDonacion = donacionService.actualizarProductoDonacionIngreso(productoDonacionBean);
-        	}
+        	productoDonacionBean.setAnio(usuarioBean.getCodigoAnio());
+        	productoDonacionBean.setMes(usuarioBean.getCodigoMes());
         	
-			
-        	productoDonacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
-
+        	
+        	ItemBean parametros = new ItemBean();
+        	parametros.setIcodigo(productoDonacionBean.getIdProducto());
+        	parametros.setIcodigoParam2(productoDonacionBean.getIdAlmacen());
+        	parametros.setIcodigoParam3(productoDonacionBean.getCantidad().intValue());
+        	ItemBean validaStock = donacionService.validaStockProducto(parametros);
+        	String mensajeResp="";
+        	if(validaStock.getCodigoRespuesta().equals(Constantes.COD_VALIDACION_GENERAL)){
+        		mensajeResp=validaStock.getMensajeRespuesta();
+        		productoDonacion.setCodigoRespuesta(validaStock.getCodigoRespuesta());
+        		 
+        	}else{
+        		if(productoDonacionBean.getIdSalidaDet().equals("") || productoDonacionBean.getIdSalidaDet()==0){
+            		
+            		productoDonacion = donacionService.insertarProductoDonacionSalida(productoDonacionBean);
+            	}else{
+            		productoDonacion = donacionService.actualizarProductoDonacionSalida(productoDonacionBean);
+            	}
+        		mensajeResp=(getMensaje(messageSource, "msg.info.grabadoOk"));
+    			
+            	//productoDonacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));	
+        	}
+        	System.out.println("Mensaje : "+mensajeResp);
+        	productoDonacion.setMensajeRespuesta(mensajeResp);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -785,13 +865,12 @@ public class DonacionesIngresoController extends BaseController {
 	@RequestMapping(value = "/listarProductoDonacion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		List<ProductoDonacionIngresoBean> lista = null;
+		List<ProductoDonacionSalidaBean> lista = null;
 		try {			
-			ProductoDonacionIngresoBean producto = new ProductoDonacionIngresoBean();			
+			ProductoDonacionSalidaBean producto = new ProductoDonacionSalidaBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(producto, request.getParameterMap());			
-			lista = donacionService.listarProductoDonacionIngreso(producto);
-
+			lista = donacionService.listarProductoDonacionSalida(producto);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -807,19 +886,19 @@ public class DonacionesIngresoController extends BaseController {
 	@RequestMapping(value = "/eliminarProductoDonacion", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object eliminarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		ProductoDonacionIngresoBean producto = null;
+		ProductoDonacionSalidaBean producto = null;
 		try {			
-			System.out.println("PARAMETRO : "+request.getParameter("idIngresoDet"));
-			String[] arrIdDetalleControlCalidad = request.getParameter("idIngresoDet").split(Constantes.UNDERLINE);
+			System.out.println("PARAMETRO : "+request.getParameter("idSalidaDet"));
+			String[] arrIdDetalleControlCalidad = request.getParameter("idSalidaDet").split(Constantes.UNDERLINE);
 			for (String codigo : arrIdDetalleControlCalidad) {				
-				ProductoDonacionIngresoBean productoDonacionBean = new ProductoDonacionIngresoBean();
-				productoDonacionBean.setIdIngresoDet(Integer.parseInt(codigo));
+				ProductoDonacionSalidaBean productoDonacionBean = new ProductoDonacionSalidaBean();
+				productoDonacionBean.setIdSalidaDet(Integer.parseInt(codigo));
 				// Retorno los datos de session
 	        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-	        	System.out.println("PARAMETROrrrr : "+productoDonacionBean.getIdIngresoDet());
+	        	System.out.println("PARAMETROrrrr : "+productoDonacionBean.getIdSalidaDet());
 	        	productoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
 				
-				producto = donacionService.eliminarProductoDonacionIngreso(productoDonacionBean);				
+				producto = donacionService.eliminarProductoDonacionSalida(productoDonacionBean);				
 			}
 
 			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -836,15 +915,15 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/listarDocumentoDonacionIngreso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/listarDocumentoDonacionSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object listarDocumentoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		List<DocumentoIngresoBean> lista = null;
+		List<DocumentoSalidaBean> lista = null;
 		try {			
-			DocumentoIngresoBean documento = new DocumentoIngresoBean();			
+			DocumentoSalidaBean documento = new DocumentoSalidaBean();			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documento, request.getParameterMap());			
-			lista = donacionService.listarDocumentoDonacionIngreso(documento);
+			lista = donacionService.listarDocumentoDonacionSalida(documento);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -879,12 +958,12 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/grabarDocumentoDonacionIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/grabarDocumentoDonacionSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarDocumentoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoIngresoBean documento = null;
+		DocumentoSalidaBean documento = null;
 		try {			
-			DocumentoIngresoBean documentoDonacionBean = new DocumentoIngresoBean();
+			DocumentoSalidaBean documentoDonacionBean = new DocumentoSalidaBean();
 			
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documentoDonacionBean, request.getParameterMap());
@@ -893,12 +972,12 @@ public class DonacionesIngresoController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	documentoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-        	System.out.println("IDDOCUMENTO: "+documentoDonacionBean.getIdDocumentoIngreso());
-        	if(documentoDonacionBean.getIdDocumentoIngreso().equals("") || documentoDonacionBean.getIdDocumentoIngreso()==0){
-        		documento = donacionService.insertarDocumentoDonacionIngreso(documentoDonacionBean);
+        	Integer iddocumento = documentoDonacionBean.getIdDocumentoSalida()!=null?documentoDonacionBean.getIdDocumentoSalida():0;
+        	if(iddocumento==0){
+        		documento = donacionService.insertarDocumentoDonacionSalida(documentoDonacionBean);
 
         	}else{
-        		documento = donacionService.actualizarDocumentoDonacionIngreso(documentoDonacionBean);
+        		documento = donacionService.actualizarDocumentoDonacionSalida(documentoDonacionBean);
 
         	}
         	documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));	
@@ -916,24 +995,23 @@ public class DonacionesIngresoController extends BaseController {
 	 * @param response
 	 * @return objeto en formato json
 	 */
-	@RequestMapping(value = "/eliminarDocumentoDonacionIngreso", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/eliminarDocumentoDonacionSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object eliminarDocumentoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		DocumentoIngresoBean documento = null;
+		DocumentoSalidaBean documento = null;
 		try {			
 			String[] arrIdDocumentoDonacion = request.getParameter("arrIdDocumentoDonacion").split(Constantes.UNDERLINE);
-			Integer idIngreso = Integer.parseInt(request.getParameter("idIngreso"));
-			System.out.println("ARRAY: "+request.getParameter("arrIdDocumentoDonacion"));
+			Integer idSalida = Integer.parseInt(request.getParameter("idSalida"));
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
 			for (String codigo : arrIdDocumentoDonacion) {				
-				DocumentoIngresoBean documentoDonacionBean = new DocumentoIngresoBean();
-				System.out.println("ARRAYddd: "+idIngreso+"--"+codigo);
-				documentoDonacionBean.setIdIngreso(idIngreso);
-				documentoDonacionBean.setIdDocumentoIngreso(getInteger(codigo));
+				DocumentoSalidaBean documentoDonacionBean = new DocumentoSalidaBean();
+				
+				documentoDonacionBean.setIdSalida(idSalida);
+				documentoDonacionBean.setIdDocumentoSalida(getInteger(codigo));
 				documentoDonacionBean.setUsuarioRegistro(usuarioBean.getNombreUsuario());
-	        	documento = donacionService.eliminarDocumentoIngresoDonacion(documentoDonacionBean);				
+	        	documento = donacionService.eliminarDocumentoSalidaDonacion(documentoDonacionBean);				
 			}
 
 			documento.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
@@ -1095,20 +1173,20 @@ public class DonacionesIngresoController extends BaseController {
 	@ResponseBody
 	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
 	    try {
-	    	
-			List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
-			List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
-			List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
+			List<DonacionesSalidaBean> lista = donacionService.listarReporteDonacionSalida(codigo);
+			List<ProductoDonacionSalidaBean> listaProductos = donacionService.listarProductosReporteDonacionSalida(codigo);
+			List<DocumentoSalidaBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionSalida(codigo);
 			if (isEmpty(lista) || isEmpty(listaProductos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
-			DonacionesIngresoBean general = lista.get(0);
+			DonacionesSalidaBean general = lista.get(0);
+
 			ExportarArchivo printer = new ExportarArchivo();
 			StringBuilder jasperFile = new StringBuilder();
 			jasperFile.append(getPath(request));
 			jasperFile.append(File.separator);
 			jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
-			jasperFile.append("Orden_Ingreso.jrxml");
+			jasperFile.append("Orden_Salida.jrxml");
 			
 			String ruta = getPath(request)+File.separator+Constantes.REPORT_PATH_DONACIONES;
 //			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
@@ -1116,11 +1194,12 @@ public class DonacionesIngresoController extends BaseController {
 //			} else {
 //				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
 //			}
-			JRBeanCollectionDataSource ListaDocumentos = new JRBeanCollectionDataSource(listaDocumentos);
 			
+			JRBeanCollectionDataSource ListaDocumentos = new JRBeanCollectionDataSource(listaDocumentos);
+//			
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
-			// Agregando los parámetros del reporte
+			// Agregando los parÃ¡metros del reporte
 			StringBuilder logo_indeci_path = new StringBuilder();
 			logo_indeci_path.append(getPath(request));
 			logo_indeci_path.append(File.separator);
@@ -1141,21 +1220,22 @@ public class DonacionesIngresoController extends BaseController {
 			logo_check_min_path.append(File.separator);
 			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
 			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-			parameters.put("P_NRO_ORDEN_INGRESO", general.getNroOrdenIngreso());
+			parameters.put("P_NRO_ORDEN_INGRESO", general.getNroOrdenSalida());
 			parameters.put("P_DDI", general.getNombreDdi());			
 			parameters.put("P_FECHA_EMISION", general.getFechaEmision());
-			parameters.put("P_ALMACEN_ORIGEN", general.getNombreAlmacen());
+			parameters.put("P_ALMACEN_ORIGEN", general.getNomAlmacenOrigen());
 			parameters.put("P_OBSERVACION", general.getObservacion());
 			parameters.put("P_TIPO_MOVIMIENTO", general.getNombreMovimiento());
-			parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
+			parameters.put("P_ALMACEN_DESTINO", general.getNomAlmacenDestino());
 			parameters.put("LISTA_DOCUMENTOS", ListaDocumentos);
 			parameters.put("SR_RUTA_DOCUMENTOS", ruta);
+			parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
 			parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
-
+			
 			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
 			InputStream input = new ByteArrayInputStream(array);
 	        
-	        String file_name = "Orden_Ingreso_Donacion";
+	        String file_name = "Orden_Salida_Donacion";
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 	    	
 	        response.resetBuffer();
@@ -1182,263 +1262,183 @@ public class DonacionesIngresoController extends BaseController {
 	    	return Constantes.COD_ERROR_GENERAL;
 	    } 
 	}
+
 	
-	@RequestMapping(value = "/exportarPdfActa/{codigo}/{tipo}/{ind_gui}/{ind_man}", method = RequestMethod.GET)
+	///////////////SALIDA//////////////////
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarAlmacenDestino", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String exportarPdfActa(@PathVariable("codigo") Integer codigo, 
-			@PathVariable("tipo") Integer tipo,
-			@PathVariable("ind_gui") Integer ind_orden,
-			@PathVariable("ind_man") Integer ind_acta,
-			HttpServletRequest request, HttpServletResponse response) {
-	    try {
-	    	
-	    	if(ind_orden==1){
-	    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
-				List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
-				List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
-				if (isEmpty(lista) || isEmpty(listaProductos)) {
-					return Constantes.COD_VALIDACION_GENERAL;
-				}			
-				DonacionesIngresoBean general = lista.get(0);
-
-				ExportarArchivo printer = new ExportarArchivo();
-				StringBuilder jasperFile = new StringBuilder();
-				jasperFile.append(getPath(request));
-				jasperFile.append(File.separator);
-				jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
-				jasperFile.append("Orden_Ingreso.jrxml");
-				
-				String ruta = getPath(request)+File.separator+Constantes.REPORT_PATH_DONACIONES;
-//				if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-//					jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-//				} else {
-//					jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-//				}
-				JRBeanCollectionDataSource ListaDocumentos = new JRBeanCollectionDataSource(listaDocumentos);
-				
-				Map<String, Object> parameters = new HashMap<String, Object>();
-
-				// Agregando los parámetros del reporte
-				StringBuilder logo_indeci_path = new StringBuilder();
-				logo_indeci_path.append(getPath(request));
-				logo_indeci_path.append(File.separator);
-				logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-				parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-				StringBuilder logo_wfp_path = new StringBuilder();
-				logo_wfp_path.append(getPath(request));
-				logo_wfp_path.append(File.separator);
-				logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-				parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-				StringBuilder logo_check_path = new StringBuilder();
-				logo_check_path.append(getPath(request));
-				logo_check_path.append(File.separator);
-				logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-				parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-				StringBuilder logo_check_min_path = new StringBuilder();
-				logo_check_min_path.append(getPath(request));
-				logo_check_min_path.append(File.separator);
-				logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-				parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-				parameters.put("P_NRO_ORDEN_INGRESO", general.getNroOrdenIngreso());
-				parameters.put("P_DDI", general.getNombreDdi());			
-				parameters.put("P_FECHA_EMISION", general.getFechaEmision());
-				parameters.put("P_ALMACEN_ORIGEN", general.getNombreAlmacen());
-				parameters.put("P_OBSERVACION", general.getObservacion());
-				parameters.put("P_TIPO_MOVIMIENTO", general.getNombreMovimiento());
-				parameters.put("LISTA_DOCUMENTOS", ListaDocumentos);
-				parameters.put("SR_RUTA_DOCUMENTOS", ruta);
-				parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
-				parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
-
-				byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
-				InputStream input = new ByteArrayInputStream(array);
-		        
-		        String file_name = "Orden_Ingreso_Donacion";
-				file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-		    	
-		        response.resetBuffer();
-	            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-	            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-				response.setHeader("Pragma", "no-cache");
-				response.setHeader("Cache-Control", "no-store");
-				response.setHeader("Pragma", "private");
-				response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-				response.setDateHeader("Expires", 1);
-				
-				byte[] buffer = new byte[4096];
-		    	int n = 0;
-
-		    	OutputStream output = response.getOutputStream();
-		    	while ((n = input.read(buffer)) != -1) {
-		    	    output.write(buffer, 0, n);
-		    	}
-		    	output.close();
-
-		    	return Constantes.COD_EXITO_GENERAL;
-	    	}else{
-	    		
-	    		if(tipo==12 || tipo==13){
-	    			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-		    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
-					List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductoReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
-					if (isEmpty(lista) || isEmpty(listaProductos)) {
-						return Constantes.COD_VALIDACION_GENERAL;
-					}			
-					DonacionesIngresoBean general = lista.get(0);
-
-					ExportarArchivo printer = new ExportarArchivo();
-					StringBuilder jasperFile = new StringBuilder();
-					jasperFile.append(getPath(request));
-					jasperFile.append(File.separator);
-					jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
-					jasperFile.append("Acta_Entrega_Nacional.jrxml");
-					
-					Map<String, Object> parameters = new HashMap<String, Object>();
-
-					// Agregando los parámetros del reporte
-					StringBuilder logo_indeci_path = new StringBuilder();
-					logo_indeci_path.append(getPath(request));
-					logo_indeci_path.append(File.separator);
-					logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-					parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-					StringBuilder logo_wfp_path = new StringBuilder();
-					logo_wfp_path.append(getPath(request));
-					logo_wfp_path.append(File.separator);
-					logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-					parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-					StringBuilder logo_check_path = new StringBuilder();
-					logo_check_path.append(getPath(request));
-					logo_check_path.append(File.separator);
-					logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-					parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-					StringBuilder logo_check_min_path = new StringBuilder();
-					logo_check_min_path.append(getPath(request));
-					logo_check_min_path.append(File.separator);
-					logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-					parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-					parameters.put("D_CIUDAD", general.getNombreDdi());
-					parameters.put("D_DIAS", general.getDia());			
-					parameters.put("D_MES", general.getMes());
-					parameters.put("D_ANIO", general.getAnio());
-					parameters.put("D_NOM_ALMACEN", general.getNombreAlmacen());
-					parameters.put("D_NOM_DONANTE", general.getNombreDonante());
-					parameters.put("D_NUM_DOCUMENTO", general.getNroDocumento());
-					parameters.put("D_FECHA_EMISION", general.getFechaEmision());
-					parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
-					parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
-
-					byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
-					InputStream input = new ByteArrayInputStream(array);
-			        
-			        String file_name = "Acta_Nacional";
-					file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-			    	
-			        response.resetBuffer();
-		            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-		            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-					response.setHeader("Pragma", "no-cache");
-					response.setHeader("Cache-Control", "no-store");
-					response.setHeader("Pragma", "private");
-					response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-					response.setDateHeader("Expires", 1);
-					
-					byte[] buffer = new byte[4096];
-			    	int n = 0;
-
-			    	OutputStream output = response.getOutputStream();
-			    	while ((n = input.read(buffer)) != -1) {
-			    	    output.write(buffer, 0, n);
-			    	}
-			    	output.close();
-
-			    	return Constantes.COD_EXITO_GENERAL;
-	    		}else{
-	    			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-		    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
-					List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductoReporteDonacionIngresoNacional(codigo, usuarioBean.getIdDdi());
-					if (isEmpty(lista) || isEmpty(listaProductos)) {
-						return Constantes.COD_VALIDACION_GENERAL;
-					}			
-					DonacionesIngresoBean general = lista.get(0);
-
-					ExportarArchivo printer = new ExportarArchivo();
-					StringBuilder jasperFile = new StringBuilder();
-					jasperFile.append(getPath(request));
-					jasperFile.append(File.separator);
-					jasperFile.append(Constantes.REPORT_PATH_DONACIONES);
-					jasperFile.append("Acta_Entrega_Internacional.jrxml");
-					
-					Map<String, Object> parameters = new HashMap<String, Object>();
-
-					// Agregando los parámetros del reporte
-					StringBuilder logo_indeci_path = new StringBuilder();
-					logo_indeci_path.append(getPath(request));
-					logo_indeci_path.append(File.separator);
-					logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-					parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-					StringBuilder logo_wfp_path = new StringBuilder();
-					logo_wfp_path.append(getPath(request));
-					logo_wfp_path.append(File.separator);
-					logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-					parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-					StringBuilder logo_check_path = new StringBuilder();
-					logo_check_path.append(getPath(request));
-					logo_check_path.append(File.separator);
-					logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-					parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-					StringBuilder logo_check_min_path = new StringBuilder();
-					logo_check_min_path.append(getPath(request));
-					logo_check_min_path.append(File.separator);
-					logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-					parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-					parameters.put("D_CIUDAD", general.getNombreDdi());
-					parameters.put("D_DIAS", general.getDia());			
-					parameters.put("D_MES", general.getMes());
-					parameters.put("D_ANIO", general.getAnio());
-					parameters.put("D_NOM_ALMACEN", general.getNombreAlmacen());
-					parameters.put("D_NOM_DONANTE", general.getNombreDonante());
-					parameters.put("D_NUM_DOCUMENTO", general.getNroDocumento());
-					parameters.put("D_JEFE_ALMACEN", general.getResponsableAlmacen());
-					parameters.put("D_NOMBRE_SISTEMA", general.getNombreSistema());
-					parameters.put("D_VERSION_SISTEMA", general.getVersionSistema());
-
-					byte[] array = printer.exportPdf(jasperFile.toString(), parameters, listaProductos);
-					InputStream input = new ByteArrayInputStream(array);
-			        
-			        String file_name = "Acta_Internacional";
-					file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-			    	
-			        response.resetBuffer();
-		            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-		            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-					response.setHeader("Pragma", "no-cache");
-					response.setHeader("Cache-Control", "no-store");
-					response.setHeader("Pragma", "private");
-					response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-					response.setDateHeader("Expires", 1);
-					
-					byte[] buffer = new byte[4096];
-			    	int n = 0;
-
-			    	OutputStream output = response.getOutputStream();
-			    	while ((n = input.read(buffer)) != -1) {
-			    	    output.write(buffer, 0, n);
-			    	}
-			    	output.close();
-
-			    	return Constantes.COD_EXITO_GENERAL;
-	    		}
-	    		
-	    	}
-	    	
-			
-	    } catch (Exception e) {
-	    	LOGGER.error(e.getMessage(), e);
-	    	return Constantes.COD_ERROR_GENERAL;
-	    } 
+	public Object listarAlmacenDestino(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		System.out.println("CODIGO11111: ");
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			System.out.println("CODIGO: "+item.getIcodigo());
+			lista = generalService.listarAlmacen(item);
+			System.out.println(lista.size());
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
 	}
 	
-	/////////////////////////////////
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarResponsableRecepcion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarResponsableRecepcion(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		System.out.println("CODIGO22222: ");
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			System.out.println("CODIGO: "+item.getIcodigo());
+			lista = generalService.listarPersonal(item);
+			System.out.println(lista.size());
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarAlmacenExtRegion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarAlmacenExtRegion(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarAlmacenExternoRegion(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarPersonalExtRegion", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarPersonalExtRegion(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarPersonalExternoRegion(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarProvincia", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProvincia(HttpServletRequest request, HttpServletResponse response) {
+		List<UbigeoBean> lista = null;
+		try {			
+			UbigeoBean ubigeoBean = new UbigeoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(ubigeoBean, request.getParameterMap());
+			lista = generalService.listarProvincia(ubigeoBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarDistrito", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarDistrito(HttpServletRequest request, HttpServletResponse response) {
+		List<UbigeoBean> lista = null;
+		try {			
+			UbigeoBean ubigeoBean = new UbigeoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(ubigeoBean, request.getParameterMap());
+			lista = generalService.listarDistrito(ubigeoBean);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarAlmacenExtLocal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarAlmacenExtLocal(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarAlmacenExternoLocal(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarPersonalExtLocal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarPersonalExtLocal(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean item = new ItemBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(item, request.getParameterMap());
+			lista = generalService.listarPersonalExternoLocal(item);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
 	
 
 }

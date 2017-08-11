@@ -4,8 +4,9 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Donaciones</li>
-		<li>Inscripción</li>
+		<li>Administración</li>
+		<li>Catálogo de Productos</li>
+		<li>Lista de Catálogo de Productos</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -27,7 +28,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Donantes</h2>
+						<h2>Búsqueda de Catálogo de Productos</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -41,34 +42,24 @@
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
 								<input type="hidden" id="txt_cod_ddi" name="txt_cod_ddi" value="${txt_cod_ddi}">
 								<div class="form-group">
-									<label class="col-sm-1 control-label">Año:</label>
+									<label class="col-sm-1 control-label">Categoría del Producto:</label>
 									<div class="col-sm-2">
-										<select id="sel_anio" name="sel_anio" class="form-control">
+										<select id="sel_catalogo_producto" name="sel_catalogo_producto" class="form-control">
 											<c:forEach items="${lista_anio}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
 									
-									<label class="col-sm-1 control-label">Mes:</label>
+									<label class="col-sm-1 control-label">Producto:</label>
 									<div class="col-sm-2">
-										<select id="sel_mes" name="sel_mes" class="form-control">
-											<option value="">Todos</option>
-											<c:forEach items="${lista_mes}" var="item">
+										<select id="sel_producto" name="sel_producto" class="form-control">
+											<c:forEach items="${lista_anio}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
-									
-									<label class="col-sm-2 control-label">Estado:</label>
-									<div class="col-sm-2">
-										<select id="sel_estado" name="sel_estado" class="form-control">
-											<option value="0">Todos</option>
-											<c:forEach items="${lista_estado}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
+			
 									
 									<div class="col-sm-2">
 										<button class="btn btn-primary" type="button" id="btn_buscar">
@@ -99,7 +90,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Lista de Donantes</h2>
+						<h2>Lista de Catálogo de Productos</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
@@ -118,10 +109,6 @@
 								data-original-title="Nuevo">
 								<i class="fa fa-file-o"></i>
 							</a>
-							<a href="#" id="href_estado" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Estado">
-								<i class="fa fa-gear"></i>
-							</a>
 						</div>
 					</header>
 	
@@ -131,17 +118,17 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_mnt_con_donaciones" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_catalogo_producto" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
-										<th>Año</th>
-										<th>Mes</th>
-										<th>DDI</th>
-										<th>Código Donación</th>
-										<th>Fecha</th>
-										<th>País de Origen</th>
-										<th>Donante</th>
+										<th>N°</th>
+										<th>Categoría</th>
+										<th>Código SIGBAH</th>
+										<th>Código SIGA</th>
+										<th>Producto</th>
+										<th>Unidad de Medida</th>
+										<th>Tipo Envase</th>
 										<th>Estado</th>
 									</tr>
 								</thead>
@@ -176,7 +163,7 @@
 				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold1" id="h4_tit_documentos">Estado de la Donación</h4>
+				<h4 class="modal-title label-bold" id="h4_tit_documentos">Estado de la Donación</h4>
 			</div>
 			
 			<div class="modal-body">
@@ -252,4 +239,4 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/donaciones/listar_donaciones.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/administracion/listar_catalogo_productos.js"></script>

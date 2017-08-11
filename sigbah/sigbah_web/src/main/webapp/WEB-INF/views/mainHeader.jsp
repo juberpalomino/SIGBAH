@@ -24,7 +24,11 @@
 				</div>
 				<div class="col-sm-4 div-usuario">
 					Usuario: ${usuarioBean.nombreUsuario} <br> ${usuarioBean.nombreDdi}
+					<div style="text-transform: capitalize;">
+					 ${usuarioBean.nombreAlmacen}
 				</div>
+				</div>
+				
 			</div>
 		</div>	
 	</div>

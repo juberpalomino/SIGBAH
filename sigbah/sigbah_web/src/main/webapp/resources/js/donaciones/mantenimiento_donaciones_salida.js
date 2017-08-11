@@ -38,18 +38,45 @@ $(document).ready(function() {
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
 	});
 	
+//	$('#txt_fecha').datepicker().on('changeDate', function(e) {
+//		e.preventDefault();
+//		var fecha = $(this).val();
+//		var fecha2 = $('#txt_fec_entrega').val();
+//		if (!esnulo(fecha)) {
+//			console.log(comparafecha(fecha2, fecha));
+//		    if (comparafecha(fecha2, fecha)=='2') {
+//		    	addWarnMessage(null, 'La fecha de entrega debe ser mayor o igual a la fecha de registro.');
+//		    	$('#txt_fecha').val('');
+//		    	$('#'+$(this).attr('id')).focus();
+//		    } else {
+//		    	
+//		    }
+//		}
+//		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
+//	});
+	
 	$('#txt_fecha').datepicker().on('changeDate', function(e) {
 		e.preventDefault();
 		var fecha = $(this).val();
 		var fecha2 = $('#txt_fec_entrega').val();
 		if (!esnulo(fecha)) {
-			console.log(comparafecha(fecha2, fecha));
-		    if (comparafecha(fecha2, fecha)=='2') {
-		    	addWarnMessage(null, 'La fecha de entrega debe ser mayor o igual a la fecha de registro.');
+			var mes = fecha.substring(3, 5);
+		    var anio = fecha.substring(6, 10);	
+		    if (mes != donaciones.mes || anio != donaciones.anio) {
+		    	$('#hid_val_fec_trabajo').val('0');
+		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
 		    	$('#txt_fecha').val('');
 		    	$('#'+$(this).attr('id')).focus();
 		    } else {
 		    	
+		    	if (comparafecha(fecha2, fecha)=='2') {
+		    		addWarnMessage(null, 'La fecha de entrega debe ser mayor o igual a la fecha de registro.');
+			    	$('#txt_fecha').val('');
+			    	$('#'+$(this).attr('id')).focus();
+			    } else {
+			    	
+			    }
+		    	$('#hid_val_fec_trabajo').val('1');
 		    }
 		}
 		frm_dat_generales.bootstrapValidator('revalidateField', $(this).attr('id'));	
@@ -138,6 +165,12 @@ $(document).ready(function() {
 	$('#btn_grabar').click(function(e) {
 		e.preventDefault();
 		
+		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
+		if ($('#hid_val_fec_trabajo').val() == '0') {
+	    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+	    	return;
+		}
+
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		
 		bootstrapValidator.validate();
@@ -589,7 +622,7 @@ $(document).ready(function() {
 				idSalidaDet : $('#hid_cod_producto').val(),
 				idProducto : idProducto,
 				//idDonacion : $('#hid_id_donacion').val(),
-				cantidad : formatMonto($('#txt_cantidad').val()),
+				cantidad : ($('#txt_cantidad').val()),
 				precioUnitario : $('#txt_precio').val(),
 				idProgramacion : '',
 				idDonacion : $('#hid_donacion_pro').val()
@@ -602,15 +635,24 @@ $(document).ready(function() {
 			loadding(true);
 			
 			consultarAjax('POST', '/donacionesSalida/registro-donacionesSalida/grabarProductoDonacionSalida', params, function(respuesta) {
-				$('#div_det_productos').modal('hide');
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				
+				if(respuesta.codigoRespuesta == NOTIFICACION_VALIDACION){
+					console.log("ENTRO 02 "+ respuesta.codigoRespuesta);
 					loadding(false);
 					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarProductoDonacion(true);					
-					addSuccessMessage(null, respuesta.mensajeRespuesta);					
+				}else{
+					console.log("ENTRO 01");
+					$('#div_det_productos').modal('hide');
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						loadding(false);
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						listarProductoDonacion(true);					
+						addSuccessMessage(null, respuesta.mensajeRespuesta);					
+					}
+					frm_det_productos.data('bootstrapValidator').resetForm();
 				}
-				frm_det_productos.data('bootstrapValidator').resetForm();
+				
 			});
 			
 		}
@@ -982,18 +1024,14 @@ function inicializarDatos() {
 		$('#txt_idDdi').val(donaciones.idDdi);
 		$('#txt_fecha').val(donaciones.fechaEmision);
 		//$('#txt_dee').val(donaciones.nombreDdi);
-		
-		
+
 
 		if (!esnulo(donaciones.idSalida)) {
 			$('#hid_id_salida').val(donaciones.idSalida);	
 			
 			$('#txt_cod_salida').val(donaciones.nroOrden);
 			$('#txt_nro_salida').val(donaciones.nroOrdenSalida);
-			
-			
-			
-			
+
 			////////////////////////////////////////////
 			
 //			$('#sel_oficina').val(donaciones.idEstado);
@@ -1142,11 +1180,25 @@ function inicializarDatos() {
 		} else {
 			
 			
+			
 			$('#li_documentos').addClass('disabled');
 			$('#li_productos').addClass('disabled');
 			$('#ul_man_con_calidad li.disabled a').removeAttr('data-toggle');
 			
 			$('#txt_fecha').datepicker('setDate', new Date());
+			
+			var fecha = $('#txt_fecha').val();
+			if (!esnulo(fecha)) {
+				var mes = fecha.substring(3, 5);
+			    var anio = fecha.substring(6, 10);	
+			    if (mes != donaciones.mes || anio != donaciones.anio) {
+			    	$('#hid_val_fec_trabajo').val('0');
+			    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+			    	$('#'+$(this).attr('id')).focus();
+			    } else {
+			    	$('#hid_val_fec_trabajo').val('1');
+			    }
+			}
 			
 			var val_donante = $('#sel_donante').val();		
 			if (!esnulo(val_donante)) {

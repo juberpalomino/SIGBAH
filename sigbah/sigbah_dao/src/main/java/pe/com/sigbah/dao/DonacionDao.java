@@ -627,6 +627,22 @@ public interface DonacionDao {
 	public abstract List<DocumentoSalidaBean> listarDocumentosReporteDonacionSalida(Integer idSalida) throws Exception;
 
 
+	/**
+	 * @param cartillaInventarioBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract CartillaInventarioBean obtenerCorrelativoCartillaInventario(CartillaInventarioBean cartillaInventarioBean) throws Exception;
+
+
+	/**
+	 * @param itemBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ItemBean validaStockProducto(ItemBean itemBean) throws Exception;
+
+
 	
 	
 	

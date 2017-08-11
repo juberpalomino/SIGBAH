@@ -119,13 +119,13 @@ $(document).ready(function() {
 			},
 			
 			
-//			txt_fec_entrega : {
-//				validators : {
-//					notEmpty : {
-//						message : 'Debe ingresar Fecha Llegada.'
-//					}
-//				}
-//			},
+			txt_fec_entrega : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar Fecha Entrega.'
+					}
+				}
+			},
 			
 			
 			sel_chofer : {

@@ -187,4 +187,14 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Consulta_PedidoCompra.jsp" />
 	</definition>
 	
+	<definition name="listar-catalogo-productos" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Listar_Catalogo_Productos.jsp" />
+	</definition>
+	<definition name="Registrar-catalogo-productos" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Registrar_Catalogo_Productos.jsp" />
+	</definition>
+	<definition name="Registrar-catalogo-productos_SIGA" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Registrar_Catalogo_Productos_SIGA.jsp" />
+	</definition>
+	
 </tiles-definitions>

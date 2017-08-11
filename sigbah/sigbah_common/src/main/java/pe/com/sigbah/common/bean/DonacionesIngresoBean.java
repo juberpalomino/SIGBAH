@@ -48,6 +48,7 @@ public class DonacionesIngresoBean extends BaseOutputBean {
 	private String nombreSistema;
 	private String versionSistema;
 	
+	
 	private String codigoEstado;
 	private Integer idPaisDonante;
 	private String tipoDonante;

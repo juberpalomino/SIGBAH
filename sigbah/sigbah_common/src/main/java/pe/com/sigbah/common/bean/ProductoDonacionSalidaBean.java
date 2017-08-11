@@ -30,6 +30,8 @@ public class ProductoDonacionSalidaBean extends BaseOutputBean {
 	private Double pesoBrutoUnitario;
 	private String nombreEnvase;
 	private Integer nroLote;
+	private String anio;
+	private String mes;
 	
 	private Integer idDdi;
 	private String codDdi;
@@ -232,6 +234,34 @@ public class ProductoDonacionSalidaBean extends BaseOutputBean {
 	 */
 	public void setNroLote(Integer nroLote) {
 		this.nroLote = nroLote;
+	}
+
+	/**
+	 * @return the anio
+	 */
+	public String getAnio() {
+		return anio;
+	}
+
+	/**
+	 * @param anio the anio to set
+	 */
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+
+	/**
+	 * @return the mes
+	 */
+	public String getMes() {
+		return mes;
+	}
+
+	/**
+	 * @param mes the mes to set
+	 */
+	public void setMes(String mes) {
+		this.mes = mes;
 	}
 
 

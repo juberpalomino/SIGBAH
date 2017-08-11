@@ -3,6 +3,7 @@ package pe.com.sigbah.dao;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.AlmacenBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ModuloBean;
@@ -43,5 +44,12 @@ public interface AdministracionDao {
 	 * @throws Exception
 	 */
 	public abstract List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception;
+
+	/**
+	 * @param idAlmacen
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract CierreStockBean obtenerMesTrabajo(Integer idAlmacen) throws Exception;
 
 }

@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SR_Orden_Salida" pageWidth="360" pageHeight="802" columnWidth="360" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="98d7a4d3-1b3e-4d64-a313-2356301c4b9f">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SR_Orden_Salida" pageWidth="281" pageHeight="802" columnWidth="281" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="98d7a4d3-1b3e-4d64-a313-2356301c4b9f">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="LISTA DOCUMENTOS" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<queryString>
 		<![CDATA[]]>
@@ -35,7 +27,7 @@
 	<columnHeader>
 		<band height="16" splitType="Stretch">
 			<staticText>
-				<reportElement x="40" y="1" width="185" height="15" uuid="7d62beb7-c08c-4edf-8b6a-a84abc530ded">
+				<reportElement x="30" y="1" width="150" height="15" uuid="7d62beb7-c08c-4edf-8b6a-a84abc530ded">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -48,7 +40,7 @@
 				<text><![CDATA[TIPO DOCUMENTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="1" width="39" height="15" uuid="1c25df74-4e69-48b0-8159-09256894fdc8">
+				<reportElement x="1" y="1" width="29" height="15" uuid="1c25df74-4e69-48b0-8159-09256894fdc8">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -61,7 +53,7 @@
 				<text><![CDATA[N°]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="225" y="1" width="80" height="15" uuid="bcc3d970-1e8d-4992-bdda-3ccec0ac87a1">
+				<reportElement x="180" y="1" width="66" height="15" uuid="bcc3d970-1e8d-4992-bdda-3ccec0ac87a1">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -74,7 +66,7 @@
 				<text><![CDATA[N° Documento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="305" y="1" width="55" height="15" uuid="7de88c92-6df7-49ea-acdc-b0283868f76a">
+				<reportElement x="246" y="1" width="35" height="15" uuid="7de88c92-6df7-49ea-acdc-b0283868f76a">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -91,20 +83,20 @@
 	<detail>
 		<band height="19" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="40" height="19" uuid="3bd3ce13-4a21-4d1b-b4f9-e7b1310b4618"/>
+				<reportElement x="0" y="0" width="30" height="19" uuid="3bd3ce13-4a21-4d1b-b4f9-e7b1310b4618"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="225" y="0" width="80" height="19" uuid="b7ced536-407d-4108-b0b0-69743b2989b0"/>
+				<reportElement x="180" y="0" width="66" height="19" uuid="b7ced536-407d-4108-b0b0-69743b2989b0"/>
 				<textFieldExpression><![CDATA[$F{nroDocumento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="305" y="0" width="55" height="19" uuid="82c2ab35-10cb-4cbf-b1b4-a14e2f123f6b"/>
+				<reportElement x="246" y="0" width="35" height="19" uuid="82c2ab35-10cb-4cbf-b1b4-a14e2f123f6b"/>
 				<textFieldExpression><![CDATA[$F{fechaDocumento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="40" y="0" width="185" height="19" uuid="4845f3f2-7bcf-44fe-ad49-e04693bd55c5"/>
+				<reportElement x="30" y="0" width="150" height="19" uuid="4845f3f2-7bcf-44fe-ad49-e04693bd55c5"/>
 				<textFieldExpression><![CDATA[$F{nombreDocumento}]]></textFieldExpression>
 			</textField>
 		</band>

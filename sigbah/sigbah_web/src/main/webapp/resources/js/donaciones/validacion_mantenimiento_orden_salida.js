@@ -26,6 +26,13 @@ $(document).ready(function() {
 					}
 				}
 			},
+			sel_movimiento : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Tipo Movimiento.'
+					}
+				}
+			},
 			sel_nro_pro_manifiesto : {
 				validators : {
 					notEmpty : {
@@ -138,13 +145,13 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_chofer : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Chofer.'
-					}
-				}
-			}
+//			sel_chofer : {
+//				validators : {
+//					notEmpty : {
+//						message : 'Debe seleccionar Chofer.'
+//					}
+//				}
+//			}
 			
 		}
 	});

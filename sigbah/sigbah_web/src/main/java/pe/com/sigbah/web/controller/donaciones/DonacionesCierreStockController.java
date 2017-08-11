@@ -156,7 +156,9 @@ public class DonacionesCierreStockController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	cierreStockBean.setUsuarioRegistro(usuarioBean.getUsuario());
-			
+        	cierreStockBean.setCodigoAnio(usuarioBean.getCodigoAnio());
+        	cierreStockBean.setCodigoMes(usuarioBean.getCodigoMes());
+        	cierreStockBean.setIdDdi(usuarioBean.getIdDdi());
 			cierreStock = donacionService.grabarCierreStock(cierreStockBean);
 			cierreStock.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 			

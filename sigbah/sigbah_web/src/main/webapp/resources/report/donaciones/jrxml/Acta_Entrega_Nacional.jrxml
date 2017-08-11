@@ -123,27 +123,44 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="127" y="1" width="428" height="19" uuid="7e376a40-d424-4444-8c92-bd40605fe6e9"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
+					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{D_NOMBRE_SISTEMA}+" "+$P{D_VERSION_SISTEMA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="440" y="19" width="46" height="21" uuid="4d32f371-30f0-4984-bab0-e7aa1998912c"/>
+				<reportElement x="455" y="19" width="46" height="21" uuid="4d32f371-30f0-4984-bab0-e7aa1998912c"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Fecha:]]></text>
 			</staticText>
 			<textField pattern="HH:mm a">
 				<reportElement x="463" y="33" width="92" height="22" uuid="97424596-8eb8-43c1-8b99-2fd2e8ba9f2a"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="463" y="19" width="92" height="21" uuid="d4c0e7d6-5f99-43c1-bf98-53dd4dfbf270"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="440" y="32" width="34" height="18" uuid="cdf5123f-99fd-43f3-be21-2094632f5d82"/>
+				<reportElement x="455" y="32" width="34" height="18" uuid="cdf5123f-99fd-43f3-be21-2094632f5d82"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="166" y="39" width="234" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="cc5b5c0d-01fb-48a6-abc0-0213c99a0452"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DONACIONES]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

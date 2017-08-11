@@ -57,6 +57,7 @@
 									
 										<input type="hidden" id="hid_id_salida" name="hid_id_salida">
 										<input type="hidden" id="hid_id_donacion" name="hid_id_donacion">
+										<input type="hidden" id="hid_val_fec_trabajo" name="hid_val_fec_trabajo">
 										<div class="header-form opc-center">	
 											<strong>Orden Salida</strong>
 										</div>
@@ -643,7 +644,7 @@
 				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_documentos">Nuevo Documento</h4>
+				<h4 class="modal-title label-bold1" id="h4_tit_documentos">Nuevo Documento</h4>
 			</div>
 			
 			<div class="modal-body">
@@ -654,7 +655,6 @@
 							<input type="hidden" id="hid_cod_documento" name="hid_cod_documento">
 							<input type="hidden" id="hid_cod_act_alfresco" name="hid_cod_act_alfresco">
 							<input type="hidden" id="hid_cod_ind_alfresco" name="hid_cod_ind_alfresco">
-						
 							<div class="form-group">																				
 								<label class="col-sm-3 control-label">Tipo Documento:</label>
 								<div class="col-sm-8">
@@ -726,7 +726,7 @@
 				<button type="button" id="btn_clo_alimentarios" class="close" data-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_productos">Nuevo Producto</h4>
+				<h4 class="modal-title label-bold1" id="h4_tit_productos">Nuevo Producto</h4>
 			</div>
 			
 			<div class="modal-body">

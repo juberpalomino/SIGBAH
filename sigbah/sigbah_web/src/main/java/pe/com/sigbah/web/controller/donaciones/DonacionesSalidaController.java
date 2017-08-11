@@ -154,6 +154,9 @@ public class DonacionesSalidaController extends BaseController {
         	String codAlmacen = usuarioBean.getCodigoAlmacen();
         	String anioActual = generalService.obtenerAnioActual();
         	String codiAnio = usuarioBean.getCodigoAnio();
+        	
+        	donacionesBean.setAnio(usuarioBean.getCodigoAnio());
+        	donacionesBean.setMes(usuarioBean.getCodigoMes());
         	if (!isNullInteger(codigo)) {
         	
         		donacionesBean = donacionService.obtenerDonacionSalidaXIdSalida(codigo);
@@ -798,7 +801,7 @@ public class DonacionesSalidaController extends BaseController {
 	@RequestMapping(value = "/grabarProductoDonacionSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object grabarProductoDonacion(HttpServletRequest request, HttpServletResponse response) {
-		ProductoDonacionSalidaBean productoDonacion = null;
+		ProductoDonacionSalidaBean productoDonacion = new ProductoDonacionSalidaBean();
 		try {			
 			ProductoDonacionSalidaBean productoDonacionBean = new ProductoDonacionSalidaBean();
 
@@ -816,19 +819,37 @@ public class DonacionesSalidaController extends BaseController {
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
         	
         	productoDonacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
-//        	productoDonacionBean.setIdDdi(usuarioBean.getIdDdi());
-//        	productoDonacionBean.setCodDdi(usuarioBean.getCodigoDdi());
-//        	productoDonacionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
-//        	productoDonacionBean.setCodAlmacen(usuarioBean.getCodigoAlmacen());
-        	if(productoDonacionBean.getIdSalidaDet().equals("") || productoDonacionBean.getIdSalidaDet()==0){
-        		productoDonacion = donacionService.insertarProductoDonacionSalida(productoDonacionBean);
-        	}else{
-        		productoDonacion = donacionService.actualizarProductoDonacionSalida(productoDonacionBean);
-        	}
+        	productoDonacionBean.setIdDdi(usuarioBean.getIdDdi());
+        	productoDonacionBean.setCodDdi(usuarioBean.getCodigoDdi());
+        	productoDonacionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+        	productoDonacionBean.setCodAlmacen(usuarioBean.getCodigoAlmacen());
+        	productoDonacionBean.setAnio(usuarioBean.getCodigoAnio());
+        	productoDonacionBean.setMes(usuarioBean.getCodigoMes());
         	
-			
-        	productoDonacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
-
+        	
+        	ItemBean parametros = new ItemBean();
+        	parametros.setIcodigo(productoDonacionBean.getIdProducto());
+        	parametros.setIcodigoParam2(productoDonacionBean.getIdAlmacen());
+        	parametros.setIcodigoParam3(productoDonacionBean.getCantidad().intValue());
+        	ItemBean validaStock = donacionService.validaStockProducto(parametros);
+        	String mensajeResp="";
+        	if(validaStock.getCodigoRespuesta().equals(Constantes.COD_VALIDACION_GENERAL)){
+        		mensajeResp=validaStock.getMensajeRespuesta();
+        		productoDonacion.setCodigoRespuesta(validaStock.getCodigoRespuesta());
+        		 
+        	}else{
+        		if(productoDonacionBean.getIdSalidaDet().equals("") || productoDonacionBean.getIdSalidaDet()==0){
+            		
+            		productoDonacion = donacionService.insertarProductoDonacionSalida(productoDonacionBean);
+            	}else{
+            		productoDonacion = donacionService.actualizarProductoDonacionSalida(productoDonacionBean);
+            	}
+        		mensajeResp=(getMensaje(messageSource, "msg.info.grabadoOk"));
+    			
+            	//productoDonacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));	
+        	}
+        	System.out.println("Mensaje : "+mensajeResp);
+        	productoDonacion.setMensajeRespuesta(mensajeResp);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);

@@ -61,7 +61,8 @@ public class DonacionesSalidaBean extends BaseOutputBean {
 	private String nomAlmacenOrigen;
 	private String nomAlmacenDestino;
 	private String versionSistema;
-	
+	private String anio;
+	private String mes;
 //	private String codigoEstado;
 //	private Integer idPaisDonante;
 //	private String tipoDonante;
@@ -796,6 +797,30 @@ public class DonacionesSalidaBean extends BaseOutputBean {
 	 */
 	public void setVersionSistema(String versionSistema) {
 		this.versionSistema = versionSistema;
+	}
+	/**
+	 * @return the anio
+	 */
+	public String getAnio() {
+		return anio;
+	}
+	/**
+	 * @param anio the anio to set
+	 */
+	public void setAnio(String anio) {
+		this.anio = anio;
+	}
+	/**
+	 * @return the mes
+	 */
+	public String getMes() {
+		return mes;
+	}
+	/**
+	 * @param mes the mes to set
+	 */
+	public void setMes(String mes) {
+		this.mes = mes;
 	}
 
 }

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
 import pe.com.sigbah.common.bean.AlmacenBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
 import pe.com.sigbah.common.bean.ModuloBean;
@@ -32,6 +33,7 @@ import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.AdministracionDao;
 import pe.com.sigbah.mapper.AlmacenUsuarioMapper;
 import pe.com.sigbah.mapper.EstadoUsuarioMapper;
+import pe.com.sigbah.mapper.MesTrabajoMapper;
 import pe.com.sigbah.mapper.UsuarioMapper;
 
 /**
@@ -195,6 +197,47 @@ public class AdministracionDaoImpl extends JdbcDaoSupport implements Administrac
 			throw new Exception();
 		}		
 		LOGGER.info("[listarEstadoUsuario] Fin ");
+		return lista;
+	}
+	
+	@Override
+	public CierreStockBean obtenerMesTrabajo(Integer idAlmacen) throws Exception {
+		LOGGER.info("[obtenerMesTrabajo] Inicio ");
+		CierreStockBean lista = new CierreStockBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_IDE_ALMACEN", idAlmacen, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_ADMINISTRACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_MES_TRABAJO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new MesTrabajoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				LOGGER.info("[obtenerMesTrabajo] Ocurrio un error en la operacion del USP_SEL_MES_TRABAJO");
+				throw new Exception();
+			} else {
+				List<CierreStockBean> listaDatos = (List<CierreStockBean>) out.get("po_Lr_Recordset");
+				if (!Utils.isEmpty(listaDatos)) {
+					lista = listaDatos.get(0);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerMesTrabajo] Fin ");
 		return lista;
 	}
 	
