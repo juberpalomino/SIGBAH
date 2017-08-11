@@ -14,15 +14,19 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
-import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
-import pe.com.sigbah.common.util.DateUtil;
 
 
+/**
+ * @className: ReporteRequerimiento.java
+ * @description: 
+ * @date: 11 de ago. de 2017
+ * @author: JHuaman.
+ */
 public class ReporteRequerimiento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReporteRequerimiento.class.getName());
 	
 	/**
 	 * @param lista

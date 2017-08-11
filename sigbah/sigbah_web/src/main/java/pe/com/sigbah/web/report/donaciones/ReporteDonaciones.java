@@ -14,9 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
-import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DonacionesBean;
-import pe.com.sigbah.common.util.DateUtil;
 
 /**
  * @className: ReporteDonaciones.java
@@ -27,7 +25,7 @@ import pe.com.sigbah.common.util.DateUtil;
 public class ReporteDonaciones implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReporteDonaciones.class.getName());
 	
 	/**
 	 * @param lista

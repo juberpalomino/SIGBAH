@@ -15,14 +15,18 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 import pe.com.sigbah.common.bean.PedidoCompraBean;
-import pe.com.sigbah.common.bean.RequerimientoBean;
-import pe.com.sigbah.common.util.DateUtil;
 
 
+/**
+ * @className: ReportePedidoCompra.java
+ * @description: 
+ * @date: 11 de ago. de 2017
+ * @author: JHuaman.
+ */
 public class ReportePedidoCompra implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReportePedidoCompra.class.getName());
 	
 	/**
 	 * @param lista

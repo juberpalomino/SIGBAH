@@ -48,7 +48,7 @@ import pe.com.sigbah.common.util.Utils;
 public class ReporteGuiaRemision implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReporteGuiaRemision.class.getName());
 	
 	/**
 	 * @param workbook

@@ -45,7 +45,7 @@ import pe.com.sigbah.common.util.DateUtil;
 public class ReporteCartillaInventario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReporteCartillaInventario.class.getName());
 	
 	/**
 	 * @param lista

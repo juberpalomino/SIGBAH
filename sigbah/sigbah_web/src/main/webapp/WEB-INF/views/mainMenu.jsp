@@ -104,46 +104,10 @@
 							</li>
 						</ul>
 					</li>
-					<li>
-						<a href="#">Reportes</a>
-						<ul id="ul_alm_reportes">
-							<li id="li_rep_ord_ingreso" class="li_men_opcion">
-								<a href="fa.html">
-									<i class="fa fa-caret-right"></i>Orden de Ingreso
-								</a>
-							</li>
-							<li id="li_rep_ord_salida" class="li_men_opcion">
-								<a href="fa.html">
-									<i class="fa fa-caret-right"></i>Orden de Salida
-								</a>
-							</li>
-							<li id="li_rep_gui_remision" class="li_men_opcion">
-								<a href="fa.html">
-									<i class="fa fa-caret-right"></i>Guia de Remision
-								</a>
-							</li>
-							<li id="li_rep_man_carga" class="li_men_opcion">
-								<a href="fa.html">
-									<i class="fa fa-caret-right"></i>Manifiesto de Carga
-								</a>
-							</li>
-							<li id="li_rep_act_ent_recepcion" class="li_men_opcion">
-								<a href="fa.html">
-									<i class="fa fa-caret-right"></i>Acta de Entrega y Recepcion
-								</a>
-							</li>
-							<li id="li_rep_con_calidad" class="li_men_opcion">
-								<a href="fa.html">
-									<i class="fa fa-caret-right"></i>Reporte de Control de Calidad
-								</a>
-							</li>
-							<li id="li_rep_kar_bincard" class="li_men_opcion">
-								<a href="fa.html">
-									<i class="fa fa-caret-right"></i>Kardex / Bincard
-								</a>
-							</li>
-						</ul>
-					</li>
+					
+					<li id="li_alm_reportes" class="li_men_opcion">
+						<a href="${pageContext.request.contextPath}/gestion-almacenes/reporte/inicio">Reportes</a>
+					</li>					
 				</ul>
 			</li>
 		

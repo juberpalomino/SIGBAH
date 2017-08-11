@@ -17,7 +17,7 @@ public class PasswordEncoderGenerator implements Serializable {
 	
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(PasswordEncoderGenerator.class.getName());
 
 	/**
 	 * @param password

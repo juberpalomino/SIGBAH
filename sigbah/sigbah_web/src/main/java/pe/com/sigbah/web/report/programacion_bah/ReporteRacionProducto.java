@@ -14,10 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 
-import oracle.sql.BINARY_DOUBLE;
-import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
-import pe.com.sigbah.common.util.DateUtil;
 
 
 /**
@@ -29,7 +26,7 @@ import pe.com.sigbah.common.util.DateUtil;
 public class ReporteRacionProducto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReporteRacionProducto.class.getName());
 	
 	/**
 	 * @param lista

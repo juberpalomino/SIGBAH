@@ -17,7 +17,6 @@ import org.apache.poi.ss.usermodel.CellStyle;
 
 import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.util.Constantes;
-import pe.com.sigbah.common.util.DateUtil;
 
 /**
  * @className: ReporteStockAlmacen.java
@@ -28,7 +27,7 @@ import pe.com.sigbah.common.util.DateUtil;
 public class ReporteStockAlmacen implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReporteStockAlmacen.class.getName());
 	
 	/**
 	 * @param lista

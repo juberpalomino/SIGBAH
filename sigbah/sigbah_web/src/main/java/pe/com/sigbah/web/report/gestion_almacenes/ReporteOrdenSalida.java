@@ -46,7 +46,7 @@ import pe.com.sigbah.common.util.DateUtil;
 public class ReporteOrdenSalida implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private static Log LOGGER = LogFactory.getLog(DateUtil.class.getName());
+	private static Log LOGGER = LogFactory.getLog(ReporteOrdenSalida.class.getName());
 	
 	/**
 	 * @param workbook
