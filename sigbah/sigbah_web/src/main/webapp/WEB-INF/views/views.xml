@@ -181,8 +181,8 @@
 	<definition name="decreto-estado" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_ListarDEE.jsp" />
 	</definition>
-	<definition name="decreto-estado" extends="principal-layout">
-	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_ListarDEE.jsp" />
+	<definition name="mantenimiento-decreto-estado" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_RegistrarDEE.jsp" />
 	</definition>
 	<definition name="consulta-programacion" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Consulta_Programacion.jsp" />

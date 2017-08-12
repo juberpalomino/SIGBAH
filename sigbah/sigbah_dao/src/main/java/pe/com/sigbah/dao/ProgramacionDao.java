@@ -13,6 +13,7 @@ import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.UbigeoDeeBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
 
 /**
@@ -242,5 +243,41 @@ public interface ProgramacionDao {
 	 * @return
 	 */
 	public abstract EmergenciaBean actualizarDamnificados(EmergenciaBean emergenciaBean)throws Exception;
+
+	/**
+	 * @param idDee
+	 * @return
+	 */
+	public abstract DeeBean obtenerDee(Integer idDee)throws Exception;
+
+	/**
+	 * @param deeBean
+	 * @return
+	 */
+	public abstract DeeBean insertarRegistroDee(DeeBean deeBean)throws Exception;
+
+	/**
+	 * @param ubigeoBean
+	 * @return
+	 */
+	public abstract List<UbigeoIneiBean> listarUbigeoDee(UbigeoIneiBean ubigeoBean)throws Exception;
+
+	/**
+	 * @param deeBean
+	 * @return
+	 */
+	public abstract UbigeoDeeBean pasarDistritosUbigeoDee(DeeBean deeBean)throws Exception;
+
+	/**
+	 * @param ubigeoDeeBean
+	 * @return
+	 */
+	public abstract List<UbigeoDeeBean> listarDistritosEmergencia(UbigeoDeeBean ubigeoDeeBean)throws Exception;
+
+	/**
+	 * @param ubigeoDeeBean
+	 * @return
+	 */
+	public abstract UbigeoDeeBean eliminarDistritoEmergencia(UbigeoDeeBean ubigeoDeeBean)throws Exception;
 
 }

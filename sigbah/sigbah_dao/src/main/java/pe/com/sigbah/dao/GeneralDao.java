@@ -329,4 +329,10 @@ public interface GeneralDao {
 	 */
 	List<ItemBean> listarEstadoPedidoCompra(ItemBean itemBean) throws Exception;
 
+	/**
+	 * @param itemBean
+	 * @return
+	 */
+	public abstract List<ItemBean> listarEstadoDee(ItemBean itemBean)throws Exception;
+
 }

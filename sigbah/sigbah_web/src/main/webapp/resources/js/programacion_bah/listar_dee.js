@@ -8,206 +8,89 @@ $(document).ready(function() {
 	
 	$('#btn_aceptar').click(function(e) {
 		e.preventDefault();
+		cargarDee(true);
+	});
+	
 
-			var params = { 
-				codAnio : $('#sel_anio').val(),
-				codMes : $('#sel_mes').val()
-			};
-			
-			
-			loadding(true);
-			
-			consultarAjax('GET', '/programacion-bath/decreto/listarDee', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					listarPedidoCompra(respuesta);
-				}
-				loadding(false);
-			});
+	$('#href_exp_excel').click(function(e) {
+		e.preventDefault();
+		var row = $('#tbl_mnt_dee > tbody > tr').length;
+		var empty = null;
+		$('tr.odd').each(function() {		
+			empty = $(this).find('.dataTables_empty').text();
+			return false;
+		});					
+		if (!esnulo(empty) || row < 1) {
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			return;
+		}
+
+		loadding(true);
+		var codAnio = $('#sel_anio').val();
+		var codMes = $('#sel_mes').val();
+		var idEstado = $('#sel_estado').val();
+		
+		
+		var url = VAR_CONTEXT + '/programacion-bath/decreto/exportarExcel/';
+		url += verificaParametro(codAnio) + '/';
+		url += verificaParametro(codMes) + '/';
+		url += verificaParametro(idEstado);
+		
+		$.fileDownload(url).done(function(respuesta) {
+			loadding(false);	
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else {
+				addInfoMessage(null, mensajeReporteExito);
+			}
+		}).fail(function (respuesta) {
+			loadding(false);
+			addErrorMessage(null, mensajeReporteError);
+		});
+	});
+	
+	$('#href_nuevo').click(function(e) {
+		e.preventDefault();
+
+		loadding(true);					
+		var url = VAR_CONTEXT + '/programacion-bath/decreto/mantenimientoDee/0';
+		$(location).attr('href', url);
 		
 	});
 	
 	
-//	$('#href_editar').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		var codigo = '';
-//		tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);				
-//				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-//				if (!esnulo(codigo)) {
-//					return false;
-//				}
-//				var idRequerimiento = listaDeeCache[index].idRequerimiento;
-//				codigo = codigo + idRequerimiento + '_';
-//			}
-//		});
-//		
-//		if (!esnulo(codigo)) {
-//			codigo = codigo.substring(0, codigo.length - 1);
-//		}
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-//		} else {
-//			loadding(true);
-//			var url = VAR_CONTEXT + '/programacion-bath/racion/mantenimientoRacion/';
-//			$(location).attr('href', url + codigo);
-//		}
-//		
-//	});
-//	
-//	$('#href_nuevo').click(function(e) {
-//		e.preventDefault();
-//
-//		loadding(true);					
-//		var url = VAR_CONTEXT + '/programacion-bath/racion/mantenimientoRacion/0';
-//		$(location).attr('href', url);
-//		
-//	});
-//	
-//	$('#href_exp_copiar').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		var codigo = '';
-//		var anio = '';
-//		var ddi = '';
-//		tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);				
-//				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-//				if (!esnulo(codigo)) {
-//					return false;
-//				}
-//				var idRacionOpe = listaDeeCache[index].idRacionOpe;
-//				codigo = codigo + idRacionOpe + '_';
-//				anio = listaDeeCache[index].codAnio;
-//				ddi = listaDeeCache[index].idDdi;
-//			}
-//		});
-//		if (!esnulo(codigo)) {
-//			codigo = codigo.substring(0, codigo.length - 1);
-//		}
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-//		} else {
-//			loadding(true);
-//			var obj = listaDeeCache[indices.length-1];
-//			var params = { 
-//					codAnio : anio,
-//					idDdi : ddi,
-//					idRacionOpe: codigo	
-//				};
-//			loadding(true);
-//			
-//			consultarAjax('POST', '/programacion-bath/racion/copiarRacion', params, function(respuesta) {
-//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, respuesta.mensajeRespuesta);
-//				} else {
-//					addSuccessMessage(null, respuesta.mensajeRespuesta);
-//				}
-//				loadding(false);
-//			});
-//		
-//			
-//		}
-//		
-//		
-//	});
-//	
-//	$('#href_exp_excel').click(function(e) {
-//		e.preventDefault();
-//		
-//		var row = $('#tbl_mnt_dee > tbody > tr').length;
-//		var empty = null;
-//		$('tr.odd').each(function() {		
-//			empty = $(this).find('.dataTables_empty').text();
-//			return false;
-//		});					
-//		if (!esnulo(empty) || row < 1) {
-//			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
-//			return;
-//		}
-//
-//		loadding(true);
-//		
-//		var codAnio = $('#sel_anio').val();
-//		var codMesRacion = $('#sel_mes').val();
-//		var tipoRacion = $('#sel_tipo_racion').val();
-//		
-//		
-//		var url = VAR_CONTEXT + '/programacion-bath/racion/exportarExcel/';
-//		url += verificaParametro(codAnio) + '/';
-//		url += verificaParametro(codMesRacion) + '/';
-//		url += verificaParametro(tipoRacion);
-//		
-//		$.fileDownload(url).done(function(respuesta) {
-//			loadding(false);	
-//			if (respuesta == NOTIFICACION_ERROR) {
-//				addErrorMessage(null, mensajeReporteError);
-//			} else {
-//				addInfoMessage(null, mensajeReporteExito);
-//			}
-//		}).fail(function (respuesta) {
-//			loadding(false);
-//			addErrorMessage(null, mensajeReporteError);
-//		});
-//
-//	});
-	
-//	$('#href_imprimir').click(function(e) {
-//		e.preventDefault();
-//
-//		var indices = [];
-//		var codigo = '';
-//		tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-//			if (tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-//				indices.push(index);				
-//				// Verificamos que tiene mas de un registro marcado y salimos del bucle
-//				if (!esnulo(codigo)) {
-//					return false;
-//				}
-//				var idEmergencia = listaRequerimientoEdanCache[index].idEmergencia;
-//				codigo = codigo + idEmergencia + '_';
-//			}
-//		});
-//		
-//		if (!esnulo(codigo)) {
-//			codigo = codigo.substring(0, codigo.length - 1);
-//		}
-//		
-//		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
-//		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-//		} else {
-//			loadding(true);
-//			var url = VAR_CONTEXT + '/programacion-bath/emergencia/exportarPdf/'+codigo;
-//			$.fileDownload(url).done(function(respuesta) {
-//				loadding(false);	
-//				if (respuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, mensajeReporteError);
-//				} else {
-//					addInfoMessage(null, mensajeReporteExito);
-//				}
-//			}).fail(function (respuesta) {
-//				loadding(false);
-//				if (respuesta == NOTIFICACION_ERROR) {
-//					addErrorMessage(null, mensajeReporteError);
-//				} else if (respuesta == NOTIFICACION_VALIDACION) {
-//					addWarnMessage(null, mensajeReporteValidacion);
-//				}
-//			});
-//		}
-//	});
+	$('#href_editar').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		var codigo = '';
+		tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_dee.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idDee = listaDeeCache[index].idDee;
+				codigo = codigo + idDee + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			loadding(true);
+			var url = VAR_CONTEXT + '/programacion-bath/decreto/mantenimientoDee/';
+			$(location).attr('href', url + codigo);
+		}
+		
+	});
 	
 });
 
@@ -215,14 +98,42 @@ function inicializarDatos() {
 	
 	$('#li_pro_bah').addClass('active');
 	$('#ul_pro_bah').css('display', 'block');
-	$('#li_req_edan').attr('class', 'active');
-	$('#li_req_edan').closest('li').children('a').attr('href', '#');
+	$('#li_dec_emer').attr('class', 'active');
+	$('#li_dec_emer').closest('li').children('a').attr('href', '#');
 	
-
+	if (indicador == '1') { // Retorno
+		cargarDee(true);
+	} else {
+		cargarDee(new Object());
+	}
 	
 }
 
-function listarPedidoCompra(respuesta) {
+
+function cargarDee(indicador) {
+	var params = { 
+			codAnio : $('#sel_anio').val(),
+			codMes : $('#sel_mes').val(),
+			idEstado : $('#sel_estado').val()
+		};
+	
+		if (indicador) {
+			loadding(true);
+		}
+		
+		loadding(true);
+		
+		consultarAjax('GET', '/programacion-bath/decreto/listarDee', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				listarDee(respuesta);
+			}
+			loadding(false);
+		});
+}
+
+function listarDee(respuesta) {
 
 	tbl_mnt_dee.dataTable().fnDestroy();
 	
@@ -230,7 +141,7 @@ function listarPedidoCompra(respuesta) {
 	tbl_mnt_dee.dataTable({
 		data : respuesta,
 		columns : [ {
-			data : 'idPedidoCom',
+			data : 'idDee',
 			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
@@ -242,7 +153,7 @@ function listarPedidoCompra(respuesta) {
 				}											
 			}	
 		}, {	
-			data : 'idPedidoCom',
+			data : 'idDee',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
@@ -250,26 +161,30 @@ function listarPedidoCompra(respuesta) {
 		}, {
 			data : 'codAnio'
 		}, {
-			data : 'fkIdeDdi'
+			data : 'nomMes'
 		}, {
-			data : 'codPedido'
+			data : 'numDee'
 		}, {
-			data : 'fecPedido'
+			data : 'fechaIni'
 		}, {
-			data : 'dde'
+			data : 'fechaFin'
 		}, {
-			data : 'tipFenomeno'
+			data : 'numDias'
 		} , {
-			data : 'NomEstado'
+			data : 'nomDee'
+		}, {
+			data : 'nomEstado'
 		}],
 	
+		
+		
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},
 		bFilter : false,
-		paging : true,
+		paging : false,
 		ordering : false,
-		info : true,
+		info : false,
 		iDisplayLength : 15,
 		aLengthMenu : [
 			[15, 50, 100],
@@ -279,7 +194,7 @@ function listarPedidoCompra(respuesta) {
 			{ width : '15%', targets : 3 },
 			{ width : '15%', targets : 4 },
 			{ width : '15%', targets : 5 },
-			{ width : '18%', targets : 7 }
+			{ width : '18%', targets : 6 }
 		]
 	});
 	

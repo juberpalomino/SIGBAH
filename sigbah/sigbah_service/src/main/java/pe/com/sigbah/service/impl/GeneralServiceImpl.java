@@ -391,4 +391,12 @@ public class GeneralServiceImpl implements GeneralService, Serializable {
 		return generalDao.listarEstadoPedidoCompra(itemBean);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.GeneralService#listarEstadoDee(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
+	public List<ItemBean> listarEstadoDee(ItemBean itemBean) throws Exception {
+		return generalDao.listarEstadoDee(itemBean);
+	}
+
 }

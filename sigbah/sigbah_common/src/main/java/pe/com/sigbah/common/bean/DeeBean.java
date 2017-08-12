@@ -12,36 +12,58 @@ public class DeeBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer idPedidoCom;
+	private Integer idDee;
 	private String codAnio;
-	private String codPedido;
-	private String fkIdeDdi;
-	private String nombreDdi;
-	private String fecPedido;
-	private String dde;
-	private String tipFenomeno;
-	private String NomEstado;
-	private String codEstado;
-    
+	private String codMes;
+	private String nomMes;
+	private String fechaIni;
+	private String fechaFin;
+	private String numDias;
+	private String numDee;
+	private String nomDee;
+	private Integer idEstado;
+	private String nomEstado;
+	private String motivo;
+	private String observacion;
+	private String flgProrroga;
+	private String nombreArchivo;
+	private String control;
+	private Integer plazo;
+	private String codigoArchivoAlfresco;
+	private String tipoFenomeno;
+	
+	private String codDistrito;
 	/**
 	 * 
 	 */
 	public DeeBean() {
 		super();
 	}
+	
+	
 
 	/**
-	 * @return the idPedidoCom
+	 * @param idDee
 	 */
-	public Integer getIdPedidoCom() {
-		return idPedidoCom;
+	public DeeBean(Integer idDee) {
+		super();
+		this.idDee = idDee;
+	}
+
+
+
+	/**
+	 * @return the idDee
+	 */
+	public Integer getIdDee() {
+		return idDee;
 	}
 
 	/**
-	 * @param idPedidoCom the idPedidoCom to set
+	 * @param idDee the idDee to set
 	 */
-	public void setIdPedidoCom(Integer idPedidoCom) {
-		this.idPedidoCom = idPedidoCom;
+	public void setIdDee(Integer idDee) {
+		this.idDee = idDee;
 	}
 
 	/**
@@ -59,118 +81,298 @@ public class DeeBean extends BaseOutputBean {
 	}
 
 	/**
-	 * @return the codPedido
+	 * @return the codMes
 	 */
-	public String getCodPedido() {
-		return codPedido;
+	public String getCodMes() {
+		return codMes;
 	}
 
 	/**
-	 * @param codPedido the codPedido to set
+	 * @param codMes the codMes to set
 	 */
-	public void setCodPedido(String codPedido) {
-		this.codPedido = codPedido;
+	public void setCodMes(String codMes) {
+		this.codMes = codMes;
 	}
 
 	/**
-	 * @return the fkIdeDdi
+	 * @return the nomMes
 	 */
-	public String getFkIdeDdi() {
-		return fkIdeDdi;
+	public String getNomMes() {
+		return nomMes;
 	}
 
 	/**
-	 * @param fkIdeDdi the fkIdeDdi to set
+	 * @param nomMes the nomMes to set
 	 */
-	public void setFkIdeDdi(String fkIdeDdi) {
-		this.fkIdeDdi = fkIdeDdi;
+	public void setNomMes(String nomMes) {
+		this.nomMes = nomMes;
 	}
 
 	/**
-	 * @return the nombreDdi
+	 * @return the fechaIni
 	 */
-	public String getNombreDdi() {
-		return nombreDdi;
+	public String getFechaIni() {
+		return fechaIni;
 	}
 
 	/**
-	 * @param nombreDdi the nombreDdi to set
+	 * @param fechaIni the fechaIni to set
 	 */
-	public void setNombreDdi(String nombreDdi) {
-		this.nombreDdi = nombreDdi;
+	public void setFechaIni(String fechaIni) {
+		this.fechaIni = fechaIni;
 	}
 
 	/**
-	 * @return the fecPedido
+	 * @return the fechaFin
 	 */
-	public String getFecPedido() {
-		return fecPedido;
+	public String getFechaFin() {
+		return fechaFin;
 	}
 
 	/**
-	 * @param fecPedido the fecPedido to set
+	 * @param fechaFin the fechaFin to set
 	 */
-	public void setFecPedido(String fecPedido) {
-		this.fecPedido = fecPedido;
+	public void setFechaFin(String fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 
 	/**
-	 * @return the dde
+	 * @return the numDias
 	 */
-	public String getDde() {
-		return dde;
+	public String getNumDias() {
+		return numDias;
 	}
 
 	/**
-	 * @param dde the dde to set
+	 * @param numDias the numDias to set
 	 */
-	public void setDde(String dde) {
-		this.dde = dde;
+	public void setNumDias(String numDias) {
+		this.numDias = numDias;
 	}
 
 	/**
-	 * @return the tipFenomeno
+	 * @return the nomDee
 	 */
-	public String getTipFenomeno() {
-		return tipFenomeno;
+	public String getNomDee() {
+		return nomDee;
 	}
 
 	/**
-	 * @param tipFenomeno the tipFenomeno to set
+	 * @param nomDee the nomDee to set
 	 */
-	public void setTipFenomeno(String tipFenomeno) {
-		this.tipFenomeno = tipFenomeno;
+	public void setNomDee(String nomDee) {
+		this.nomDee = nomDee;
+	}
+
+	/**
+	 * @return the idEstado
+	 */
+	public Integer getIdEstado() {
+		return idEstado;
+	}
+
+	/**
+	 * @param idEstado the idEstado to set
+	 */
+	public void setIdEstado(Integer idEstado) {
+		this.idEstado = idEstado;
 	}
 
 	/**
 	 * @return the nomEstado
 	 */
 	public String getNomEstado() {
-		return NomEstado;
+		return nomEstado;
 	}
 
 	/**
 	 * @param nomEstado the nomEstado to set
 	 */
 	public void setNomEstado(String nomEstado) {
-		NomEstado = nomEstado;
+		this.nomEstado = nomEstado;
 	}
+
+
 
 	/**
-	 * @return the codEstado
+	 * @return the numDee
 	 */
-	public String getCodEstado() {
-		return codEstado;
+	public String getNumDee() {
+		return numDee;
 	}
+
+
 
 	/**
-	 * @param codEstado the codEstado to set
+	 * @param numDee the numDee to set
 	 */
-	public void setCodEstado(String codEstado) {
-		this.codEstado = codEstado;
+	public void setNumDee(String numDee) {
+		this.numDee = numDee;
 	}
 
-	
+
+
+	/**
+	 * @return the motivo
+	 */
+	public String getMotivo() {
+		return motivo;
+	}
+
+
+
+	/**
+	 * @param motivo the motivo to set
+	 */
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
+	}
+
+
+
+	/**
+	 * @return the observacion
+	 */
+	public String getObservacion() {
+		return observacion;
+	}
+
+
+
+	/**
+	 * @param observacion the observacion to set
+	 */
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+
+
+
+	/**
+	 * @return the flgProrroga
+	 */
+	public String getFlgProrroga() {
+		return flgProrroga;
+	}
+
+
+
+	/**
+	 * @param flgProrroga the flgProrroga to set
+	 */
+	public void setFlgProrroga(String flgProrroga) {
+		this.flgProrroga = flgProrroga;
+	}
+
+
+
+	/**
+	 * @return the nombreArchivo
+	 */
+	public String getNombreArchivo() {
+		return nombreArchivo;
+	}
+
+
+
+	/**
+	 * @param nombreArchivo the nombreArchivo to set
+	 */
+	public void setNombreArchivo(String nombreArchivo) {
+		this.nombreArchivo = nombreArchivo;
+	}
+
+
+
+	/**
+	 * @return the control
+	 */
+	public String getControl() {
+		return control;
+	}
+
+
+
+	/**
+	 * @param control the control to set
+	 */
+	public void setControl(String control) {
+		this.control = control;
+	}
+
+
+
+
+	/**
+	 * @return the plazo
+	 */
+	public Integer getPlazo() {
+		return plazo;
+	}
+
+
+
+	/**
+	 * @param plazo the plazo to set
+	 */
+	public void setPlazo(Integer plazo) {
+		this.plazo = plazo;
+	}
+
+
+
+	/**
+	 * @return the codigoArchivoAlfresco
+	 */
+	public String getCodigoArchivoAlfresco() {
+		return codigoArchivoAlfresco;
+	}
+
+
+
+	/**
+	 * @param codigoArchivoAlfresco the codigoArchivoAlfresco to set
+	 */
+	public void setCodigoArchivoAlfresco(String codigoArchivoAlfresco) {
+		this.codigoArchivoAlfresco = codigoArchivoAlfresco;
+	}
+
+
+
+	/**
+	 * @return the tipoFenomeno
+	 */
+	public String getTipoFenomeno() {
+		return tipoFenomeno;
+	}
+
+
+
+	/**
+	 * @param tipoFenomeno the tipoFenomeno to set
+	 */
+	public void setTipoFenomeno(String tipoFenomeno) {
+		this.tipoFenomeno = tipoFenomeno;
+	}
+
+
+
+	/**
+	 * @return the codDistrito
+	 */
+	public String getCodDistrito() {
+		return codDistrito;
+	}
+
+
+
+	/**
+	 * @param codDistrito the codDistrito to set
+	 */
+	public void setCodDistrito(String codDistrito) {
+		this.codDistrito = codDistrito;
+	}
+
 	
 	
 }

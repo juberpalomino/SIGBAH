@@ -433,9 +433,11 @@ function inicializarDatos() {
 			$('#sel_fenomeno').val(requerimiento.fkIdeFenomeno);
 			$('input[name=rb_req_sinpad][value="'+requerimiento.flgSinpad+'"]').prop('checked', true);
 			
+			$('#txt_nro_req').val(requerimiento.numRequerimiento); 
+			$('#txt_des_req').val(requerimiento.nomRequerimiento);
+			
 			listarDetalleRequerimiento(lista_requerimiento);
-//			listarProductoPedidoCompra(false);
-//			listarDocumentoPedidoCompra(false);
+
 			
 		} else {//nuevo
 			

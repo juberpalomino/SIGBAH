@@ -63,6 +63,7 @@
 									<label class="col-sm-2 control-label">Estado:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_estado" name="sel_estado" class="form-control">
+										<option value="0">Todos</option>
 											<c:forEach items="${lista_estado}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -132,10 +133,12 @@
 										<th>Nº</th>
 										<th>Año</th>
 										<th>Mes</th>
-										<th>Fecha</th>
-										<th>Nro. DDE</th>
-										<th>Nro. dias</th>
+										<th>N° DEE</th>
+										<th>Fecha Inicio</th>
+										<th>Fecha Fin</th>
+										<th>Nro. Días</th>
 										<th>Nombre emergencia</th>
+										<th>Estado</th>
 									</tr>
 								</thead>
 							</table>

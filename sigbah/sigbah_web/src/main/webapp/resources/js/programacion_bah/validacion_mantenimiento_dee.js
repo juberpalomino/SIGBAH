@@ -1,35 +1,90 @@
 $(document).ready(function() {
 
-	frm_dee.bootstrapValidator({ 
+	frm_dat_generales.bootstrapValidator({ 
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
 		fields : {
 			// Datos Generales
-			sel_tipo_racion : {
+			
+			txt_num_dee : {
 				validators : {
 					notEmpty : {
-						message : 'Debe seleccionar Tipo de Ración.'
+						message : 'Debe ingresar N° DEE.'
 					}
 				}
 			},
-			txt_nom_racion : {
+			txt_des_dee : { 
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar Nombre Ración.'
+						message : 'Debe ingresar Des. DEE.'
 					}
 				}
 			},
-			txt_num_dias : { 
+			txt_fecha_ini : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar numero dias de atención.'
+						message : 'Debe ingresar fecha inicio.'
 					}
 				}
 			},
-			txt_fecha : {
+			txt_fecha_fin : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar fecha.'
+						message : 'Debe ingresar fecha fin.'
+					}
+				}
+			},
+			txt_num_dias : {
+				validators : {
+					notEmpty : {
+						message : 'Debe num. días'
+					}
+				}
+			},
+			sel_estado : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Estado.'
+					}
+				}
+			},
+			txt_motivo : {
+				validators : {
+					notEmpty : {
+						message : 'Debe ingresar motivo.'
+					}
+				}
+			},
+			flgProrroga : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar tiene prorroga.'
+					}
+				}
+			}
+			
+			
+		}
+	});
+	
+	
+	frm_det_prog_ubigeo.bootstrapValidator({ 
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			// Datos Generales
+			
+			sel_departamento_ubi : {
+				validators : {
+					notEmpty : {
+						message : 'Seleccione Departamento.'
+					}
+				}
+			},
+			sel_provincia_ubi : { 
+				validators : {
+					notEmpty : {
+						message : 'Seleccione Provincia.'
 					}
 				}
 			}
@@ -37,5 +92,5 @@ $(document).ready(function() {
 		}
 	});
 	
-
+	
 });

@@ -16,6 +16,7 @@ import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.UbigeoDeeBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
 import pe.com.sigbah.dao.ProgramacionDao;
 import pe.com.sigbah.service.ProgramacionService;
@@ -308,5 +309,53 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	@Override
 	public EmergenciaBean actualizarDamnificados(EmergenciaBean emergenciaBean) throws Exception {
 		return programacionDao.actualizarDamnificados(emergenciaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerDee(java.lang.Integer)
+	 */
+	@Override
+	public DeeBean obtenerDee(Integer idDee) throws Exception {
+		return programacionDao.obtenerDee(idDee);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#insertarRegistroDee(pe.com.sigbah.common.bean.DeeBean)
+	 */
+	@Override
+	public DeeBean insertarRegistroDee(DeeBean deeBean) throws Exception {
+		return programacionDao.insertarRegistroDee(deeBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarUbigeoDee(pe.com.sigbah.common.bean.UbigeoIneiBean)
+	 */
+	@Override
+	public List<UbigeoIneiBean> listarUbigeoDee(UbigeoIneiBean ubigeoBean) throws Exception {
+		return programacionDao.listarUbigeoDee(ubigeoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#pasarDistritosUbigeoDee(pe.com.sigbah.common.bean.DeeBean)
+	 */
+	@Override
+	public UbigeoDeeBean pasarDistritosUbigeoDee(DeeBean deeBean) throws Exception {
+		return programacionDao.pasarDistritosUbigeoDee(deeBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#listarDistritosEmergencia(pe.com.sigbah.common.bean.UbigeoDeeBean)
+	 */
+	@Override
+	public List<UbigeoDeeBean> listarDistritosEmergencia(UbigeoDeeBean ubigeoDeeBean) throws Exception {
+		return programacionDao.listarDistritosEmergencia(ubigeoDeeBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#eliminarDistritoEmergencia(pe.com.sigbah.common.bean.UbigeoDeeBean)
+	 */
+	@Override
+	public UbigeoDeeBean eliminarDistritoEmergencia(UbigeoDeeBean ubigeoDeeBean) throws Exception {
+		return programacionDao.eliminarDistritoEmergencia(ubigeoDeeBean);
 	}
 }

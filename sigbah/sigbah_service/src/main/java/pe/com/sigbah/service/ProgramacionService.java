@@ -8,11 +8,11 @@ import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
-import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
+import pe.com.sigbah.common.bean.UbigeoDeeBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
 
 /**
@@ -168,15 +168,6 @@ public interface ProgramacionService {
 	public abstract List<PedidoCompraBean> listarPedidosCompra(PedidoCompraBean pedidoBean) throws Exception;
 	
 	/**
-	 * @param deeBean
-	 * @return
-	 * @throws Exception
-	 */
-	public abstract List<DeeBean> listarDee(DeeBean deeBean) throws Exception;
-	
-	
-	
-	/**
 	 * @param racionBean
 	 * @return
 	 * @throws Exception
@@ -274,5 +265,57 @@ public interface ProgramacionService {
 	 * @throws Exception
 	 */
 	public abstract EmergenciaBean actualizarDamnificados(EmergenciaBean emergenciaBean) throws Exception;
+	
+
+	/**
+	 * @param deeBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<DeeBean> listarDee(DeeBean deeBean) throws Exception;
+	
+	/**
+	 * @param idDee
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DeeBean obtenerDee(Integer idDee) throws Exception;
+	
+	/**
+	 * @param deeBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract DeeBean insertarRegistroDee(DeeBean deeBean) throws Exception;
+	
+	/**
+	 * @param ubigeoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<UbigeoIneiBean> listarUbigeoDee(UbigeoIneiBean ubigeoBean) throws Exception;
+	
+	/**
+	 * @param DeeBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract UbigeoDeeBean pasarDistritosUbigeoDee(DeeBean deeBean) throws Exception;
+	
+	
+	/**
+	 * @param requerimientoBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<UbigeoDeeBean> listarDistritosEmergencia(UbigeoDeeBean ubigeoDeeBean) throws Exception;
+	
+	
+	/**
+	 * @param ubigeoDeeBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract UbigeoDeeBean eliminarDistritoEmergencia(UbigeoDeeBean ubigeoDeeBean) throws Exception;
 	
 }

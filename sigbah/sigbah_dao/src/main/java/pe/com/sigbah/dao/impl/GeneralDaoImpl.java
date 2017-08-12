@@ -1636,4 +1636,22 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 			lista.add(item);
 		return lista;
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.GeneralDao#listarEstadoDee(pe.com.sigbah.common.bean.ItemBean)
+	 */
+	@Override
+	public List<ItemBean> listarEstadoDee(ItemBean itemBean) throws Exception {
+		ItemBean item = new ItemBean();
+		List<ItemBean> lista = new ArrayList<ItemBean>();
+			item.setIcodigo(1);
+			item.setDescripcion("Vigente");
+			lista.add(item);
+			item = new ItemBean();
+			item.setIcodigo(2);
+			item.setDescripcion("Finalizado");
+			lista.add(item);
+			
+		return lista;
+	}
 }

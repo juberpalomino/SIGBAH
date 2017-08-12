@@ -250,7 +250,8 @@ private static final long serialVersionUID = 1L;
         	
         	requerimientoBean.setUsuarioRegistro(usuarioBean.getUsuario());
 			
-			if (!isNullInteger(requerimientoBean.getIdRequerimiento())) {		
+			if (!isNullInteger(requerimientoBean.getIdRequerimiento())) {	
+				requerimientoBean.setCodMes(DateUtil.getMesActual()+""); 
 				requerimientoBean.setControl("U");
 				requerimiento = programacionService.insertarRegistroRequerimiento(requerimientoBean);				
 			} else {			
