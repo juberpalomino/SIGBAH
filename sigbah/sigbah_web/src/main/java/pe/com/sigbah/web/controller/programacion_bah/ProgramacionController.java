@@ -3,11 +3,20 @@ package pe.com.sigbah.web.controller.programacion_bah;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.CorreoBean;
 import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
@@ -935,16 +945,72 @@ private static final long serialVersionUID = 1L;
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 
         	estadoProgramacionBean.setUsuarioRegistro(usuarioBean.getUsuario());
+        	
+        	Integer idEstado = estadoProgramacionBean.getIdEstado();
+        	if (idEstado.equals(Constantes.THREE_INT) ||  // Aprobado 
+        			idEstado.equals(Constantes.FOUR_INT)) { // Autorizado      	
+	        	// Envio de correo
+	        	CorreoBean correoBean = new CorreoBean();
+				correoBean.setIdProgramacion(estadoProgramacionBean.getIdProgramacion());
+				correoBean.setIdEstado(idEstado);
+				List<CorreoBean> listaCorreoDestino = programacionRequerimientoService.listarCorreoDestino(correoBean);
+				if (!isEmpty(listaCorreoDestino)) {
+					enviarCorreoDestinatario(usuarioBean.getEmail(), usuarioBean.getUsuario(), listaCorreoDestino);
+				}
+        	}
 				
-			producto = programacionRequerimientoService.grabarEstadoProgramacion(estadoProgramacionBean);				
-
-			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));				
+			producto = programacionRequerimientoService.grabarEstadoProgramacion(estadoProgramacionBean);			
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.eliminadoOk"));
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
 		}
 		return producto;
+	}
+	
+	private void enviarCorreoDestinatario(String email, String usuario, List<CorreoBean> listaCorreoDestino) {
+		LOGGER.info("[enviarCorreoDestinatario] Inicio ");		
+		try {
+			final String username = getMensaje(messageSource, "params.mail.user");
+			final String password = getMensaje(messageSource, "params.mail.password");
+			
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", getMensaje(messageSource, "params.mail.smtp.auth"));
+			props.put("mail.smtp.starttls.enable", getMensaje(messageSource, "params.mail.smtp.starttls.enable"));
+			props.put("mail.smtp.host", getMensaje(messageSource, "params.mail.smtp.host"));
+			props.put("mail.smtp.port", getMensaje(messageSource, "params.mail.smtp.port"));
+
+			Session session = Session.getInstance(props,
+				new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+			  	});
+			
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(email, usuario));
+			message.setSubject(listaCorreoDestino.get(0).getAsunto());
+			message.setText(listaCorreoDestino.get(0).getMensaje());
+			
+			InternetAddress[] recipientAddress = new InternetAddress[listaCorreoDestino.size()];
+			int index = 0;
+			for (CorreoBean correo : listaCorreoDestino) {
+			    recipientAddress[index] = new InternetAddress(correo.getCorreo());
+			    index++;
+			}
+			message.setRecipients(Message.RecipientType.TO, recipientAddress);
+
+			Transport.send(message);
+
+		} catch (MessagingException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new RuntimeException(e);
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new RuntimeException(e);
+		}
+		LOGGER.info("[enviarCorreoDestinatario] Fin ");
 	}
 	
 	/**

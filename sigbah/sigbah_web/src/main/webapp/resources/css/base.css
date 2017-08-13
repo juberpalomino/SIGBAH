@@ -1,3 +1,6 @@
+body { 
+	padding-right: 0 !important 
+}
 
 #header {
 	height: 60px !important;

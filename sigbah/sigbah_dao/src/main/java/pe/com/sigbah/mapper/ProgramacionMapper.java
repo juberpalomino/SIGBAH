@@ -32,6 +32,7 @@ public class ProgramacionMapper implements RowMapper<ProgramacionBean> {
 		programacion.setNroDee(rs.getString("NRO_DEE"));
 		programacion.setNombreEstado(rs.getString("NOM_ESTADO"));
 		programacion.setNombreRegion(rs.getString("NOM_REGION"));
+		programacion.setIdEstado(rs.getInt("IDE_ESTADO"));
 		return programacion;
 	}
 

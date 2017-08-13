@@ -127,8 +127,13 @@
 					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 						loadding(false);
 						addErrorMessage(null, respuesta.mensajeRespuesta);
-						url = '${pageContext.request.contextPath}/login';
-						$(location).attr('href', url);
+						
+						if ($('#idAlmacen').val() != '') {
+							$('#usuario').val('');
+							$('#password').val('');
+						}
+// 						url = '${pageContext.request.contextPath}/login';
+// 						$(location).attr('href', url);
 					} else {
 						if (respuesta == '0') {
 							url = '${pageContext.request.contextPath}/login';

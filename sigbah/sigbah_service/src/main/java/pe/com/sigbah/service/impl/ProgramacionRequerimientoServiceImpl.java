@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.CorreoBean;
 import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
@@ -283,6 +284,14 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	@Override
 	public List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception {
 		return programacionRequerimientoDao.listarEstadoUsuario(estadoUsuarioBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarCorreoDestino(pe.com.sigbah.common.bean.CorreoBean)
+	 */
+	@Override
+	public List<CorreoBean> listarCorreoDestino(CorreoBean correoBean) throws Exception {
+		return programacionRequerimientoDao.listarCorreoDestino(correoBean);
 	}
 
 }

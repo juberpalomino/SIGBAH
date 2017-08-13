@@ -2,6 +2,7 @@ package pe.com.sigbah.service;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.CorreoBean;
 import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
@@ -245,5 +246,12 @@ public interface ProgramacionRequerimientoService {
 	 * @throws Exception
 	 */
 	public abstract List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception;
+	
+	/**
+	 * @param correoBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<CorreoBean> listarCorreoDestino(CorreoBean correoBean) throws Exception;
 	
 }

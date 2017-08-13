@@ -3,7 +3,6 @@ package pe.com.sigbah.web.controller.seguridad;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -54,15 +53,12 @@ public class LoginController extends BaseController {
     /**
      * @param usuario
      * @param result
-     * @param request
-     * @param response
      * @param model 
 	 * @return - Retorna a la vista JSP.
      */
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-    public Object doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, 
-    							HttpServletRequest request, HttpServletResponse response, Model model) {
+    public Object doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, Model model) {
     	String indicador = Constantes.ZERO_STRING;
         boolean isAccessOk = true;
         

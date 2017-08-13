@@ -251,17 +251,6 @@ public class UsuarioBean implements Serializable {
 		this.codigoAnio = codigoAnio;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "UsuarioBean [idUsuario=" + idUsuario + ", usuario=" + usuario + ", cargo=" + cargo + ", nombreUsuario="
-				+ nombreUsuario + ", idDdi=" + idDdi + ", codigoDdi=" + codigoDdi + ", nombreDdi=" + nombreDdi
-				+ ", idAlmacen=" + idAlmacen + ", codigoAlmacen=" + codigoAlmacen + ", nombreAlmacen=" + nombreAlmacen
-				+ ", password=" + password + ", sessionId=" + sessionId + ", codigoAnio=" + codigoAnio + ", codigoMes="+codigoMes+"]";
-	}
-
 	/**
 	 * @return the email
 	 */
@@ -288,6 +277,18 @@ public class UsuarioBean implements Serializable {
 	 */
 	public void setCodigoMes(String codigoMes) {
 		this.codigoMes = codigoMes;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "UsuarioBean [idUsuario=" + idUsuario + ", usuario=" + usuario + ", cargo=" + cargo + ", nombreUsuario="
+				+ nombreUsuario + ", idDdi=" + idDdi + ", codigoDdi=" + codigoDdi + ", nombreDdi=" + nombreDdi
+				+ ", idAlmacen=" + idAlmacen + ", codigoAlmacen=" + codigoAlmacen + ", nombreAlmacen=" + nombreAlmacen
+				+ ", password=" + password + ", sessionId=" + sessionId + ", codigoAnio=" + codigoAnio + ", email="
+				+ email + ", codigoMes=" + codigoMes + "]";
 	}
 	
 }

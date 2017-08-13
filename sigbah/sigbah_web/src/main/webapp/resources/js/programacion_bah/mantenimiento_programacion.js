@@ -1480,6 +1480,12 @@ function listarDetalleProgramacionAlimento(indicador) {
 		table.append(row);
 		
 		$('#div_det_pro_alimentos').html(table);
+		
+		listarDetalleResumenStockAlimento(new Object());
+		if (indicador) {
+			loadding(false);
+		}
+		
 	}
 		
 }
@@ -1735,6 +1741,11 @@ function listarDetalleProgramacionNoAlimentario(indicador) {
 		table.append(row);
 
 		$('#div_det_pro_no_alimentarios').html(table);
+		
+		listarDetalleResumenStockNoAlimentario(new Object());
+		if (indicador) {
+			loadding(false);
+		}
 		
 	}
 	

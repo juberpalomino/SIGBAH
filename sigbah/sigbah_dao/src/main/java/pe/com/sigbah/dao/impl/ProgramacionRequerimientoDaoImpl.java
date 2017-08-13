@@ -20,8 +20,10 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import oracle.jdbc.OracleTypes;
+import pe.com.sigbah.common.bean.CorreoBean;
 import pe.com.sigbah.common.bean.DocumentoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoProgramacionBean;
 import pe.com.sigbah.common.bean.EstadoUsuarioBean;
@@ -41,6 +43,7 @@ import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.dao.ProgramacionRequerimientoDao;
+import pe.com.sigbah.mapper.CorreoMapper;
 import pe.com.sigbah.mapper.DocumentoProgramacionMapper;
 import pe.com.sigbah.mapper.EstadoProgramacionMapper;
 import pe.com.sigbah.mapper.EstadoUsuarioMapper;
@@ -1539,6 +1542,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarEstadoUsuario(pe.com.sigbah.common.bean.EstadoUsuarioBean)
 	 */
+	@Transactional
 	@Override
 	public List<EstadoUsuarioBean> listarEstadoUsuario(EstadoUsuarioBean estadoUsuarioBean) throws Exception {
 		LOGGER.info("[listarEstadoUsuario] Inicio ");
@@ -1580,6 +1584,53 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 			throw new Exception();
 		}		
 		LOGGER.info("[listarEstadoUsuario] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarCorreoDestino(pe.com.sigbah.common.bean.CorreoBean)
+	 */
+	@Override
+	public List<CorreoBean> listarCorreoDestino(CorreoBean correoBean) throws Exception {
+		LOGGER.info("[listarCorreoDestino] Inicio ");
+		List<CorreoBean> lista = new ArrayList<CorreoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_ID_PROGRAMACION", correoBean.getIdProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_ESTADO", correoBean.getIdEstado(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_ENVIA_CORREO_DESTINO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_ID_PROGRAMACION", new SqlParameter("PI_ID_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_ESTADO", new SqlParameter("PI_IDE_ESTADO", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_CORREO", new SqlOutParameter("PO_CURSOR_CORREO", OracleTypes.CURSOR, new CorreoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarCorreoDestino] Ocurrio un error en la operacion del USP_SEL_ENVIA_CORREO_DESTINO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			lista = (List<CorreoBean>) out.get("PO_CURSOR_CORREO");
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarCorreoDestino] Fin ");
 		return lista;
 	}
 	

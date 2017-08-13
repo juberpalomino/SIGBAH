@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-import org.apache.commons.lang.StringUtils;
 
 import pe.com.sigbah.common.bean.UsuarioBean;
 

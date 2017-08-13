@@ -183,6 +183,7 @@ $(document).ready(function() {
 		var indices = [];
 		var codigo = '';
 		var nombreProgramacion = '';
+		var idEstado = '';
 		tbl_mnt_programacion.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_programacion.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -193,6 +194,7 @@ $(document).ready(function() {
 				var idProgramacion = listaProgramacionCache[index].idProgramacion;
 				codigo = codigo + idProgramacion + '_';
 				nombreProgramacion = listaProgramacionCache[index].nombreProgramacion;
+				idEstado = listaProgramacionCache[index].idEstado;
 			}
 		});
 		
@@ -204,7 +206,18 @@ $(document).ready(function() {
 			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 		} else if (indices.length > 1) {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
-		} else {
+		} else {			
+			if (idEstado == '0') { // Anulado
+				addWarnMessage(null, 'Esta programación esta Anulada');
+				return;
+			} else if (idEstado == '4') { // Denegado
+				addWarnMessage(null, 'Esta programacion esta Denegada (No Autorizada)');
+				return;
+			} else if (idEstado == '6') { // Atendida
+				addWarnMessage(null, 'Esta programacion ya esta Atendida');
+				return;
+			}
+			var ind_estado = false;
 			loadding(true);			
 			var params = { 
 				idProgramacion : codigo
@@ -221,9 +234,18 @@ $(document).ready(function() {
 			            options += '<option value="'+item.idEstado+'">'+item.nombreEstado+'</option>';
 			        });
 			        $('#sel_pro_estado').html(options);
-					$('#div_gra_estado').modal('show');
+			        if (!esnulo($('#sel_pro_estado').val())) {
+			        	ind_estado = true;			        	
+			        } else {
+			        	ind_estado = false;
+			        	addWarnMessage(null, 'Esta programación no tiene estado');
+			        }
+					
 				}
 				loadding(false);
+				if (ind_estado) {
+					$('#div_gra_estado').modal('show');
+				}
 			});
 		}
 
@@ -235,7 +257,7 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_gra_estado.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-			var idEstado = $('#sel_estado').val();
+			var idEstado = $('#sel_pro_estado').val();
 			if (idEstado == ESTADO_ANULADO) {				
 				$.SmartMessageBox({
 					title : 'Esa seguro que desea cambiar de estado ?',
@@ -367,7 +389,7 @@ function listarDetalleProgramacion(respuesta) {
 function cambiarEstado() {
 	var params = { 
 		idProgramacion : $('#hid_cod_programacion').val(),
-		idEstado : $('#sel_estado').val(),
+		idEstado : $('#sel_pro_estado').val(),
 		fechaEstado : $('#txt_fecha').val(),
 		observacion : $('#txt_observacion').val()
 	};
