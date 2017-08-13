@@ -92,6 +92,19 @@ $(document).ready(function() {
 		
 	});
 	
+	tbl_mnt_dee.on('click', '.btn_exp_doc', function(e) {//whr 
+		e.preventDefault();
+		
+		var id = $(this).attr('id');
+		var name = $(this).attr('name');
+		if (!esnulo(id) && !esnulo(name)) {
+			descargarDocumento(id, name);
+		} else {
+			addInfoMessage(null, 'No dispone de documento adjunto asociado.');
+		}
+		
+	});
+	
 });
 
 function inicializarDatos() {
@@ -109,6 +122,22 @@ function inicializarDatos() {
 	
 }
 
+
+function descargarDocumento(codigo, nombre) {	//whr
+	loadding(true);
+	var url = VAR_CONTEXT + '/common/archivo/exportarArchivo/'+codigo+'/'+nombre+'/';	
+	$.fileDownload(url).done(function(respuesta) {
+		loadding(false);	
+		if (respuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, mensajeReporteError);
+		} else {
+			addInfoMessage(null, mensajeReporteExito);
+		}		
+	}).fail(function (respuesta) {
+		loadding(false);
+		addErrorMessage(null, mensajeReporteError);
+	});	
+}
 
 function cargarDee(indicador) {
 	var params = { 
@@ -163,7 +192,15 @@ function listarDee(respuesta) {
 		}, {
 			data : 'nomMes'
 		}, {
-			data : 'numDee'
+			data : 'numDee',
+			render: function(data, type, row) { 
+				if (data != null) {
+					return '<button type="button" id="'+row.codigoArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
+						   'class="btn btn-link input-sm btn_exp_doc">'+data+'</button>';
+				} else {
+					return '';	
+				}											
+			}
 		}, {
 			data : 'fechaIni'
 		}, {
@@ -175,9 +212,7 @@ function listarDee(respuesta) {
 		}, {
 			data : 'nomEstado'
 		}],
-	
-		
-		
+			
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
 		},

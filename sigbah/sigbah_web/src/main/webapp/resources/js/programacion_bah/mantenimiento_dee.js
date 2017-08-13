@@ -282,7 +282,7 @@ $(document).ready(function() {
 
 	});
 	
-	
+
 	
 });
 
@@ -473,6 +473,11 @@ function inicializarDatos() {
 			$('#txt_motivo').val(dee.motivo);
 			$('input[name=rb_prorroga][value="'+dee.flgProrroga+'"]').prop('checked', true);
 			$('#txt_observacion').val(dee.observacion);
+//			$('#fil_sub_archivo').val(dee.nombreArchivo);
+			
+			
+			$('#txt_num_dee2').val(dee.numDee);
+			$('#txt_des_dee2').val(dee.nomDee);
 			
 			cargarDistritosEmergencia(true);
 			

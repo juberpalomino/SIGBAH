@@ -32,6 +32,8 @@ public class DecretoMapper implements RowMapper<DeeBean> {
 		dee.setNumDee(rs.getString("NRO_DEE"));
 		dee.setNomDee(rs.getString("NOMBRE_DEE"));
 		dee.setNomEstado(rs.getString("ESTDO"));	
+		dee.setNombreArchivo(rs.getString("NOM_ARCHIVO"));	
+		dee.setCodigoArchivoAlfresco(rs.getString("COD_ALFRESCO"));	
 		
 		
         
