@@ -127,7 +127,7 @@ $(document).ready(function() {
 			$('#sel_lis_producto').select2('destroy');
 		}
 		
-		$('#txt_desc_pedido').val(pedido.codPedidoConcate+": "+$('#txt_descripcion').val());
+		$('#txt_desc_pedido').val($('#txt_num_pedido').val()+": "+$('#txt_descripcion').val());
 		$('#hid_cod_producto').val('');//para nuevo
 		$('#div_det_productos').modal('show');
 		
@@ -136,7 +136,7 @@ $(document).ready(function() {
 	$('#href_doc_nuevo').click(function(e) {
 		e.preventDefault();
 		frm_det_documentos.trigger('reset');
-		$('#txt_desc_pedido_doc').val(pedido.codPedidoConcate+ ": "+ $('#txt_descripcion').val());
+		$('#txt_desc_pedido_doc').val( $('#txt_num_pedido').val()+ ": "+ $('#txt_descripcion').val());
 		$('#txt_fecha_doc').val(pedido.fecPedido);
 		$('#hid_cod_documento').val('');
 		$('#fil_sub_archivo').val(null);

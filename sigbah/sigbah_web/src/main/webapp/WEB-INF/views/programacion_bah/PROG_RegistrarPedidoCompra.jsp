@@ -317,7 +317,7 @@
 											<div class="row">
 												<label class="col-sm-2 control-label" >Pedido de compra:</label>
 												<div class="col-sm-6 form-group">
-														<input type="text" id="txt_desc_pedido" name="txt_desc_pedido"  class="form-control" >
+														<input type="text" id="txt_desc_pedido" name="txt_desc_pedido"  class="form-control" disabled>
 												</div>
 											</div>	
 											<div class="row">
@@ -409,7 +409,7 @@
 <!-- 													<label class="col-sm-2 control-label"></label> -->
 													<label class="col-sm-2 control-label" >Pedido de compra:</label>
 													<div class="col-sm-6 form-group">
-															<input type="text" id="txt_desc_pedido_doc" name="txt_desc_pedido_doc"  class="form-control" >
+															<input type="text" id="txt_desc_pedido_doc" name="txt_desc_pedido_doc"  class="form-control" disabled>
 													</div>
 											</div>	
 											<div class="row">
