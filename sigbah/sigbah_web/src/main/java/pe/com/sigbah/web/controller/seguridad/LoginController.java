@@ -93,7 +93,7 @@ public class LoginController extends BaseController {
 	            			return listaAlmacenUsuario;
 	            		}
 	            	} else {
-	            		if(listaAlmacenUsuario.size() == 1){
+	            		if (listaAlmacenUsuario.size() == 1) {
 	            			AlmacenBean almacen = listaAlmacenUsuario.get(0);
 		            		usuario.setIdAlmacen(almacen.getIdAlmacen());
 	            			usuario.setCodigoAlmacen(almacen.getCodigoAlmacen());

@@ -277,6 +277,14 @@ public class ProgramacionRequerimientoServiceImpl implements ProgramacionRequeri
 	public ProgramacionBean obtenerRegistroCabeceraProgramacion(Integer idProgramacion) throws Exception {
 		return programacionRequerimientoDao.obtenerRegistroCabeceraProgramacion(idProgramacion);
 	}
+	
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarTotalProductoAlimento(java.lang.Integer, java.lang.Integer, java.util.List)
+	 */
+	@Override
+	public List<ProgramacionAlimentoBean> listarTotalProductoAlimento(Integer idProgramacion, Integer idRacionOperativa, List<Integer> arrIdProducto) throws Exception {
+		return programacionRequerimientoDao.listarTotalProductoAlimento(idProgramacion, idRacionOperativa, arrIdProducto);
+	}
 
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.service.ProgramacionRequerimientoService#listarEstadoUsuario(pe.com.sigbah.common.bean.EstadoUsuarioBean)

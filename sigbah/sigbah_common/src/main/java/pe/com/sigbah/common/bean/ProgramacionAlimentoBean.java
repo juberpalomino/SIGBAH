@@ -17,6 +17,7 @@ public class ProgramacionAlimentoBean implements Serializable {
 	private String codigoAnio;
 	private Integer idDdi;
 	private Integer idProgramacion;
+	private Integer idRacionOperativa;
 	private String codigoDistrito;
 	private String departamento;
 	private String provincia;
@@ -256,6 +257,20 @@ public class ProgramacionAlimentoBean implements Serializable {
 	 */
 	public void setUsuarioRegistro(String usuarioRegistro) {
 		this.usuarioRegistro = usuarioRegistro;
+	}
+
+	/**
+	 * @return the idRacionOperativa
+	 */
+	public Integer getIdRacionOperativa() {
+		return idRacionOperativa;
+	}
+
+	/**
+	 * @param idRacionOperativa the idRacionOperativa to set
+	 */
+	public void setIdRacionOperativa(Integer idRacionOperativa) {
+		this.idRacionOperativa = idRacionOperativa;
 	}
 		
 }

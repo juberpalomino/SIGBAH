@@ -1078,47 +1078,31 @@ private static final long serialVersionUID = 1L;
 	public String exportarPdf(@PathVariable("idProgramacion") Integer idProgramacion, HttpServletRequest request, HttpServletResponse response) {
 	    try {
 	    	ProgramacionBean programacion = programacionRequerimientoService.obtenerRegistroCabeceraProgramacion(idProgramacion);
-	    	
+	    	Integer idRacionOperativa = programacion.getIdRacion();
 	    	List<RacionOperativaBean> listaRacion = null;
 	    	List<ProductoNoAlimentarioProgramacionBean> listaProductoNoAlimentario = null;
 	    	List<ProgramacionAlimentoBean> listaAlimento = null;
+	    	List<ProgramacionAlimentoBean> listaTotalProductoAlimento = null;
 	    	List<ProgramacionNoAlimentarioBean> listaNoAlimentario = null;
 	    	List<Integer> arrIdProductoRacion = null;
 	    	List<Integer> arrIdProductoNoAlimentario = null;
-	    	if (programacion.getTipoAtencion().equals(Constantes.ONE_INT)) { // Alimentos
-	    		listaRacion = programacionRequerimientoService.listarProgramacionRacionOperativa(programacion.getIdRacion());
+	    	if (programacion.getTipoAtencion().equals(Constantes.ONE_INT) || 
+					programacion.getTipoAtencion().equals(Constantes.THREE_INT)) { // Alimentos ó Ambos
+	    		listaRacion = programacionRequerimientoService.listarProgramacionRacionOperativa(idRacionOperativa);
 	    		if (!isEmpty(listaRacion)) {
 	    			arrIdProductoRacion = new ArrayList<Integer>();
 	    			for (RacionOperativaBean racion : listaRacion) {
 	    				arrIdProductoRacion.add(racion.getIdProducto());
 	    			}	    			
 	    			listaAlimento = programacionRequerimientoService.listarProgramacionAlimento(idProgramacion, arrIdProductoRacion);
+	    			listaTotalProductoAlimento = programacionRequerimientoService.listarTotalProductoAlimento(idProgramacion, idRacionOperativa, arrIdProductoRacion);
 	    		} else {
 	    			listaRacion = new ArrayList<RacionOperativaBean>();
 	    		}
-	    	} else if (programacion.getTipoAtencion().equals(Constantes.TWO_INT)) { // No Alimentos
-	    		listaProductoNoAlimentario = programacionRequerimientoService.listarProductoNoAlimentarioProgramacion(idProgramacion);
-	    		if (!isEmpty(listaProductoNoAlimentario)) {
-	    			arrIdProductoNoAlimentario = new ArrayList<Integer>();
-	    			for (ProductoNoAlimentarioProgramacionBean producto : listaProductoNoAlimentario) {
-	    				arrIdProductoNoAlimentario.add(producto.getIdProducto());
-	    			}	    			
-	    			listaNoAlimentario = programacionRequerimientoService.listarProgramacionNoAlimentario(idProgramacion, arrIdProductoNoAlimentario);
-	    		} else {
-	    			listaProductoNoAlimentario = new ArrayList<ProductoNoAlimentarioProgramacionBean>();
-	    		}
-	    	} else if (programacion.getTipoAtencion().equals(Constantes.THREE_INT)) { // Ambos
-	    		listaRacion = programacionRequerimientoService.listarProgramacionRacionOperativa(programacion.getIdRacion());
-	    		if (!isEmpty(listaRacion)) {
-	    			arrIdProductoRacion = new ArrayList<Integer>();
-	    			for (RacionOperativaBean racion : listaRacion) {
-	    				arrIdProductoRacion.add(racion.getIdProducto());
-	    			}	    			
-	    			listaAlimento = programacionRequerimientoService.listarProgramacionAlimento(idProgramacion, arrIdProductoRacion);
-	    		} else {
-	    			listaRacion = new ArrayList<RacionOperativaBean>();
-	    		}
+	    	}
 	    		
+	    	if (programacion.getTipoAtencion().equals(Constantes.TWO_INT) || 
+					programacion.getTipoAtencion().equals(Constantes.THREE_INT)) { // No Alimentarios ó Ambos
 	    		listaProductoNoAlimentario = programacionRequerimientoService.listarProductoNoAlimentarioProgramacion(idProgramacion);
 	    		if (!isEmpty(listaProductoNoAlimentario)) {
 	    			arrIdProductoNoAlimentario = new ArrayList<Integer>();
@@ -1143,7 +1127,13 @@ private static final long serialVersionUID = 1L;
 			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
 			
 			ReporteProgramacion reporte = new ReporteProgramacion();
-			reporte.generaPDFReporteProgramacion(file_path.toString(), programacion, listaRacion, listaAlimento, listaProductoNoAlimentario, listaNoAlimentario);
+			reporte.generaPDFReporteProgramacion(file_path.toString(), 
+												 programacion, 
+												 listaRacion, 
+												 listaAlimento, 
+												 listaTotalProductoAlimento, 
+												 listaProductoNoAlimentario, 
+												 listaNoAlimentario);
 			
 			response.resetBuffer();
             response.setContentType(Constantes.MIME_APPLICATION_PDF);

@@ -59,6 +59,7 @@ import pe.com.sigbah.mapper.RegistroCabeceraProgramacionMapper;
 import pe.com.sigbah.mapper.RegistroProgramacionMapper;
 import pe.com.sigbah.mapper.ResumenStockAlimentoMapper;
 import pe.com.sigbah.mapper.ResumenStockNoAlimentarioMapper;
+import pe.com.sigbah.mapper.TotalProductoAlimentoMapper;
 
 /**
  * @className: ProgramacionRequerimientoDaoImpl.java
@@ -1539,6 +1540,51 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		return programacion;
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarTotalProductoAlimento(java.lang.Integer, java.lang.Integer, java.util.List)
+	 */
+	@Override
+	public List<ProgramacionAlimentoBean> listarTotalProductoAlimento(Integer idProgramacion, Integer idRacionOperativa, List<Integer> arrIdProducto) throws Exception {
+		LOGGER.info("[listarTotalProductoAlimento] Inicio ");
+		List<ProgramacionAlimentoBean> lista = new ArrayList<ProgramacionAlimentoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_IDE_RACION", idRacionOperativa, Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_PROGRAMACION", idProgramacion, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTA_TOTAL_X_PRODUCTO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_RACION", new SqlParameter("PI_IDE_RACION", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_PROGRAMACION", new SqlParameter("PI_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PI_CURSOR_PRESENTACION", new SqlOutParameter("PI_CURSOR_PRESENTACION", OracleTypes.CURSOR, new TotalProductoAlimentoMapper(arrIdProducto)));
+			output_objParametros.put("PI_CURSOR_TOTALES", new SqlOutParameter("PI_CURSOR_TOTALES", OracleTypes.CURSOR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarTotalProductoAlimento] Ocurrio un error en la operacion del USP_SEL_LISTA_TOTAL_X_PRODUCTO : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProgramacionAlimentoBean>) out.get("PI_CURSOR_PRESENTACION");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarTotalProductoAlimento] Fin ");
+		return lista;
+	}
+	
 	/* (non-Javadoc)
 	 * @see pe.com.sigbah.dao.ProgramacionRequerimientoDao#listarEstadoUsuario(pe.com.sigbah.common.bean.EstadoUsuarioBean)
 	 */

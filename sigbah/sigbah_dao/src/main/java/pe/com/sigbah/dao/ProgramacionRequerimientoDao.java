@@ -241,6 +241,15 @@ public interface ProgramacionRequerimientoDao {
 	public abstract ProgramacionBean obtenerRegistroCabeceraProgramacion(Integer idProgramacion) throws Exception;
 	
 	/**
+	 * @param idProgramacion 
+	 * @param idRacionOperativa
+	 * @param arrIdProducto 
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ProgramacionAlimentoBean> listarTotalProductoAlimento(Integer idProgramacion, Integer idRacionOperativa, List<Integer> arrIdProducto) throws Exception;
+	
+	/**
 	 * @param estadoUsuarioBean
 	 * @return Lista de registros.
 	 * @throws Exception
