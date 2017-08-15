@@ -25,6 +25,40 @@ $(document).ready(function() {
 	
 	inicializarDatos();
 	
+	$('#href_afec_excel').click(function(e) {
+		e.preventDefault();
+		var row = $('#tbl_det_afectados > tbody > tr').length;
+		var empty = null;
+		$('tr.odd').each(function() {		
+			empty = $(this).find('.dataTables_empty').text();
+			return false;
+		});					
+		if (!esnulo(empty) || row < 1) {
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			return;
+		}
+		loadding(true);
+	
+		var idRequerimiento = $('#hid_cod_requerimiento').val() ;
+		var codAnio = $('#txt_anio').val() ;
+		var url = VAR_CONTEXT + '/programacion-bath/requerimiento/exportarExcelAfectados/';
+		url += verificaParametro(codAnio)+ '/';
+		url += verificaParametro(idRequerimiento);  
+		
+		$.fileDownload(url).done(function(respuesta) {
+			loadding(false);	
+			if (respuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, mensajeReporteError);
+			} else {
+				addInfoMessage(null, mensajeReporteExito);
+			}
+		}).fail(function (respuesta) {
+			loadding(false);
+			addErrorMessage(null, mensajeReporteError);
+		});
+
+	});
+
 	$('#sel_departamento_emer').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {						
@@ -71,8 +105,9 @@ $(document).ready(function() {
 				fechaRequerimiento : $('#txt_fecha_requerimiento').val(),
 				flgSinpad : $('input[name="rb_req_sinpad"]:checked').val(),
 				fkIdeFenomeno :  $('#sel_fenomeno').val(),
-				observacion : $('#txt_observaciones').val()
-						
+				observacion : $('#txt_observaciones').val(),
+				idEstado :  $('#sel_estado').val()
+					
 			};
 			
 			loadding(true);
@@ -358,6 +393,13 @@ $('#btn_aceptar_ubigeo').click(function(e) {
 				$('#txt_per_afec').val(obj.persoAfectadoReal);
 				$('#txt_per_dam').val(obj.persoDamnificadoReal);
 				
+				$('#txt_m_dto').val(obj.desDepartamento);
+				$('#txt_m_prov').val(obj.desProvincia);
+				$('#txt_m_dist').val(obj.desDistrito);
+				
+				$('#txt_nro_req_mo').val(requerimiento.numRequerimiento); 
+				$('#txt_des_req_mo').val(requerimiento.nomRequerimiento);
+				
 				$('#div_mod_actualiza_emer').modal('show');
 			}
 			
@@ -426,7 +468,7 @@ function inicializarDatos() {
 			$('#li_damnificados').closest('li').children('a').attr('data-toggle', 'tab');
 			
 			$('#hid_cod_requerimiento').val(requerimiento.idRequerimiento);//usamos paa el listado de detalle requerimientos
-			
+			$('#sel_estado').val(requerimiento.idEstado); 
 			$('#txt_descripcion').val(requerimiento.nomRequerimiento);
 			$('#txt_observaciones').val(requerimiento.observacion);
 			$('#sel_region').val(requerimiento.fkIdeRegion);

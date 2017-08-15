@@ -69,6 +69,16 @@
 																<input type="text" id="txt_anio" class="form-control" disabled>
 														</div>
 														
+														<div class="col-sm-1"></div>
+														<label class="col-sm-2 control-label">Estado:</label>
+														<div class="col-sm-2 form-group">
+															<select id="sel_estado" name="sel_estado" class="form-control">
+																	<option value="">Seleccione</option>
+																	<c:forEach items="${lista_estado}" var="item">
+																	    <option value="${item.icodigo}">${item.descripcion}</option>
+																	</c:forEach>
+															</select>
+														</div>
 													</div>
 													
 													<div class="row">
@@ -119,8 +129,8 @@
 															</label>																											
 														</div>
 												
-														<label class="col-sm-2 control-label">Fenomeno:</label>
-														<div class="col-sm-3 form-group">
+														<label class="col-sm-2 control-label">Fenómeno:</label>
+														<div class="col-sm-5 form-group">
 															<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
 																<option value="">Seleccione</option>
 																<c:forEach items="${lista_fenomeno}" var="item">
@@ -218,17 +228,13 @@
 											<h2>Afectados y damnificados según distrito</h2>
 											
 											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_afec_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Exportar Excel">
 													<i class="fa fa-file-excel-o"></i>
 												</a> 
-												<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+												<a href="#" id="href_afec_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Imprimir">
 													<i class="fa fa-file-pdf-o"></i>
-												</a>
-												<a href="#" id="href_ali_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
 												</a>
 											</div>
 										</header>
@@ -494,7 +500,7 @@
 										<option value="">Todos</option>
 									</select>
 								</div>																		
-								<label class="col-sm-2 control-label">Fenomeno:</label>
+								<label class="col-sm-2 control-label">Fenómeno:</label>
 								<div class="col-sm-2">
 									<select id="sel_fenomeno_emer" name="sel_fenomeno_emer" class="form-control">
 										<option value="0">Todos</option>
@@ -616,15 +622,45 @@
 						<form id="frm_afecta_damni" class="form-horizontal" role="form">
 							
 							<input type="hidden" id="hid_cod_dam_afec" name="hid_cod_dam_afec">
-							
-							<div class="row">																				
+							<div class="row">
+								<div class="form-group">
+											<div class="col-sm-2"></div>
+<!-- 									<label class="col-sm-3 control-label label-bold">N° de requerimiento:</label> -->
+									<div class="col-sm-2">
+										<input type="text" id="txt_nro_req_mo" class="form-control" disabled>
+									</div>
+									<div class="col-sm-6">
+										<input type="text" id="txt_des_req_mo" class="form-control" disabled>
+									</div>
+								</div>	
+							</div>
+							<div class="row">
+								<div class="form-group">
+											<div class="col-sm-1"></div>
+									<label class="col-sm-1 control-label label-bold">Dpto:</label>
+									<div class="col-sm-2">
+										<input type="text" id="txt_m_dto" class="form-control" disabled>
+									</div>
+									<label class="col-sm-1 control-label label-bold">Provincia:</label>
+									<div class="col-sm-2">
+										<input type="text" id="txt_m_prov" class="form-control" disabled>
+									</div>
+									<label class="col-sm-1 control-label label-bold">Distrito:</label>
+									<div class="col-sm-2">
+										<input type="text" id="txt_m_dist" class="form-control" disabled>
+									</div>
+								</div>	
+							</div>
+							<div class="row">				
+								<div class="col-sm-3"></div>																
 								<label class="col-sm-3 control-label">Fam. Afect. Real:</label>
 								<div class="col-sm-2 form-group">
 									<input type="text" name="txt_fam_afec" id="txt_fam_afec" class="form-control only-numbers-format" >
 								</div>
 							</div>
 							
-							<div class="row">																				
+							<div class="row">		
+								<div class="col-sm-3"></div>																		
 								<label class="col-sm-3 control-label">Fam. Dam. Real:</label>
 								<div class="col-sm-2 form-group">
 									<input type="text" name="txt_fam_dam" id="txt_fam_dam" class="form-control only-numbers-format" >
@@ -633,35 +669,38 @@
 						
 							<div class="row">&nbsp;</div>									
 
-							<div class="row">																				
+							<div class="row">			
+								<div class="col-sm-3"></div>																	
 								<label class="col-sm-3 control-label">Pers. Afect. Real:</label>
 								<div class="col-sm-2 form-group">
 									<input type="text" name="txt_per_afec" id="txt_per_afec" class="form-control only-numbers-format" >
 								</div>
 							</div>
 							
-							<div class="row">																				
+							<div class="row">				
+								<div class="col-sm-3"></div>																
 								<label class="col-sm-3 control-label">Pers. Dam. Real:</label>
 								<div class="col-sm-2 form-group">
 									<input type="text" name="txt_per_dam" id="txt_per_dam" class="form-control only-numbers-format" >
 								</div>
 							</div>
 							
-							<div class="row">																				
-								<button type="button" class="btn btn-primary" id="btn_gra_actualiza_emer">
-									<i class="fa fa-floppy-o"></i>
-									Grabar
-								</button>
+							<div class="row">		
+								<div class="col-sm-5"></div>
+								<div class="col-sm-2 form-group">
+									<button type="button" class="btn btn-primary" >
+										<i class="fa fa-floppy-o"></i>
+										Grabar
+									</button>
+								</div>																		
 								
-								&nbsp; &nbsp;
-								
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_actualiza_emer">
+								<div class="col-sm-2 form-group">
+									<button type="button" class="btn btn-default" data-dismiss="modal" >
 									<i class="fa fa-mail-forward"></i>
 									Cancelar
 								</button>
+								</div>	
 							</div>
-							
-							
 						</form>
 					</div>
 				</div>

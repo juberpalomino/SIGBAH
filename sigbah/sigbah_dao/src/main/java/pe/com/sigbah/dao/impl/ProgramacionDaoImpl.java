@@ -386,7 +386,8 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			input_objParametros.addValue("PI_OBSERVACION", requerimientoBean.getObservacion(), Types.VARCHAR);
 			input_objParametros.addValue("PI_USERNAME", requerimientoBean.getUsuarioRegistro(), Types.VARCHAR);
 			input_objParametros.addValue("PI_CONTROL", requerimientoBean.getControl(), Types.VARCHAR);
-            
+			input_objParametros.addValue("PI_IDE_ESTADO", requerimientoBean.getIdEstado(), Types.NUMERIC);
+			    
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
@@ -407,6 +408,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			output_objParametros.put("PI_OBSERVACION", new SqlParameter("PI_OBSERVACION", Types.VARCHAR));
 			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
 			output_objParametros.put("PI_CONTROL", new SqlParameter("PI_CONTROL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ESTADO", new SqlParameter("PI_IDE_ESTADO", Types.NUMERIC));
 			output_objParametros.put("PO_IDE_REQUERIMIENTO", new SqlOutParameter("PO_IDE_REQUERIMIENTO", Types.NUMERIC));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));

@@ -337,5 +337,10 @@ public interface GeneralService {
 	 */
 	List<ItemBean> listarEstadoDee(ItemBean itemBean) throws Exception;
 
-	
+	/**
+	 * @param itemBean
+	 * @return
+	 * @throws Exception
+	 */
+	List<ItemBean> listarEstadoRequerimiento(ItemBean itemBean) throws Exception;
 }

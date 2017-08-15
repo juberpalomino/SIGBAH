@@ -34,6 +34,7 @@ public class RequerimientoEditMapper implements RowMapper<RequerimientoBean> {
 		requerimiento.setFlgSinpad(rs.getString("FLG_SINPAD"));
 		requerimiento.setFkIdeFenomeno(rs.getInt("FK_IDE_FENOMENO"));
 		requerimiento.setObservacion(rs.getString("OBSERVACION"));	
+		requerimiento.setIdEstado(rs.getInt("FK_IDE_ESTADO"));	
 		
        return requerimiento;
 	}

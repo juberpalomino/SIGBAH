@@ -40,7 +40,14 @@ $(document).ready(function() {
 					}
 				}
 			}
-			
+			,
+			sel_estado : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Estado.'
+					}
+				}
+			}
 			
 			
 		}

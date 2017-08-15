@@ -34,6 +34,20 @@ public class RequerimientoBean extends BaseOutputBean {
 	private Integer idProvincia;
 	private String codProvincia;
 	private String control;
+	
+	private Integer idEstado;
+	/**
+	 * @return the idEstado
+	 */
+	public Integer getIdEstado() {
+		return idEstado;
+	}
+	/**
+	 * @param idEstado the idEstado to set
+	 */
+	public void setIdEstado(Integer idEstado) {
+		this.idEstado = idEstado;
+	}
 	/**
 	 * 
 	 */

@@ -24,11 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
-import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
-import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
@@ -40,6 +38,7 @@ import pe.com.sigbah.service.ProgramacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
 import pe.com.sigbah.web.report.programacion_bah.ReporteEmergencia;
 import pe.com.sigbah.web.report.programacion_bah.ReporteRequerimiento;
+import pe.com.sigbah.web.report.programacion_bah.ReporteRequerimientoAfectado;
 
 /**
  * @className: EmergenciaController.java
@@ -74,6 +73,7 @@ private static final long serialVersionUID = 1L;
         	
         	model.addAttribute("lista_fenomeno", generalService.listarFenomeno(new ItemBean()));
       	
+        	
         	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
@@ -216,7 +216,7 @@ private static final long serialVersionUID = 1L;
         	model.addAttribute("lista_anio", generalService.listarAnios());
         	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
         	model.addAttribute("lista_departamento", generalService.listarDepartamentos(new UbigeoBean()));
-        	
+        	model.addAttribute("lista_estado", generalService.listarEstadoRequerimiento( new ItemBean()));
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
             
         } catch (Exception e) {
@@ -457,8 +457,6 @@ private static final long serialVersionUID = 1L;
 	@RequestMapping(value = "/actualizarDamnificados", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object actualizarDamnificados(HttpServletRequest request, HttpServletResponse response) {
-		
-		System.out.println("okkkkkkkkkkkkk");
 		EmergenciaBean emergencia = null;
 		try {			
 			EmergenciaBean emergenciaBean = new EmergenciaBean();
@@ -489,5 +487,49 @@ private static final long serialVersionUID = 1L;
 		return emergencia;
 	}
 	
+
+	
+	@RequestMapping(value = "/exportarExcelAfectados/{codAnio}/{idRequerimiento}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarExcelAfectados(@PathVariable("codAnio") String codAnio, 
+								@PathVariable("idRequerimiento") Integer idRequerimiento, 
+								HttpServletResponse response) {
+	    try {
+	    	RequerimientoBean requerimientoBean = new RequerimientoBean();
+	    	requerimientoBean.setCodAnio(verificaParametro(codAnio));
+	    	requerimientoBean.setIdRequerimiento(idRequerimiento);
+	    	
+//	    	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+//	    	requerimientoBean.setFkIdeDdi(Integer.parseInt(usuarioBean.getCodigoDdi()));
+	    	
+			List<EmergenciaBean> lista = programacionService.listarRequerimientoDetalle(requerimientoBean);
+	    	
+			String file_name = "RequerimientosAfectados";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_XLS);
+			
+			ReporteRequerimientoAfectado reporte = new ReporteRequerimientoAfectado();
+		    HSSFWorkbook wb = reporte.generaReporteExcelRequerimientoAfectado(lista);
+			
+			response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_XLS);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+	    	
+		    // Captured backflow
+	    	OutputStream out = response.getOutputStream();
+	    	wb.write(out); // We write in that flow
+	    	out.flush(); // We emptied the flow
+	    	out.close(); // We close the flow
+	    	
+	    	return Constantes.COD_EXITO_GENERAL;   	
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
 	
 }

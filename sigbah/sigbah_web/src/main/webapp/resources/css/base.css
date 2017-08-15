@@ -142,5 +142,7 @@ table.dataTable thead .sorting_desc {
     text-align: left;
 }
 
-
+.modal-title{
+	    color: white;
+}
     
