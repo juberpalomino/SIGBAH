@@ -522,8 +522,8 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			input_objParametros.addValue("PI_NUM_PER_AFECTADAS_REAL", emergenciaBean.getPersoAfectadoReal(), Types.NUMERIC);
 			input_objParametros.addValue("PI_NUM_PER_DAMNIFICADAS_REAL", emergenciaBean.getPersoDamnificadoReal(), Types.NUMERIC);
 			input_objParametros.addValue("PI_USERNAME", emergenciaBean.getUsuarioRegistro(), Types.VARCHAR);
+//			input_objParametros.addValue("PI_IDE_REQ_DAMNIFICADO", emergenciaBean.getFkIdRequerimientoDamni(), Types.NUMERIC);
 			
-			 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
@@ -543,6 +543,7 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			output_objParametros.put("PI_NUM_PER_AFECTADAS_REAL", new SqlParameter("PI_NUM_PER_AFECTADAS_REAL", Types.NUMERIC));
 			output_objParametros.put("PI_NUM_PER_DAMNIFICADAS_REAL", new SqlParameter("PI_NUM_PER_DAMNIFICADAS_REAL", Types.NUMERIC));
 			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+//			output_objParametros.put("PI_IDE_REQ_DAMNIFICADO", new SqlParameter("PI_IDE_REQ_DAMNIFICADO", Types.NUMERIC));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
 			

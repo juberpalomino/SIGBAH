@@ -255,7 +255,7 @@
 
 												<table id="tbl_det_afectados" class="table table-bordered table-hover tbl-responsive">
 													<thead>			                
-														<tr>
+														<tr> 
 															<th></th>
 															<th>Nº</th>
 															<th>Región</th>
@@ -277,8 +277,29 @@
 															<th>Total pers. REAL</th>
 														</tr>
 													</thead>
+													<tfoot>
+														<tr>
+															<td colspan="6">
+																<span class="label-bold" style="float:right;">Total:</span>
+															</td>
+															<td colspan="1"><span id="sp_tot_inei"></span></td>	
+															<td colspan="1"><span id="sp_tot_fam_afec"></span></td>
+															<td colspan="1"><span id="sp_tot_fam_dam"></span></td>
+															<td colspan="1"><span id="sp_tot_fam"></span></td>
+															<td colspan="1"><span id="sp_tot_per_afec"></span></td>
+															<td colspan="1"><span id="sp_tot_per_dam"></span></td>
+															<td colspan="1"><span id="sp_tot_per"></span></td>
+															<td colspan="1"><span id="sp_tot_fam_afec_real"></span></td>
+															<td colspan="1"><span id="sp_tot_fam_dam_real"></span></td>
+															<td colspan="1"><span id="sp_tot_fam_real"></span></td>
+															<td colspan="1"><span id="sp_tot_per_afec_real"></span></td>
+															<td colspan="1"><span id="sp_tot_per_dam_real"></span></td>
+															<td colspan="1"><span id="sp_tot_per_real"></span></td>
+															
+														</tr>
+													</tfoot>
 												</table>
-
+												
 											</div>
 											<!-- end widget content -->
 						
@@ -688,14 +709,14 @@
 							<div class="row">		
 								<div class="col-sm-5"></div>
 								<div class="col-sm-2 form-group">
-									<button type="button" class="btn btn-primary" >
+									<button type="button" class="btn btn-primary" id="btn_gra_actualiza_emer" >
 										<i class="fa fa-floppy-o"></i>
 										Grabar
 									</button>
 								</div>																		
 								
 								<div class="col-sm-2 form-group">
-									<button type="button" class="btn btn-default" data-dismiss="modal" >
+									<button type="button" class="btn btn-default" data-dismiss="modal"  id="btn_can_actualiza_emer" >
 									<i class="fa fa-mail-forward"></i>
 									Cancelar
 								</button>

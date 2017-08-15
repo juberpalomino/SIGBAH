@@ -23,6 +23,12 @@ $(document).ready(function() {
 		clearBtn: true
 	});
 	
+	   $('#tbl_det_afectados').dataTable( {
+	        "columnDefs": [
+	            { "type": "numeric-comma", targets: 3 }
+	        ]
+	    } );
+	
 	inicializarDatos();
 	
 	$('#href_afec_excel').click(function(e) {
@@ -749,6 +755,73 @@ function listarDetalleRequerimiento(respuesta) {
 			paging : false,
 			ordering : false,
 			info : false,
+			'footerCallback' : function ( row, data, start, end, display ) {
+				var api = this.api(), data;	 
+				
+				// Remove the formatting to get integer data for summation
+				var intVal = function ( i ) {
+					return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ?	i : 0;
+				};
+	 
+				total_inei = api.column(6, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				
+				total_fam_afec = api.column(7, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				
+				total_fam_dam = api.column(8, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_fam = api.column(9, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_per_afec = api.column(10, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_per_dam = api.column(11, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_per = api.column(12, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_fam_afec_real = api.column(13, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				
+				total_fam_dam_real = api.column(14, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_fam_real = api.column(15, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_per_afec_real = api.column(16, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_per_dam_real = api.column(17, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+				total_per_real = api.column(18, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0 );
+
+				// Update footer
+				$('#sp_tot_inei').html(parseFloat(total_inei).toFixed(2));
+				$('#sp_tot_fam_afec').html(parseFloat(total_fam_afec).toFixed(2));
+				$('#sp_tot_fam_dam').html(parseFloat(total_fam_dam).toFixed(2));
+				$('#sp_tot_fam').html(parseFloat(total_fam).toFixed(2));
+				$('#sp_tot_per_afec').html(parseFloat(total_per_afec).toFixed(2));
+				$('#sp_tot_per_dam').html(parseFloat(total_per_dam).toFixed(2));
+				$('#sp_tot_per').html(parseFloat(total_per).toFixed(2));
+				$('#sp_tot_fam_afec_real').html(parseFloat(total_fam_afec_real).toFixed(2));
+				$('#sp_tot_fam_dam_real').html(parseFloat(total_fam_dam_real).toFixed(2));
+				$('#sp_tot_fam_real').html(parseFloat(total_fam_real).toFixed(2));
+				$('#sp_tot_per_afec_real').html(parseFloat(total_per_afec_real).toFixed(2));
+				$('#sp_tot_per_dam_real').html(parseFloat(total_per_dam_real).toFixed(2));
+				$('#sp_tot_per_real').html(parseFloat(total_per_real).toFixed(2));
+			
+			},
 			iDisplayLength : 15,
 			aLengthMenu : [
 				[15, 50, 100],
