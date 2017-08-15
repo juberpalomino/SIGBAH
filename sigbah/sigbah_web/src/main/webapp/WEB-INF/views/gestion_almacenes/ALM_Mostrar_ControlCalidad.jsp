@@ -58,6 +58,7 @@
 									<form id="frm_dat_generales" class="form-horizontal">
 									
 										<input type="hidden" id="hid_cod_con_calidad" name="hid_cod_con_calidad">
+										<input type="hidden" id="hid_val_fec_trabajo" name="hid_val_fec_trabajo">
 									
 										<div class="header-form opc-center">	
 											<strong>Control de Calidad</strong>
@@ -125,6 +126,7 @@
 														<label class="col-sm-2 control-label">Nº Orden Compra:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_orden_compra}" var="item">
 																    <option value="${item.nroOrdenCompra}_${item.concepto}">${item.nroOrdenCompra}</option>
 																</c:forEach>
@@ -647,7 +649,8 @@
 							<div id="div_pro_det_alimentarios" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
 								<div class="col-sm-5 form-group">
-									<select id="sel_producto" name="sel_producto" class="form-control ">
+									<select id="sel_producto" name="sel_producto" class="form-control">
+										<option value="">Seleccione</option>
 										<c:forEach items="${lista_producto}" var="item">
 											<option value="${item.idProducto}_${item.nombreUnidadMedida}">${item.nombreProducto}</option>
 										</c:forEach>

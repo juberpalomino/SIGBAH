@@ -114,9 +114,18 @@ $(document).ready(function() {
 			},
 			txt_fec_vencimiento : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha Vencimiento.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+                				return { valid: false, message: 'Debe ingresar Fecha Vencimiento.' }
+                			}
+		                	var fechaRegistro = $('#txt_fecha').val();
+	                		if (comparafecha(value, fechaRegistro) != 1) {
+	                		    return { valid: false, message: 'La fecha de vencimiento debe ser mayor a la fecha de ingreso.' }
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			txt_can_lote : {
@@ -128,9 +137,22 @@ $(document).ready(function() {
 			},
 			txt_can_muestra : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Muestra.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+	            				return { valid: false, message: 'Debe ingresar Cantidad de Muestra.' }
+	            			}
+		                	var cantidadLote = $('#txt_can_lote').val();
+	                		if (!esnulo(cantidadLote)) {
+	                			var cantidadMuestra = parseFloat(value);
+	                			cantidadLote = parseFloat(cantidadLote);
+	                			if (cantidadMuestra > cantidadLote) {
+	                				return { valid: false, message: 'La cantidad de la muestra siempre debe ser menor o igual a la cantidad del lote.' }
+	                			}
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			sel_primario : {
@@ -198,9 +220,17 @@ $(document).ready(function() {
 			},
 			txt_no_fec_vencimiento : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha Vencimiento.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	var fechaRegistro = $('#txt_fecha').val();
+	                		if (!esnulo(value)) {
+	                		    if (comparafecha(value, fechaRegistro) != 1) {
+	                		    	return { valid: false, message: 'La fecha de vencimiento debe ser mayor a la fecha de ingreso.' }	                		    	
+	                		    }
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			txt_no_can_lote : {
@@ -212,9 +242,22 @@ $(document).ready(function() {
 			},
 			txt_no_can_muestra : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Muestra.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+	            				return { valid: false, message: 'Debe ingresar Cantidad de Muestra.' }
+	            			}
+		                	var cantidadLote = $('#txt_no_can_lote').val();
+	                		if (!esnulo(cantidadLote)) {
+	                			var cantidadMuestra = parseFloat(value);
+	                			cantidadLote = parseFloat(cantidadLote);
+	                			if (cantidadMuestra > cantidadLote) {
+	                				return { valid: false, message: 'La cantidad de la muestra siempre debe ser menor o igual a la cantidad del lote.' }
+	                			}
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			sel_no_primario : {

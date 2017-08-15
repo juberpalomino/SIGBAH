@@ -61,6 +61,7 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
+		var idEstado = null;
 		tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -70,6 +71,7 @@ $(document).ready(function() {
 				}
 				var idControlCalidad = listaControlCalidadCache[index].idControlCalidad;
 				codigo = codigo + idControlCalidad + '_';
+				idEstado = listaControlCalidadCache[index].idEstado;
 			}
 		});
 		
@@ -82,6 +84,12 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
+			
+			if (idEstado == ESTADO_ANULADO) {
+				addWarnMessage(null, mensajeValidacionAnulado);
+				return;
+			}
+			
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/mantenimientoControlCalidad/';
 			$(location).attr('href', url + codigo);
@@ -197,6 +205,7 @@ function inicializarDatos() {
 		$('#sel_anio').val(usuarioBean.codigoAnio);
 		$('#sel_ddi').val(usuarioBean.idDdi);
 		$('#sel_almacen').val(usuarioBean.idAlmacen);
+		$('#sel_ddi').prop('disabled', true);
 		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();

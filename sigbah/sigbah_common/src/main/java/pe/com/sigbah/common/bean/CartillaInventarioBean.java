@@ -14,6 +14,7 @@ public class CartillaInventarioBean extends BaseOutputBean {
 	private Integer idCartilla;
 	private String codigoCartilla;
 	private String codigoAnio;
+	private String codigoMes;
 	private Integer idAlmacen;
 	private String codigoAlmacen;
 	private String nombreAlmacen;
@@ -72,6 +73,20 @@ public class CartillaInventarioBean extends BaseOutputBean {
 	 */
 	public void setCodigoAnio(String codigoAnio) {
 		this.codigoAnio = codigoAnio;
+	}
+
+	/**
+	 * @return the codigoMes
+	 */
+	public String getCodigoMes() {
+		return codigoMes;
+	}
+
+	/**
+	 * @param codigoMes the codigoMes to set
+	 */
+	public void setCodigoMes(String codigoMes) {
+		this.codigoMes = codigoMes;
 	}
 
 	/**

@@ -7,6 +7,7 @@ var ESTADO_GENERADO = '13';
 var ESTADO_APROBADO = '3';
 var ESTADO_AJUSTE = '14';
 var ESTADO_ANULADO = '0';
+var ESTADO_ACTIVO = '1';
 
 $(function() {
 

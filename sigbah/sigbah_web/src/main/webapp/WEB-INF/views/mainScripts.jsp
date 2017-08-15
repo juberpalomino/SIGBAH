@@ -64,6 +64,7 @@
 	var mensajeReporteError = 'No se pudo completar la descarga del archivo, por favor intentar nuevamente.';
 	var mensajeCargaArchivoError = 'No se pudo completar la carga del archivo, por favor intentar nuevamente.';
 	var mensajeReporteValidacion = 'No cuenta con registros asociados para generar el reporte.';
+	var mensajeValidacionAnulado = 'No se puede editar el registro porque se encuentra en estado anulado.';
 </script>
 
 <!-- BASE APP JS FILE -->
