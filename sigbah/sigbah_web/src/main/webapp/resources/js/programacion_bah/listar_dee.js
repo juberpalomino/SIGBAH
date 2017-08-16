@@ -100,7 +100,7 @@ $(document).ready(function() {
 		if (!esnulo(id) && !esnulo(name)) {
 			descargarDocumento(id, name);
 		} else {
-			addInfoMessage(null, 'No dispone de documento adjunto asociado.');
+			addInfoMessage(null, mensajeValidacionDocumento);
 		}
 		
 	});

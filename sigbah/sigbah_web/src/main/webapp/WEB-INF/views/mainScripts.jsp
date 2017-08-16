@@ -68,6 +68,9 @@
 	var mensajeValidacionSeleccionarRegistro = 'Debe de seleccionar por lo menos un registro.';
 	var mensajeValidacionSeleccionarSoloUnRegistro = 'Debe de seleccionar solo un registro.';
 	var mensajeValidacionAnulado = 'No se puede editar el registro porque se encuentra en estado anulado.';
+	var mensajeValidacionDocumento = 'No dispone de documento adjunto asociado.';
+	var mensajeConfirmacionEliminacionVariosRegistros = 'Está seguro de eliminar los siguientes registros ?';
+	var mensajeConfirmacionEliminacionSoloUnRegistro = 'Está seguro de eliminar el registro ?';
 </script>
 
 <!-- BASE APP JS FILE -->

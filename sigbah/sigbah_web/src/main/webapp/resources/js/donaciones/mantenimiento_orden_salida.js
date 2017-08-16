@@ -387,9 +387,9 @@ $(document).ready(function() {
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
-				msg = 'Está seguro de eliminar los siguientes registros ?';
+				msg = mensajeConfirmacionEliminacionVariosRegistros;
 			} else {
-				msg = 'Está seguro de eliminar el registro ?';
+				msg = mensajeConfirmacionEliminacionSoloUnRegistro;
 			}
 			
 			$.SmartMessageBox({
@@ -592,9 +592,9 @@ $(document).ready(function() {
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
-				msg = 'Está seguro de eliminar los siguientes registros ?';
+				msg = mensajeConfirmacionEliminacionVariosRegistros;
 			} else {
-				msg = 'Está seguro de eliminar el registro ?';
+				msg = mensajeConfirmacionEliminacionSoloUnRegistro;
 			}
 			
 			$.SmartMessageBox({
@@ -707,7 +707,7 @@ $(document).ready(function() {
 		if (!esnulo(id) && !esnulo(name)) {
 			descargarDocumento(id, name);
 		} else {
-			addInfoMessage(null, 'No dispone de documento adjunto asociado.');
+			addInfoMessage(null, mensajeValidacionDocumento);
 		}
 		
 	});
