@@ -116,6 +116,7 @@
 														<label class="col-sm-2 control-label">Tipo Movimiento:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_tipo_movimiento}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -142,6 +143,7 @@
 														<label class="col-sm-2 control-label">N° Programacion:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_nro_programacion" name="sel_nro_programacion" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_programacion}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -498,6 +500,7 @@
 								<div class="col-sm-6 form-group">
 									<select id="sel_producto" name="sel_producto" class="form-control">
 									</select>
+									<small id="sma_val_producto" class="control-label label-error">Debe seleccionar Producto.</small>
 								</div>
 							</div>
 							

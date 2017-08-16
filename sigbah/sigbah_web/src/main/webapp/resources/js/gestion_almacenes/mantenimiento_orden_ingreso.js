@@ -245,11 +245,11 @@ $(document).ready(function() {
 		$('#h4_tit_productos').html('Nuevo Producto');
 		limpiarFormularioProducto();
 		
-		$('#sma_val_producto').hide();
 		$('#sel_producto').html('');
 		if ($('#sel_producto').hasClass('select2-hidden-accessible')) {
 			$('#sel_producto').select2('destroy');
 		}
+		$('#sma_val_producto').hide();
 		
 		$('#sel_lote').html('');
 		$('#sel_lote').prop('disabled', false);

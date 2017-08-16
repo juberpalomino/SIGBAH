@@ -55,6 +55,7 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
+		var idEstado = null;
 		tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_pro_manifiesto.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -64,6 +65,7 @@ $(document).ready(function() {
 				}
 				var idProyectoManifiesto = listaProyectoManifiestoCache[index].idProyectoManifiesto;
 				codigo = codigo + idProyectoManifiesto + '_';
+				idEstado = listaProyectoManifiestoCache[index].idEstado;
 			}
 		});
 		
@@ -76,6 +78,12 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
+			
+			if (idEstado == ESTADO_ANULADO) {
+				addWarnMessage(null, mensajeValidacionAnulado);
+				return;
+			}
+			
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/mantenimientoProyectoManifiesto/';
 			$(location).attr('href', url + codigo);

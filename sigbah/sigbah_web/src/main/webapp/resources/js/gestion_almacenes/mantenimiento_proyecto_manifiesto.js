@@ -90,6 +90,24 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('#sel_estado').change(function() {
+		var codigo = $(this).val();
+		if (codigo == ESTADO_ANULADO) {
+			$.SmartMessageBox({
+				title : 'Esta usted seguro de anular ?',
+				content : '',
+				buttons : '[NO][SI]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === 'SI') {				
+					grabarDetalle(false);					
+				}
+				if (ButtonPressed === 'NO') {				
+					$('#sel_estado').val(ESTADO_ACTIVO);				
+				}
+			});
+		}
+	});
+	
 	$('#btn_grabar').click(function(e) {
 		e.preventDefault();
 		
@@ -102,55 +120,7 @@ $(document).ready(function() {
 		    	return;
 			}
 			
-			var codigo = $('#hid_cod_proyecto').val();
-			var flagProgramacion = $('input[name="rb_man_tie_programacion"]:checked').val();
-			var params = {
-				idProyectoManifiesto : codigo,
-				codigoAnio : $('#txt_anio').val(),
-				codigoDdi : proyectoManifiesto.codigoDdi,
-				codigoMes : proyectoManifiesto.codigoMes,
-				idAlmacen : proyectoManifiesto.idAlmacen,				
-				codigoAlmacen : proyectoManifiesto.codigoAlmacen,
-				idAlmacenDestino : $('#sel_almacen').val(),
-				nroProyectoManifiesto : $('#txt_nro_pro_manifiesto').val(),
-				fechaEmision : $('#txt_fecha').val(),
-				flagProgramacion : flagProgramacion,
-				idProgramacion : $('#sel_nro_programacion').val(),
-				idMovimiento : $('#sel_tip_movimiento').val(),
-				idEstado : $('#sel_estado').val(),
-				observacion : $('#txt_observaciones').val()
-			};
-			
-			loadding(true);
-			
-			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarProyectoManifiesto', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, respuesta.mensajeRespuesta);
-				} else {
-					
-					if (!esnulo(codigo)) {
-						
-						addSuccessMessage(null, respuesta.mensajeRespuesta);
-						
-					} else {
-						
-						$('#hid_cod_proyecto').val(respuesta.idProyectoManifiesto);
-						$('#txt_nro_pro_manifiesto').val(respuesta.codigoProyectoManifiesto);
-				
-						$('#li_productos').attr('class', '');
-						$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
-
-						$('#li_documentos').attr('class', '');
-						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
-						
-						addSuccessMessage(null, 'Se creó el Proyecto de Manifiesto N° '+respuesta.codigoProyectoManifiesto);
-						
-						listarVehiculoProyectoManifiesto(false);
-					}
-					
-				}
-				loadding(false);
-			});			
+			grabarDetalle(true);
 		}
 		
 	});
@@ -175,6 +145,7 @@ $(document).ready(function() {
 		if ($('#sel_producto').hasClass('select2-hidden-accessible')) {
 			$('#sel_producto').select2('destroy');
 		}
+		$('#sma_val_producto').hide();
 		
 		$('#hid_cod_producto').val('');
 		$('#div_det_productos').modal('show');
@@ -201,6 +172,7 @@ $(document).ready(function() {
 			
 			$('#h4_tit_productos').html('Actualizar Producto');
 			limpiarFormularioProducto();
+			$('#sma_val_producto').hide();
 			
 			$('#hid_cod_producto').val(obj.idDetalleProyecto);
 			
@@ -327,14 +299,16 @@ $(document).ready(function() {
 		if (!esnulo(idCategoria)) {					
 			cargarProducto(idCategoria, null);
 		} else {
+			$('#sma_val_producto').show();
 			$('#sel_producto').html('');
-			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_producto');
+//			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_producto');
 		}
 	});
 	
 	$('#sel_producto').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {
+			$('#sma_val_producto').hide();
 			var arr = codigo.split('_');
 			if (arr.length > 1) {
 				$('#txt_uni_medida').val(arr[1]);
@@ -354,6 +328,7 @@ $(document).ready(function() {
 				$('#txt_vol_unitario').val('');
 			}
 		} else {
+			$('#sma_val_producto').show();
 			$('#txt_uni_medida').val('');
 			$('#txt_pes_net_unitario').val('');
 			$('#txt_vol_unitario').val('');
@@ -968,6 +943,7 @@ function cargarProducto(idCategoria, codigoProducto) {
 					$('#txt_uni_medida').val('');
 					$('#txt_pes_net_unitario').val('');
 					$('#txt_vol_unitario').val('');
+					$('#sma_val_producto').show();
 				}
 //				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	        }
@@ -1003,3 +979,63 @@ function cargarIndicadorProgramacion(valor) {
 	}
 }
 
+function grabarDetalle(indicador) {
+	
+	var codigo = $('#hid_cod_proyecto').val();
+	var flagProgramacion = $('input[name="rb_man_tie_programacion"]:checked').val();
+	var params = {
+		idProyectoManifiesto : codigo,
+		codigoAnio : $('#txt_anio').val(),
+		codigoDdi : proyectoManifiesto.codigoDdi,
+		codigoMes : proyectoManifiesto.codigoMes,
+		idAlmacen : proyectoManifiesto.idAlmacen,				
+		codigoAlmacen : proyectoManifiesto.codigoAlmacen,
+		idAlmacenDestino : $('#sel_almacen').val(),
+		nroProyectoManifiesto : $('#txt_nro_pro_manifiesto').val(),
+		fechaEmision : $('#txt_fecha').val(),
+		flagProgramacion : flagProgramacion,
+		idProgramacion : $('#sel_nro_programacion').val(),
+		idMovimiento : $('#sel_tip_movimiento').val(),
+		idEstado : $('#sel_estado').val(),
+		observacion : $('#txt_observaciones').val()
+	};
+	
+	loadding(true);
+	
+	consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/grabarProyectoManifiesto', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			
+			if (!esnulo(codigo)) {
+				
+				if (indicador) {				
+					addSuccessMessage(null, respuesta.mensajeRespuesta);
+				}
+				
+			} else {
+				
+				$('#hid_cod_proyecto').val(respuesta.idProyectoManifiesto);
+				$('#txt_nro_pro_manifiesto').val(respuesta.codigoProyectoManifiesto);
+		
+				$('#li_productos').attr('class', '');
+				$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
+
+				$('#li_documentos').attr('class', '');
+				$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
+				
+				addSuccessMessage(null, 'Se creó el Proyecto de Manifiesto N° '+respuesta.codigoProyectoManifiesto);
+				
+				listarVehiculoProyectoManifiesto(false);
+			}
+			
+		}
+		
+		if (indicador) {
+			loadding(false);
+		} else {
+			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/inicio/1';
+			$(location).attr('href', url);
+		}
+	});	
+}

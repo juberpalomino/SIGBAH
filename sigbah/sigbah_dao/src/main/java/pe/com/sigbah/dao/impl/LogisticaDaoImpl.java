@@ -2325,10 +2325,12 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 				LOGGER.info("[grabarProyectoManifiesto] Ocurrio un error en la operacion del USP_INS_UPD_REG_PROYECTO_MANIF : "+mensajeRespuesta);
     			throw new Exception();
     		}
-		
-			registroProyectoManifiesto.setIdProyectoManifiesto(((BigDecimal) out.get("po_IDE_PROYECTO_MANIF")).intValue());
-			registroProyectoManifiesto.setNroProyectoManifiesto((String) out.get("po_NRO_PROYECTO"));
-			registroProyectoManifiesto.setCodigoProyectoManifiesto((String) out.get("po_COD_PROYECTO"));
+			
+			if (Utils.isNullInteger(proyectoManifiestoBean.getIdProyectoManifiesto())) {		
+				registroProyectoManifiesto.setIdProyectoManifiesto(((BigDecimal) out.get("po_IDE_PROYECTO_MANIF")).intValue());
+				registroProyectoManifiesto.setNroProyectoManifiesto((String) out.get("po_NRO_PROYECTO"));
+				registroProyectoManifiesto.setCodigoProyectoManifiesto((String) out.get("po_COD_PROYECTO"));
+			}
 			registroProyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
 			registroProyectoManifiesto.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
 	
