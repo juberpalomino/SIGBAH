@@ -358,4 +358,12 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	public UbigeoDeeBean eliminarDistritoEmergencia(UbigeoDeeBean ubigeoDeeBean) throws Exception {
 		return programacionDao.eliminarDistritoEmergencia(ubigeoDeeBean);
 	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerReporteRequerimiento(java.lang.Integer)
+	 */
+	@Override
+	public ListaRespuestaRequerimientoBean obtenerReporteRequerimiento(Integer idRequerimiento) throws Exception {
+		return programacionDao.obtenerReporteRequerimiento(idRequerimiento);
+	}
 }

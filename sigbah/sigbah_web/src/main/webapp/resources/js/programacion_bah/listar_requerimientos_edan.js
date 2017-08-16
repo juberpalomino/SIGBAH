@@ -51,9 +51,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 		} else if (indices.length > 1) {
-			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/programacion-bath/requerimiento/mantenimientoRequerimiento/';
@@ -81,7 +81,7 @@ $(document).ready(function() {
 			return false;
 		});					
 		if (!esnulo(empty) || row < 1) {
-			addWarnMessage(null, mensajeReporteRegistroValidacion);
+			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
 			return;
 		}
 
@@ -112,6 +112,52 @@ $(document).ready(function() {
 
 	});
 	
+	$('#href_imprimir').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		var codigo = '';
+		tbl_mnt_req_edan.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_req_edan.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idRequerimiento = listaRequerimientoEdanCache[index].idRequerimiento;
+				codigo = codigo + idRequerimiento + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+		} else if (indices.length > 1) {
+			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+		} else {
+			loadding(true);
+			var url = VAR_CONTEXT + '/programacion-bath/requerimiento/exportarPdf/'+codigo;
+
+			$.fileDownload(url).done(function(respuesta) {
+				loadding(false);	
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+			}).fail(function (respuesta) {
+				loadding(false);
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else if (respuesta == NOTIFICACION_VALIDACION) {
+					addWarnMessage(null, mensajeReporteValidacion);
+				}
+			});
+		}
+	});
 //	$('#href_imprimir').click(function(e) {
 //		e.preventDefault();
 //
@@ -134,9 +180,9 @@ $(document).ready(function() {
 //		}
 //		
 //		if (indices.length == 0) {
-//			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
+//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
 //		} else if (indices.length > 1) {
-//			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
+//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
 //		} else {
 //			loadding(true);
 //			var url = VAR_CONTEXT + '/programacion-bath/emergencia/exportarPdf/'+codigo;

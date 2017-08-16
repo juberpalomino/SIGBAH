@@ -384,7 +384,7 @@ public class StockAlmacenController extends BaseController {
 			parameters.put("P_STOCK_SEGURIDAD", stockAlmacen.getStockSeguridad());
 			parameters.put("P_PRECIO_PROMEDIO", stockAlmacen.getPrecioPromedio());
 
-			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
+			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, null);
 			InputStream input = new ByteArrayInputStream(array);
 	        
 	        String file_name = "Reporte_Stock_Almacen";

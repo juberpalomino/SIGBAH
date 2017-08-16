@@ -280,4 +280,10 @@ public interface ProgramacionDao {
 	 */
 	public abstract UbigeoDeeBean eliminarDistritoEmergencia(UbigeoDeeBean ubigeoDeeBean)throws Exception;
 
+	/**
+	 * @param idRequerimiento
+	 * @return
+	 */
+	public abstract ListaRespuestaRequerimientoBean obtenerReporteRequerimiento(Integer idRequerimiento)throws Exception;
+
 }

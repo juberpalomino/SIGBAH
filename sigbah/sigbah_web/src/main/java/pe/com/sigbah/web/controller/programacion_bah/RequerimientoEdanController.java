@@ -1,10 +1,17 @@
 package pe.com.sigbah.web.controller.programacion_bah;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,17 +33,25 @@ import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
+import pe.com.sigbah.common.bean.ProductoNoAlimentarioProgramacionBean;
+import pe.com.sigbah.common.bean.ProgramacionAlimentoBean;
+import pe.com.sigbah.common.bean.ProgramacionBean;
+import pe.com.sigbah.common.bean.ProgramacionNoAlimentarioBean;
+import pe.com.sigbah.common.bean.RacionOperativaBean;
 import pe.com.sigbah.common.bean.RequerimientoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UbigeoIneiBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
+import pe.com.sigbah.common.util.ExportarArchivo;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.ProgramacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
 import pe.com.sigbah.web.report.programacion_bah.ReporteEmergencia;
+import pe.com.sigbah.web.report.programacion_bah.ReporteProgramacion;
 import pe.com.sigbah.web.report.programacion_bah.ReporteRequerimiento;
 import pe.com.sigbah.web.report.programacion_bah.ReporteRequerimientoAfectado;
 
@@ -531,5 +546,78 @@ private static final long serialVersionUID = 1L;
 	    	return Constantes.COD_ERROR_GENERAL;
 	    } 
 	}
+	
+	
+	@RequestMapping(value = "/exportarPdf/{idRequerimiento}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarPdf(@PathVariable("idRequerimiento") Integer idRequerimiento, HttpServletRequest request, HttpServletResponse response) {
+	    try {
+	    	
+	    	ListaRespuestaRequerimientoBean datosReporteRequerimiento = new ListaRespuestaRequerimientoBean();
+        	
+        	// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	datosReporteRequerimiento = programacionService.obtenerReporteRequerimiento(idRequerimiento);
+        	
+        	RequerimientoBean cabecera =datosReporteRequerimiento.getLstCabecera().get(0);
+    		 List<EmergenciaBean> detalles=datosReporteRequerimiento.getLstDetalle();
+    		
+        	ExportarArchivo printer = new ExportarArchivo();
+			StringBuilder jasperFile = new StringBuilder();
+			jasperFile.append(getPath(request));
+			jasperFile.append(File.separator);
+			jasperFile.append(Constantes.REPORT_PATH_PROGRAMACION);
+			jasperFile.append("PROG_Report_Requerimiento.jrxml");
+			
+			Map<String, Object> parameters = new HashMap<String, Object>();
+
+			// Agregando los parámetros del reporte
+			StringBuilder logo_indeci_path = new StringBuilder();
+			logo_indeci_path.append(getPath(request));
+			logo_indeci_path.append(File.separator);
+			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
+			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());
+	    	parameters.put("P_DESCRIPCION", cabecera.getNomRequerimiento());
+			parameters.put("P_FECHA", cabecera.getFechaRequerimiento());
+			parameters.put("P_REGION", cabecera.getNomRegion());
+			parameters.put("P_ATENCION_SINPAD", cabecera.getFlgSinpad());
+			parameters.put("P_REQUERIMIENTO", cabecera.getNumRequerimiento());
+//			parameters.put("P_FENOMENO", cabecera.getDescFenomeno());
+			parameters.put("P_LISTA_DAMNIFICADOS", detalles);
+
+			
+			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, null);//verificar
+			InputStream input = new ByteArrayInputStream(array);
+	        
+	        String file_name = "PROG_Report_Requerimiento";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+	    	
+	        response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+			
+			byte[] buffer = new byte[4096];
+	    	int n = 0;
+
+	    	OutputStream output = response.getOutputStream();
+	    	while ((n = input.read(buffer)) != -1) {
+	    	    output.write(buffer, 0, n);
+	    	}
+	    	output.close();
+    	
+
+	    	return Constantes.COD_EXITO_GENERAL;
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
+	
 	
 }

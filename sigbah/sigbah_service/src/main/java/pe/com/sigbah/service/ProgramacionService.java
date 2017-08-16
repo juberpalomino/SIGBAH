@@ -318,4 +318,11 @@ public interface ProgramacionService {
 	 */
 	public abstract UbigeoDeeBean eliminarDistritoEmergencia(UbigeoDeeBean ubigeoDeeBean) throws Exception;
 	
+	
+	/**
+	 * @param idRequerimiento
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ListaRespuestaRequerimientoBean obtenerReporteRequerimiento(Integer  idRequerimiento) throws Exception;
 }

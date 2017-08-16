@@ -35,6 +35,8 @@ public class RequerimientoBean extends BaseOutputBean {
 	private String codProvincia;
 	private String control;
 	
+	private String nombreSistema;
+	
 	private Integer idEstado;
 	/**
 	 * @return the idEstado
@@ -338,6 +340,18 @@ public class RequerimientoBean extends BaseOutputBean {
 	 */
 	public void setControl(String control) {
 		this.control = control;
+	}
+	/**
+	 * @return the nombreSistema
+	 */
+	public String getNombreSistema() {
+		return nombreSistema;
+	}
+	/**
+	 * @param nombreSistema the nombreSistema to set
+	 */
+	public void setNombreSistema(String nombreSistema) {
+		this.nombreSistema = nombreSistema;
 	}
 	
 	

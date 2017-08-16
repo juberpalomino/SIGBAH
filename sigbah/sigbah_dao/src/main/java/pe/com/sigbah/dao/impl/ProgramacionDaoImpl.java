@@ -57,6 +57,8 @@ import pe.com.sigbah.mapper.RegistroLocalidadEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroNoAlimentariaEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroPedidoCompraMapper;
 import pe.com.sigbah.mapper.RegistroRacionMapper;
+import pe.com.sigbah.mapper.ReporteCabeceraRequerimientoMapper;
+import pe.com.sigbah.mapper.ReporteDetalleRequerimientoMapper;
 import pe.com.sigbah.mapper.RequerimientoDetalleMapper;
 import pe.com.sigbah.mapper.RequerimientoEditMapper;
 import pe.com.sigbah.mapper.RequerimientoMapper;
@@ -2198,6 +2200,61 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 		}		
 		LOGGER.info("[eliminarDistritoEmergencia] Fin ");
 		return ubigeoDee;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#obtenerReporteRequerimiento(java.lang.Integer)
+	 */
+	@Override
+	public ListaRespuestaRequerimientoBean obtenerReporteRequerimiento(Integer idRequerimiento) throws Exception {
+		LOGGER.info("[obtenerReporteRequerimiento] Inicio ");
+		ListaRespuestaRequerimientoBean listaRetorno = new ListaRespuestaRequerimientoBean();
+		
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();	
+			input_objParametros.addValue("PI_REQUERIMIENTO", idRequerimiento, Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REPORT_REQUERIMIENTO");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_REQUERIMIENTO", new SqlParameter("PI_REQUERIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PO_CURSOR_UBIGEO", new SqlOutParameter("PO_CURSOR_UBIGEO", OracleTypes.CURSOR, new ReporteDetalleRequerimientoMapper()));
+			output_objParametros.put("PO_CURSOR_DATOS_GENERALES", new SqlOutParameter("PO_CURSOR_DATOS_GENERALES", OracleTypes.CURSOR, new ReporteCabeceraRequerimientoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerReporteRequerimiento] Ocurrio un error en la operacion del USP_REPORT_REQUERIMIENTO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<RequerimientoBean> listaCabecera = (List<RequerimientoBean>) out.get("PO_CURSOR_DATOS_GENERALES");
+			List<EmergenciaBean> listaDetalle = (List<EmergenciaBean>) out.get("PO_CURSOR_UBIGEO");
+			
+			listaRetorno.setLstCabecera(listaCabecera);
+			listaRetorno.setLstDetalle(listaDetalle);
+			
+			listaRetorno.setCodigoRespuesta(codigoRespuesta);
+			listaRetorno.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerReporteRequerimiento] Fin ");
+		return listaRetorno;
 	}
 	
 }
