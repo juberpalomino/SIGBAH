@@ -297,7 +297,7 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
@@ -352,7 +352,7 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
@@ -401,9 +401,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaProductosCache[indices[0]];
@@ -441,9 +441,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaDocumentosCache[indices[0]];
@@ -689,7 +689,7 @@ function cargarProducto(idCategoria, codigoProducto) {
 				}
 //				frm_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	        }
-	        $('#sel_lis_producto').select2().trigger('change');
+	        $('#sel_lis_producto').select2();
 			$('#sel_lis_producto').select2({
 				  dropdownParent: $('#div_pro_det_productos')
 			});

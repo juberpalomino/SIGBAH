@@ -284,9 +284,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaAlimentariosCache[indices[0]];
@@ -297,7 +297,7 @@ $(document).ready(function() {
 			$('#hid_cod_producto').val(obj.cod_producto);
 			
 			$('#sel_producto').val(obj.cod_producto);
-			$('#sel_producto').select2().trigger('change');
+			$('#sel_producto').select2();
 			
 			$('#sel_uni_medida').val(obj.cod_producto);
 			$('#txt_fec_vencimiento').val(obj.cod_producto);
@@ -342,9 +342,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaDocumentosCache[indices[0]];
@@ -383,7 +383,7 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
@@ -446,9 +446,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaProductosCache[indices[0]];
@@ -494,7 +494,7 @@ $(document).ready(function() {
 		}
 		console.log(codigo);
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
@@ -605,7 +605,7 @@ $(document).ready(function() {
 //		        $('#sel_producto').html(options);
 ////		        if (codigoProducto != null) {
 ////		        	$('#sel_producto').val(codigoProducto);
-////					$('#sel_producto').select2().trigger('change');
+////					$('#sel_producto').select2();
 ////					$('#sel_producto').select2({
 ////						  dropdownParent: $('#frm_det_productos')
 ////					});	        	
@@ -1022,7 +1022,7 @@ function inicializarDatos() {
 		});
 		
 		
-		$('#sel_nro_ord_compra').select2().trigger('change');
+		$('#sel_nro_ord_compra').select2();
 
 	}
 	
@@ -1234,7 +1234,7 @@ function listarDetalleProductos(respuesta) {
 //				}
 //				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 //	        }
-//	        $('#sel_lis_producto').select2().trigger('change');
+//	        $('#sel_lis_producto').select2();
 //			$('#sel_lis_producto').select2({
 //				  dropdownParent: $('#div_pro_det_productos')
 //			});

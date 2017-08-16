@@ -36,9 +36,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/programacion-bath/racion/mantenimientoRacion/';
@@ -80,9 +80,9 @@ $(document).ready(function() {
 			codigo = codigo.substring(0, codigo.length - 1);
 		}
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
 			var obj = listaRacionCache[indices.length-1];
@@ -119,7 +119,7 @@ $(document).ready(function() {
 			return false;
 		});					
 		if (!esnulo(empty) || row < 1) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			addWarnMessage(null, mensajeReporteRegistroValidacion);
 			return;
 		}
 

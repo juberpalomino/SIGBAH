@@ -70,9 +70,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/programacion-bah/programacion/mantenimientoProgramacion/';
@@ -100,7 +100,7 @@ $(document).ready(function() {
 			return false;
 		});					
 		if (!esnulo(empty) || row < 1) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			addWarnMessage(null, mensajeReporteRegistroValidacion);
 			return;
 		}
 
@@ -153,9 +153,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/programacion-bah/programacion/exportarPdf/'+codigo;
@@ -203,9 +203,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {			
 			if (idEstado == '0') { // Anulado
 				addWarnMessage(null, 'Esta programación esta Anulada');
@@ -292,7 +292,7 @@ function inicializarDatos() {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
 		$('#sel_anio').val(usuarioBean.codigoAnio);
-		$('#sel_fenomeno').select2().trigger('change');
+		$('#sel_fenomeno').select2();
 		$('#txt_fecha').val(get_date_form()); // Fecha actual del sistema
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();

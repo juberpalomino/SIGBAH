@@ -27,7 +27,7 @@ public class ProductoIngresoMapper implements RowMapper<ProductoIngresoBean> {
 		producto.setNombreProducto(rs.getString("NOM_PRODUCTO"));
 		producto.setNombreUnidad(rs.getString("NOM_UNIDAD"));
 		producto.setNombreEnvase(rs.getString("NOM_ENVASE"));
-		producto.setNroLote(rs.getInt("NRO_LOTE"));
+		producto.setNroLote(rs.getString("NRO_LOTE"));
 		producto.setCantidad(rs.getBigDecimal("CANTIDAD"));
 		producto.setPrecioUnitario(rs.getBigDecimal("PREC_UNITARIO"));
 		producto.setImporteTotal(rs.getBigDecimal("IMP_TOTAL"));

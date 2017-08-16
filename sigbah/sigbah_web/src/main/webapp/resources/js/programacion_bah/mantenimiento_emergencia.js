@@ -200,7 +200,7 @@ function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
 	        $('#sel_no_producto').html(options);
 	        if (codigoProducto != null) {
 	        	$('#sel_no_producto').val(codigoProducto);
-				$('#sel_no_producto').select2().trigger('change');
+				$('#sel_no_producto').select2();
 				$('#sel_no_producto').select2({
 					  dropdownParent: $('#div_pro_det_no_alimentarios')
 				});	        	

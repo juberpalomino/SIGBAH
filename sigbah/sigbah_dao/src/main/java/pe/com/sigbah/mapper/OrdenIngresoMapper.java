@@ -29,6 +29,7 @@ public class OrdenIngresoMapper implements RowMapper<OrdenIngresoBean> {
 		ordenIngreso.setNroOrdenIngreso(rs.getString("NRO_ORDEN_INGRESO"));
 		ordenIngreso.setFechaEmision(rs.getString("FECHA_EMISION"));
 		ordenIngreso.setNombreMovimiento(rs.getString("NOMBRE_MOVIMIENTO"));
+		ordenIngreso.setIdEstado(rs.getInt("IDE_ESTADO"));
 		ordenIngreso.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
 		return ordenIngreso;
 	}

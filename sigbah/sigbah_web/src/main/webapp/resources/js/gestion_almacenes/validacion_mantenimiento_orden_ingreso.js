@@ -137,11 +137,28 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_fec_vencimiento : {
+			sel_lote : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar Fecha Vencimiento.'
+						message : 'Debe seleccionar Lote.'
 					}
+				}
+			},
+			txt_fec_vencimiento : {
+				validators : {
+					callback: {
+		                callback: function(value, validator, field) {
+		                	var categoriaProducto = $('#sel_cat_producto').val();
+		                	if (esnulo(value) && categoriaProducto == '5') { // Alimentos
+	            				return { valid: false, message: 'Debe ingresar Fecha Vencimiento.' }
+	            			}
+//		                	var fechaRegistro = $('#txt_fecha').val();
+//	                		if (comparafecha(value, fechaRegistro) != 1) {
+//	                		    return { valid: false, message: 'La fecha de vencimiento debe ser mayor a la fecha de ingreso.' }
+//	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			txt_can_lote : {

@@ -143,6 +143,9 @@ table.dataTable thead .sorting_desc {
 }
 
 .modal-title{
-	    color: white;
+	color: white;
 }
-    
+  
+.label-error {
+	color: #b94a70;
+}

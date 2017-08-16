@@ -1114,10 +1114,12 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 				LOGGER.info("[grabarOrdenIngreso] Ocurrio un error en la operacion del USP_INS_UPD_REGIST_INGRESO_ALM : "+mensajeRespuesta);
     			throw new Exception();
     		}
-		
-			registroOrdenIngreso.setIdIngreso(((BigDecimal) out.get("po_SEQ_BAH_M_INGRESO")).intValue());
-			registroOrdenIngreso.setNroOrdenIngreso((String) out.get("po_NRO_ORDEN_INGRESO"));
-			registroOrdenIngreso.setCodigoOrdenIngreso((String) out.get("po_COD_ORDEN_INGRESO"));
+			
+			if (Utils.isNullInteger(ordenIngresoBean.getIdIngreso())) {	// Nuevo registro
+				registroOrdenIngreso.setIdIngreso(((BigDecimal) out.get("po_SEQ_BAH_M_INGRESO")).intValue());
+				registroOrdenIngreso.setNroOrdenIngreso((String) out.get("po_NRO_ORDEN_INGRESO"));
+				registroOrdenIngreso.setCodigoOrdenIngreso((String) out.get("po_COD_ORDEN_INGRESO"));
+			}
 			registroOrdenIngreso.setCodigoRespuesta(codigoRespuesta);
 			registroOrdenIngreso.setMensajeRespuesta((String) out.get("po_MENSAJE_RESPUESTA"));
 	
@@ -1240,7 +1242,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("pi_FEC_INGRESO", DateUtil.obtenerFechaHoraParseada(productoIngresoBean.getFechaIngreso()), Types.DATE);			
 			input_objParametros.addValue("pi_IDE_PROGRAMACION", productoIngresoBean.getIdProgramacion(), Types.NUMERIC);
 			input_objParametros.addValue("pi_IDE_DONACION", productoIngresoBean.getIdDonacion(), Types.NUMERIC);
-			input_objParametros.addValue("pi_NRO_LOTE", productoIngresoBean.getNroLote(), Types.NUMERIC);
+			input_objParametros.addValue("pi_NRO_LOTE", productoIngresoBean.getNroLote(), Types.VARCHAR);
 			input_objParametros.addValue("pi_USUARIO", productoIngresoBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -1259,7 +1261,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_FEC_INGRESO", new SqlParameter("pi_FEC_INGRESO", Types.DATE));			
 			output_objParametros.put("pi_IDE_PROGRAMACION", new SqlParameter("pi_IDE_PROGRAMACION", Types.NUMERIC));
 			output_objParametros.put("pi_IDE_DONACION", new SqlParameter("pi_IDE_DONACION", Types.NUMERIC));
-			output_objParametros.put("pi_NRO_LOTE", new SqlParameter("pi_NRO_LOTE", Types.NUMERIC));
+			output_objParametros.put("pi_NRO_LOTE", new SqlParameter("pi_NRO_LOTE", Types.VARCHAR));
 			output_objParametros.put("pi_USUARIO", new SqlParameter("pi_USUARIO", Types.VARCHAR));
 			output_objParametros.put("po_IDE_INGRESO_DET", new SqlOutParameter("po_IDE_INGRESO_DET", Types.NUMERIC));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));

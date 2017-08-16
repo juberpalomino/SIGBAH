@@ -62,6 +62,7 @@ $(document).ready(function() {
 
 		var indices = [];
 		var codigo = '';
+		var idEstado = null;
 		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -71,6 +72,7 @@ $(document).ready(function() {
 				}
 				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
 				codigo = codigo + idIngreso + '_';
+				idEstado = listaOrdenIngresoCache[index].idEstado;
 			}
 		});
 		
@@ -79,10 +81,16 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
+			
+			if (idEstado == ESTADO_ANULADO) {
+				addWarnMessage(null, mensajeValidacionAnulado);
+				return;
+			}
+			
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/';
 			$(location).attr('href', url + codigo);
@@ -109,7 +117,7 @@ $(document).ready(function() {
 			return false;
 		});					
 		if (!esnulo(empty) || row < 1) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			addWarnMessage(null, mensajeReporteRegistroValidacion);
 			return;
 		}
 
@@ -161,9 +169,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/exportarPdf/'+codigo;
@@ -201,6 +209,7 @@ function inicializarDatos() {
 		$('#sel_anio').val(usuarioBean.codigoAnio);
 		$('#sel_ddi').val(usuarioBean.idDdi);
 		$('#sel_almacen').val(usuarioBean.idAlmacen);
+		$('#sel_ddi').prop('disabled', true);
 		$('#sel_almacen').prop('disabled', true);
 		if (indicador == '1') { // Retorno
 			$('#btn_buscar').click();

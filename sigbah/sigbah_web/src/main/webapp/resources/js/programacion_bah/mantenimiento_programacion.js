@@ -247,7 +247,7 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
@@ -327,9 +327,9 @@ $(document).ready(function() {
 	    });	
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			programacionAlimentosCache = listaProgramacionAlimentosCache[indices];
 
@@ -423,7 +423,7 @@ $(document).ready(function() {
 	    });	
 		
 		if (arrIdDetalleProgramacionUbigeo.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (arrIdDetalleProgramacionUbigeo.length > 1) {
@@ -474,7 +474,7 @@ $(document).ready(function() {
 		});
 			
 		if (row == 0) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			addWarnMessage(null, mensajeReporteRegistroValidacion);
 			return;
 		}
 
@@ -535,7 +535,7 @@ $(document).ready(function() {
 		frm_pro_no_alimentarios.trigger('reset');
 		
 		$('#sel_no_producto').html('');
-		$('#sel_no_producto').select2().trigger('change');
+		$('#sel_no_producto').select2();
 		$('#sel_no_producto').select2({
 			  dropdownParent: $('#div_pro_det_no_alimentarios')
 		});
@@ -556,9 +556,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaNoAlimentariosCache[indices[0]];
@@ -596,7 +596,7 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
@@ -726,9 +726,9 @@ $(document).ready(function() {
 	    });	
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			programacionNoAlimentariosCache = listaProgramacionNoAlimentariosCache[indices];
 
@@ -825,7 +825,7 @@ $(document).ready(function() {
 	    });	
 		
 		if (arrIdDetalleProgramacionUbigeo.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (arrIdDetalleProgramacionUbigeo.length > 1) {
@@ -876,7 +876,7 @@ $(document).ready(function() {
 		});
 			
 		if (row == 0) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			addWarnMessage(null, mensajeReporteRegistroValidacion);
 			return;
 		}
 
@@ -958,9 +958,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaDocumentosCache[indices[0]];
@@ -993,7 +993,7 @@ $(document).ready(function() {
 		});
 
 		if (arrIdDocumentoProgramacion.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (arrIdDocumentoProgramacion.length > 1) {
@@ -1904,7 +1904,7 @@ function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
 	        } else {
 //				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
 	        }
-	        $('#sel_no_producto').select2().trigger('change');
+	        $('#sel_no_producto').select2();
 			$('#sel_no_producto').select2({
 				  dropdownParent: $('#div_pro_det_no_alimentarios')
 			});

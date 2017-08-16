@@ -25,7 +25,7 @@ public class ProductoIngresoBean extends BaseOutputBean {
 	private String fechaIngreso;
 	private Integer idProgramacion;
 	private Integer idDonacion;
-	private Integer nroLote;
+	private String nroLote;
 	private String arrIdDetalleIngreso;
 	
 	
@@ -172,14 +172,14 @@ public class ProductoIngresoBean extends BaseOutputBean {
 	/**
 	 * @return the nroLote
 	 */
-	public Integer getNroLote() {
+	public String getNroLote() {
 		return nroLote;
 	}
 
 	/**
 	 * @param nroLote the nroLote to set
 	 */
-	public void setNroLote(Integer nroLote) {
+	public void setNroLote(String nroLote) {
 		this.nroLote = nroLote;
 	}
 

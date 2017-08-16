@@ -96,7 +96,7 @@ $(document).ready(function() {
 		$('#h4_tit_alimentarios').html('Nuevo Producto');
 		frm_det_productos.trigger('reset');
 		
-		$('#sel_producto').select2().trigger('change');
+		$('#sel_producto').select2();
 		$('#sel_producto').select2({
 			  dropdownParent: $('#div_pro_det_productos')
 		});
@@ -117,9 +117,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaProductosCache[indices[0]];
@@ -132,7 +132,7 @@ $(document).ready(function() {
 			var val_producto = obj.idProducto+'_'+obj.codigoProducto+'_'+obj.nombreUnidad+'_'+obtieneParametro(obj.nombreEnvase);
 			$('#sel_producto').val(val_producto);
 
-			$('#sel_producto').select2().trigger('change');
+			$('#sel_producto').select2();
 			$('#sel_producto').select2({
 				  dropdownParent: $('#div_pro_det_productos')
 			});
@@ -169,7 +169,7 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else {
 			var msg = '';
 			if (indices.length > 1) {
@@ -348,7 +348,7 @@ $(document).ready(function() {
 			return false;
 		});					
 		if (!esnulo(empty) || row < 1) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			addWarnMessage(null, mensajeReporteRegistroValidacion);
 			return;
 		}
 
@@ -385,9 +385,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaAjustesCache[indices[0]];
@@ -466,9 +466,9 @@ $(document).ready(function() {
 		});
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			
 			var obj = listaAjustesCache[indices[0]];

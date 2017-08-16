@@ -121,6 +121,7 @@
 														<label class="col-sm-2 control-label">Tipo Movimiento:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_tipo_movimiento}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -153,10 +154,12 @@
 														<label class="col-sm-2 control-label">Nº orden Compra:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_nro_ord_compra" name="sel_nro_ord_compra" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_orden_compra}" var="item">
 																    <option value="${item.nroOrdenCompra}_${item.concepto}">${item.nroOrdenCompra}</option>
 																</c:forEach>
 															</select>
+															<small id="sma_val_nro_ord_compra" class="control-label label-error">Debe seleccionar Nº orden Compra.</small>
 														</div>
 													
 														<div class="col-sm-7 smart-form">
@@ -220,6 +223,7 @@
 														<label class="col-sm-2 control-label">N° Control de Calidad:</label>
 														<div class="col-sm-3 smart-form form-group">
 															<select id="sel_nro_con_calidad" name="sel_nro_con_calidad" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_nro_control_calidad}" var="item">
 																    <option value="${item.idControlCalidad}">${item.nroControlCalidad}</option>
 																</c:forEach>
@@ -392,6 +396,7 @@
 														<label class="col-sm-3 control-label">Responsable:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_responsable" name="sel_responsable" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -640,6 +645,7 @@
 								<div class="col-sm-5 form-group">
 									<select id="sel_producto" name="sel_producto" class="form-control">
 									</select>
+									<small id="sma_val_producto" class="control-label label-error">Debe seleccionar Producto.</small>
 								</div>
 								
 								<label class="col-sm-2 control-label">Lote:</label>
