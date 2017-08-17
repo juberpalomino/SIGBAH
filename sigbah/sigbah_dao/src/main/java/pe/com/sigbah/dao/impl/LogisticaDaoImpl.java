@@ -55,6 +55,8 @@ import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
+import pe.com.sigbah.common.bean.StockProductoKardexBean;
+import pe.com.sigbah.common.bean.StockProductoLoteBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 import pe.com.sigbah.common.util.SpringUtil;
@@ -4548,6 +4550,98 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[grabarCierreStock] Fin ");
 		return registroCierreStock;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarStockProductoKardex(pe.com.sigbah.common.bean.StockProductoKardexBean)
+	 */
+	@Override
+	public List<StockProductoKardexBean> listarStockProductoKardex(StockProductoKardexBean stockProductoKardexBean) throws Exception {
+		LOGGER.info("[listarStockProductoKardex] Inicio ");
+		List<StockProductoKardexBean> lista = new ArrayList<StockProductoKardexBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("pi_TIPO_ORIGEN", stockProductoKardexBean.getTipoOrigen(), Types.VARCHAR);
+			input_objParametros.addValue("pi_FK_IDE_DDI", stockProductoKardexBean.getIdDdi(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_ALMACEN", stockProductoKardexBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FK_IDE_PRODUCTO", stockProductoKardexBean.getIdProducto(), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_STOCK_PROD_KARDEX");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_FK_IDE_DDI", new SqlParameter("pi_FK_IDE_DDI", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_FK_IDE_PRODUCTO", new SqlParameter("pi_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+//			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new StockProductoKardexMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarStockProductoKardex] Ocurrio un error en la operacion del USP_SEL_TAB_STOCK_PROD_KARDEX : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<StockProductoKardexBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarStockProductoKardex] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarStockProductoLote(pe.com.sigbah.common.bean.StockProductoLoteBean)
+	 */
+	@Override
+	public List<StockProductoLoteBean> listarStockProductoLote(StockProductoLoteBean stockProductoLoteBean) throws Exception {
+		LOGGER.info("[listarStockProductoLote] Inicio ");
+		List<StockProductoLoteBean> lista = new ArrayList<StockProductoLoteBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+//			input_objParametros.addValue("pi_COD_ANIO", stockProductoLoteBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", Utils.getParam(stockProductoLoteBean.getIdAlmacen()), Types.NUMERIC);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_CIERRE_ALMACEN");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new CierreStockMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarStockProductoLote] Ocurrio un error en la operacion del USP_LISTAR_CIERRE_ALMACEN : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<StockProductoLoteBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarStockProductoLote] Fin ");
+		return lista;
 	}
 
 }

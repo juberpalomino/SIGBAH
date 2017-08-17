@@ -103,9 +103,21 @@
 													</div>
 													
 													<div class="row">
+														<label class="col-sm-2 control-label">Atención con:</label>
+														<div class="col-sm-3 form-group">
+															<select id="sel_ate_con" name="sel_ate_con" class="form-control">
+																<option value="1">Alimentos</option>
+																<option value="2">Bienes no Alimentarios</option>
+																<option value="3">Ambos</option>
+															</select>
+														</div>
+													</div>
+													
+													<div class="row">
 														<label class="col-sm-2 control-label">N° de Requerimiento:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_nro_requerimiento" name="sel_nro_requerimiento" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_requerimiento}" var="item">
 																    <option value="${item.idRequerimiento}_${item.nomRequerimiento}">${item.codRequerimiento}</option>
 																</c:forEach>
@@ -121,6 +133,7 @@
 														<label class="col-sm-2 control-label">N° Ración:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_nro_racion" name="sel_nro_racion" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_racion}" var="item">
 																    <option value="${item.idRacionOperativa}_${item.nombreRacion}">${item.codigoRacionOperativa}</option>
 																</c:forEach>
@@ -136,14 +149,19 @@
 														<label class="col-sm-2 control-label">N° DEE:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_nro_dee" name="sel_nro_dee" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_dee}" var="item">
 																    <option value="${item.icodigo}_${item.descripcion}">${item.descripcionCorta}</option>
 																</c:forEach>
 															</select>
 														</div>
 														
-														<div class="col-sm-7">
-															<input type="text" id="txt_des_nro_dee" class="form-control" disabled>
+														<div class="col-sm-7 smart-form">
+															<section>														
+																<label class="textarea textarea-resizable"> 										
+																	<textarea rows="1" id="txt_des_nro_dee" class="custom-scroll mod-readonly" disabled></textarea> 
+																</label>
+															</section>
 														</div>
 													</div>
 													
@@ -151,18 +169,10 @@
 														<label class="col-sm-2 control-label">Region Destino:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_reg_destino" name="sel_reg_destino" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_region}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
-															</select>
-														</div>
-														
-														<label class="col-sm-2 control-label">Atención con:</label>
-														<div class="col-sm-3 form-group">
-															<select id="sel_ate_con" name="sel_ate_con" class="form-control">
-																<option value="1">Alimentos</option>
-																<option value="2">Bienes no Alimentarios</option>
-																<option value="3">Ambos</option>
 															</select>
 														</div>
 													</div>

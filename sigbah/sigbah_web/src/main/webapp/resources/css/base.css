@@ -29,6 +29,9 @@ body {
 .opc-right {
 	text-align: right !important;
 }
+.opc-left {
+	text-align: left !important;
+}
 .opc-checkbox {
 	text-align: right !important;
 	padding-top: 2px !important;
@@ -92,6 +95,7 @@ table.dataTable thead .sorting_desc {
 .modal-header {
 	background-color: #307ecc;
 	text-align: center !important;
+	color: white;
 }
 
 @media screen and (min-width: 768px) {
@@ -129,8 +133,10 @@ table.dataTable thead .sorting_desc {
 }
 
 .modal-body {
+/*
     max-height: calc(100vh - 200px);
     overflow-y: auto;
+    */
 }
 .label-bold1 {
 	font-weight: bold;
@@ -148,4 +154,9 @@ table.dataTable thead .sorting_desc {
   
 .label-error {
 	color: #b94a70;
+}
+
+.footer-white {
+	background-color: white !important; 
+	border-color: white !important;
 }

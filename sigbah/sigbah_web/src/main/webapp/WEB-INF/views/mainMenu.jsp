@@ -103,11 +103,10 @@
 								</a>
 							</li>
 						</ul>
-					</li>
-					
+					</li>					
 					<li id="li_alm_reportes" class="li_men_opcion">
 						<a href="${pageContext.request.contextPath}/gestion-almacenes/reporte/inicio">Reportes</a>
-					</li>					
+					</li>		
 				</ul>
 			</li>
 		

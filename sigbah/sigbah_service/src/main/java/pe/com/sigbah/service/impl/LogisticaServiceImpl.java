@@ -35,6 +35,8 @@ import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
+import pe.com.sigbah.common.bean.StockProductoKardexBean;
+import pe.com.sigbah.common.bean.StockProductoLoteBean;
 import pe.com.sigbah.dao.LogisticaDao;
 import pe.com.sigbah.service.LogisticaService;
 
@@ -714,6 +716,22 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception {
 		return logisticaDao.grabarCierreStock(cierreStockBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarStockProductoKardex(pe.com.sigbah.common.bean.StockProductoKardexBean)
+	 */
+	@Override
+	public List<StockProductoKardexBean> listarStockProductoKardex(StockProductoKardexBean stockProductoKardexBean) throws Exception {
+		return logisticaDao.listarStockProductoKardex(stockProductoKardexBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarStockProductoLote(pe.com.sigbah.common.bean.StockProductoLoteBean)
+	 */
+	@Override
+	public List<StockProductoLoteBean> listarStockProductoLote(StockProductoLoteBean stockProductoLoteBean) throws Exception {
+		return logisticaDao.listarStockProductoLote(stockProductoLoteBean);
 	}
 
 }

@@ -4,16 +4,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
@@ -65,6 +68,31 @@ public class ReporteController extends BaseController {
         }
         return "listar_reportes_almacen";
     }
+	
+	/**
+	 * @param tipoReporte 
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarTipoMovimiento", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarTipoMovimiento(@RequestParam(value="tipoReporte") String tipoReporte) {
+		List<ItemBean> lista = null;
+		try {			
+			if (tipoReporte.equals(Constantes.ONE_STRING)) { // Reporte de Proyectos de Manifiesto 
+				lista = generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT));
+			} else if (tipoReporte.equals(Constantes.TWO_STRING)) { // Reporte de Ordenes de Salida  
+				lista = generalService.listarTipoMovimientoPm();
+			} else if (tipoReporte.equals(Constantes.THREE_STRING)) { // Reporte de Ordenes de Ingreso  
+				lista = generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.ONE_INT));
+			} else if (tipoReporte.equals(Constantes.FOUR_STRING)) { // Reporte de Guias de Remision  
+				lista = generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT));
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
 	
 	/**
 	 * @param anio 

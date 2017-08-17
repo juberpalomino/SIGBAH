@@ -31,6 +31,8 @@ import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenLoteBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
+import pe.com.sigbah.common.bean.StockProductoKardexBean;
+import pe.com.sigbah.common.bean.StockProductoLoteBean;
 
 /**
  * @className: LogisticaService.java
@@ -623,5 +625,19 @@ public interface LogisticaService {
 	 * @throws Exception
 	 */
 	public abstract CierreStockBean grabarCierreStock(CierreStockBean cierreStockBean) throws Exception;
+	
+	/**
+	 * @param stockProductoKardexBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<StockProductoKardexBean> listarStockProductoKardex(StockProductoKardexBean stockProductoKardexBean) throws Exception;
+	
+	/**
+	 * @param stockProductoLoteBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<StockProductoLoteBean> listarStockProductoLote(StockProductoLoteBean stockProductoLoteBean) throws Exception;
 	
 }

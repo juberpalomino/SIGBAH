@@ -176,6 +176,9 @@ $(document).ready(function() {
 						
 						$('#li_estados').attr('class', '');
 						$('#li_estados').closest('li').children('a').attr('data-toggle', 'tab');
+						
+						$('#sel_ate_con').prop('disabled', true);
+						$('#sel_nro_requerimiento').prop('disabled', true);
 
 						addSuccessMessage(null, 'Se genero el N° Programación: '+respuesta.nroProgramacion);
 						
@@ -1196,6 +1199,9 @@ function inicializarDatos() {
 				listarProductoNoAlimentarioProgramacion(false);
 				listarDetalleProgramacionNoAlimentario(false);
 			}
+			
+			$('#sel_ate_con').prop('disabled', true);
+			$('#sel_nro_requerimiento').prop('disabled', true);
 					
 			listarDocumentoProgramacion(false);
 			listarEstadoProgramacion(false);
