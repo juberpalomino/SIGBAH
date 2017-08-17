@@ -86,13 +86,13 @@ $(document).ready(function() {
 					}
 				}
 			},
-			sel_no_producto : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Producto.'
-					}
-				}
-			},
+//			sel_no_producto : {
+//				validators : {
+//					notEmpty : {
+//						message : 'Debe seleccionar Producto.'
+//					}
+//				}
+//			},
 			rb_distribuir : {
 				validators : {
 					notEmpty : {

@@ -920,6 +920,7 @@
 								<div class="col-sm-6 form-group">
 									<select id="sel_no_producto" name="sel_no_producto" class="form-control">
 									</select>
+									<small id="sma_val_no_producto" class="control-label label-error">Debe seleccionar Producto.</small>
 								</div>
 							</div>
 							

@@ -538,10 +538,10 @@ $(document).ready(function() {
 		frm_pro_no_alimentarios.trigger('reset');
 		
 		$('#sel_no_producto').html('');
-		$('#sel_no_producto').select2();
-		$('#sel_no_producto').select2({
-			  dropdownParent: $('#div_pro_det_no_alimentarios')
-		});
+		if ($('#sel_no_producto').hasClass('select2-hidden-accessible')) {
+			$('#sel_no_producto').select2('destroy');
+		}
+		$('#sma_val_no_producto').hide();
 		
 		$('#hid_cod_no_producto').val('');
 		$('#div_pro_no_alimentarios').modal('show');
@@ -568,10 +568,15 @@ $(document).ready(function() {
 			
 			$('#h4_tit_no_alimentarios').html('Actualizar Producto');
 			frm_pro_no_alimentarios.trigger('reset');
+			$('#sma_val_no_producto').hide();
 			
 			$('#hid_cod_no_producto').val(obj.idDetalleProductoNoAlimentario);
 			
 			$('#sel_no_cat_producto').val(obj.idCategoria);
+			
+			if ($('#sel_no_producto').hasClass('select2-hidden-accessible')) {
+				$('#sel_no_producto').select2('destroy');
+			}
 			cargarProductoNoAlimentario(obj.idCategoria, obj.idProducto);			
 			$('input[name=rb_distribuir][value="'+obj.tipoEntrega+'"]').prop('checked', true);
 			$('#txt_no_cantidad').val(obj.cantidad);
@@ -644,11 +649,22 @@ $(document).ready(function() {
 			cargarProductoNoAlimentario(idCategoria, null);
 		} else {
 			$('#sel_no_producto').html('');
-			if ($('#sel_producto').hasClass('select2-hidden-accessible')) {
-				$('#sel_producto').select2('destroy');
+			if ($('#sel_no_producto').hasClass('select2-hidden-accessible')) {
+				$('#sel_no_producto').select2('destroy');
 			}
-			frm_pro_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
+			$('#sma_val_no_producto').show();
+//			frm_pro_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
 		}
+	});
+	
+	$('#sel_no_producto').change(function() {
+		var codigo = $(this).val();		
+		if (!esnulo(codigo)) {
+			$('#sma_val_no_producto').hide();
+		} else {
+			$('#sma_val_no_producto').show();
+		}
+//		frm_pro_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
 	});
 	
 	$('#btn_gra_no_alimentario').click(function(e) {
@@ -1906,14 +1922,28 @@ function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
 	        });
 	        $('#sel_no_producto').html(options);
 	        if (codigoProducto != null) {
-	        	$('#sel_producto').val(codigoProducto);      	
+	        	$('#sel_no_producto').val(codigoProducto);    	
 	        } else {
-//				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
+	        	$('#sma_val_no_producto').show();
+//				frm_det_productos.bootstrapValidator('revalidateField', 'sel_no_producto');
 	        }
 	        $('#sel_no_producto').select2();
 			$('#sel_no_producto').select2({
 				  dropdownParent: $('#div_pro_det_no_alimentarios')
 			});
+			
+			$.fn.modal.Constructor.prototype.enforceFocus = function () {
+				  var that = this;
+				  $(document).on('focusin.modal', function (e) {
+				     if ($(e.target).hasClass('select2-input')) {
+				        return true;
+				     }
+
+				     if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
+				        that.$element.focus();
+				     }
+				  });
+				};
 		}
 		loadding(false);		
 	});
