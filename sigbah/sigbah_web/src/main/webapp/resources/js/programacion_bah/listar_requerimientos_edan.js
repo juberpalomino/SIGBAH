@@ -51,9 +51,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/programacion-bath/requerimiento/mantenimientoRequerimiento/';
@@ -81,7 +81,7 @@ $(document).ready(function() {
 			return false;
 		});					
 		if (!esnulo(empty) || row < 1) {
-			addWarnMessage(null, 'No se encuentran registros para generar el reporte.');
+			addWarnMessage(null, mensajeReporteRegistroValidacion);
 			return;
 		}
 
@@ -134,9 +134,9 @@ $(document).ready(function() {
 		}
 		
 		if (indices.length == 0) {
-			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 		} else if (indices.length > 1) {
-			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
 			var url = VAR_CONTEXT + '/programacion-bath/requerimiento/exportarPdf/'+codigo;
@@ -180,9 +180,9 @@ $(document).ready(function() {
 //		}
 //		
 //		if (indices.length == 0) {
-//			addWarnMessage(null, 'Debe de Seleccionar por lo menos un Registro');
+//			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
 //		} else if (indices.length > 1) {
-//			addWarnMessage(null, 'Debe de Seleccionar solo un Registro');
+//			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 //		} else {
 //			loadding(true);
 //			var url = VAR_CONTEXT + '/programacion-bath/emergencia/exportarPdf/'+codigo;
