@@ -74,7 +74,7 @@ $(document).ready(function() {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					var options = '<option value="">Todos</option>';
+					var options = '';
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.nroLote+'">'+item.lote+'</option>';
 			        });

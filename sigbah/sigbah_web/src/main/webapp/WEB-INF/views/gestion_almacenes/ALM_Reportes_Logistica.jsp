@@ -85,7 +85,6 @@
 									
 									<div class="col-sm-5 form-group">
 										<select id="sel_producto" name="sel_producto" class="form-control">
-											<option value="">Todos</option>
 											<c:forEach items="${lista_producto}" var="item">
 											    <option value="${item.idProducto}_${item.nroKardex}">${item.nombreProducto}</option>
 											</c:forEach>
