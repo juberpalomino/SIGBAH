@@ -8,6 +8,7 @@ var tbl_det_productos = $('#tbl_det_productos');
 var frm_det_productos = $('#frm_det_productos');
 
 var tbl_det_vehiculos = $('#tbl_det_vehiculos');
+var frm_det_pro_vehicular = $('#frm_det_pro_vehicular');
 
 var tbl_det_documentos = $('#tbl_det_documentos');
 var frm_det_documentos = $('#frm_det_documentos');
@@ -178,8 +179,7 @@ $(document).ready(function() {
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
 			
-			var val_producto = obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.pesoUnitarioBruto+'_'+obj.volumenUnitario;
-			cargarProducto(obj.idCategoria, val_producto);
+			cargarProducto(obj.idCategoria, obj.idProducto);
 
 			$('#txt_uni_medida').val(obj.nombreUnidad);
 			$('#txt_pes_net_unitario').val(obj.pesoUnitarioBruto);
@@ -350,39 +350,58 @@ $(document).ready(function() {
 	
 	$('#btn_recalcular').click(function(e) {
 		e.preventDefault();
-
-		var indices = [];		
-		var arrFlagVehiculo = [];	
-		var arrIdTipoCamion = [];
-		var arrVolumen = [];
-		tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
-			if (tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
-				indices.push(index);
-				arrFlagVehiculo.push(listaVehiculosCache[index].flagVehiculo);
-				arrIdTipoCamion.push(listaVehiculosCache[index].idTipoCamion);
-				arrVolumen.push(listaVehiculosCache[index].volumen);
-			}
-		});
 		
-		if (indices.length == 0) {
-			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
-		} else {		
-			loadding(true);
-			var params = {
-				idProyectoManifiesto : $('#hid_cod_proyecto').val(),
-				arrFlagVehiculo : arrFlagVehiculo,
-				arrIdTipoCamion : arrIdTipoCamion,
-				arrVolumen : arrVolumen
-			};
-			consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/procesarManifiestoVehiculo', params, function(respuesta) {
-				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-					loadding(false);
-					addErrorMessage(null, respuesta.mensajeRespuesta);
+		var bootstrapValidator = frm_det_pro_vehicular.data('bootstrapValidator');
+		bootstrapValidator.validate();
+		if (bootstrapValidator.isValid()) {
+			
+			if (listaVehiculosCache.length == 0) { // Validacion sin registros
+				addWarnMessage(null, mensajeValidacionSinRegistros);
+				return;
+			}
+
+			var indices = [];
+			var arrIdDetalleVehicular = [];
+			tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+				if (tbl_det_vehiculos.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+					indices.push(index);
+					arrIdDetalleVehicular.push(listaVehiculosCache[index].idDetalleVehicular);
 				} else {
-					listarProductoProyectoManifiesto(true);
-					addSuccessMessage(null, respuesta.mensajeRespuesta);							
+					arrIdDetalleVehicular.push(0);
 				}
-			});	
+			});
+
+			if (indices.length == 0) {
+				addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
+			} else {		
+				loadding(true);
+				
+				var diferencia = 6 - listaVehiculosCache.length;
+				if (diferencia > 0) {
+					for (i = 0 ; i < diferencia; i++) {
+						arrIdDetalleVehicular.push(0);
+					}
+				}
+				
+				var params = {
+					idProyectoManifiesto : $('#hid_cod_proyecto').val(),
+					tipoControl : $('input[name="rb_cal_nro_vehiculo"]:checked').val(),
+					totalVolumen : $('#sp_tot_volumen').text(),
+					totalTonelaje : $('#sp_tot_peso').text(),
+					arrIdDetalleVehicular : arrIdDetalleVehicular
+				};
+				consultarAjax('POST', '/gestion-almacenes/proyecto-manifiesto/procesarManifiestoVehiculo', params, function(respuesta) {
+					if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+						loadding(false);
+						addErrorMessage(null, respuesta.mensajeRespuesta);
+					} else {
+						listarProductoProyectoManifiesto(true);
+						listarVehiculoProyectoManifiesto(false);
+						addSuccessMessage(null, respuesta.mensajeRespuesta);							
+					}
+				});	
+			}
+			
 		}
 		
 	});
@@ -621,6 +640,7 @@ function inicializarDatos() {
 			$('#sel_nro_programacion').val(proyectoManifiesto.idProgramacion);
 			$('#sel_almacen').val(proyectoManifiesto.idAlmacenDestino);
 			$('#txt_observaciones').val(proyectoManifiesto.observacion);
+			$('input[name=rb_cal_nro_vehiculo][value="'+proyectoManifiesto.tipoControl+'"]').prop('checked', true);
 
 			listarProductoProyectoManifiesto(false);
 			listarVehiculoProyectoManifiesto(false);
@@ -715,7 +735,7 @@ function listarDetalleProductos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true,
+		info : false,
 		'footerCallback' : function ( row, data, start, end, display ) {
 			var api = this.api(), data;	 
 			
@@ -773,21 +793,23 @@ function listarDetalleVehiculos(respuesta) {
 		data : respuesta,
 		columns : [ {
 			data : 'idProyectoManifiesto',
-			sClass : 'opc-center',
-			render: function(data, type, row) {
-				if (data != null) {
-					return '<label class="checkbox">'+
-								'<input type="checkbox"><i></i>'+
-						   '</label>';	
-				} else {
-					return '';	
-				}											
-			}
-		}, {	
-			data : 'idProyectoManifiesto',
 			render : function(data, type, full, meta) {
 				var row = meta.row + 1;
 				return row;											
+			}
+		}, {	
+			data : 'flagVehiculo',
+			sClass : 'opc-center',
+			render: function(data, type, row) {
+				if (data == '0') { // Inactivo
+					return '<label class="checkbox">'+
+								'<input type="checkbox"><i></i>'+
+						   '</label>';	
+				} else { // Activo
+					return '<label class="checkbox">'+
+								'<input type="checkbox" checked><i></i>'+
+						   '</label>';
+				}											
 			}
 		}, {
 			data : 'descripcionCamion'
@@ -802,10 +824,17 @@ function listarDetalleVehiculos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false,
+		columnDefs : [
+  			{ width : '5%', targets : 0 },
+  			{ width : '5%', targets : 1 },
+  			{ width : '50%', targets : 2 },
+  			{ width : '15%', targets : 3 },
+  			{ width : '25%', targets : 4 }
+  		]
 	});
 	
-	listaVehiculosCache = respuesta;
+	listaVehiculosCache = verificarListaJson(respuesta);
 
 }
 
@@ -917,14 +946,17 @@ function cargarProducto(idCategoria, codigoProducto) {
 			addErrorMessage(null, respuesta.mensajeRespuesta);
 		} else {
 			var options = '<option value="">Seleccione</option>';
+			var val_producto = null;
 	        $.each(respuesta, function(i, item) {
-				var det_option = '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'_'+item.pesoUnitarioNeto+'_'+item.pesoUnitarioBruto+'">';
-				det_option = det_option + item.nombreProducto+'</option>';				
-	            options += det_option;
+	        	var det_option = item.idProducto+'_'+item.nombreUnidadMedida+'_'+item.pesoUnitarioNeto+'_'+item.pesoUnitarioBruto;
+	        	options += '<option value="'+det_option+'">'+item.nombreProducto+'</option>';
+	            if (codigoProducto == item.idProducto) {
+	            	val_producto = det_option;
+	            }
 	        });
 	        $('#sel_producto').html(options);
 	        if (codigoProducto != null) {
-	        	$('#sel_producto').val(codigoProducto);      	
+	        	$('#sel_producto').val(val_producto);      	
 	        } else {
 	        	var arr = $('#sel_producto').val().split('_');
 				if (arr.length > 1) {

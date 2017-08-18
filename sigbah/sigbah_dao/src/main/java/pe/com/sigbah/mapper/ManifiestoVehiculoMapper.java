@@ -21,6 +21,7 @@ public class ManifiestoVehiculoMapper implements RowMapper<ManifiestoVehiculoBea
 	@Override
 	public ManifiestoVehiculoBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		ManifiestoVehiculoBean proyecto = new ManifiestoVehiculoBean();
+		proyecto.setIdDetalleVehicular(rs.getInt("IDE_DET_PROYECTO_VEH"));
 		proyecto.setIdProyectoManifiesto(rs.getInt("IDE_PROYECTO_MANIF"));
 		proyecto.setFlagVehiculo(rs.getString("FLG_ACTIVO"));
 		proyecto.setIdTipoCamion(rs.getInt("IDE_TIP_CAMION"));

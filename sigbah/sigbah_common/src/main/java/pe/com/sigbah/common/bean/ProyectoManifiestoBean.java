@@ -35,6 +35,7 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	private Integer idAlmacenDestino;
 	private String nombreAlmacenDestino;
 	private String codigoProyectoManifiesto;
+	private String tipoControl;
 
 	/**
 	 * 
@@ -405,6 +406,20 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
 		this.nombreAlmacenDestino = nombreAlmacenDestino;
+	}
+
+	/**
+	 * @return the tipoControl
+	 */
+	public String getTipoControl() {
+		return tipoControl;
+	}
+
+	/**
+	 * @param tipoControl the tipoControl to set
+	 */
+	public void setTipoControl(String tipoControl) {
+		this.tipoControl = tipoControl;
 	}
 
 }

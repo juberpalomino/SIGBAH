@@ -53,6 +53,20 @@ $(document).ready(function() {
 		}
 	});
 	
+	frm_det_pro_vehicular.bootstrapValidator({
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			rb_cal_nro_vehiculo : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Calcular en Nro de Vehiculos.'
+					}
+				}
+			}
+		}
+	});
+	
 	frm_det_productos.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],

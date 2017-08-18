@@ -102,6 +102,8 @@ import pe.com.sigbah.mapper.StockAlmacenLoteMapper;
 import pe.com.sigbah.mapper.StockAlmacenMapper;
 import pe.com.sigbah.mapper.StockAlmacenProductoLoteMapper;
 import pe.com.sigbah.mapper.StockAlmacenProductoMapper;
+import pe.com.sigbah.mapper.StockProductoKardexMapper;
+import pe.com.sigbah.mapper.StockProductoLoteMapper;
 
 /**
  * @className: LogisticaDaoImpl.java
@@ -2836,9 +2838,14 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
 			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", manifiestoVehiculoBean.getIdProyectoManifiesto(), Types.NUMERIC);
-			input_objParametros.addValue("pi_FLAG_VEHICULO", manifiestoVehiculoBean.getFlagVehiculo(), Types.VARCHAR);
-			input_objParametros.addValue("pi_IDE_TIP_CAMION", manifiestoVehiculoBean.getIdTipoCamion(), Types.NUMERIC);
-			input_objParametros.addValue("pi_VOLUMEN", manifiestoVehiculoBean.getVolumen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_FLG_TIPO_CONTROL", manifiestoVehiculoBean.getTipoControl(), Types.VARCHAR);
+			input_objParametros.addValue("pi_VOLUMEN_TOTAL", manifiestoVehiculoBean.getVolumen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_TONELAJE_TOTAL", manifiestoVehiculoBean.getTonelaje(), Types.NUMERIC);
+			int row = 1;
+			for (Integer codigo : manifiestoVehiculoBean.getArrIdDetalleVehicular()) {
+				input_objParametros.addValue("pi_IDE_DET_PROYECTO_VEH_"+row, codigo, Types.NUMERIC);
+				row++;
+			}			
 			input_objParametros.addValue("pi_USU_REGISTRO", manifiestoVehiculoBean.getUsuarioRegistro(), Types.VARCHAR);
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -2849,9 +2856,12 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
-			output_objParametros.put("pi_FLAG_VEHICULO", new SqlParameter("pi_FLAG_VEHICULO", Types.VARCHAR));
-			output_objParametros.put("pi_IDE_TIP_CAMION", new SqlParameter("pi_IDE_TIP_CAMION", Types.NUMERIC));
-			output_objParametros.put("pi_VOLUMEN", new SqlParameter("pi_VOLUMEN", Types.NUMERIC));
+			output_objParametros.put("pi_FLG_TIPO_CONTROL", new SqlParameter("pi_FLG_TIPO_CONTROL", Types.VARCHAR));
+			output_objParametros.put("pi_VOLUMEN_TOTAL", new SqlParameter("pi_VOLUMEN_TOTAL", Types.NUMERIC));
+			output_objParametros.put("pi_TONELAJE_TOTAL", new SqlParameter("pi_TONELAJE_TOTAL", Types.NUMERIC));
+			for (int i = 1; i <= (row - 1); i++) {
+				output_objParametros.put("pi_IDE_DET_PROYECTO_VEH_"+i, new SqlParameter("pi_IDE_DET_PROYECTO_VEH_"+i, Types.NUMERIC));
+			}
 			output_objParametros.put("pi_USU_REGISTRO", new SqlParameter("pi_USU_REGISTRO", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
@@ -4564,7 +4574,6 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			input_objParametros.addValue("pi_TIPO_ORIGEN", stockProductoKardexBean.getTipoOrigen(), Types.VARCHAR);
 			input_objParametros.addValue("pi_FK_IDE_DDI", stockProductoKardexBean.getIdDdi(), Types.NUMERIC);
 			input_objParametros.addValue("pi_FK_IDE_ALMACEN", stockProductoKardexBean.getIdAlmacen(), Types.NUMERIC);
-			input_objParametros.addValue("pi_FK_IDE_PRODUCTO", stockProductoKardexBean.getIdProducto(), Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -4576,10 +4585,9 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
 			output_objParametros.put("pi_FK_IDE_DDI", new SqlParameter("pi_FK_IDE_DDI", Types.NUMERIC));
 			output_objParametros.put("pi_FK_IDE_ALMACEN", new SqlParameter("pi_FK_IDE_ALMACEN", Types.NUMERIC));
-			output_objParametros.put("pi_FK_IDE_PRODUCTO", new SqlParameter("pi_FK_IDE_PRODUCTO", Types.NUMERIC));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
-//			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new StockProductoKardexMapper()));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new StockProductoKardexMapper()));
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
@@ -4609,21 +4617,25 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		List<StockProductoLoteBean> lista = new ArrayList<StockProductoLoteBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
-//			input_objParametros.addValue("pi_COD_ANIO", stockProductoLoteBean.getCodigoAnio(), Types.VARCHAR);
-			input_objParametros.addValue("pi_IDE_ALMACEN", Utils.getParam(stockProductoLoteBean.getIdAlmacen()), Types.NUMERIC);
+			input_objParametros.addValue("pi_TIPO_ORIGEN", stockProductoLoteBean.getTipoOrigen(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_DDI", stockProductoLoteBean.getIdDdi(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_ALMACEN", stockProductoLoteBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_PRODUCTO", stockProductoLoteBean.getIdProducto(), Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
 			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
 			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
-			objJdbcCall.withProcedureName("USP_LISTAR_CIERRE_ALMACEN");
+			objJdbcCall.withProcedureName("USP_SEL_TAB_STOCK_PROD_LOTE");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_DDI", new SqlParameter("pi_IDE_DDI", Types.NUMERIC));
 			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_PRODUCTO", new SqlParameter("pi_IDE_PRODUCTO", Types.NUMERIC));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
-			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new CierreStockMapper()));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new StockProductoLoteMapper()));
 			
 			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
 			
@@ -4631,7 +4643,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
 			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
 				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
-				LOGGER.info("[listarStockProductoLote] Ocurrio un error en la operacion del USP_LISTAR_CIERRE_ALMACEN : "+mensajeRespuesta);
+				LOGGER.info("[listarStockProductoLote] Ocurrio un error en la operacion del USP_SEL_TAB_STOCK_PROD_LOTE : "+mensajeRespuesta);
 				throw new Exception();
 			} else {
 				lista = (List<StockProductoLoteBean>) out.get("po_Lr_Recordset");

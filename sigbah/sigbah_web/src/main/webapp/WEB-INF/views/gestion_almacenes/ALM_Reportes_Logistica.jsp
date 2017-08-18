@@ -85,6 +85,10 @@
 									
 									<div class="col-sm-5 form-group">
 										<select id="sel_producto" name="sel_producto" class="form-control">
+											<option value="">Todos</option>
+											<c:forEach items="${lista_producto}" var="item">
+											    <option value="${item.idProducto}_${item.nroKardex}">${item.nombreProducto}</option>
+											</c:forEach>
 										</select>
 									</div>
 								</div>
@@ -131,12 +135,12 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form class="smart-form">
+							<form id="frm_tip_reporte" class="smart-form">
 							
 								<div class="row">
 									<div class="col col-2"></div>
 									
-									<div class="col col-4">
+									<div class="col col-4 form-group">
 										<label class="radio">
 											<input type="radio" name="rb_tip_reporte" value="1"><i></i>
 											1.- Reporte de Proyectos de Manifiesto

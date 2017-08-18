@@ -1,6 +1,7 @@
 package pe.com.sigbah.common.bean;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @className: ManifiestoVehiculoBean.java
@@ -12,12 +13,15 @@ public class ManifiestoVehiculoBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	private Integer idProyectoManifiesto;
+	private Integer idDetalleVehicular;
 	private String flagVehiculo;
 	private Integer idTipoCamion;
 	private String descripcionCamion;
 	private BigDecimal tonelaje;
 	private BigDecimal volumen;
 	private Integer cantidadVehiculos;
+	private String tipoControl;
+	private List<Integer> arrIdDetalleVehicular;
 
 
 	/**
@@ -131,6 +135,48 @@ public class ManifiestoVehiculoBean extends BaseOutputBean {
 	 */
 	public void setCantidadVehiculos(Integer cantidadVehiculos) {
 		this.cantidadVehiculos = cantidadVehiculos;
+	}
+
+	/**
+	 * @return the tipoControl
+	 */
+	public String getTipoControl() {
+		return tipoControl;
+	}
+
+	/**
+	 * @param tipoControl the tipoControl to set
+	 */
+	public void setTipoControl(String tipoControl) {
+		this.tipoControl = tipoControl;
+	}
+
+	/**
+	 * @return the arrIdDetalleVehicular
+	 */
+	public List<Integer> getArrIdDetalleVehicular() {
+		return arrIdDetalleVehicular;
+	}
+
+	/**
+	 * @param arrIdDetalleVehicular the arrIdDetalleVehicular to set
+	 */
+	public void setArrIdDetalleVehicular(List<Integer> arrIdDetalleVehicular) {
+		this.arrIdDetalleVehicular = arrIdDetalleVehicular;
+	}
+
+	/**
+	 * @return the idDetalleVehicular
+	 */
+	public Integer getIdDetalleVehicular() {
+		return idDetalleVehicular;
+	}
+
+	/**
+	 * @param idDetalleVehicular the idDetalleVehicular to set
+	 */
+	public void setIdDetalleVehicular(Integer idDetalleVehicular) {
+		this.idDetalleVehicular = idDetalleVehicular;
 	}
 
 }

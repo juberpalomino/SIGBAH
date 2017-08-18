@@ -399,30 +399,33 @@ public class ProyectoManifiestoController extends BaseController {
 	
 	/**
 	 * @param idProyectoManifiesto 
-	 * @param arrFlagVehiculo 
-	 * @param arrIdTipoCamion 
-	 * @param arrVolumen 
+	 * @param tipoControl 
+	 * @param totalVolumen 
+	 * @param totalTonelaje 
+	 * @param arrIdDetalleVehicular 
 	 * @return objeto en formato json
 	 */
 	@RequestMapping(value = "/procesarManifiestoVehiculo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Object procesarManifiestoVehiculo(@RequestParam(value="idProyectoManifiesto") Integer idProyectoManifiesto,
-											 @RequestParam(value="arrFlagVehiculo[]") List<String> arrFlagVehiculo,
-											 @RequestParam(value="arrIdTipoCamion[]") List<Integer> arrIdTipoCamion,
-											 @RequestParam(value="arrVolumen[]") List<BigDecimal> arrVolumen) {
-		ManifiestoVehiculoBean manifiesto = new ManifiestoVehiculoBean();
+											 @RequestParam(value="tipoControl") String tipoControl,
+											 @RequestParam(value="totalVolumen") BigDecimal totalVolumen,
+											 @RequestParam(value="totalTonelaje") BigDecimal totalTonelaje,
+											 @RequestParam(value="arrIdDetalleVehicular[]") List<Integer> arrIdDetalleVehicular) {
+		ManifiestoVehiculoBean manifiesto = null;
 		try {
 			// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-			for (int i = 0; i < arrIdTipoCamion.size(); i++) {
-				ManifiestoVehiculoBean registroManifiestoVehiculo = new ManifiestoVehiculoBean();
-				registroManifiestoVehiculo.setIdProyectoManifiesto(idProyectoManifiesto);
-				registroManifiestoVehiculo.setFlagVehiculo(arrFlagVehiculo.get(i));
-				registroManifiestoVehiculo.setIdTipoCamion(arrIdTipoCamion.get(i));
-				registroManifiestoVehiculo.setVolumen(arrVolumen.get(i));				
-				registroManifiestoVehiculo.setUsuarioRegistro(usuarioBean.getNombreUsuario());
-				logisticaService.procesarManifiestoVehiculo(registroManifiestoVehiculo);
-			}
+
+			ManifiestoVehiculoBean registroManifiestoVehiculo = new ManifiestoVehiculoBean();
+			registroManifiestoVehiculo.setIdProyectoManifiesto(idProyectoManifiesto);
+			registroManifiestoVehiculo.setTipoControl(tipoControl);
+			registroManifiestoVehiculo.setVolumen(totalVolumen);
+			registroManifiestoVehiculo.setTonelaje(totalTonelaje);
+			registroManifiestoVehiculo.setArrIdDetalleVehicular(arrIdDetalleVehicular);
+			registroManifiestoVehiculo.setUsuarioRegistro(usuarioBean.getUsuario());
+			
+			manifiesto = logisticaService.procesarManifiestoVehiculo(registroManifiestoVehiculo);
 			manifiesto.setCodigoRespuesta(Constantes.COD_EXITO_GENERAL);
         	manifiesto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));
 		} catch (Exception e) {

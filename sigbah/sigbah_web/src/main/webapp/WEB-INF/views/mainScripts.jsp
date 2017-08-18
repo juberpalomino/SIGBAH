@@ -69,6 +69,7 @@
 	var mensajeValidacionSeleccionarSoloUnRegistro = 'Debe de seleccionar solo un registro.';
 	var mensajeValidacionAnulado = 'No se puede editar el registro porque se encuentra en estado anulado.';
 	var mensajeValidacionDocumento = 'No dispone de documento adjunto asociado.';
+	var mensajeValidacionSinRegistros = 'No se encuentran registros para generar el proceso.';
 	var mensajeConfirmacionEliminacionVariosRegistros = 'Está seguro de eliminar los siguientes registros ?';
 	var mensajeConfirmacionEliminacionSoloUnRegistro = 'Está seguro de eliminar el registro ?';
 </script>

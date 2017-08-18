@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.StockProductoKardexBean;
+import pe.com.sigbah.common.bean.StockProductoLoteBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.service.GeneralService;
@@ -60,6 +63,12 @@ public class ReporteController extends BaseController {
         	
         	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
         	
+        	StockProductoKardexBean stockProductoKardexBean = new StockProductoKardexBean();
+        	stockProductoKardexBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+        	stockProductoKardexBean.setIdDdi(usuarioBean.getIdDdi());
+        	stockProductoKardexBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+        	model.addAttribute("lista_producto", logisticaService.listarStockProductoKardex(stockProductoKardexBean));
+        	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {
@@ -87,6 +96,28 @@ public class ReporteController extends BaseController {
 			} else if (tipoReporte.equals(Constantes.FOUR_STRING)) { // Reporte de Guias de Remision  
 				lista = generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.TWO_INT));
 			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
+	
+	/**
+	 * @param request 
+	 * @param response 
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarStockProductoLote", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarStockProductoLote(HttpServletRequest request, HttpServletResponse response) {
+		List<StockProductoLoteBean> lista = null;
+		try {		
+			StockProductoLoteBean stockProductoLote = new StockProductoLoteBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(stockProductoLote, request.getParameterMap());
+			stockProductoLote.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+			lista = logisticaService.listarStockProductoLote(stockProductoLote);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);

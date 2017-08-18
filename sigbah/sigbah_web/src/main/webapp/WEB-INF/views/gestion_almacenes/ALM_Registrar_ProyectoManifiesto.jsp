@@ -248,134 +248,154 @@
 								</div>
 								
 								<div class="tab-pane fade" id="div_productos">
+								
+									<form id="frm_det_pro_vehicular" class="form-horizontal">
 									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Detalle de Productos</h2>
-											
-											<div class="jarviswidget-ctrls" role="menu">   
-												<a href="#" id="href_pro_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Nuevo">
-													<i class="fa fa-file-o"></i>
-												</a>
-												<a href="#" id="href_pro_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Editar">
-													<i class="fa fa-edit"></i>
-												</a>
-												<a href="#" id="href_pro_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-													data-original-title="Eliminar">
-													<i class="fa fa-trash-o"></i>
-												</a>
-											</div>
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-
-												<table id="tbl_det_productos" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th></th>
-															<th>Nº</th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Cantidad</th>
-															<th>Peso Unitario</th>
-															<th>Peso Total Kg</th>
-															<th>Volumen Unitario</th>
-															<th>Volumen Total m3</th>
-															<th>Costo Unitario (S/.)</th>
-															<th>Costo Total (S/.)</th>
-														</tr>
-													</thead>
-													<tfoot>
-														<tr>
-															<td colspan="6">
-																<span class="label-bold" style="float:right;">Totales:</span>
-															</td>
-															<td colspan="1">
-																<span id="sp_tot_peso"></span>
-															</td>															
-															<td colspan="1"></td>															
-															<td colspan="1">
-																<span id="sp_tot_volumen"></span>
-															</td>
-															<td colspan="2"></td>
-														</tr>
-													</tfoot>
-												</table>
-
-											</div>
-											<!-- end widget content -->
-						
-										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<!-- Widget ID (each widget will need unique ID)-->
-									<div class="jarviswidget jarviswidget-color-blueLight">
-									
-										<header>
-											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-											<h2>Resumen de Vehiculos a Usar</h2>
-										</header>
-						
-										<!-- widget div-->
-										<div>
-															
-											<!-- widget content -->
-											<div class="widget-body">
-											
-												<div class="row">
-													<label class="col-sm-12">Tipo de Camiones Disponibles:</label>
+										<!-- Widget ID (each widget will need unique ID)-->
+										<div class="jarviswidget jarviswidget-color-blueLight">
+										
+											<header>
+												<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+												<h2>Detalle de Productos</h2>
+												
+												<div class="jarviswidget-ctrls" role="menu">   
+													<a href="#" id="href_pro_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Nuevo">
+														<i class="fa fa-file-o"></i>
+													</a>
+													<a href="#" id="href_pro_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Editar">
+														<i class="fa fa-edit"></i>
+													</a>
+													<a href="#" id="href_pro_eliminar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+														data-original-title="Eliminar">
+														<i class="fa fa-trash-o"></i>
+													</a>
 												</div>
-
-												<table id="tbl_det_vehiculos" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
-														<tr>
-															<th>Nº</th>
-															<th>Seleccione</th>															
-															<th>Tipo Camión</th>
-															<th>Volumen</th>
-															<th>N° Vehiculos Requeridos</th>
-														</tr>
-													</thead>
-												</table>
-
+											</header>
+							
+											<!-- widget div-->
+											<div>
+																
+												<!-- widget content -->
+												<div class="widget-body">
+	
+													<table id="tbl_det_productos" class="table table-bordered table-hover tbl-responsive">
+														<thead>			                
+															<tr>
+																<th></th>
+																<th>Nº</th>
+																<th>Producto</th>
+																<th>Unidad de Medida</th>
+																<th>Cantidad</th>
+																<th>Peso Unitario</th>
+																<th>Peso Total Kg</th>
+																<th>Volumen Unitario</th>
+																<th>Volumen Total m3</th>
+																<th>Costo Unitario (S/.)</th>
+																<th>Costo Total (S/.)</th>
+															</tr>
+														</thead>
+														<tfoot>
+															<tr>
+																<td colspan="6">
+																	<span class="label-bold" style="float:right;">Totales:</span>
+																</td>
+																<td colspan="1">
+																	<span id="sp_tot_peso"></span>
+																</td>															
+																<td colspan="1"></td>															
+																<td colspan="1">
+																	<span id="sp_tot_volumen"></span>
+																</td>
+																<td colspan="2"></td>
+															</tr>
+														</tfoot>
+													</table>
+	
+												</div>
+												<!-- end widget content -->
+							
 											</div>
-											<!-- end widget content -->
-						
+											<!-- end widget div -->
+							
 										</div>
-										<!-- end widget div -->
-						
-									</div>
-									<!-- end widget -->
-									
-									<div class="form-actions">
-										<div class="row">
-											<div class="col-md-12 opc-center">
-												<button class="btn btn-primary" type="button" id="btn_recalcular">
-													<i class="fa fa-retweet"></i>
-													Recalcular
-												</button>
-											
-												&nbsp; &nbsp;
-											
-												<button class="btn btn-default btn_retornar" type="button">
-													<i class="fa fa-mail-forward"></i>
-													Retornar
-												</button>
+										<!-- end widget -->
+										
+										<!-- Widget ID (each widget will need unique ID)-->
+										<div class="jarviswidget jarviswidget-color-blueLight">
+										
+											<header>
+												<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+												<h2>Resumen de Vehiculos a Usar</h2>
+											</header>
+							
+											<!-- widget div-->
+											<div>
+																
+												<!-- widget content -->
+												<div class="widget-body">
+												
+													<div class="row">														
+														<label class="col-sm-3 control-label">Calcular en Nro de Vehiculos por:</label>
+														
+														<div class="col-sm-3 form-group">
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_cal_nro_vehiculo" value="T">
+																TN Total
+															</label>
+															
+															<label class="radio radio-inline">
+																<input type="radio" name="rb_cal_nro_vehiculo" value="V">
+																Volumen Total
+															</label>																		
+														</div>
+													</div>
+												
+													<div class="row">
+														<label class="col-sm-12 label-bold">Tipo de Camiones Disponibles:</label>
+													</div>
+	
+													<table id="tbl_det_vehiculos" class="table table-bordered table-hover tbl-responsive">
+														<thead>			                
+															<tr>
+																<th>Nº</th>
+																<th>Activo</th>															
+																<th>Tipo Camión</th>
+																<th>Volumen</th>
+																<th>N° Vehiculos Requeridos</th>
+															</tr>
+														</thead>
+													</table>														
+	
+												</div>
+												<!-- end widget content -->
+							
+											</div>
+											<!-- end widget div -->
+							
+										</div>
+										<!-- end widget -->
+										
+										<div class="form-actions">
+											<div class="row">
+												<div class="col-md-12 opc-center">
+													<button class="btn btn-primary" type="button" id="btn_recalcular">
+														<i class="fa fa-retweet"></i>
+														Recalcular
+													</button>
+												
+													&nbsp; &nbsp;
+												
+													<button class="btn btn-default btn_retornar" type="button">
+														<i class="fa fa-mail-forward"></i>
+														Retornar
+													</button>
+												</div>
 											</div>
 										</div>
-									</div>
+										
+									</form>
 									
 								</div>
 								
@@ -525,12 +545,12 @@
 							
 							<div class="row">
 								<label class="col-sm-2 control-label">Peso Neto Unitario:</label>
-								<div class="col-sm-2 smart-form form-group">
+								<div class="col-sm-2 form-group">
 									<input type="text" id="txt_pes_net_unitario" class="form-control" disabled>
 								</div>
 								
 								<label class="col-sm-2 control-label">Volumen Unitario:</label>
-								<div class="col-sm-2 smart-form form-group">
+								<div class="col-sm-2 form-group">
 									<input type="text" id="txt_vol_unitario" class="form-control" disabled>
 								</div>
 							</div>
