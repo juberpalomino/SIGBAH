@@ -36,6 +36,9 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	private String nombreAlmacenDestino;
 	private String codigoProyectoManifiesto;
 	private String tipoControl;
+	private String codigoMesInicio;
+	private String codigoMesFin;
+	
 
 	/**
 	 * 
@@ -420,6 +423,34 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setTipoControl(String tipoControl) {
 		this.tipoControl = tipoControl;
+	}
+
+	/**
+	 * @return the codigoMesInicio
+	 */
+	public String getCodigoMesInicio() {
+		return codigoMesInicio;
+	}
+
+	/**
+	 * @param codigoMesInicio the codigoMesInicio to set
+	 */
+	public void setCodigoMesInicio(String codigoMesInicio) {
+		this.codigoMesInicio = codigoMesInicio;
+	}
+
+	/**
+	 * @return the codigoMesFin
+	 */
+	public String getCodigoMesFin() {
+		return codigoMesFin;
+	}
+
+	/**
+	 * @param codigoMesFin the codigoMesFin to set
+	 */
+	public void setCodigoMesFin(String codigoMesFin) {
+		this.codigoMesFin = codigoMesFin;
 	}
 
 }

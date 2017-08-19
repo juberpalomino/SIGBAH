@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sigbah.common.bean.BincardAlmacenBean;
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
@@ -19,6 +20,7 @@ import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
+import pe.com.sigbah.common.bean.KardexAlmacenBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -732,6 +734,86 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public List<StockProductoLoteBean> listarStockProductoLote(StockProductoLoteBean stockProductoLoteBean) throws Exception {
 		return logisticaDao.listarStockProductoLote(stockProductoLoteBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public List<OrdenSalidaBean> listarReporteOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		return logisticaDao.listarReporteOrdenSalida(ordenSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteDetalleOrdenSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public List<ProductoSalidaBean> listarReporteDetalleOrdenSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		return logisticaDao.listarReporteDetalleOrdenSalida(productoSalidaBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProyectoManifiestoBean> listarReporteProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		return logisticaDao.listarReporteProyectoManifiesto(proyectoManifiestoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteDetalleProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProductoProyectoManifiestoBean> listarReporteDetalleProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.listarReporteDetalleProyectoManifiesto(productoProyectoManifiestoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteOrdenIngreso(pe.com.sigbah.common.bean.OrdenIngresoBean)
+	 */
+	@Override
+	public List<OrdenIngresoBean> listarReporteOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
+		return logisticaDao.listarReporteOrdenIngreso(ordenIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteDetalleOrdenIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public List<ProductoIngresoBean> listarReporteDetalleOrdenIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		return logisticaDao.listarReporteDetalleOrdenIngreso(productoIngresoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public List<GuiaRemisionBean> listarReporteGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		return logisticaDao.listarReporteGuiaRemision(guiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteDetalleGuiaRemision(pe.com.sigbah.common.bean.DetalleGuiaRemisionBean)
+	 */
+	@Override
+	public List<DetalleGuiaRemisionBean> listarReporteDetalleGuiaRemision(DetalleGuiaRemisionBean detalleGuiaRemisionBean) throws Exception {
+		return logisticaDao.listarReporteDetalleGuiaRemision(detalleGuiaRemisionBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteKardex(pe.com.sigbah.common.bean.KardexAlmacenBean)
+	 */
+	@Override
+	public List<KardexAlmacenBean> listarReporteKardex(KardexAlmacenBean kardexAlmacenBean) throws Exception {
+		return logisticaDao.listarReporteKardex(kardexAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarReporteBincard(pe.com.sigbah.common.bean.BincardAlmacenBean)
+	 */
+	@Override
+	public List<BincardAlmacenBean> listarReporteBincard(BincardAlmacenBean bincardAlmacenBean) throws Exception {
+		return logisticaDao.listarReporteBincard(bincardAlmacenBean);
 	}
 
 }

@@ -36,6 +36,12 @@ public class DetalleGuiaRemisionBean implements Serializable {
 	private Integer idMotivoTraslado;
 	private String motivoTraslado;
 	private String nroLicenciaConducir;
+	private String codigoAnio;
+	private String codigoMesInicio;
+	private String codigoMesFin;
+	private Integer idAlmacen;
+	private String tipoOrigen;
+	private Integer idMovimiento;
 	
 	
 	/**
@@ -325,6 +331,78 @@ public class DetalleGuiaRemisionBean implements Serializable {
 	 */
 	public void setItem(BigDecimal item) {
 		this.item = item;
+	}
+	/**
+	 * @return the codigoAnio
+	 */
+	public String getCodigoAnio() {
+		return codigoAnio;
+	}
+	/**
+	 * @param codigoAnio the codigoAnio to set
+	 */
+	public void setCodigoAnio(String codigoAnio) {
+		this.codigoAnio = codigoAnio;
+	}
+	/**
+	 * @return the codigoMesInicio
+	 */
+	public String getCodigoMesInicio() {
+		return codigoMesInicio;
+	}
+	/**
+	 * @param codigoMesInicio the codigoMesInicio to set
+	 */
+	public void setCodigoMesInicio(String codigoMesInicio) {
+		this.codigoMesInicio = codigoMesInicio;
+	}
+	/**
+	 * @return the codigoMesFin
+	 */
+	public String getCodigoMesFin() {
+		return codigoMesFin;
+	}
+	/**
+	 * @param codigoMesFin the codigoMesFin to set
+	 */
+	public void setCodigoMesFin(String codigoMesFin) {
+		this.codigoMesFin = codigoMesFin;
+	}
+	/**
+	 * @return the idAlmacen
+	 */
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+	/**
+	 * @param idAlmacen the idAlmacen to set
+	 */
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+	/**
+	 * @return the tipoOrigen
+	 */
+	public String getTipoOrigen() {
+		return tipoOrigen;
+	}
+	/**
+	 * @param tipoOrigen the tipoOrigen to set
+	 */
+	public void setTipoOrigen(String tipoOrigen) {
+		this.tipoOrigen = tipoOrigen;
+	}
+	/**
+	 * @return the idMovimiento
+	 */
+	public Integer getIdMovimiento() {
+		return idMovimiento;
+	}
+	/**
+	 * @param idMovimiento the idMovimiento to set
+	 */
+	public void setIdMovimiento(Integer idMovimiento) {
+		this.idMovimiento = idMovimiento;
 	}
 
 }

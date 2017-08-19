@@ -27,6 +27,11 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	private BigDecimal costoTotal;
 	private String arrIdDetalleProyecto;
 	private Integer idAlmacen;
+	private Integer idMovimiento;
+	private String codigoAnio;
+	private String codigoMesInicio;
+	private String codigoMesFin;
+	private String tipoOrigen;
 	
 	
 	/**
@@ -266,6 +271,76 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setIdAlmacen(Integer idAlmacen) {
 		this.idAlmacen = idAlmacen;
+	}
+
+	/**
+	 * @return the codigoAnio
+	 */
+	public String getCodigoAnio() {
+		return codigoAnio;
+	}
+
+	/**
+	 * @param codigoAnio the codigoAnio to set
+	 */
+	public void setCodigoAnio(String codigoAnio) {
+		this.codigoAnio = codigoAnio;
+	}
+
+	/**
+	 * @return the codigoMesInicio
+	 */
+	public String getCodigoMesInicio() {
+		return codigoMesInicio;
+	}
+
+	/**
+	 * @param codigoMesInicio the codigoMesInicio to set
+	 */
+	public void setCodigoMesInicio(String codigoMesInicio) {
+		this.codigoMesInicio = codigoMesInicio;
+	}
+
+	/**
+	 * @return the codigoMesFin
+	 */
+	public String getCodigoMesFin() {
+		return codigoMesFin;
+	}
+
+	/**
+	 * @param codigoMesFin the codigoMesFin to set
+	 */
+	public void setCodigoMesFin(String codigoMesFin) {
+		this.codigoMesFin = codigoMesFin;
+	}
+
+	/**
+	 * @return the tipoOrigen
+	 */
+	public String getTipoOrigen() {
+		return tipoOrigen;
+	}
+
+	/**
+	 * @param tipoOrigen the tipoOrigen to set
+	 */
+	public void setTipoOrigen(String tipoOrigen) {
+		this.tipoOrigen = tipoOrigen;
+	}
+
+	/**
+	 * @return the idMovimiento
+	 */
+	public Integer getIdMovimiento() {
+		return idMovimiento;
+	}
+
+	/**
+	 * @param idMovimiento the idMovimiento to set
+	 */
+	public void setIdMovimiento(Integer idMovimiento) {
+		this.idMovimiento = idMovimiento;
 	}
 
 }

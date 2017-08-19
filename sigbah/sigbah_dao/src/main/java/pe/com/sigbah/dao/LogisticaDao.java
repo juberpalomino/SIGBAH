@@ -2,6 +2,7 @@ package pe.com.sigbah.dao;
 
 import java.util.List;
 
+import pe.com.sigbah.common.bean.BincardAlmacenBean;
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
@@ -15,6 +16,7 @@ import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
+import pe.com.sigbah.common.bean.KardexAlmacenBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -176,7 +178,7 @@ public interface LogisticaDao {
 	
 	/**
 	 * @param productoIngresoBean
-	 * @return Objeto.
+	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
 	public abstract List<ProductoIngresoBean> listarProductoIngreso(ProductoIngresoBean productoIngresoBean) throws Exception;
@@ -331,7 +333,7 @@ public interface LogisticaDao {
 	
 	/**
 	 * @param productoProyectoManifiestoBean
-	 * @return Objeto.
+	 * @return Lista de registros.
 	 * @throws Exception 
 	 */
 	public abstract List<ProductoProyectoManifiestoBean> listarProductoProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception;
@@ -433,7 +435,7 @@ public interface LogisticaDao {
 	 * @throws Exception 
 	 */
 	public abstract GuiaRemisionBean actualizarGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
-	
+
 	/**
 	 * @param idGuiaRemision
 	 * @param tipoOrigen
@@ -457,7 +459,7 @@ public interface LogisticaDao {
 	 * @throws Exception 
 	 */
 	public abstract List<DetalleActaEntregaBean> listarDetalleActaEntrega(Integer idGuiaRemision, String tipoOrigen) throws Exception;
-	
+
 	/**
 	 * @param stockAlmacenBean
 	 * @return Lista de registros.
@@ -499,7 +501,7 @@ public interface LogisticaDao {
 	 * @throws Exception 
 	 */
 	public abstract StockAlmacenLoteBean actualizarStockAlmacenLote(StockAlmacenLoteBean stockAlmacenLoteBean) throws Exception;
-	
+
 	/**
 	 * @param cartillaInventarioBean
 	 * @return Lista de registros.
@@ -604,7 +606,7 @@ public interface LogisticaDao {
 	 * @throws Exception 
 	 */
 	public abstract EstadoCartillaInventarioBean grabarEstadoCartillaInventario(EstadoCartillaInventarioBean estadoCartillaInventarioBean) throws Exception;
-	
+
 	/**
 	 * @param cierreStockBean
 	 * @return Lista de registros.
@@ -639,5 +641,75 @@ public interface LogisticaDao {
 	 * @throws Exception
 	 */
 	public abstract List<StockProductoLoteBean> listarStockProductoLote(StockProductoLoteBean stockProductoLoteBean) throws Exception;
+	
+	/**
+	 * @param ordenSalidaBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<OrdenSalidaBean> listarReporteOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception;
+	
+	/**
+	 * @param productoSalidaBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoSalidaBean> listarReporteDetalleOrdenSalida(ProductoSalidaBean productoSalidaBean) throws Exception;
+	
+	/**
+	 * @param proyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ProyectoManifiestoBean> listarReporteProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param productoProyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoProyectoManifiestoBean> listarReporteDetalleProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception;
+	
+	/**
+	 * @param ordenIngresoBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<OrdenIngresoBean> listarReporteOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception;
+	
+	/**
+	 * @param productoIngresoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoIngresoBean> listarReporteDetalleOrdenIngreso(ProductoIngresoBean productoIngresoBean) throws Exception;
+	
+	/**
+	 * @param guiaRemisionBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<GuiaRemisionBean> listarReporteGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception;
+	
+	/**
+	 * @param detalleGuiaRemisionBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<DetalleGuiaRemisionBean> listarReporteDetalleGuiaRemision(DetalleGuiaRemisionBean detalleGuiaRemisionBean) throws Exception;
+	
+	/**
+	 * @param kardexAlmacenBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<KardexAlmacenBean> listarReporteKardex(KardexAlmacenBean kardexAlmacenBean) throws Exception;
+	
+	/**
+	 * @param bincardAlmacenBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<BincardAlmacenBean> listarReporteBincard(BincardAlmacenBean bincardAlmacenBean) throws Exception;
 	
 }

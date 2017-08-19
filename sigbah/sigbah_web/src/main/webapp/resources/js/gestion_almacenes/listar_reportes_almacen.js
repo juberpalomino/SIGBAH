@@ -8,7 +8,7 @@ $(document).ready(function() {
 	$('input[type=radio][name=rb_tip_reporte]').change(function() {
 		var tipoReporte = this.value;
 		frm_rep_almacen.data('bootstrapValidator').resetForm();
-		if (tipoReporte != '5') {	
+		if (tipoReporte != '5') { // Los cuatro primeros tipo de reportes
 			var params = { 
 				tipoReporte : tipoReporte
 			};			
@@ -25,7 +25,7 @@ $(document).ready(function() {
 			if ($('#sel_producto').hasClass('select2-hidden-accessible')) {
 				$('#sel_producto').select2('destroy');
 			}
-			consultarAjax('GET', '/gestion-almacenes/reporte/listarTipoMovimiento', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/reporte-almacen/listarTipoMovimiento', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -70,7 +70,7 @@ $(document).ready(function() {
 				idAlmacen : usuarioBean.idAlmacen,
 				idProducto : arr[0]
 			};
-			consultarAjax('GET', '/gestion-almacenes/reporte/listarStockProductoLote', params, function(respuesta) {
+			consultarAjax('GET', '/gestion-almacenes/reporte-almacen/listarStockProductoLote', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
@@ -97,21 +97,38 @@ $(document).ready(function() {
 		bootstrapValidatorTipReporte.validate();
 		if (bootstrapValidatorRepAlmacen.isValid() && bootstrapValidatorTipReporte.isValid()) {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/reporte/exportarPdf/'+codigo+'/'+anio;
-			$.fileDownload(url).done(function(respuesta) {
-				loadding(false);	
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else {
-					addInfoMessage(null, mensajeReporteExito);
-				}
-			}).fail(function (respuesta) {
-				loadding(false);
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else if (respuesta == NOTIFICACION_VALIDACION) {
-					addWarnMessage(null, mensajeReporteValidacion);
-				}
+			
+			var params = { 
+				tipoReporte : $('input[name="rb_tip_reporte"]:checked').val(),
+				anio : $('#sel_anio').val(),
+				mesInicio : $('#sel_mes_inicio').val(),
+				mesFin : $('#sel_mes_fin').val(),
+				tipoMovimiento : $('#sel_tip_movimiento').val(),
+				flagProducto : $('#chk_inc_producto').is(':checked') ? '1' : '0',
+				codigoProducto : $('#sel_producto').val(),
+				nroLote : $('#sel_nro_bincard').val()
+			};	
+			
+			var url = VAR_CONTEXT + '/gestion-almacenes/reporte-almacen/exportarPdf';
+			$.fileDownload(url, {
+			    httpMethod : 'GET',
+			    data : params,
+			    successCallback : function (respuesta, url) {
+			    	loadding(false);	
+					if (respuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, mensajeReporteError);
+					} else {
+						addInfoMessage(null, mensajeReporteExito);
+					}
+			    },
+			    failCallback : function (respuesta, url) {
+			    	loadding(false);
+					if (respuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, mensajeReporteError);
+					} else {
+						addInfoMessage(null, mensajeReporteExito);
+					}
+			    }
 			});
 		}
 	});
@@ -125,21 +142,37 @@ $(document).ready(function() {
 		bootstrapValidatorTipReporte.validate();
 		if (bootstrapValidatorRepAlmacen.isValid() && bootstrapValidatorTipReporte.isValid()) {
 			loadding(true);
-			var url = VAR_CONTEXT + '/gestion-almacenes/reporte/exportarExcel/'+codigo+'/'+anio;
-			$.fileDownload(url).done(function(respuesta) {
-				loadding(false);	
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else {
-					addInfoMessage(null, mensajeReporteExito);
-				}
-			}).fail(function (respuesta) {
-				loadding(false);
-				if (respuesta == NOTIFICACION_ERROR) {
-					addErrorMessage(null, mensajeReporteError);
-				} else if (respuesta == NOTIFICACION_VALIDACION) {
-					addWarnMessage(null, mensajeReporteValidacion);
-				}
+			var params = { 
+				tipoReporte : $('input[name="rb_tip_reporte"]:checked').val(),
+				anio : $('#sel_anio').val(),
+				mesInicio : $('#sel_mes_inicio').val(),
+				mesFin : $('#sel_mes_fin').val(),
+				tipoMovimiento : $('#sel_tip_movimiento').val(),
+				flagProducto : $('#chk_inc_producto').is(':checked') ? '1' : '0',
+				codigoProducto : $('#sel_producto').val(),
+				nroLote : $('#sel_nro_bincard').val()
+			};	
+			
+			var url = VAR_CONTEXT + '/gestion-almacenes/reporte-almacen/exportarExcel';
+			$.fileDownload(url, {
+			    httpMethod : 'GET',
+			    data : params,
+			    successCallback : function (respuesta, url) {
+			    	loadding(false);	
+					if (respuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, mensajeReporteError);
+					} else {
+						addInfoMessage(null, mensajeReporteExito);
+					}
+			    },
+			    failCallback : function (respuesta, url) {
+			    	loadding(false);
+					if (respuesta == NOTIFICACION_ERROR) {
+						addErrorMessage(null, mensajeReporteError);
+					} else {
+						addInfoMessage(null, mensajeReporteExito);
+					}
+			    }
 			});
 		}
 	});

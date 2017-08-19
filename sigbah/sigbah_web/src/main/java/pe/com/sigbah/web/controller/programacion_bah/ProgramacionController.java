@@ -761,7 +761,7 @@ private static final long serialVersionUID = 1L;
 	 * @param arrNombreProducto 
 	 * @param arrUnidadProducto 
 	 * @param response 
-	 * @return objeto en formato json
+	 * @return Objeto
 	 */
 	@RequestMapping(value = "/exportarExcelNoAlimentario", method = RequestMethod.GET)
 	@ResponseBody

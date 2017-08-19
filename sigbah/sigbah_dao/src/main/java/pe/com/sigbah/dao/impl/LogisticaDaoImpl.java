@@ -26,6 +26,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import oracle.jdbc.OracleTypes;
+import pe.com.sigbah.common.bean.BincardAlmacenBean;
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
 import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
@@ -39,6 +40,7 @@ import pe.com.sigbah.common.bean.DocumentoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.GuiaRemisionBean;
+import pe.com.sigbah.common.bean.KardexAlmacenBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
@@ -98,6 +100,7 @@ import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
 import pe.com.sigbah.mapper.RegistroOrdenSalidaMapper;
 import pe.com.sigbah.mapper.RegistroProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.RegistroStockAlmacenMapper;
+import pe.com.sigbah.mapper.ReporteOrdenSalidaMapper;
 import pe.com.sigbah.mapper.StockAlmacenLoteMapper;
 import pe.com.sigbah.mapper.StockAlmacenMapper;
 import pe.com.sigbah.mapper.StockAlmacenProductoLoteMapper;
@@ -4654,6 +4657,139 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[listarStockProductoLote] Fin ");
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteOrdenSalida(pe.com.sigbah.common.bean.OrdenSalidaBean)
+	 */
+	@Override
+	public List<OrdenSalidaBean> listarReporteOrdenSalida(OrdenSalidaBean ordenSalidaBean) throws Exception {
+		LOGGER.info("[listarReporteOrdenSalida] Inicio ");
+		List<OrdenSalidaBean> lista = new ArrayList<OrdenSalidaBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", ordenSalidaBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", ordenSalidaBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", ordenSalidaBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", ordenSalidaBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", ordenSalidaBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", ordenSalidaBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_ORDEN_SALIDA_CAB1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteOrdenSalidaMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteOrdenSalida] Ocurrio un error en la operacion del USP_REP_ORDEN_SALIDA_CAB1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<OrdenSalidaBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteOrdenSalida] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteDetalleOrdenSalida(pe.com.sigbah.common.bean.ProductoSalidaBean)
+	 */
+	@Override
+	public List<ProductoSalidaBean> listarReporteDetalleOrdenSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteProyectoManifiesto(pe.com.sigbah.common.bean.ProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProyectoManifiestoBean> listarReporteProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteDetalleProyectoManifiesto(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProductoProyectoManifiestoBean> listarReporteDetalleProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteOrdenIngreso(pe.com.sigbah.common.bean.OrdenIngresoBean)
+	 */
+	@Override
+	public List<OrdenIngresoBean> listarReporteOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteDetalleOrdenIngreso(pe.com.sigbah.common.bean.ProductoIngresoBean)
+	 */
+	@Override
+	public List<ProductoIngresoBean> listarReporteDetalleOrdenIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteGuiaRemision(pe.com.sigbah.common.bean.GuiaRemisionBean)
+	 */
+	@Override
+	public List<GuiaRemisionBean> listarReporteGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteDetalleGuiaRemision(pe.com.sigbah.common.bean.DetalleGuiaRemisionBean)
+	 */
+	@Override
+	public List<DetalleGuiaRemisionBean> listarReporteDetalleGuiaRemision(DetalleGuiaRemisionBean detalleGuiaRemisionBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteKardex(pe.com.sigbah.common.bean.KardexAlmacenBean)
+	 */
+	@Override
+	public List<KardexAlmacenBean> listarReporteKardex(KardexAlmacenBean kardexAlmacenBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarReporteBincard(pe.com.sigbah.common.bean.BincardAlmacenBean)
+	 */
+	@Override
+	public List<BincardAlmacenBean> listarReporteBincard(BincardAlmacenBean bincardAlmacenBean) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

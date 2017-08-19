@@ -52,6 +52,8 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	private String empresaTransporte;
 	private String nombreChofer;
 	private String responsable;
+	private String codigoMesInicio;
+	private String codigoMesFin;
 	
 	
 	/**
@@ -569,6 +571,30 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	 */
 	public void setResponsable(String responsable) {
 		this.responsable = responsable;
+	}
+	/**
+	 * @return the codigoMesInicio
+	 */
+	public String getCodigoMesInicio() {
+		return codigoMesInicio;
+	}
+	/**
+	 * @param codigoMesInicio the codigoMesInicio to set
+	 */
+	public void setCodigoMesInicio(String codigoMesInicio) {
+		this.codigoMesInicio = codigoMesInicio;
+	}
+	/**
+	 * @return the codigoMesFin
+	 */
+	public String getCodigoMesFin() {
+		return codigoMesFin;
+	}
+	/**
+	 * @param codigoMesFin the codigoMesFin to set
+	 */
+	public void setCodigoMesFin(String codigoMesFin) {
+		this.codigoMesFin = codigoMesFin;
 	}
 
 }

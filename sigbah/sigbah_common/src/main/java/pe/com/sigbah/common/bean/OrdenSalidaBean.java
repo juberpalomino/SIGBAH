@@ -57,6 +57,8 @@ public class OrdenSalidaBean extends BaseOutputBean {
 	private String nroProyectoManifiesto;
 	private String nroProgramacion;
 	private String nombreAlmacenDestino;
+	private String codigoMesInicio;
+	private String codigoMesFin;
 	
 	
 	/**
@@ -651,6 +653,34 @@ public class OrdenSalidaBean extends BaseOutputBean {
 	 */
 	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
 		this.nombreAlmacenDestino = nombreAlmacenDestino;
+	}
+
+	/**
+	 * @return the codigoMesInicio
+	 */
+	public String getCodigoMesInicio() {
+		return codigoMesInicio;
+	}
+
+	/**
+	 * @param codigoMesInicio the codigoMesInicio to set
+	 */
+	public void setCodigoMesInicio(String codigoMesInicio) {
+		this.codigoMesInicio = codigoMesInicio;
+	}
+
+	/**
+	 * @return the codigoMesFin
+	 */
+	public String getCodigoMesFin() {
+		return codigoMesFin;
+	}
+
+	/**
+	 * @param codigoMesFin the codigoMesFin to set
+	 */
+	public void setCodigoMesFin(String codigoMesFin) {
+		this.codigoMesFin = codigoMesFin;
 	}
 	
 }

@@ -33,7 +33,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
+import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
 
@@ -684,6 +686,46 @@ public class ReporteAlmacen implements Serializable {
 			}
 		}
 		return Constantes.EMPTY; 	
+	}
+
+	/**
+	 * @param ruta
+	 * @param listaProyectoManifiesto
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteProyectoManifiesto(String ruta, List<ProyectoManifiestoBean> listaProyectoManifiesto) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param ruta
+	 * @param listaDetalleProyectoManifiesto
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteDetalleProyectoManifiesto(String ruta, List<ProductoProyectoManifiestoBean> listaDetalleProyectoManifiesto) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param string
+	 * @param listaOrdenSalida
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteOrdenSalida(String string, List<OrdenSalidaBean> listaOrdenSalida) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param string
+	 * @param listaDetalleOrdenSalida
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteDetalleOrdenSalida(String string, List<ProductoSalidaBean> listaDetalleOrdenSalida) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
     
 }

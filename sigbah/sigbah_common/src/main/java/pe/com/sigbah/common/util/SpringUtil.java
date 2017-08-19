@@ -27,7 +27,7 @@ public class SpringUtil implements Serializable {
 			arreglo_respuesta = new SqlParameter[hashMap.size()];
 			List<String> keys = new ArrayList<String>(hashMap.keySet());
 			for (int i = 0; i < keys.size(); i++) {
-				String key = keys.get(i) + "";
+				String key = keys.get(i) + Constantes.EMPTY;
 				arreglo_respuesta[i] = hashMap.get(key);
 			}
 		} else {
