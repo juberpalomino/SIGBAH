@@ -1,5 +1,7 @@
 package pe.com.sigbah.common.bean;
 
+import java.math.BigDecimal;
+
 /**
  * @className: GuiaRemisionBean.java
  * @description: Clase GuiaRemisionBean.
@@ -40,6 +42,8 @@ public class GuiaRemisionBean extends BaseOutputBean {
 	private String motivoTraslado;
 	private String codigoMesInicio;
 	private String codigoMesFin;
+	private String nombreAlmacenDestino;
+	private BigDecimal pesoTotalKgr;
 	
 
 
@@ -482,6 +486,34 @@ public class GuiaRemisionBean extends BaseOutputBean {
 	 */
 	public void setCodigoMesFin(String codigoMesFin) {
 		this.codigoMesFin = codigoMesFin;
+	}
+
+	/**
+	 * @return the nombreAlmacenDestino
+	 */
+	public String getNombreAlmacenDestino() {
+		return nombreAlmacenDestino;
+	}
+
+	/**
+	 * @param nombreAlmacenDestino the nombreAlmacenDestino to set
+	 */
+	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
+		this.nombreAlmacenDestino = nombreAlmacenDestino;
+	}
+
+	/**
+	 * @return the pesoTotalKgr
+	 */
+	public BigDecimal getPesoTotalKgr() {
+		return pesoTotalKgr;
+	}
+
+	/**
+	 * @param pesoTotalKgr the pesoTotalKgr to set
+	 */
+	public void setPesoTotalKgr(BigDecimal pesoTotalKgr) {
+		this.pesoTotalKgr = pesoTotalKgr;
 	}
 	
 }

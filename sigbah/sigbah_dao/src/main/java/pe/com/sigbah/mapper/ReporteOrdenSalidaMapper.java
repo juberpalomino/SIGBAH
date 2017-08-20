@@ -22,23 +22,16 @@ public class ReporteOrdenSalidaMapper implements RowMapper<OrdenSalidaBean> {
 	public OrdenSalidaBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		OrdenSalidaBean ordenSalida = new OrdenSalidaBean();
 		ordenSalida.setIdSalida(rs.getInt("IDE_SALIDA"));
-		ordenSalida.setCodigoAnio(rs.getString("COD_ANIO"));
-		ordenSalida.setCodigoDdi(rs.getString("COD_DDI"));
-		ordenSalida.setNombreDdi(rs.getString("NOM_DDI"));
-		ordenSalida.setIdAlmacen(rs.getInt("FK_IDE_ALMACEN"));
-		ordenSalida.setCodigoAlmacen(rs.getString("COD_ALMACEN"));		
+		ordenSalida.setNombreDdi(rs.getString("NOMBRE_DDI"));		
 		ordenSalida.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));
-		ordenSalida.setTipoOrigen(rs.getString("TIPO_ORIGEN"));		
-		ordenSalida.setNroOrdenSalida(rs.getString("NRO_ORDEN_SALIDA"));
 		ordenSalida.setFechaEmision(rs.getString("FECHA_EMISION"));
-		ordenSalida.setIdMovimiento(rs.getInt("FK_IDE_TIP_MOVIMIENTO"));
-		ordenSalida.setNombreMovimiento(rs.getString("NOM_MOVIMIENTO"));
-		ordenSalida.setIdEstado(rs.getInt("FK_IDE_ESTADO"));
-		ordenSalida.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
-		ordenSalida.setNombreEmpresa(rs.getString("NOM_EMPRESA"));
+		ordenSalida.setNroOrdenSalida(rs.getString("NRO_ORDEN_SALIDA"));
 		ordenSalida.setNroGuiaRemision(rs.getString("NRO_GUIA_REMISION"));
-		ordenSalida.setCodigoMes(rs.getString("COD_MES"));
-		ordenSalida.setNombreMes(rs.getString("NOMBRE_MES"));
+		ordenSalida.setNombreMovimiento(rs.getString("TIPO_MOVIMIENTO"));
+		ordenSalida.setNombreAlmacenDestino(rs.getString("ALMACEN_DESTINO"));
+		ordenSalida.setImporteTotal(rs.getBigDecimal("IMPORTE"));
+		ordenSalida.setPesoTotalKgr(rs.getBigDecimal("PESO_TOTAL_KGRL"));
+		ordenSalida.setNombreEstado(rs.getString("NOMBRE_ESTADO"));
 		return ordenSalida;
 	}
 

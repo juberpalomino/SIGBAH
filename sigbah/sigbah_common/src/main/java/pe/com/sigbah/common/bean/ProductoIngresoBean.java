@@ -33,6 +33,16 @@ public class ProductoIngresoBean extends BaseOutputBean {
 	private Integer idAlmacen;
 	private Integer idMovimiento;
 	private String tipoOrigen;
+	private String nombreDdi;
+	private String nombreAlmacen;
+	private String nombreAlmacenProcedencia;
+	private String fechaEmision;
+	private String nroOrdenIngreso;
+	private String nroOrdenCompra;
+	private String nombreMovimiento;
+	private String nombreAlmacenDestino;
+	private String nombreEstado;
+	private BigDecimal pesoTotalKgr;
 	
 	
 	/**
@@ -355,6 +365,146 @@ public class ProductoIngresoBean extends BaseOutputBean {
 	 */
 	public void setIdMovimiento(Integer idMovimiento) {
 		this.idMovimiento = idMovimiento;
+	}
+
+	/**
+	 * @return the nombreDdi
+	 */
+	public String getNombreDdi() {
+		return nombreDdi;
+	}
+
+	/**
+	 * @param nombreDdi the nombreDdi to set
+	 */
+	public void setNombreDdi(String nombreDdi) {
+		this.nombreDdi = nombreDdi;
+	}
+
+	/**
+	 * @return the nombreAlmacen
+	 */
+	public String getNombreAlmacen() {
+		return nombreAlmacen;
+	}
+
+	/**
+	 * @param nombreAlmacen the nombreAlmacen to set
+	 */
+	public void setNombreAlmacen(String nombreAlmacen) {
+		this.nombreAlmacen = nombreAlmacen;
+	}
+
+	/**
+	 * @return the nombreAlmacenProcedencia
+	 */
+	public String getNombreAlmacenProcedencia() {
+		return nombreAlmacenProcedencia;
+	}
+
+	/**
+	 * @param nombreAlmacenProcedencia the nombreAlmacenProcedencia to set
+	 */
+	public void setNombreAlmacenProcedencia(String nombreAlmacenProcedencia) {
+		this.nombreAlmacenProcedencia = nombreAlmacenProcedencia;
+	}
+
+	/**
+	 * @return the fechaEmision
+	 */
+	public String getFechaEmision() {
+		return fechaEmision;
+	}
+
+	/**
+	 * @param fechaEmision the fechaEmision to set
+	 */
+	public void setFechaEmision(String fechaEmision) {
+		this.fechaEmision = fechaEmision;
+	}
+
+	/**
+	 * @return the nroOrdenIngreso
+	 */
+	public String getNroOrdenIngreso() {
+		return nroOrdenIngreso;
+	}
+
+	/**
+	 * @param nroOrdenIngreso the nroOrdenIngreso to set
+	 */
+	public void setNroOrdenIngreso(String nroOrdenIngreso) {
+		this.nroOrdenIngreso = nroOrdenIngreso;
+	}
+
+	/**
+	 * @return the nroOrdenCompra
+	 */
+	public String getNroOrdenCompra() {
+		return nroOrdenCompra;
+	}
+
+	/**
+	 * @param nroOrdenCompra the nroOrdenCompra to set
+	 */
+	public void setNroOrdenCompra(String nroOrdenCompra) {
+		this.nroOrdenCompra = nroOrdenCompra;
+	}
+
+	/**
+	 * @return the nombreMovimiento
+	 */
+	public String getNombreMovimiento() {
+		return nombreMovimiento;
+	}
+
+	/**
+	 * @param nombreMovimiento the nombreMovimiento to set
+	 */
+	public void setNombreMovimiento(String nombreMovimiento) {
+		this.nombreMovimiento = nombreMovimiento;
+	}
+
+	/**
+	 * @return the nombreAlmacenDestino
+	 */
+	public String getNombreAlmacenDestino() {
+		return nombreAlmacenDestino;
+	}
+
+	/**
+	 * @param nombreAlmacenDestino the nombreAlmacenDestino to set
+	 */
+	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
+		this.nombreAlmacenDestino = nombreAlmacenDestino;
+	}
+
+	/**
+	 * @return the nombreEstado
+	 */
+	public String getNombreEstado() {
+		return nombreEstado;
+	}
+
+	/**
+	 * @param nombreEstado the nombreEstado to set
+	 */
+	public void setNombreEstado(String nombreEstado) {
+		this.nombreEstado = nombreEstado;
+	}
+
+	/**
+	 * @return the pesoTotalKgr
+	 */
+	public BigDecimal getPesoTotalKgr() {
+		return pesoTotalKgr;
+	}
+
+	/**
+	 * @param pesoTotalKgr the pesoTotalKgr to set
+	 */
+	public void setPesoTotalKgr(BigDecimal pesoTotalKgr) {
+		this.pesoTotalKgr = pesoTotalKgr;
 	}
 
 }

@@ -1,5 +1,7 @@
 package pe.com.sigbah.common.bean;
 
+import java.math.BigDecimal;
+
 /**
  * @className: ProyectoManifiestoBean.java
  * @description: Clase ProyectoManifiestoBean.
@@ -38,6 +40,8 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	private String tipoControl;
 	private String codigoMesInicio;
 	private String codigoMesFin;
+	private BigDecimal volumenTotal;
+	private BigDecimal pesoTotalKgr;
 	
 
 	/**
@@ -451,6 +455,34 @@ public class ProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setCodigoMesFin(String codigoMesFin) {
 		this.codigoMesFin = codigoMesFin;
+	}
+
+	/**
+	 * @return the volumenTotal
+	 */
+	public BigDecimal getVolumenTotal() {
+		return volumenTotal;
+	}
+
+	/**
+	 * @param volumenTotal the volumenTotal to set
+	 */
+	public void setVolumenTotal(BigDecimal volumenTotal) {
+		this.volumenTotal = volumenTotal;
+	}
+
+	/**
+	 * @return the pesoTotalKgr
+	 */
+	public BigDecimal getPesoTotalKgr() {
+		return pesoTotalKgr;
+	}
+
+	/**
+	 * @param pesoTotalKgr the pesoTotalKgr to set
+	 */
+	public void setPesoTotalKgr(BigDecimal pesoTotalKgr) {
+		this.pesoTotalKgr = pesoTotalKgr;
 	}
 
 }

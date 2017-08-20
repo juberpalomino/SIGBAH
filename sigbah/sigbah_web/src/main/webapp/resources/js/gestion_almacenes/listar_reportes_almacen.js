@@ -75,6 +75,9 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					var options = '';
+					if (respuesta.length > 0) {
+						options = '<option value="">Todos</option>';
+					}
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.nroLote+'">'+item.lote+'</option>';
 			        });
@@ -117,6 +120,8 @@ $(document).ready(function() {
 			    	loadding(false);	
 					if (respuesta == NOTIFICACION_ERROR) {
 						addErrorMessage(null, mensajeReporteError);
+					} else if (respuesta == NOTIFICACION_VALIDACION) {
+						addWarnMessage(null, mensajeReporteValidacion);
 					} else {
 						addInfoMessage(null, mensajeReporteExito);
 					}
@@ -125,6 +130,8 @@ $(document).ready(function() {
 			    	loadding(false);
 					if (respuesta == NOTIFICACION_ERROR) {
 						addErrorMessage(null, mensajeReporteError);
+					} else if (respuesta == NOTIFICACION_VALIDACION) {
+						addWarnMessage(null, mensajeReporteValidacion);
 					} else {
 						addInfoMessage(null, mensajeReporteExito);
 					}
@@ -159,16 +166,20 @@ $(document).ready(function() {
 			    data : params,
 			    successCallback : function (respuesta, url) {
 			    	loadding(false);	
-					if (respuesta == NOTIFICACION_ERROR) {
+			    	if (respuesta == NOTIFICACION_ERROR) {
 						addErrorMessage(null, mensajeReporteError);
+					} else if (respuesta == NOTIFICACION_VALIDACION) {
+						addWarnMessage(null, mensajeReporteValidacion);
 					} else {
 						addInfoMessage(null, mensajeReporteExito);
 					}
 			    },
 			    failCallback : function (respuesta, url) {
 			    	loadding(false);
-					if (respuesta == NOTIFICACION_ERROR) {
+			    	if (respuesta == NOTIFICACION_ERROR) {
 						addErrorMessage(null, mensajeReporteError);
+					} else if (respuesta == NOTIFICACION_VALIDACION) {
+						addWarnMessage(null, mensajeReporteValidacion);
 					} else {
 						addInfoMessage(null, mensajeReporteExito);
 					}

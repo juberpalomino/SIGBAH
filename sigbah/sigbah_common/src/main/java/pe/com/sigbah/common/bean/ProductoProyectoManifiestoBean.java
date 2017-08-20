@@ -32,6 +32,14 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	private String codigoMesInicio;
 	private String codigoMesFin;
 	private String tipoOrigen;
+	private String nombreDdi;
+	private String nombreAlmacen;
+	private String fechaEmision;
+	private String nroProyectoManifiesto;
+	private String nroProgramacion;
+	private String nombreMovimiento;
+	private String nombreAlmacenDestino;
+	private String nombreEstado;
 	
 	
 	/**
@@ -341,6 +349,118 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setIdMovimiento(Integer idMovimiento) {
 		this.idMovimiento = idMovimiento;
+	}
+
+	/**
+	 * @return the nombreDdi
+	 */
+	public String getNombreDdi() {
+		return nombreDdi;
+	}
+
+	/**
+	 * @param nombreDdi the nombreDdi to set
+	 */
+	public void setNombreDdi(String nombreDdi) {
+		this.nombreDdi = nombreDdi;
+	}
+
+	/**
+	 * @return the nombreAlmacen
+	 */
+	public String getNombreAlmacen() {
+		return nombreAlmacen;
+	}
+
+	/**
+	 * @param nombreAlmacen the nombreAlmacen to set
+	 */
+	public void setNombreAlmacen(String nombreAlmacen) {
+		this.nombreAlmacen = nombreAlmacen;
+	}
+
+	/**
+	 * @return the fechaEmision
+	 */
+	public String getFechaEmision() {
+		return fechaEmision;
+	}
+
+	/**
+	 * @param fechaEmision the fechaEmision to set
+	 */
+	public void setFechaEmision(String fechaEmision) {
+		this.fechaEmision = fechaEmision;
+	}
+
+	/**
+	 * @return the nroProyectoManifiesto
+	 */
+	public String getNroProyectoManifiesto() {
+		return nroProyectoManifiesto;
+	}
+
+	/**
+	 * @param nroProyectoManifiesto the nroProyectoManifiesto to set
+	 */
+	public void setNroProyectoManifiesto(String nroProyectoManifiesto) {
+		this.nroProyectoManifiesto = nroProyectoManifiesto;
+	}
+
+	/**
+	 * @return the nroProgramacion
+	 */
+	public String getNroProgramacion() {
+		return nroProgramacion;
+	}
+
+	/**
+	 * @param nroProgramacion the nroProgramacion to set
+	 */
+	public void setNroProgramacion(String nroProgramacion) {
+		this.nroProgramacion = nroProgramacion;
+	}
+
+	/**
+	 * @return the nombreMovimiento
+	 */
+	public String getNombreMovimiento() {
+		return nombreMovimiento;
+	}
+
+	/**
+	 * @param nombreMovimiento the nombreMovimiento to set
+	 */
+	public void setNombreMovimiento(String nombreMovimiento) {
+		this.nombreMovimiento = nombreMovimiento;
+	}
+
+	/**
+	 * @return the nombreAlmacenDestino
+	 */
+	public String getNombreAlmacenDestino() {
+		return nombreAlmacenDestino;
+	}
+
+	/**
+	 * @param nombreAlmacenDestino the nombreAlmacenDestino to set
+	 */
+	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
+		this.nombreAlmacenDestino = nombreAlmacenDestino;
+	}
+
+	/**
+	 * @return the nombreEstado
+	 */
+	public String getNombreEstado() {
+		return nombreEstado;
+	}
+
+	/**
+	 * @param nombreEstado the nombreEstado to set
+	 */
+	public void setNombreEstado(String nombreEstado) {
+		this.nombreEstado = nombreEstado;
 	}
 
 }

@@ -34,6 +34,14 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	private Integer idAlmacen;
 	private Integer idMovimiento;
 	private String tipoOrigen;
+	private String nombreDdi;
+	private String nombreAlmacen;
+	private String fechaEmision;
+	private String nroOrdenSalida;
+	private String nroGuiaRemision;
+	private String nombreMovimiento;
+	private String nombreAlmacenDestino;
+	private String nombreEstado;
 	
 	
 	/**
@@ -371,6 +379,118 @@ public class ProductoSalidaBean extends BaseOutputBean {
 	 */
 	public void setIdMovimiento(Integer idMovimiento) {
 		this.idMovimiento = idMovimiento;
+	}
+
+	/**
+	 * @return the nombreDdi
+	 */
+	public String getNombreDdi() {
+		return nombreDdi;
+	}
+
+	/**
+	 * @param nombreDdi the nombreDdi to set
+	 */
+	public void setNombreDdi(String nombreDdi) {
+		this.nombreDdi = nombreDdi;
+	}
+
+	/**
+	 * @return the nombreAlmacen
+	 */
+	public String getNombreAlmacen() {
+		return nombreAlmacen;
+	}
+
+	/**
+	 * @param nombreAlmacen the nombreAlmacen to set
+	 */
+	public void setNombreAlmacen(String nombreAlmacen) {
+		this.nombreAlmacen = nombreAlmacen;
+	}
+
+	/**
+	 * @return the fechaEmision
+	 */
+	public String getFechaEmision() {
+		return fechaEmision;
+	}
+
+	/**
+	 * @param fechaEmision the fechaEmision to set
+	 */
+	public void setFechaEmision(String fechaEmision) {
+		this.fechaEmision = fechaEmision;
+	}
+
+	/**
+	 * @return the nroOrdenSalida
+	 */
+	public String getNroOrdenSalida() {
+		return nroOrdenSalida;
+	}
+
+	/**
+	 * @param nroOrdenSalida the nroOrdenSalida to set
+	 */
+	public void setNroOrdenSalida(String nroOrdenSalida) {
+		this.nroOrdenSalida = nroOrdenSalida;
+	}
+
+	/**
+	 * @return the nroGuiaRemision
+	 */
+	public String getNroGuiaRemision() {
+		return nroGuiaRemision;
+	}
+
+	/**
+	 * @param nroGuiaRemision the nroGuiaRemision to set
+	 */
+	public void setNroGuiaRemision(String nroGuiaRemision) {
+		this.nroGuiaRemision = nroGuiaRemision;
+	}
+
+	/**
+	 * @return the nombreMovimiento
+	 */
+	public String getNombreMovimiento() {
+		return nombreMovimiento;
+	}
+
+	/**
+	 * @param nombreMovimiento the nombreMovimiento to set
+	 */
+	public void setNombreMovimiento(String nombreMovimiento) {
+		this.nombreMovimiento = nombreMovimiento;
+	}
+
+	/**
+	 * @return the nombreAlmacenDestino
+	 */
+	public String getNombreAlmacenDestino() {
+		return nombreAlmacenDestino;
+	}
+
+	/**
+	 * @param nombreAlmacenDestino the nombreAlmacenDestino to set
+	 */
+	public void setNombreAlmacenDestino(String nombreAlmacenDestino) {
+		this.nombreAlmacenDestino = nombreAlmacenDestino;
+	}
+
+	/**
+	 * @return the nombreEstado
+	 */
+	public String getNombreEstado() {
+		return nombreEstado;
+	}
+
+	/**
+	 * @param nombreEstado the nombreEstado to set
+	 */
+	public void setNombreEstado(String nombreEstado) {
+		this.nombreEstado = nombreEstado;
 	}
 	
 }

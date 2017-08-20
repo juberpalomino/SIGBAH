@@ -1,5 +1,7 @@
 package pe.com.sigbah.common.bean;
 
+import java.math.BigDecimal;
+
 /**
  * @className: OrdenIngresoBean.java
  * @description: 
@@ -54,6 +56,8 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	private String responsable;
 	private String codigoMesInicio;
 	private String codigoMesFin;
+	private BigDecimal importeTotal;
+	private BigDecimal pesoTotalKgr;
 	
 	
 	/**
@@ -595,6 +599,30 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	 */
 	public void setCodigoMesFin(String codigoMesFin) {
 		this.codigoMesFin = codigoMesFin;
+	}
+	/**
+	 * @return the importeTotal
+	 */
+	public BigDecimal getImporteTotal() {
+		return importeTotal;
+	}
+	/**
+	 * @param importeTotal the importeTotal to set
+	 */
+	public void setImporteTotal(BigDecimal importeTotal) {
+		this.importeTotal = importeTotal;
+	}
+	/**
+	 * @return the pesoTotalKgr
+	 */
+	public BigDecimal getPesoTotalKgr() {
+		return pesoTotalKgr;
+	}
+	/**
+	 * @param pesoTotalKgr the pesoTotalKgr to set
+	 */
+	public void setPesoTotalKgr(BigDecimal pesoTotalKgr) {
+		this.pesoTotalKgr = pesoTotalKgr;
 	}
 
 }

@@ -3,7 +3,6 @@ package pe.com.sigbah.web.controller.gestion_almacenes;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
-import java.sql.Types;
 import java.util.Calendar;
 import java.util.List;
 
@@ -21,8 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import pe.com.sigbah.common.bean.BincardAlmacenBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.KardexAlmacenBean;
+import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
@@ -170,8 +175,8 @@ public class ReporteAlmacenController extends BaseController {
 	    	ReporteAlmacen reporte = new ReporteAlmacen();
 	    	
 	    	if (tipoReporte.equals(Constantes.ONE_INT)) { // Reporte de Proyectos de Manifiesto
-	    		file_name = "Reporte_Proyectos_Manifiesto";
 	    		if (flagProducto.equals(Constantes.ZERO_STRING)) { // No incluye productos
+	    			file_name = "Reporte_Proyecto_Manifiesto";
 	    			ProyectoManifiestoBean proyectoManifiestoBean = new ProyectoManifiestoBean();
 	    			proyectoManifiestoBean.setCodigoAnio(anio);
 	    			proyectoManifiestoBean.setCodigoMesInicio(mesInicio);
@@ -180,8 +185,12 @@ public class ReporteAlmacenController extends BaseController {
 	    			proyectoManifiestoBean.setIdMovimiento(tipoMovimiento);
 	    			proyectoManifiestoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<ProyectoManifiestoBean> listaProyectoManifiesto = logisticaService.listarReporteProyectoManifiesto(proyectoManifiestoBean);
-	    			reporte.generaPDFReporteProyectoManifiesto(file_path.toString(), listaProyectoManifiesto);
+	    			if (isEmpty(listaProyectoManifiesto)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteProyectoManifiesto(file_path.toString(), proyectoManifiestoBean, listaProyectoManifiesto);
 	    		} else { // Si incluye productos
+	    			file_name = "Reporte_Detalle_Proyecto_Manifiesto";
 	    			ProductoProyectoManifiestoBean productoProyectoManifiestoBean = new ProductoProyectoManifiestoBean();
 	    			productoProyectoManifiestoBean.setCodigoAnio(anio);
 	    			productoProyectoManifiestoBean.setCodigoMesInicio(mesInicio);
@@ -190,11 +199,14 @@ public class ReporteAlmacenController extends BaseController {
 	    			productoProyectoManifiestoBean.setIdMovimiento(tipoMovimiento);
 	    			productoProyectoManifiestoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<ProductoProyectoManifiestoBean> listaDetalleProyectoManifiesto = logisticaService.listarReporteDetalleProyectoManifiesto(productoProyectoManifiestoBean);
-	    			reporte.generaPDFReporteDetalleProyectoManifiesto(file_path.toString(), listaDetalleProyectoManifiesto);
+	    			if (isEmpty(listaDetalleProyectoManifiesto)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteDetalleProyectoManifiesto(file_path.toString(), productoProyectoManifiestoBean, listaDetalleProyectoManifiesto);
 	    		}
 	    	} else if (tipoReporte.equals(Constantes.TWO_INT)) { // Reporte de Ordenes de Salida
-	    		file_name = "Reporte_Ordenes_Salida";
 	    		if (flagProducto.equals(Constantes.ZERO_STRING)) { // No incluye productos
+	    			file_name = "Reporte_Orden_Salida";
 	    			OrdenSalidaBean ordenSalidaBean = new OrdenSalidaBean();
 	    			ordenSalidaBean.setCodigoAnio(anio);
 	    			ordenSalidaBean.setCodigoMesInicio(mesInicio);
@@ -203,8 +215,12 @@ public class ReporteAlmacenController extends BaseController {
 	    			ordenSalidaBean.setIdMovimiento(tipoMovimiento);
 	    			ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<OrdenSalidaBean> listaOrdenSalida = logisticaService.listarReporteOrdenSalida(ordenSalidaBean);
-	    			reporte.generaPDFReporteOrdenSalida(file_path.toString(), listaOrdenSalida);
+	    			if (isEmpty(listaOrdenSalida)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteOrdenSalida(file_path.toString(), ordenSalidaBean, listaOrdenSalida);
 	    		} else { // Si incluye productos
+	    			file_name = "Reporte_Detalle_Orden_Salida";
 	    			ProductoSalidaBean productoSalidaBean = new ProductoSalidaBean();
 	    			productoSalidaBean.setCodigoAnio(anio);
 	    			productoSalidaBean.setCodigoMesInicio(mesInicio);
@@ -213,14 +229,100 @@ public class ReporteAlmacenController extends BaseController {
 	    			productoSalidaBean.setIdMovimiento(tipoMovimiento);
 	    			productoSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<ProductoSalidaBean> listaDetalleOrdenSalida = logisticaService.listarReporteDetalleOrdenSalida(productoSalidaBean);
-	    			reporte.generaPDFReporteDetalleOrdenSalida(file_path.toString(), listaDetalleOrdenSalida);
+	    			if (isEmpty(listaDetalleOrdenSalida)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteDetalleOrdenSalida(file_path.toString(), productoSalidaBean, listaDetalleOrdenSalida);
 	    		}
 			} else if (tipoReporte.equals(Constantes.THREE_INT)) { // Reporte de Ordenes de Ingreso
-				    		
+	    		if (flagProducto.equals(Constantes.ZERO_STRING)) { // No incluye productos
+	    			file_name = "Reporte_Orden_Ingreso";
+	    			OrdenIngresoBean ordenIngresoBean = new OrdenIngresoBean();
+	    			ordenIngresoBean.setCodigoAnio(anio);
+	    			ordenIngresoBean.setCodigoMesInicio(mesInicio);
+	    			ordenIngresoBean.setCodigoMesFin(mesFin);
+	    			ordenIngresoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			ordenIngresoBean.setIdMovimiento(tipoMovimiento);
+	    			ordenIngresoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+	    			List<OrdenIngresoBean> listaOrdenIngreso = logisticaService.listarReporteOrdenIngreso(ordenIngresoBean);
+	    			if (isEmpty(listaOrdenIngreso)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteOrdenIngreso(file_path.toString(), ordenIngresoBean, listaOrdenIngreso);
+	    		} else { // Si incluye productos
+	    			file_name = "Reporte_Detalle_Orden_Ingreso";
+	    			ProductoIngresoBean productoIngresoBean = new ProductoIngresoBean();
+	    			productoIngresoBean.setCodigoAnio(anio);
+	    			productoIngresoBean.setCodigoMesInicio(mesInicio);
+	    			productoIngresoBean.setCodigoMesFin(mesFin);
+	    			productoIngresoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			productoIngresoBean.setIdMovimiento(tipoMovimiento);
+	    			productoIngresoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+	    			List<ProductoIngresoBean> listaDetalleOrdenIngreso = logisticaService.listarReporteDetalleOrdenIngreso(productoIngresoBean);
+	    			if (isEmpty(listaDetalleOrdenIngreso)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteDetalleOrdenIngreso(file_path.toString(), productoIngresoBean, listaDetalleOrdenIngreso);
+	    		}    		
 			} else if (tipoReporte.equals(Constantes.FOUR_INT)) { // Reporte de Guias de Remision
-				
+	    		if (flagProducto.equals(Constantes.ZERO_STRING)) { // No incluye productos
+	    			file_name = "Reporte_Guia_Remision";
+	    			GuiaRemisionBean guiaRemisionBean = new GuiaRemisionBean();
+	    			guiaRemisionBean.setCodigoAnio(anio);
+	    			guiaRemisionBean.setCodigoMesInicio(mesInicio);
+	    			guiaRemisionBean.setCodigoMesFin(mesFin);
+	    			guiaRemisionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			guiaRemisionBean.setIdMovimiento(tipoMovimiento);
+	    			guiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+	    			List<GuiaRemisionBean> listaGuiaRemision = logisticaService.listarReporteGuiaRemision(guiaRemisionBean);
+	    			if (isEmpty(listaGuiaRemision)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteGuiaRemision(file_path.toString(), guiaRemisionBean, listaGuiaRemision);
+	    		} else { // Si incluye productos
+	    			file_name = "Reporte_Detalle_Guia_Remision";
+	    			DetalleGuiaRemisionBean detalleGuiaRemisionBean = new DetalleGuiaRemisionBean();
+	    			detalleGuiaRemisionBean.setCodigoAnio(anio);
+	    			detalleGuiaRemisionBean.setCodigoMesInicio(mesInicio);
+	    			detalleGuiaRemisionBean.setCodigoMesFin(mesFin);
+	    			detalleGuiaRemisionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			detalleGuiaRemisionBean.setIdMovimiento(tipoMovimiento);
+	    			detalleGuiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
+	    			List<DetalleGuiaRemisionBean> listaDetalleGuiaRemision = logisticaService.listarReporteDetalleGuiaRemision(detalleGuiaRemisionBean);
+	    			if (isEmpty(listaDetalleGuiaRemision)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteDetalleGuiaRemision(file_path.toString(), detalleGuiaRemisionBean, listaDetalleGuiaRemision);
+	    		}
 			} else if (tipoReporte.equals(Constantes.FIVE_INT)) { // Reporte de Kardex y Bincard
-				
+	    		if (isNullOrEmpty(nroLote)) { // Reporte de Kardex
+	    			file_name = "Reporte_Kardex";
+	    			KardexAlmacenBean kardexAlmacenBean = new KardexAlmacenBean();
+	    			kardexAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);	    			
+	    			kardexAlmacenBean.setCodigoAnio(anio);
+	    			kardexAlmacenBean.setCodigoMes(mesInicio);
+	    			kardexAlmacenBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			kardexAlmacenBean.setIdProducto(codigoProducto);	    			
+	    			List<KardexAlmacenBean> listaKardexAlmacen = logisticaService.listarReporteKardex(kardexAlmacenBean);
+	    			if (isEmpty(listaKardexAlmacen)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteKardexAlmacen(file_path.toString(), listaKardexAlmacen);
+	    		} else { // Reporte de Bincard
+	    			file_name = "Reporte_Bincard";
+	    			BincardAlmacenBean bincardAlmacenBean = new BincardAlmacenBean();
+	    			bincardAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);	
+	    			bincardAlmacenBean.setCodigoAnio(anio);
+	    			bincardAlmacenBean.setCodigoMes(mesInicio);
+	    			bincardAlmacenBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			bincardAlmacenBean.setIdProducto(codigoProducto);
+	    			bincardAlmacenBean.setNroLote(nroLote);
+	    			List<BincardAlmacenBean> listaBincardAlmacen = logisticaService.listarReporteBincard(bincardAlmacenBean);
+	    			if (isEmpty(listaBincardAlmacen)) {
+	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
+	    			}
+	    			reporte.generaPDFReporteBincardAlmacen(file_path.toString(), listaBincardAlmacen);
+	    		}
 			}
 	    	
 	    	file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);

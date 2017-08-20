@@ -42,6 +42,14 @@ public class DetalleGuiaRemisionBean implements Serializable {
 	private Integer idAlmacen;
 	private String tipoOrigen;
 	private Integer idMovimiento;
+	private String nombreDdi;
+	private String nombreAlmacen;
+	private String nroOrdenSalida;
+	private String nroGuiaRemision;
+	private String nroManifiestoCarga;
+	private String nroActa;
+	private String nombreMovimiento;
+	private String nombreEstado;
 	
 	
 	/**
@@ -403,6 +411,102 @@ public class DetalleGuiaRemisionBean implements Serializable {
 	 */
 	public void setIdMovimiento(Integer idMovimiento) {
 		this.idMovimiento = idMovimiento;
+	}
+	/**
+	 * @return the nombreDdi
+	 */
+	public String getNombreDdi() {
+		return nombreDdi;
+	}
+	/**
+	 * @param nombreDdi the nombreDdi to set
+	 */
+	public void setNombreDdi(String nombreDdi) {
+		this.nombreDdi = nombreDdi;
+	}
+	/**
+	 * @return the nombreAlmacen
+	 */
+	public String getNombreAlmacen() {
+		return nombreAlmacen;
+	}
+	/**
+	 * @param nombreAlmacen the nombreAlmacen to set
+	 */
+	public void setNombreAlmacen(String nombreAlmacen) {
+		this.nombreAlmacen = nombreAlmacen;
+	}
+	/**
+	 * @return the nroOrdenSalida
+	 */
+	public String getNroOrdenSalida() {
+		return nroOrdenSalida;
+	}
+	/**
+	 * @param nroOrdenSalida the nroOrdenSalida to set
+	 */
+	public void setNroOrdenSalida(String nroOrdenSalida) {
+		this.nroOrdenSalida = nroOrdenSalida;
+	}
+	/**
+	 * @return the nroGuiaRemision
+	 */
+	public String getNroGuiaRemision() {
+		return nroGuiaRemision;
+	}
+	/**
+	 * @param nroGuiaRemision the nroGuiaRemision to set
+	 */
+	public void setNroGuiaRemision(String nroGuiaRemision) {
+		this.nroGuiaRemision = nroGuiaRemision;
+	}
+	/**
+	 * @return the nroManifiestoCarga
+	 */
+	public String getNroManifiestoCarga() {
+		return nroManifiestoCarga;
+	}
+	/**
+	 * @param nroManifiestoCarga the nroManifiestoCarga to set
+	 */
+	public void setNroManifiestoCarga(String nroManifiestoCarga) {
+		this.nroManifiestoCarga = nroManifiestoCarga;
+	}
+	/**
+	 * @return the nroActa
+	 */
+	public String getNroActa() {
+		return nroActa;
+	}
+	/**
+	 * @param nroActa the nroActa to set
+	 */
+	public void setNroActa(String nroActa) {
+		this.nroActa = nroActa;
+	}
+	/**
+	 * @return the nombreMovimiento
+	 */
+	public String getNombreMovimiento() {
+		return nombreMovimiento;
+	}
+	/**
+	 * @param nombreMovimiento the nombreMovimiento to set
+	 */
+	public void setNombreMovimiento(String nombreMovimiento) {
+		this.nombreMovimiento = nombreMovimiento;
+	}
+	/**
+	 * @return the nombreEstado
+	 */
+	public String getNombreEstado() {
+		return nombreEstado;
+	}
+	/**
+	 * @param nombreEstado the nombreEstado to set
+	 */
+	public void setNombreEstado(String nombreEstado) {
+		this.nombreEstado = nombreEstado;
 	}
 
 }

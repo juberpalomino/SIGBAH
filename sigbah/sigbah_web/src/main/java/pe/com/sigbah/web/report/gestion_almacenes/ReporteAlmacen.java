@@ -31,8 +31,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import pe.com.sigbah.common.bean.BincardAlmacenBean;
+import pe.com.sigbah.common.bean.DetalleGuiaRemisionBean;
 import pe.com.sigbah.common.bean.DocumentoSalidaBean;
+import pe.com.sigbah.common.bean.GuiaRemisionBean;
+import pe.com.sigbah.common.bean.KardexAlmacenBean;
+import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
@@ -70,6 +76,73 @@ public class ReporteAlmacen implements Serializable {
 			 LOGGER.error(e);
 		 }
 		 return hssfColor;
+	}
+	
+	/**
+	 * @param mes
+	 * @return descripcion del mes
+	 */
+	private String getMes(int mes) {
+    	String desmes = null;
+    	switch (mes) {
+			case 1:
+				desmes = "Enero";
+				break;
+			case 2:
+				desmes = "Febrero";
+				break;
+			case 3:
+				desmes = "Marzo";
+				break;
+			case 4:
+				desmes = "Abril";
+				break;
+			case 5:
+				desmes = "Mayo";
+				break;
+			case 6:
+				desmes = "Junio";
+				break;
+			case 7:
+				desmes = "Julio";
+				break;
+			case 8:
+				desmes = "Agosto";
+				break;
+			case 9:
+				desmes = "Setiembre";
+				break;
+			case 10:
+				desmes = "Octubre";
+				break;
+			case 11:
+				desmes = "Noviembre";
+				break;
+			case 12:
+				desmes = "Diciembre";
+				break;
+		}    	
+    	return desmes;
+    }
+	
+	/**
+	 * Retorna el valor parseado.
+	 * @param campo - Valor del parámetro a evaluar, tipo Object.
+	 * @return valor - Valor de la cadena.
+	 */
+	private static String getString(Object campo) {
+		if (campo != null) {
+			if (campo instanceof Integer) {
+				return String.valueOf((Integer) campo);
+			} else if (campo instanceof Long) {
+				return String.valueOf((Long) campo);
+			} else if (campo instanceof BigDecimal) {
+				return String.valueOf((BigDecimal) campo);
+			} else {
+				return (String) campo;
+			}
+		}
+		return Constantes.EMPTY; 	
 	}
 
 	/**
@@ -667,63 +740,127 @@ public class ReporteAlmacen implements Serializable {
 			}
 		}
 	}
-	
-	/**
-	 * Retorna el valor parseado.
-	 * @param campo - Valor del parámetro a evaluar, tipo Object.
-	 * @return valor - Valor de la cadena.
-	 */
-	private static String getString(Object campo) {
-		if (campo != null) {
-			if (campo instanceof Integer) {
-				return String.valueOf((Integer) campo);
-			} else if (campo instanceof Long) {
-				return String.valueOf((Long) campo);
-			} else if (campo instanceof BigDecimal) {
-				return String.valueOf((BigDecimal) campo);
-			} else {
-				return (String) campo;
-			}
-		}
-		return Constantes.EMPTY; 	
-	}
 
 	/**
 	 * @param ruta
+	 * @param proyectoManifiestoBean 
 	 * @param listaProyectoManifiesto
 	 * @throws Exception 
 	 */
-	public void generaPDFReporteProyectoManifiesto(String ruta, List<ProyectoManifiestoBean> listaProyectoManifiesto) throws Exception {
+	public void generaPDFReporteProyectoManifiesto(String ruta, 
+												   ProyectoManifiestoBean proyectoManifiestoBean, 
+												   List<ProyectoManifiestoBean> listaProyectoManifiesto) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/**
 	 * @param ruta
+	 * @param productoProyectoManifiestoBean 
 	 * @param listaDetalleProyectoManifiesto
 	 * @throws Exception 
 	 */
-	public void generaPDFReporteDetalleProyectoManifiesto(String ruta, List<ProductoProyectoManifiestoBean> listaDetalleProyectoManifiesto) throws Exception {
+	public void generaPDFReporteDetalleProyectoManifiesto(String ruta, 
+														  ProductoProyectoManifiestoBean productoProyectoManifiestoBean, 
+														  List<ProductoProyectoManifiestoBean> listaDetalleProyectoManifiesto) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/**
-	 * @param string
+	 * @param ruta
+	 * @param ordenSalidaBean 
 	 * @param listaOrdenSalida
 	 * @throws Exception 
 	 */
-	public void generaPDFReporteOrdenSalida(String string, List<OrdenSalidaBean> listaOrdenSalida) throws Exception {
+	public void generaPDFReporteOrdenSalida(String ruta, 
+											OrdenSalidaBean ordenSalidaBean, 
+											List<OrdenSalidaBean> listaOrdenSalida) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/**
-	 * @param string
+	 * @param ruta
+	 * @param productoSalidaBean 
 	 * @param listaDetalleOrdenSalida
 	 * @throws Exception 
 	 */
-	public void generaPDFReporteDetalleOrdenSalida(String string, List<ProductoSalidaBean> listaDetalleOrdenSalida) throws Exception {
+	public void generaPDFReporteDetalleOrdenSalida(String ruta, 
+												   ProductoSalidaBean productoSalidaBean, 
+												   List<ProductoSalidaBean> listaDetalleOrdenSalida) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param ruta
+	 * @param ordenIngresoBean 
+	 * @param listaOrdenIngreso
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteOrdenIngreso(String ruta, 
+											 OrdenIngresoBean ordenIngresoBean, 
+											 List<OrdenIngresoBean> listaOrdenIngreso) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param ruta
+	 * @param productoIngresoBean 
+	 * @param listaDetalleOrdenIngreso
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteDetalleOrdenIngreso(String ruta, 
+													ProductoIngresoBean productoIngresoBean, 
+													List<ProductoIngresoBean> listaDetalleOrdenIngreso) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param ruta
+	 * @param guiaRemisionBean 
+	 * @param listaGuiaRemision
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteGuiaRemision(String ruta, 
+											 GuiaRemisionBean guiaRemisionBean, 
+											 List<GuiaRemisionBean> listaGuiaRemision) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param ruta
+	 * @param detalleGuiaRemisionBean 
+	 * @param listaDetalleGuiaRemision
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteDetalleGuiaRemision(String ruta, 
+													DetalleGuiaRemisionBean detalleGuiaRemisionBean, 
+													List<DetalleGuiaRemisionBean> listaDetalleGuiaRemision) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param ruta
+	 * @param listaKardexAlmacen
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteKardexAlmacen(String ruta, List<KardexAlmacenBean> listaKardexAlmacen) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @param ruta
+	 * @param listaBincardAlmacen
+	 * @throws Exception 
+	 */
+	public void generaPDFReporteBincardAlmacen(String ruta, List<BincardAlmacenBean> listaBincardAlmacen) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

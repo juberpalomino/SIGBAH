@@ -100,7 +100,16 @@ import pe.com.sigbah.mapper.RegistroOrdenIngresoMapper;
 import pe.com.sigbah.mapper.RegistroOrdenSalidaMapper;
 import pe.com.sigbah.mapper.RegistroProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.RegistroStockAlmacenMapper;
+import pe.com.sigbah.mapper.ReporteBincardAlmacenMapper;
+import pe.com.sigbah.mapper.ReporteDetalleGuiaRemisionMapper;
+import pe.com.sigbah.mapper.ReporteDetalleOrdenIngresoMapper;
+import pe.com.sigbah.mapper.ReporteDetalleOrdenSalidaMapper;
+import pe.com.sigbah.mapper.ReporteDetalleProyectoManifiestoMapper;
+import pe.com.sigbah.mapper.ReporteGuiaRemisionMapper;
+import pe.com.sigbah.mapper.ReporteKardexAlmacenMapper;
+import pe.com.sigbah.mapper.ReporteOrdenIngresoMapper;
 import pe.com.sigbah.mapper.ReporteOrdenSalidaMapper;
+import pe.com.sigbah.mapper.ReporteProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.StockAlmacenLoteMapper;
 import pe.com.sigbah.mapper.StockAlmacenMapper;
 import pe.com.sigbah.mapper.StockAlmacenProductoLoteMapper;
@@ -4716,8 +4725,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<ProductoSalidaBean> listarReporteDetalleOrdenSalida(ProductoSalidaBean productoSalidaBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteDetalleOrdenSalida] Inicio ");
+		List<ProductoSalidaBean> lista = new ArrayList<ProductoSalidaBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", productoSalidaBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", productoSalidaBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", productoSalidaBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", productoSalidaBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", productoSalidaBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", productoSalidaBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_ORDEN_SALIDA_DET1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteDetalleOrdenSalidaMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDetalleOrdenSalida] Ocurrio un error en la operacion del USP_REP_ORDEN_SALIDA_DET1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProductoSalidaBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDetalleOrdenSalida] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4725,8 +4777,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<ProyectoManifiestoBean> listarReporteProyectoManifiesto(ProyectoManifiestoBean proyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteProyectoManifiesto] Inicio ");
+		List<ProyectoManifiestoBean> lista = new ArrayList<ProyectoManifiestoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", proyectoManifiestoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", proyectoManifiestoBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", proyectoManifiestoBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", proyectoManifiestoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", proyectoManifiestoBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", proyectoManifiestoBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_PROY_MANIFIESTO_CAB1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteProyectoManifiestoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteProyectoManifiesto] Ocurrio un error en la operacion del USP_REP_PROY_MANIFIESTO_CAB1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProyectoManifiestoBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteProyectoManifiesto] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4734,8 +4829,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<ProductoProyectoManifiestoBean> listarReporteDetalleProyectoManifiesto(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteDetalleProyectoManifiesto] Inicio ");
+		List<ProductoProyectoManifiestoBean> lista = new ArrayList<ProductoProyectoManifiestoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", productoProyectoManifiestoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", productoProyectoManifiestoBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", productoProyectoManifiestoBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", productoProyectoManifiestoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", productoProyectoManifiestoBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", productoProyectoManifiestoBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_PROY_MANIFIESTO_DET1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteDetalleProyectoManifiestoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDetalleProyectoManifiesto] Ocurrio un error en la operacion del USP_REP_PROY_MANIFIESTO_DET1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProductoProyectoManifiestoBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDetalleProyectoManifiesto] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4743,8 +4881,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<OrdenIngresoBean> listarReporteOrdenIngreso(OrdenIngresoBean ordenIngresoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteOrdenIngreso] Inicio ");
+		List<OrdenIngresoBean> lista = new ArrayList<OrdenIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", ordenIngresoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", ordenIngresoBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", ordenIngresoBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", ordenIngresoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", ordenIngresoBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", ordenIngresoBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_ORDEN_INGRESO_CAB1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteOrdenIngresoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteOrdenIngreso] Ocurrio un error en la operacion del USP_REP_ORDEN_INGRESO_CAB1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<OrdenIngresoBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteOrdenIngreso] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4752,8 +4933,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<ProductoIngresoBean> listarReporteDetalleOrdenIngreso(ProductoIngresoBean productoIngresoBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteDetalleOrdenIngreso] Inicio ");
+		List<ProductoIngresoBean> lista = new ArrayList<ProductoIngresoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", productoIngresoBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", productoIngresoBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", productoIngresoBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", productoIngresoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", productoIngresoBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", productoIngresoBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_ORDEN_INGRESO_DET1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteDetalleOrdenIngresoMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDetalleOrdenIngreso] Ocurrio un error en la operacion del USP_REP_ORDEN_INGRESO_DET1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProductoIngresoBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDetalleOrdenIngreso] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4761,8 +4985,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<GuiaRemisionBean> listarReporteGuiaRemision(GuiaRemisionBean guiaRemisionBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteGuiaRemision] Inicio ");
+		List<GuiaRemisionBean> lista = new ArrayList<GuiaRemisionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", guiaRemisionBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", guiaRemisionBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", guiaRemisionBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", guiaRemisionBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", guiaRemisionBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", guiaRemisionBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_GUIA_REMISION_CAB1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteGuiaRemisionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteGuiaRemision] Ocurrio un error en la operacion del USP_REP_GUIA_REMISION_CAB1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<GuiaRemisionBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteGuiaRemision] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4770,8 +5037,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<DetalleGuiaRemisionBean> listarReporteDetalleGuiaRemision(DetalleGuiaRemisionBean detalleGuiaRemisionBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteDetalleGuiaRemision] Inicio ");
+		List<DetalleGuiaRemisionBean> lista = new ArrayList<DetalleGuiaRemisionBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_COD_ANIO", detalleGuiaRemisionBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_INICIAL", detalleGuiaRemisionBean.getCodigoMesInicio(), Types.VARCHAR);
+			input_objParametros.addValue("PI_COD_MES_FINAL", detalleGuiaRemisionBean.getCodigoMesFin(), Types.VARCHAR);
+			input_objParametros.addValue("PI_IDE_ALMACEN", detalleGuiaRemisionBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_MOVIMIENTO", detalleGuiaRemisionBean.getIdMovimiento(), Types.NUMERIC);
+			input_objParametros.addValue("PI_TIPO_ORIGEN", detalleGuiaRemisionBean.getTipoOrigen(), Types.VARCHAR);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_GUIA_REMISION_DET1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_INICIAL", new SqlParameter("PI_COD_MES_INICIAL", Types.VARCHAR));
+			output_objParametros.put("PI_COD_MES_FINAL", new SqlParameter("PI_COD_MES_FINAL", Types.VARCHAR));
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_MOVIMIENTO", new SqlParameter("PI_IDE_MOVIMIENTO", Types.NUMERIC));
+			output_objParametros.put("PI_TIPO_ORIGEN", new SqlParameter("PI_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("PO_Lr_Recordset", new SqlOutParameter("PO_Lr_Recordset", OracleTypes.CURSOR, new ReporteDetalleGuiaRemisionMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteDetalleGuiaRemision] Ocurrio un error en la operacion del USP_REP_GUIA_REMISION_DET1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<DetalleGuiaRemisionBean>) out.get("PO_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteDetalleGuiaRemision] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4779,8 +5089,49 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<KardexAlmacenBean> listarReporteKardex(KardexAlmacenBean kardexAlmacenBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteKardex] Inicio ");
+		List<KardexAlmacenBean> lista = new ArrayList<KardexAlmacenBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_TIPO_ORIGEN", kardexAlmacenBean.getTipoOrigen(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_ANIO", kardexAlmacenBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_MES", kardexAlmacenBean.getCodigoMes(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", kardexAlmacenBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_PRODUCTO", kardexAlmacenBean.getIdProducto(), Types.NUMERIC);						
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_KARDEX_CAB1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_PRODUCTO", new SqlParameter("pi_IDE_PRODUCTO", Types.NUMERIC));			
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ReporteKardexAlmacenMapper()));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteKardex] Ocurrio un error en la operacion del USP_REP_KARDEX_CAB1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<KardexAlmacenBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteKardex] Fin ");
+		return lista;
 	}
 
 	/* (non-Javadoc)
@@ -4788,8 +5139,51 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 	 */
 	@Override
 	public List<BincardAlmacenBean> listarReporteBincard(BincardAlmacenBean bincardAlmacenBean) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		LOGGER.info("[listarReporteBincard] Inicio ");
+		List<BincardAlmacenBean> lista = new ArrayList<BincardAlmacenBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("pi_TIPO_ORIGEN", bincardAlmacenBean.getTipoOrigen(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_ANIO", bincardAlmacenBean.getCodigoAnio(), Types.VARCHAR);
+			input_objParametros.addValue("pi_COD_MES", bincardAlmacenBean.getCodigoMes(), Types.VARCHAR);
+			input_objParametros.addValue("pi_IDE_ALMACEN", bincardAlmacenBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_PRODUCTO", bincardAlmacenBean.getIdProducto(), Types.NUMERIC);
+			input_objParametros.addValue("pi_NRO_LOTE", bincardAlmacenBean.getNroLote(), Types.VARCHAR);
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_REP_BINCARD_DET1");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_TIPO_ORIGEN", new SqlParameter("pi_TIPO_ORIGEN", Types.VARCHAR));
+			output_objParametros.put("pi_COD_ANIO", new SqlParameter("pi_COD_ANIO", Types.VARCHAR));
+			output_objParametros.put("pi_COD_MES", new SqlParameter("pi_COD_MES", Types.VARCHAR));
+			output_objParametros.put("pi_IDE_ALMACEN", new SqlParameter("pi_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_PRODUCTO", new SqlParameter("pi_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("pi_NRO_LOTE", new SqlParameter("pi_NRO_LOTE", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ReporteBincardAlmacenMapper()));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));			
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarReporteBincard] Ocurrio un error en la operacion del USP_REP_BINCARD_DET1 : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<BincardAlmacenBean>) out.get("po_Lr_Recordset");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarReporteBincard] Fin ");
+		return lista;
 	}
 
 }
