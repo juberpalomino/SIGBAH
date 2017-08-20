@@ -311,11 +311,11 @@ public class ReporteGuiaRemision implements Serializable {
 			
 			StringBuilder det_ruc = new StringBuilder();
 			det_ruc.append("R.U.C. N° 20135890031");
-			det_ruc.append("\n");
+			det_ruc.append(Constantes.SALTO_LINEA_PARRAFO);
 			det_ruc.append("GUIA DE REMISION");
-			det_ruc.append("\n");
+			det_ruc.append(Constantes.SALTO_LINEA_PARRAFO);
 			det_ruc.append("REMITENTE");
-			det_ruc.append("\n");
+			det_ruc.append(Constantes.SALTO_LINEA_PARRAFO);
 			det_ruc.append("N° ");
 			det_ruc.append(guiaRemision.getNroGuiaEmision());
 			p = new Paragraph(det_ruc.toString(), titulo);
@@ -818,16 +818,16 @@ public class ReporteGuiaRemision implements Serializable {
 			table.addCell(cell);
 			
 			StringBuilder det_encabezado = new StringBuilder();
-			det_encabezado.append("Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0");
-			det_encabezado.append("\n");
-			det_encabezado.append("Fecha : ");
+			det_encabezado.append(Constantes.TITULO_ENCABEZADO_REPORTE);
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.FECHA_ENCABEZADO_REPORTE);
 			Date fecha_hora = Calendar.getInstance().getTime();
 			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
-			det_encabezado.append("\n");
-			det_encabezado.append("Hora : ");
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.HORA_ENCABEZADO_REPORTE);
 			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
 			p = new Paragraph(det_encabezado.toString(), encabezado);
-			pdet = new Paragraph("        .", hide);
+			pdet = new Paragraph(Constantes.ESPACIO_ENCABEZADO_REPORTE, hide);
 			p.add(pdet);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -1248,16 +1248,16 @@ public class ReporteGuiaRemision implements Serializable {
 			table.addCell(cell);
 			
 			StringBuilder det_encabezado = new StringBuilder();
-			det_encabezado.append("Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0");
-			det_encabezado.append("\n");
-			det_encabezado.append("Fecha : ");
+			det_encabezado.append(Constantes.TITULO_ENCABEZADO_REPORTE);
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.FECHA_ENCABEZADO_REPORTE);
 			Date fecha_hora = Calendar.getInstance().getTime();
 			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
-			det_encabezado.append("\n");
-			det_encabezado.append("Hora : ");
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.HORA_ENCABEZADO_REPORTE);
 			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
 			p = new Paragraph(det_encabezado.toString(), encabezado);
-			pdet = new Paragraph("        .", hide);
+			pdet = new Paragraph(Constantes.ESPACIO_ENCABEZADO_REPORTE, hide);
 			p.add(pdet);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);

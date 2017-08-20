@@ -16,7 +16,6 @@ $(document).ready(function() {
 			$('#sel_producto').val('');
 			$('#txt_nro_kardex').val('');
 			$('#sel_nro_bincard').html('');
-			$('#sel_mes_fin').val($('#sel_mes_fin option:first').val());
 			$('#sel_producto').prop('disabled', true);
 			$('#sel_nro_bincard').prop('disabled', true);
 			$('#sel_mes_fin').prop('disabled', false);
@@ -105,11 +104,12 @@ $(document).ready(function() {
 				tipoReporte : $('input[name="rb_tip_reporte"]:checked').val(),
 				anio : $('#sel_anio').val(),
 				mesInicio : $('#sel_mes_inicio').val(),
-				mesFin : $('#sel_mes_fin').val(),
-				tipoMovimiento : $('#sel_tip_movimiento').val(),
+				mesFin : verificaParametroInt($('#sel_mes_fin').val()),
+				tipoMovimiento : verificaParametroInt($('#sel_tip_movimiento').val()),
 				flagProducto : $('#chk_inc_producto').is(':checked') ? '1' : '0',
-				codigoProducto : $('#sel_producto').val(),
-				nroLote : $('#sel_nro_bincard').val()
+				codigoProducto : verificaParametroInt($('#sel_producto').val()),
+				nroLote : verificaParametroInt($('#sel_nro_bincard').val()),
+				codigoAlmacen : usuarioBean.idAlmacen
 			};	
 			
 			var url = VAR_CONTEXT + '/gestion-almacenes/reporte-almacen/exportarPdf';
@@ -153,11 +153,12 @@ $(document).ready(function() {
 				tipoReporte : $('input[name="rb_tip_reporte"]:checked').val(),
 				anio : $('#sel_anio').val(),
 				mesInicio : $('#sel_mes_inicio').val(),
-				mesFin : $('#sel_mes_fin').val(),
-				tipoMovimiento : $('#sel_tip_movimiento').val(),
+				mesFin : verificaParametroInt($('#sel_mes_fin').val()),
+				tipoMovimiento : verificaParametroInt($('#sel_tip_movimiento').val()),
 				flagProducto : $('#chk_inc_producto').is(':checked') ? '1' : '0',
-				codigoProducto : $('#sel_producto').val(),
-				nroLote : $('#sel_nro_bincard').val()
+				codigoProducto : verificaParametroInt($('#sel_producto').val()),
+				nroLote : verificaParametroInt($('#sel_nro_bincard').val()),
+				codigoAlmacen : usuarioBean.idAlmacen
 			};	
 			
 			var url = VAR_CONTEXT + '/gestion-almacenes/reporte-almacen/exportarExcel';

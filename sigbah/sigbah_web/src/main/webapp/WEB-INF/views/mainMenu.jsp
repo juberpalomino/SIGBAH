@@ -105,7 +105,7 @@
 						</ul>
 					</li>					
 					<li id="li_alm_reportes" class="li_men_opcion">
-						<a href="${pageContext.request.contextPath}/gestion-almacenes/reporte/inicio">Reportes</a>
+						<a href="${pageContext.request.contextPath}/gestion-almacenes/reporte-almacen/inicio">Reportes</a>
 					</li>		
 				</ul>
 			</li>

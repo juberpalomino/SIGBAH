@@ -66,7 +66,7 @@ public final class Constantes implements Serializable {
 	public static final BigDecimal IGV = BigDecimal.valueOf(0.18);
 	public static final String EXPRESION_MONEDA = "###,###,##0.00";
 	public static final String EXPRESION_MONEDA_DECIMAL = "###,###,##0.000";
-												
+	public static final String EXPRESION_CANTIDAD = "###,###,##0";
 	
 	/* CODIGOS SISTEMA SIG_BAH */
 	public static final String CODIGO_MODULO_SIG_BAH = "SIG_BAH";
@@ -76,22 +76,24 @@ public final class Constantes implements Serializable {
 	public static final String PACKAGE_GENERAL = "BAH_PKG_GENERAL";
 	public static final String PACKAGE_LOGISTICA = "BAH_PKG_LOGISTICA";
 	public static final String PACKAGE_PROGRAMACION = "BAH_PKG_PROGRAMACION";
-	
 	public static final String CODIGO_TIPO_ALMACEN = "A";
-	public static final String CODIGO_TIPO_DONACION = "D";
-	
+	public static final String CODIGO_TIPO_DONACION = "D";	
 	public static final String TIPO_ORIGEN_ALMACENES = "I";
-	public static final String TIPO_ORIGEN_DONACIONES = "D";
-	
-	public static final String CODIGO_DDI_INDECI_CENTRAL = "27";
-	
+	public static final String TIPO_ORIGEN_DONACIONES = "D";	
+	public static final String CODIGO_DDI_INDECI_CENTRAL = "27";	
 	public static final int COD_GENERADO = 13;
 	public static final String DES_GENERADO = "Generado";
 	public static final String MODULO_DONACION = "DONACION";
 	public static final String MODULO_PROGRAMACION = "PROGRAMACION";
 	public static final String MODULO_INVENTARIO = "INVENTARIO";
+	
+	/* PARAMETROS REPORTE SIG_BAH */
+	public static final String TITULO_ENCABEZADO_REPORTE = "Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0";
+	public static final String FECHA_ENCABEZADO_REPORTE = "Fecha : ";
+	public static final String HORA_ENCABEZADO_REPORTE = "Hora : ";
+	public static final String ESPACIO_ENCABEZADO_REPORTE = "        .";
 
-	/* ESTADO ACTIVO */
+	/* ESTADOS SIHBAH */
 	public static final int ESTADO_INACTIVO = 0;
 	public static final int ESTADO_ACTIVO = 1;
 	public static final int ESTADO_ELIMINADO = 2;
@@ -259,6 +261,7 @@ public final class Constantes implements Serializable {
 	public static final String UNDERLINE = "_";
 	public static final String PIPELINE = "|";
 	public static final String SALTO_LINEA = "\r\n";
+	public static final String SALTO_LINEA_PARRAFO = "\n";
 	public static final String IMAGEN_NO_DISPONIBLE	= "no-disponible.png";
 	
 	/* CODIGOS PARA MESES */

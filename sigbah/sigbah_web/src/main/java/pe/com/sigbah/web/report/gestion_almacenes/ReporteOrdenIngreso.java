@@ -279,7 +279,7 @@ public class ReporteOrdenIngreso implements Serializable {
 			cell.setBorderColor(BaseColor.WHITE);
 			table.addCell(cell);
 			
-			p = new Paragraph("Fecha : ".concat(ordenIngreso.getFechaEmision()), normal);
+			p = new Paragraph(Constantes.FECHA_ENCABEZADO_REPORTE.concat(ordenIngreso.getFechaEmision()), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);

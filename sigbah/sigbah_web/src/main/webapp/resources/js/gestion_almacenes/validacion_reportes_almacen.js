@@ -41,16 +41,7 @@ $(document).ready(function() {
 //		                }
 //		            }
 				}
-			},
-			sel_tip_movimiento : {
-				validators : {
-					notEmpty : {
-						message : 'Debe seleccionar Tipo de Movimiento.'
-					}
-				}
-			}
-			
-			
+			}	
 		}
 	});
 	

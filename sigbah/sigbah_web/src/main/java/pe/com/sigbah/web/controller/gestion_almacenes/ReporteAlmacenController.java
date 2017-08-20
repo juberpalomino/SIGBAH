@@ -143,6 +143,7 @@ public class ReporteAlmacenController extends BaseController {
 	 * @param flagProducto 
 	 * @param codigoProducto 
 	 * @param nroLote 
+	 * @param codigoAlmacen 
 	 * @param request 
 	 * @param response
 	 * @return Objeto.
@@ -157,11 +158,10 @@ public class ReporteAlmacenController extends BaseController {
 							  @RequestParam("flagProducto") String flagProducto,
 							  @RequestParam("codigoProducto") Integer codigoProducto,
 							  @RequestParam("nroLote") String nroLote,
+							  @RequestParam("codigoAlmacen") Integer codigoAlmacen,
 							  HttpServletRequest request, 
 							  HttpServletResponse response) {
 	    try {
-	    	// Retorno los datos de session
-        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 	    	
 	    	StringBuilder file_path = new StringBuilder();
 	    	file_path.append(getPath(request));
@@ -181,7 +181,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			proyectoManifiestoBean.setCodigoAnio(anio);
 	    			proyectoManifiestoBean.setCodigoMesInicio(mesInicio);
 	    			proyectoManifiestoBean.setCodigoMesFin(mesFin);
-	    			proyectoManifiestoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			proyectoManifiestoBean.setIdAlmacen(codigoAlmacen);
 	    			proyectoManifiestoBean.setIdMovimiento(tipoMovimiento);
 	    			proyectoManifiestoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<ProyectoManifiestoBean> listaProyectoManifiesto = logisticaService.listarReporteProyectoManifiesto(proyectoManifiestoBean);
@@ -195,7 +195,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			productoProyectoManifiestoBean.setCodigoAnio(anio);
 	    			productoProyectoManifiestoBean.setCodigoMesInicio(mesInicio);
 	    			productoProyectoManifiestoBean.setCodigoMesFin(mesFin);
-	    			productoProyectoManifiestoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			productoProyectoManifiestoBean.setIdAlmacen(codigoAlmacen);
 	    			productoProyectoManifiestoBean.setIdMovimiento(tipoMovimiento);
 	    			productoProyectoManifiestoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<ProductoProyectoManifiestoBean> listaDetalleProyectoManifiesto = logisticaService.listarReporteDetalleProyectoManifiesto(productoProyectoManifiestoBean);
@@ -211,7 +211,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			ordenSalidaBean.setCodigoAnio(anio);
 	    			ordenSalidaBean.setCodigoMesInicio(mesInicio);
 	    			ordenSalidaBean.setCodigoMesFin(mesFin);
-	    			ordenSalidaBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			ordenSalidaBean.setIdAlmacen(codigoAlmacen);
 	    			ordenSalidaBean.setIdMovimiento(tipoMovimiento);
 	    			ordenSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<OrdenSalidaBean> listaOrdenSalida = logisticaService.listarReporteOrdenSalida(ordenSalidaBean);
@@ -225,7 +225,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			productoSalidaBean.setCodigoAnio(anio);
 	    			productoSalidaBean.setCodigoMesInicio(mesInicio);
 	    			productoSalidaBean.setCodigoMesFin(mesFin);
-	    			productoSalidaBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			productoSalidaBean.setIdAlmacen(codigoAlmacen);
 	    			productoSalidaBean.setIdMovimiento(tipoMovimiento);
 	    			productoSalidaBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<ProductoSalidaBean> listaDetalleOrdenSalida = logisticaService.listarReporteDetalleOrdenSalida(productoSalidaBean);
@@ -241,7 +241,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			ordenIngresoBean.setCodigoAnio(anio);
 	    			ordenIngresoBean.setCodigoMesInicio(mesInicio);
 	    			ordenIngresoBean.setCodigoMesFin(mesFin);
-	    			ordenIngresoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			ordenIngresoBean.setIdAlmacen(codigoAlmacen);
 	    			ordenIngresoBean.setIdMovimiento(tipoMovimiento);
 	    			ordenIngresoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<OrdenIngresoBean> listaOrdenIngreso = logisticaService.listarReporteOrdenIngreso(ordenIngresoBean);
@@ -255,7 +255,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			productoIngresoBean.setCodigoAnio(anio);
 	    			productoIngresoBean.setCodigoMesInicio(mesInicio);
 	    			productoIngresoBean.setCodigoMesFin(mesFin);
-	    			productoIngresoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			productoIngresoBean.setIdAlmacen(codigoAlmacen);
 	    			productoIngresoBean.setIdMovimiento(tipoMovimiento);
 	    			productoIngresoBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<ProductoIngresoBean> listaDetalleOrdenIngreso = logisticaService.listarReporteDetalleOrdenIngreso(productoIngresoBean);
@@ -271,7 +271,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			guiaRemisionBean.setCodigoAnio(anio);
 	    			guiaRemisionBean.setCodigoMesInicio(mesInicio);
 	    			guiaRemisionBean.setCodigoMesFin(mesFin);
-	    			guiaRemisionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			guiaRemisionBean.setIdAlmacen(codigoAlmacen);
 	    			guiaRemisionBean.setIdMovimiento(tipoMovimiento);
 	    			guiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<GuiaRemisionBean> listaGuiaRemision = logisticaService.listarReporteGuiaRemision(guiaRemisionBean);
@@ -285,7 +285,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			detalleGuiaRemisionBean.setCodigoAnio(anio);
 	    			detalleGuiaRemisionBean.setCodigoMesInicio(mesInicio);
 	    			detalleGuiaRemisionBean.setCodigoMesFin(mesFin);
-	    			detalleGuiaRemisionBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			detalleGuiaRemisionBean.setIdAlmacen(codigoAlmacen);
 	    			detalleGuiaRemisionBean.setIdMovimiento(tipoMovimiento);
 	    			detalleGuiaRemisionBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);
 	    			List<DetalleGuiaRemisionBean> listaDetalleGuiaRemision = logisticaService.listarReporteDetalleGuiaRemision(detalleGuiaRemisionBean);
@@ -301,7 +301,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			kardexAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);	    			
 	    			kardexAlmacenBean.setCodigoAnio(anio);
 	    			kardexAlmacenBean.setCodigoMes(mesInicio);
-	    			kardexAlmacenBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			kardexAlmacenBean.setIdAlmacen(codigoAlmacen);
 	    			kardexAlmacenBean.setIdProducto(codigoProducto);	    			
 	    			List<KardexAlmacenBean> listaKardexAlmacen = logisticaService.listarReporteKardex(kardexAlmacenBean);
 	    			if (isEmpty(listaKardexAlmacen)) {
@@ -314,7 +314,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			bincardAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);	
 	    			bincardAlmacenBean.setCodigoAnio(anio);
 	    			bincardAlmacenBean.setCodigoMes(mesInicio);
-	    			bincardAlmacenBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+	    			bincardAlmacenBean.setIdAlmacen(codigoAlmacen);
 	    			bincardAlmacenBean.setIdProducto(codigoProducto);
 	    			bincardAlmacenBean.setNroLote(nroLote);
 	    			List<BincardAlmacenBean> listaBincardAlmacen = logisticaService.listarReporteBincard(bincardAlmacenBean);
@@ -368,6 +368,7 @@ public class ReporteAlmacenController extends BaseController {
 	 * @param flagProducto 
 	 * @param codigoProducto 
 	 * @param nroLote 
+	 * @param codigoAlmacen 
 	 * @param request 
 	 * @param response
 	 * @return Objeto.
@@ -382,6 +383,7 @@ public class ReporteAlmacenController extends BaseController {
 							  	@RequestParam("flagProducto") String flagProducto,
 							  	@RequestParam("codigoProducto") Integer codigoProducto,
 							  	@RequestParam("nroLote") String nroLote,
+							  	@RequestParam("codigoAlmacen") Integer codigoAlmacen,
 							  	HttpServletRequest request, 
 							  	HttpServletResponse response) {
 	    try {
