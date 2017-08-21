@@ -128,26 +128,6 @@ public class ReporteAlmacen implements Serializable {
 	
 	/**
 	 * Retorna el valor parseado.
-	 * @param campo - Valor del parámetro a evaluar, tipo Object.
-	 * @return valor - Valor de la cadena.
-	 */
-	private static String getString(Object campo) {
-		if (campo != null) {
-			if (campo instanceof Integer) {
-				return String.valueOf((Integer) campo);
-			} else if (campo instanceof Long) {
-				return String.valueOf((Long) campo);
-			} else if (campo instanceof BigDecimal) {
-				return String.valueOf((BigDecimal) campo);
-			} else {
-				return (String) campo;
-			}
-		}
-		return Constantes.EMPTY; 	
-	}
-	
-	/**
-	 * Retorna el valor parseado.
 	 * @param campo - Valor del parámetro a evaluar, tipo BigDecimal.
 	 * @return valor - Valor de la campo sino cero.
 	 */
@@ -1593,6 +1573,7 @@ public class ReporteAlmacen implements Serializable {
 			// Bloque Inicio
 			int row = 0;
 			int count = 1;
+			boolean ind_primero = false;
 			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
 			BigDecimal precioUnitarioSubTotal = BigDecimal.ZERO;
 			BigDecimal importeSubTotal = BigDecimal.ZERO;
@@ -1637,24 +1618,28 @@ public class ReporteAlmacen implements Serializable {
 						table.addCell(cell);
 						
 						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(cantidadSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(precioUnitarioSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(importeSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						cantidadSubTotal = BigDecimal.ZERO;
@@ -1746,36 +1731,63 @@ public class ReporteAlmacen implements Serializable {
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(producto.getNombreUnidad(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(producto.getCantidad())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(producto.getPrecioUnitario())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(producto.getImporteTotal())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(producto.getCantidad()));
 				precioUnitarioSubTotal = precioUnitarioSubTotal.add(getBigDecimal(producto.getPrecioUnitario()));
 				importeSubTotal = importeSubTotal.add(getBigDecimal(producto.getImporteTotal()));
 				count++;
+				
+				ind_primero = false;
 
 				document.add(table);
 				
@@ -1813,6 +1825,7 @@ public class ReporteAlmacen implements Serializable {
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					cell = new PdfPCell();
@@ -1822,18 +1835,21 @@ public class ReporteAlmacen implements Serializable {
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					p = new Paragraph(dec_form.format(precioUnitarioSubTotal), negrita);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					p = new Paragraph(dec_form.format(importeSubTotal), negrita);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					document.add(table);
@@ -2421,6 +2437,7 @@ public class ReporteAlmacen implements Serializable {
 			// Bloque Inicio
 			int row = 0;
 			int count = 1;
+			boolean ind_primero = false;
 			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
 			BigDecimal precioUnitarioSubTotal = BigDecimal.ZERO;
 			BigDecimal importeSubTotal = BigDecimal.ZERO;
@@ -2462,6 +2479,7 @@ public class ReporteAlmacen implements Serializable {
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						cell = new PdfPCell();
@@ -2471,18 +2489,21 @@ public class ReporteAlmacen implements Serializable {
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(precioUnitarioSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(importeSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						cantidadSubTotal = BigDecimal.ZERO;
@@ -2574,36 +2595,63 @@ public class ReporteAlmacen implements Serializable {
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(producto.getNombreUnidad(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(producto.getCantidad())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(producto.getPrecioUnitario())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(producto.getImporteTotal())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(producto.getCantidad()));
 				precioUnitarioSubTotal = precioUnitarioSubTotal.add(getBigDecimal(producto.getPrecioUnitario()));
 				importeSubTotal = importeSubTotal.add(getBigDecimal(producto.getImporteTotal()));
 				count++;
+				
+				ind_primero = false;
 
 				document.add(table);
 				
@@ -2641,6 +2689,7 @@ public class ReporteAlmacen implements Serializable {
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					cell = new PdfPCell();
@@ -2650,18 +2699,21 @@ public class ReporteAlmacen implements Serializable {
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					p = new Paragraph(dec_form.format(precioUnitarioSubTotal), negrita);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					p = new Paragraph(dec_form.format(importeSubTotal), negrita);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					document.add(table);
@@ -2691,8 +2743,307 @@ public class ReporteAlmacen implements Serializable {
 	public void generaPDFReporteGuiaRemision(String ruta, 
 											 GuiaRemisionBean guiaRemisionBean, 
 											 List<GuiaRemisionBean> listaGuiaRemision) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte
+			float[] ftit = {20, 15, 65};			
+			
+			float[] f1 = {100};
+			
+			float[] f3 = {30, 30, 40};
+
+			float[] f9 = {5, 10, 12, 13, 15, 15, 10, 10, 10};
+			
+			BaseColor header = new BaseColor(242, 242, 242);
+			
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font hide = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.WHITE);
+			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			   
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(ftit);
+			
+			String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));			
+			Image img = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			cell = new PdfPCell(img, true);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append(Constantes.TITULO_ENCABEZADO_REPORTE);
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+			Date fecha_hora = Calendar.getInstance().getTime();
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.HORA_ENCABEZADO_REPORTE);
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+			p = new Paragraph(det_encabezado.toString(), encabezado);
+			pdet = new Paragraph(Constantes.ESPACIO_ENCABEZADO_REPORTE, hide);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			p = new Paragraph("REPORTE DE GUIA DE REMISION", titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("DDI: ", negrita);
+			pdet = new Paragraph(listaGuiaRemision.get(0).getNombreDdi(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			p = new Paragraph("AÑO: ", negrita);
+			pdet = new Paragraph(guiaRemisionBean.getCodigoAnio(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("ALMACEN: ", negrita);
+			pdet = new Paragraph(listaGuiaRemision.get(0).getNombreAlmacen(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			p = new Paragraph("MES INICIO: ", negrita);
+			pdet = new Paragraph(getMes(guiaRemisionBean.getCodigoMesInicio()), normal);
+			p.add(pdet);			
+			pdet = new Paragraph("   MES FIN: ", negrita);
+			p.add(pdet);			
+			pdet = new Paragraph(getMes(guiaRemisionBean.getCodigoMesFin()), normal);
+			p.add(pdet);			
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(9);
+			table.setWidths(f9);
+			
+			p = new Paragraph("ITEM", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("FECHA EMISION", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO ORDEN SALIDA", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO GUIA REMISION", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO MANIFIESTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("TIPO MOVIMIENTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("DESTINO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("PESO TOTAL KGR", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("ESTADO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			int row = 1;
+			
+			for (GuiaRemisionBean guiaRemision : listaGuiaRemision) {
+			
+				table = new PdfPTable(9);
+				table.setWidths(f9);
+				
+				p = new Paragraph(String.valueOf(row), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+			
+				p = new Paragraph(guiaRemision.getFechaEmision(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(guiaRemision.getNroOrdenSalida(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(guiaRemision.getNroGuiaRemision(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(guiaRemision.getNroManifiestoCarga(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(guiaRemision.getNombreMovimiento(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(guiaRemision.getNombreAlmacenDestino(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_CENTER);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(guiaRemision.getPesoTotalKgr())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(guiaRemision.getNombreEstado(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				document.add(table);	             
+				
+				row++;
+			}
+			// Bloque Fin
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
 	}
 
 	/**
@@ -2704,8 +3055,542 @@ public class ReporteAlmacen implements Serializable {
 	public void generaPDFReporteDetalleGuiaRemision(String ruta, 
 													DetalleGuiaRemisionBean detalleGuiaRemisionBean, 
 													List<DetalleGuiaRemisionBean> listaDetalleGuiaRemision) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte
+			float[] ftit = {20, 15, 65};			
+			
+			float[] f1 = {100};
+			
+			float[] f3 = {30, 30, 40};
+
+			float[] f11 = {5, 8, 10, 11, 10, 8, 16, 8, 8, 8, 8};
+			
+			BaseColor header = new BaseColor(242, 242, 242);
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font hide = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.WHITE);
+			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			   
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(ftit);
+			
+			String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));			
+			Image img = Image.getInstance(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			cell = new PdfPCell(img, true);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append(Constantes.TITULO_ENCABEZADO_REPORTE);
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+			Date fecha_hora = Calendar.getInstance().getTime();
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));
+			det_encabezado.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_encabezado.append(Constantes.HORA_ENCABEZADO_REPORTE);
+			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+			p = new Paragraph(det_encabezado.toString(), encabezado);
+			pdet = new Paragraph(Constantes.ESPACIO_ENCABEZADO_REPORTE, hide);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			StringBuilder det_titulo = new StringBuilder();
+			det_titulo.append("REPORTE DE GUIA DE REMISION");
+			det_titulo.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_titulo.append("DETALLE POR PRODUCTO");
+			p = new Paragraph(det_titulo.toString(), titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("DDI: ", negrita);
+			pdet = new Paragraph(listaDetalleGuiaRemision.get(0).getNombreDdi(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			p = new Paragraph("AÑO: ", negrita);
+			pdet = new Paragraph(detalleGuiaRemisionBean.getCodigoAnio(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("ALMACEN: ", negrita);
+			pdet = new Paragraph(listaDetalleGuiaRemision.get(0).getNombreAlmacen(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			p = new Paragraph("MES INICIO: ", negrita);
+			pdet = new Paragraph(getMes(detalleGuiaRemisionBean.getCodigoMesInicio()), normal);
+			p.add(pdet);			
+			pdet = new Paragraph("   MES FIN: ", negrita);
+			p.add(pdet);			
+			pdet = new Paragraph(getMes(detalleGuiaRemisionBean.getCodigoMesFin()), normal);
+			p.add(pdet);			
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(11);
+			table.setWidths(f11);
+			
+			p = new Paragraph("ITEM", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("FECHA EMISION", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO ORDEN SALIDA", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO GUIA REMISION", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("NRO MANIFIESTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("TIPO MOVIMIENTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("ESTADO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("PRODUCTO", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("UNIDAD", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("CANTIDAD", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("PESO TOTAL KGR", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			int row = 0;
+			int count = 1;
+			boolean ind_primero = false;
+			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
+			BigDecimal pesoSubTotal = BigDecimal.ZERO;
+			String nroGuiaRemision = Constantes.EMPTY;
+			for (DetalleGuiaRemisionBean guia : listaDetalleGuiaRemision) {
+			
+				table = new PdfPTable(11);
+				table.setWidths(f11);
+
+				if (!nroGuiaRemision.equals(guia.getNroGuiaRemision())) {
+					
+					if (count > 1) {
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						p = new Paragraph("TOTAL ORDEN", negrita);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						p = new Paragraph(dec_form.format(cantidadSubTotal), negrita);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						p = new Paragraph(dec_form.format(pesoSubTotal), negrita);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+						table.addCell(cell);
+						
+						cantidadSubTotal = BigDecimal.ZERO;
+						pesoSubTotal = BigDecimal.ZERO;
+							
+						document.add(table);
+						
+						table = new PdfPTable(11);
+						table.setWidths(f11);
+						
+					}
+						
+					row++;
+				
+					nroGuiaRemision = guia.getNroGuiaRemision();
+				
+					p = new Paragraph(String.valueOf(row), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+					table.addCell(cell);
+				
+					p = new Paragraph(guia.getFechaEmision(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+					table.addCell(cell);
+					
+					p = new Paragraph(guia.getNroOrdenSalida(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+					table.addCell(cell);
+					
+					p = new Paragraph(nroGuiaRemision, normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+					table.addCell(cell);
+					
+					p = new Paragraph(guia.getNroManifiestoCarga(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+					table.addCell(cell);
+					
+					p = new Paragraph(guia.getNombreMovimiento(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+					table.addCell(cell);
+					
+					p = new Paragraph(guia.getNombreEstado(), normal);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+					table.addCell(cell);
+					
+					ind_primero = true;
+				
+				} else {
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+					table.addCell(cell);
+					
+				}
+				
+				p = new Paragraph(guia.getNombreProducto(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
+				table.addCell(cell);
+				
+				p = new Paragraph(guia.getUnidadMedida(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(guia.getCantidad())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(guia.getPesoTotal())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
+				table.addCell(cell);
+				
+				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(guia.getCantidad()));
+				pesoSubTotal = pesoSubTotal.add(getBigDecimal(guia.getPesoTotal()));
+				count++;
+				
+				ind_primero = false;
+
+				document.add(table);
+				
+				// Subtotal del ultimo registro
+				if (count == listaDetalleGuiaRemision.size() + 1) {
+					
+					table = new PdfPTable(11);
+					table.setWidths(f11);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					p = new Paragraph("TOTAL ORDEN", negrita);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					p = new Paragraph(dec_form.format(cantidadSubTotal), negrita);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					p = new Paragraph(dec_form.format(pesoSubTotal), negrita);
+					cell = new PdfPCell(p);
+					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
+					table.addCell(cell);
+					
+					document.add(table);
+					
+				}
+				
+				
+			}
+			// Bloque Fin
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
 	}
 
 	/**
