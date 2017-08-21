@@ -54,7 +54,7 @@
 														<label class="col-sm-2 control-label">Tipo de ración:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_tipo_racion" name="sel_tipo_racion" class="form-control">
-																<option value="">Todos</option>
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_racion}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -67,7 +67,7 @@
 															<input type="text" id="txt_cod_racion" name="txt_cod_racion" class="form-control" readonly>
 														</div>
 														<label class="col-sm-2 control-label">Nombre Ración:</label>
-														<div class="col-sm-2 form-group">
+														<div class="col-sm-4 form-group">
 															<input type="text" id="txt_nom_racion" name="txt_nom_racion" class="form-control" >
 														</div>
 													</div>	
@@ -149,6 +149,14 @@
 														<th>Gr. Aprox.</th>
 													</tr>
 												</thead>
+												<tfoot>
+														<tr>
+															<td colspan="4">
+																<span class="label-bold" style="float:right;">Total:</span>
+															</td>
+															<td colspan="1"><span id="sp_tot_gramos"></span></td>	
+														</tr>
+													</tfoot>
 											</table>
 				
 										</div>

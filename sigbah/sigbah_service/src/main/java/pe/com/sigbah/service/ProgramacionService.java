@@ -6,8 +6,10 @@ import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.ListaRespuestaPedidoCompraBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.PedidoCompraReporteBean;
 import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
@@ -325,4 +327,13 @@ public interface ProgramacionService {
 	 * @throws Exception
 	 */
 	public abstract ListaRespuestaRequerimientoBean obtenerReporteRequerimiento(Integer  idRequerimiento) throws Exception;
+	
+	/**
+	 * @param idPedidoCompra
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract ListaRespuestaPedidoCompraBean obtenerReportePedidoCompra(Integer  idPedidoCompra) throws Exception;
+	
+	
 }

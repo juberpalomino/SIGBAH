@@ -26,6 +26,13 @@ $(document).ready(function() {
 						message : 'Debe seleccionar DEE.'
 					}
 				}
+			},
+			sel_estado : {
+				validators : {
+					notEmpty : {
+						message : 'Debe seleccionar Estado.'
+					}
+				}
 			}
 			
 		}

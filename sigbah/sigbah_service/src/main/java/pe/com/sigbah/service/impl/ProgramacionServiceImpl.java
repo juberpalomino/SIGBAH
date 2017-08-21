@@ -10,8 +10,10 @@ import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.ListaRespuestaPedidoCompraBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.PedidoCompraReporteBean;
 import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
@@ -365,5 +367,13 @@ public class ProgramacionServiceImpl implements ProgramacionService, Serializabl
 	@Override
 	public ListaRespuestaRequerimientoBean obtenerReporteRequerimiento(Integer idRequerimiento) throws Exception {
 		return programacionDao.obtenerReporteRequerimiento(idRequerimiento);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.ProgramacionService#obtenerReportePedidoCompra(java.lang.Integer)
+	 */
+	@Override
+	public ListaRespuestaPedidoCompraBean obtenerReportePedidoCompra(Integer idPedidoCompra) throws Exception {
+		return programacionDao.obtenerReportePedidoCompra(idPedidoCompra);
 	}
 }

@@ -24,6 +24,52 @@ $(document).ready(function() {
 		
 	});
 	
+	$('#href_imprimir').click(function(e) {
+		e.preventDefault();
+
+		var indices = [];
+		var codigo = '';
+		tbl_mnt_ped_compra.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
+			if (tbl_mnt_ped_compra.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
+				indices.push(index);				
+				// Verificamos que tiene mas de un registro marcado y salimos del bucle
+				if (!esnulo(codigo)) {
+					return false;
+				}
+				var idPedidoCom = listaPedidoCompraCache[index].idPedidoCom;
+				codigo = codigo + idPedidoCom + '_';
+			}
+		});
+		
+		if (!esnulo(codigo)) {
+			codigo = codigo.substring(0, codigo.length - 1);
+		}
+		
+		if (indices.length == 0) {
+			addWarnMessage(null, mensajeValidacionSeleccionarRegistro);
+		} else if (indices.length > 1) {
+			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
+		} else {
+			loadding(true);
+			var url = VAR_CONTEXT + '/programacion-bath/pedido/exportarPdf/'+codigo;
+
+			$.fileDownload(url).done(function(respuesta) {
+				loadding(false);	
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else {
+					addInfoMessage(null, mensajeReporteExito);
+				}
+			}).fail(function (respuesta) {
+				loadding(false);
+				if (respuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, mensajeReporteError);
+				} else if (respuesta == NOTIFICACION_VALIDACION) {
+					addWarnMessage(null, mensajeReporteValidacion);
+				}
+			});
+		}
+	});
 	
 	$('#href_exp_excel').click(function(e) {
 		e.preventDefault();

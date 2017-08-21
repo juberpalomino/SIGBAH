@@ -251,10 +251,10 @@
 													
 												</div>			
 											<!-- widget content -->
-											<div class="widget-body">
+											<div  class="table-scroll">
 
-												<table id="tbl_det_afectados" class="table table-bordered table-hover tbl-responsive">
-													<thead>			                
+												<table id="tbl_det_afectados" class="table table-bordered table-hover tbl-responsive" >
+													<thead>		 	                
 														<tr> 
 															<th></th>
 															<th>Nº</th>
@@ -310,12 +310,12 @@
 									<!-- end widget -->
 									
 									<div class="modal-footer">
-										<button type="button" class="btn btn-primary" id="btn_gra_afectados">
-											<i class="fa fa-floppy-o"></i>
-											Grabar
-										</button>
+<!-- 										<button type="button" class="btn btn-primary" id="btn_gra_afectados"> -->
+<!-- 											<i class="fa fa-floppy-o"></i> -->
+<!-- 											Grabar -->
+<!-- 										</button> -->
 										
-										&nbsp; &nbsp;
+<!-- 										&nbsp; &nbsp; -->
 										
 										<button type="button" class="btn btn-default btn_retornar" data-dismiss="modal" id="btn_can_afectados">
 											<i class="fa fa-mail-forward"></i>
@@ -645,12 +645,12 @@
 							<input type="hidden" id="hid_cod_dam_afec" name="hid_cod_dam_afec">
 							<div class="row">
 								<div class="form-group">
-											<div class="col-sm-2"></div>
-<!-- 									<label class="col-sm-3 control-label label-bold">N° de requerimiento:</label> -->
+											
+									<label class="col-sm-3 control-label label-bold">N° de requerimiento:</label>
 									<div class="col-sm-2">
 										<input type="text" id="txt_nro_req_mo" class="form-control" disabled>
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-5">
 										<input type="text" id="txt_des_req_mo" class="form-control" disabled>
 									</div>
 								</div>	

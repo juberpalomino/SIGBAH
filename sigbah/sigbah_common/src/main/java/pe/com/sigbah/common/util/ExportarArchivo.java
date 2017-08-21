@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;

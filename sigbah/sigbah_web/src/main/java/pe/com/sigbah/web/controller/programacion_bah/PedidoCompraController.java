@@ -1,11 +1,17 @@
 package pe.com.sigbah.web.controller.programacion_bah;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,15 +31,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.ListaRespuestaPedidoCompraBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.PedidoCompraReporteBean;
 import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
+import pe.com.sigbah.common.util.ExportarArchivo;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.ProgramacionService;
 import pe.com.sigbah.web.controller.common.BaseController;
@@ -418,4 +428,78 @@ private static final long serialVersionUID = 1L;
 		}
 		return lista;
 	}
+	
+
+	@RequestMapping(value = "/exportarPdf/{idPedidoCom}", method = RequestMethod.GET)
+	@ResponseBody
+	public String exportarPdf(@PathVariable("idPedidoCom") Integer idPedidoCom, HttpServletRequest request, HttpServletResponse response) {
+		ListaRespuestaPedidoCompraBean datosReportePedidoCompra =  new ListaRespuestaPedidoCompraBean();
+		try {
+	    	
+	    	
+			datosReportePedidoCompra = programacionService.obtenerReportePedidoCompra(idPedidoCom); 
+        		
+			PedidoCompraReporteBean cabecera =datosReportePedidoCompra.getLstCabecera().get(0);
+   		 List<PedidoCompraReporteBean> detalle=datosReportePedidoCompra.getLstDetalle();
+    		
+        	ExportarArchivo printer = new ExportarArchivo();
+			StringBuilder jasperFile = new StringBuilder();
+			jasperFile.append(getPath(request));
+			jasperFile.append(File.separator);
+			jasperFile.append(Constantes.REPORT_PATH_PROGRAMACION);
+			jasperFile.append("PROG_Report_PedidoCompra.jrxml");
+			
+			Map<String, Object> parameters = new HashMap<String, Object>();
+
+			// Agregando los parámetros del reporte
+			StringBuilder logo_indeci_path = new StringBuilder();
+			logo_indeci_path.append(getPath(request));
+			logo_indeci_path.append(File.separator);
+			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
+			parameters.put("REPORT_LOCALE", new Locale("es", "ES"));
+			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());
+	    	parameters.put("P_NOM_SISTEMA", cabecera.getNombreSistema());
+	    	parameters.put("P_NUM_PEDIDO", cabecera.getNumPedidoCompra());
+	    	parameters.put("P_FECHA", cabecera.getFecPedido());
+	    	parameters.put("P_NOM_PEDIDO", cabecera.getDescripcion());
+	    	parameters.put("P_TIP_PEDIDO", cabecera.getTipoPedido());
+	    	parameters.put("P_MOTIVO_COMPRA", cabecera.getMotivoCompra());
+	    	parameters.put("P_NUM_DEE", cabecera.getDee());
+			
+			 /* Convert List to JRBeanCollectionDataSource */
+            JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(detalle);
+            parameters.put("P_LISTA_PRODUCTOS", itemsJRBean);
+					
+			byte[] array = printer.exportPdf(jasperFile.toString(), parameters,detalle);//verificar
+			InputStream input = new ByteArrayInputStream(array);
+	        
+	        String file_name = "PROG_Report_PedidoCompra";
+			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
+	    	
+	        response.resetBuffer();
+            response.setContentType(Constantes.MIME_APPLICATION_PDF);
+            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Cache-Control", "no-store");
+			response.setHeader("Pragma", "private");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			response.setDateHeader("Expires", 1);
+			
+			byte[] buffer = new byte[4096];
+	    	int n = 0;
+
+	    	OutputStream output = response.getOutputStream();
+	    	while ((n = input.read(buffer)) != -1) {
+	    	    output.write(buffer, 0, n);
+	    	}
+	    	output.close();
+    	
+
+	    	return Constantes.COD_EXITO_GENERAL;
+	    } catch (Exception e) {
+	    	LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+	    } 
+	}
+	
 }

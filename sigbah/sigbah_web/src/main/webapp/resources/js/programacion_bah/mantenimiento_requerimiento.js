@@ -23,11 +23,14 @@ $(document).ready(function() {
 		clearBtn: true
 	});
 	
-	   $('#tbl_det_afectados').dataTable( {
-	        "columnDefs": [
-	            { "type": "numeric-comma", targets: 3 }
-	        ]
-	    } );
+
+	
+	
+//	   $('#tbl_det_afectados').dataTable( {
+//	        "columnDefs": [
+//	            { "type": "numeric-comma", targets: 3 }
+//	        ]
+//	    } );
 	
 	inicializarDatos();
 	
@@ -89,6 +92,16 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
+			
+			//		validacion de año
+				var anioAct= $('#txt_anio').val();
+				var anio = $('#txt_fecha_requerimiento').val().substring(6, 10);
+				if(anioAct!=anio){   
+					addWarnMessage(null, "El año de la fecha ingresada no coincide  con el año actual");
+					return;
+				}
+				//	fin validacion
+			
 			var codigo = $('#hid_cod_requerimiento').val();
 			
 			var numReq = null;
@@ -117,6 +130,7 @@ $(document).ready(function() {
 			};
 			
 			loadding(true);
+			
 			
 			consultarAjax('POST', '/programacion-bath/requerimiento/grabarRequerimiento', params, function(respuesta) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {

@@ -27,10 +27,12 @@ import pe.com.sigbah.common.bean.DeeBean;
 import pe.com.sigbah.common.bean.DocumentoPedidoCompraBean;
 import pe.com.sigbah.common.bean.EmergenciaBean;
 import pe.com.sigbah.common.bean.ListaRespuestaEmergenciaBean;
+import pe.com.sigbah.common.bean.ListaRespuestaPedidoCompraBean;
 import pe.com.sigbah.common.bean.ListaRespuestaRequerimientoBean;
 import pe.com.sigbah.common.bean.LocalidadEmergenciaBean;
 import pe.com.sigbah.common.bean.NoAlimentariaEmergenciaBean;
 import pe.com.sigbah.common.bean.PedidoCompraBean;
+import pe.com.sigbah.common.bean.PedidoCompraReporteBean;
 import pe.com.sigbah.common.bean.ProductoPedidoCompraBean;
 import pe.com.sigbah.common.bean.ProductoRacionBean;
 import pe.com.sigbah.common.bean.RacionBean;
@@ -57,7 +59,9 @@ import pe.com.sigbah.mapper.RegistroLocalidadEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroNoAlimentariaEmergenciaMapper;
 import pe.com.sigbah.mapper.RegistroPedidoCompraMapper;
 import pe.com.sigbah.mapper.RegistroRacionMapper;
+import pe.com.sigbah.mapper.ReporteCabeceraPedidoCompraMapper;
 import pe.com.sigbah.mapper.ReporteCabeceraRequerimientoMapper;
+import pe.com.sigbah.mapper.ReporteDetallePedidoCompraMapper;
 import pe.com.sigbah.mapper.ReporteDetalleRequerimientoMapper;
 import pe.com.sigbah.mapper.RequerimientoDetalleMapper;
 import pe.com.sigbah.mapper.RequerimientoEditMapper;
@@ -2242,6 +2246,61 @@ public class ProgramacionDaoImpl extends JdbcDaoSupport implements ProgramacionD
 			
 			List<RequerimientoBean> listaCabecera = (List<RequerimientoBean>) out.get("PO_CURSOR_DATOS_GENERALES");
 			List<EmergenciaBean> listaDetalle = (List<EmergenciaBean>) out.get("PO_CURSOR_UBIGEO");
+			
+			listaRetorno.setLstCabecera(listaCabecera);
+			listaRetorno.setLstDetalle(listaDetalle);
+			
+			listaRetorno.setCodigoRespuesta(codigoRespuesta);
+			listaRetorno.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));			
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[obtenerReporteRequerimiento] Fin ");
+		return listaRetorno;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.ProgramacionDao#obtenerReportePedidoCompra(java.lang.Integer)
+	 */
+	@Override
+	public ListaRespuestaPedidoCompraBean obtenerReportePedidoCompra(Integer idPedidoCompra) throws Exception {
+		LOGGER.info("[obtenerReportePedidoCompra] Inicio ");
+		ListaRespuestaPedidoCompraBean listaRetorno = new ListaRespuestaPedidoCompraBean();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
+			input_objParametros.addValue("PI_FK_IDE_PEDIDO_COMPRA",idPedidoCompra, Types.INTEGER);
+			
+                    
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_PROGRAMACION);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_REPORT_PEDIDO_COMPRA");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_PEDIDO_COMPRA", new SqlParameter("PI_FK_IDE_PEDIDO_COMPRA", Types.INTEGER));
+			output_objParametros.put("PO_CURSOR_PEDIDO_COMPRA", new SqlOutParameter("PO_CURSOR_PEDIDO_COMPRA", OracleTypes.CURSOR, new ReporteCabeceraPedidoCompraMapper()));
+			output_objParametros.put("PO_CURSOR_PEDIDO_COMPRA_PROD", new SqlOutParameter("PO_CURSOR_PEDIDO_COMPRA_PROD", OracleTypes.CURSOR, new ReporteDetallePedidoCompraMapper()));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			
+	objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[obtenerReporteRequerimiento] Ocurrio un error en la operacion del USP_REPORT_REQUERIMIENTO : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+			
+			List<PedidoCompraReporteBean> listaCabecera = (List<PedidoCompraReporteBean>) out.get("PO_CURSOR_PEDIDO_COMPRA");
+			List<PedidoCompraReporteBean> listaDetalle = (List<PedidoCompraReporteBean>) out.get("PO_CURSOR_PEDIDO_COMPRA_PROD");
 			
 			listaRetorno.setLstCabecera(listaCabecera);
 			listaRetorno.setLstDetalle(listaDetalle);

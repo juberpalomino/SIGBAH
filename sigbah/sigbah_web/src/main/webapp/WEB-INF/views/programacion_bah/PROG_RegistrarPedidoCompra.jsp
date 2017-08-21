@@ -69,11 +69,11 @@
 														</div>
 													</div>	
 													
-													<div class="row">
-														<label class="col-sm-1 control-label"></label>
-														<label class="col-sm-4 control-label " id="subtitulo">Datos generales de pedido</label>
+<!-- 													<div class="row"> -->
+<!-- 														<label class="col-sm-1 control-label"></label> -->
+<!-- 														<label class="col-sm-4 control-label " id="subtitulo">Datos generales de pedido</label> -->
 														
-													</div>	
+<!-- 													</div>	 -->
 													<div class="form-group"></div>
 													<div class="row">
 														<label class="col-sm-2 control-label">Fecha de pedido:</label>
@@ -86,6 +86,7 @@
 														<label class="col-sm-2 control-label">Estado:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_estado" name="sel_estado" class="form-control">
+																		<option value="">Seleccione</option>
 																	<c:forEach items="${lista_estado}" var="item">
 																	    <option value="${item.icodigo}">${item.descripcion}</option>
 																	</c:forEach>
@@ -114,7 +115,7 @@
 															<select id="sel_dee" name="sel_dee" class="form-control">
 																<option value="">Seleccione</option>
 																<c:forEach items="${lista_dee}" var="item">
-																    <option value="${item.icodigo}">${item.descripcion}</option>
+																    <option value="${item.icodigo}">${item.descripcionCorta}</option>
 																</c:forEach>
 															</select>
 														</div>

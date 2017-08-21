@@ -287,7 +287,7 @@ function llenarProductos(codigo) {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					addSuccessMessage(null, respuesta.mensajeRespuesta);
+//					addSuccessMessage(null, respuesta.mensajeRespuesta);
 					 listarProductos(respuesta);
 				}
 				loadding(false);
@@ -330,6 +330,23 @@ function listarProductos(respuesta) {
 			paging : false,
 			ordering : false,
 			info : false,
+			'footerCallback' : function ( row, data, start, end, display ) {
+				var api = this.api(), data;	 
+				
+				// Remove the formatting to get integer data for summation
+				var intVal = function ( i ) {
+					return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ?	i : 0;
+				};
+				
+				total_gramos = api.column(4, { page: 'current'} ).data().reduce( function (a, b) {
+					return intVal(a) + intVal(b);   
+				}, 0 );
+				
+				
+				$('#sp_tot_gramos').html(parseFloat(total_gramos).toFixed(2));
+				
+			},
+				
 			iDisplayLength : 15,
 			aLengthMenu : [
 				[15, 50, 100],

@@ -296,5 +296,16 @@ public class BaseController implements Serializable {
 		}
 		return baseOutputBean;
 	}
-	
+	/**
+	 * Quita caracter salto de liinea
+	 * 
+	 * @param messageSource
+	 * @param param
+	 * @param mensaje
+	 * @return Retorna cadena sin salto de linea.
+	 */
+	public static String quitarSaltos(String cadena) {
+		  // Para el reemplazo usamos un string vacío 
+		  return cadena.replaceAll("\n", ""); 
+		}
 }
