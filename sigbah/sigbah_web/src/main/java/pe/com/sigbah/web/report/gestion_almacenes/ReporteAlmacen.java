@@ -58,7 +58,7 @@ public class ReporteAlmacen implements Serializable {
 	 * @param r
 	 * @param g
 	 * @param b
-	 * @return
+	 * @return Objeto.
 	 */
 	private HSSFColor setColor(HSSFWorkbook workbook, byte r, byte g, byte b) {
 		HSSFPalette palette = workbook.getCustomPalette();
@@ -493,7 +493,7 @@ public class ReporteAlmacen implements Serializable {
 			
 			float[] f3 = {30, 30, 40};
 
-			float[] f11 = {5, 10, 10, 11, 10, 9, 15, 7, 8, 7, 8};
+			float[] f11 = {5, 8, 10, 11, 10, 8, 16, 8, 8, 8, 8};
 			
 			BaseColor header = new BaseColor(242, 242, 242);
 
@@ -725,6 +725,7 @@ public class ReporteAlmacen implements Serializable {
 			// Bloque Inicio
 			int row = 0;
 			int count = 1;
+			boolean ind_primero = false;
 			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
 			BigDecimal volumenSubTotal = BigDecimal.ZERO;
 			BigDecimal pesoSubTotal = BigDecimal.ZERO;
@@ -766,27 +767,32 @@ public class ReporteAlmacen implements Serializable {
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						cell = new PdfPCell();
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(cantidadSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(volumenSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						p = new Paragraph(dec_form.format(pesoSubTotal), negrita);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 						table.addCell(cell);
 						
 						cantidadSubTotal = BigDecimal.ZERO;
@@ -845,6 +851,8 @@ public class ReporteAlmacen implements Serializable {
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
 					table.addCell(cell);
+					
+					ind_primero = true;
 				
 				} else {
 					
@@ -878,36 +886,63 @@ public class ReporteAlmacen implements Serializable {
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(proyecto.getNombreUnidad(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(proyecto.getCantidad())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(proyecto.getVolumenTotal())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(proyecto.getPesoTotal())), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				if (ind_primero) {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
+				} else {
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT);
+				}
 				table.addCell(cell);
 				
 				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(proyecto.getCantidad()));
 				volumenSubTotal = volumenSubTotal.add(getBigDecimal(proyecto.getVolumenTotal()));
 				pesoSubTotal = pesoSubTotal.add(getBigDecimal(proyecto.getPesoTotal()));
 				count++;
+				
+				ind_primero = false;
 
 				document.add(table);
 				
@@ -945,27 +980,32 @@ public class ReporteAlmacen implements Serializable {
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					cell = new PdfPCell();
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					p = new Paragraph(dec_form.format(cantidadSubTotal), negrita);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					p = new Paragraph(dec_form.format(volumenSubTotal), negrita);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					p = new Paragraph(dec_form.format(pesoSubTotal), negrita);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+					cell.setBorder(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.BOTTOM);
 					table.addCell(cell);
 					
 					document.add(table);
@@ -2673,7 +2713,8 @@ public class ReporteAlmacen implements Serializable {
 	 * @param listaKardexAlmacen
 	 * @throws Exception 
 	 */
-	public void generaPDFReporteKardexAlmacen(String ruta, List<KardexAlmacenBean> listaKardexAlmacen) throws Exception {
+	public void generaPDFReporteKardexAlmacen(String ruta, 
+											  List<KardexAlmacenBean> listaKardexAlmacen) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
@@ -2683,9 +2724,146 @@ public class ReporteAlmacen implements Serializable {
 	 * @param listaBincardAlmacen
 	 * @throws Exception 
 	 */
-	public void generaPDFReporteBincardAlmacen(String ruta, List<BincardAlmacenBean> listaBincardAlmacen) throws Exception {
+	public void generaPDFReporteBincardAlmacen(String ruta, 
+											   List<BincardAlmacenBean> listaBincardAlmacen) throws Exception {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * @param ruta
+	 * @param proyectoManifiestoBean
+	 * @param listaProyectoManifiesto
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteProyectoManifiesto(String ruta,
+															 ProyectoManifiestoBean proyectoManifiestoBean, 
+															 List<ProyectoManifiestoBean> listaProyectoManifiesto) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param productoProyectoManifiestoBean
+	 * @param listaDetalleProyectoManifiesto
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteDetalleProyectoManifiesto(String ruta,
+																	ProductoProyectoManifiestoBean productoProyectoManifiestoBean,
+																	List<ProductoProyectoManifiestoBean> listaDetalleProyectoManifiesto) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param ordenSalidaBean
+	 * @param listaOrdenSalida
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteOrdenSalida(String ruta, 
+													  OrdenSalidaBean ordenSalidaBean,
+													  List<OrdenSalidaBean> listaOrdenSalida) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param productoSalidaBean
+	 * @param listaDetalleOrdenSalida
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteDetalleOrdenSalida(String ruta, 
+															 ProductoSalidaBean productoSalidaBean,
+															 List<ProductoSalidaBean> listaDetalleOrdenSalida) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param ordenIngresoBean
+	 * @param listaOrdenIngreso
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteOrdenIngreso(String ruta, 
+													   OrdenIngresoBean ordenIngresoBean,
+													   List<OrdenIngresoBean> listaOrdenIngreso) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param productoIngresoBean
+	 * @param listaDetalleOrdenIngreso
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteDetalleOrdenIngreso(String ruta, 
+															  ProductoIngresoBean productoIngresoBean,
+															  List<ProductoIngresoBean> listaDetalleOrdenIngreso) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param guiaRemisionBean
+	 * @param listaGuiaRemision
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteGuiaRemision(String ruta, 
+													   GuiaRemisionBean guiaRemisionBean,
+													   List<GuiaRemisionBean> listaGuiaRemision) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param detalleGuiaRemisionBean
+	 * @param listaDetalleGuiaRemision
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteDetalleGuiaRemision(String ruta,
+															  DetalleGuiaRemisionBean detalleGuiaRemisionBean, 
+															  List<DetalleGuiaRemisionBean> listaDetalleGuiaRemision) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param listaKardexAlmacen
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteKardexAlmacen(String ruta, 
+														List<KardexAlmacenBean> listaKardexAlmacen) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param ruta
+	 * @param listaBincardAlmacen
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public HSSFWorkbook generaExcelReporteBincardAlmacen(String ruta, 
+														 List<BincardAlmacenBean> listaBincardAlmacen) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
     
 }
