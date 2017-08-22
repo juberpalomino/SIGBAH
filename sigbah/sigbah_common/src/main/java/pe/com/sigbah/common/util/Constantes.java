@@ -91,7 +91,8 @@ public final class Constantes implements Serializable {
 	public static final String TITULO_ENCABEZADO_REPORTE = "Sistema de Gestion de Bienes de Ayuda Humanitaria - SIGBAH v1.0";
 	public static final String FECHA_ENCABEZADO_REPORTE = "Fecha : ";
 	public static final String HORA_ENCABEZADO_REPORTE = "Hora : ";
-	public static final String ESPACIO_ENCABEZADO_REPORTE = "        .";
+	public static final String ESPACIO_ENCABEZADO_REPORTE_PDF = "        .";
+	public static final String ESPACIO_ENCABEZADO_REPORTE_EXCEL = "      ";
 
 	/* ESTADOS SIHBAH */
 	public static final int ESTADO_INACTIVO = 0;

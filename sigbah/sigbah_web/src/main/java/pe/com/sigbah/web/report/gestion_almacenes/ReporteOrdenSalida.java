@@ -253,7 +253,7 @@ public class ReporteOrdenSalida implements Serializable {
 			det_encabezado.append(Constantes.HORA_ENCABEZADO_REPORTE);
 			det_encabezado.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
 			p = new Paragraph(det_encabezado.toString(), encabezado);
-			pdet = new Paragraph(Constantes.ESPACIO_ENCABEZADO_REPORTE, hide);
+			pdet = new Paragraph(Constantes.ESPACIO_ENCABEZADO_REPORTE_PDF, hide);
 			p.add(pdet);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
