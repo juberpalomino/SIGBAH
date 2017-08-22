@@ -3658,6 +3658,8 @@ public class ReporteAlmacen implements Serializable {
 			
 			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
 	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
 			
 	        HSSFFont font_bold = wb.createFont();
 	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
@@ -3757,7 +3759,31 @@ public class ReporteAlmacen implements Serializable {
 	        // Bloque Fin
 	        
 	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
 	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaProyectoManifiesto.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaProyectoManifiesto.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(proyectoManifiestoBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(proyectoManifiestoBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
 	        
 	        
 			// Bloque Inicio	        
@@ -3772,22 +3798,22 @@ public class ReporteAlmacen implements Serializable {
 	        row10.createCell(3).setCellValue("NRO PROY. DE MANIFIESTO");
 	        row10.getCell(3).setCellStyle(style_header);
 	        
-	        row10.createCell(4).setCellValue("Almacén");
+	        row10.createCell(4).setCellValue("NRO PROGRAMACION");
 	        row10.getCell(4).setCellStyle(style_header);
 	        
-	        row10.createCell(5).setCellValue("N° Orden de Salida");
+	        row10.createCell(5).setCellValue("TIPO MOVIMIENTO");
 	        row10.getCell(5).setCellStyle(style_header);
 	        
-	        row10.createCell(6).setCellValue("Fecha");
+	        row10.createCell(6).setCellValue("DESTINO");
 	        row10.getCell(6).setCellStyle(style_header);
 	        
-	        row10.createCell(7).setCellValue("Tipo de Movimiento");
+	        row10.createCell(7).setCellValue("IMPORTE TOTAL");
 	        row10.getCell(7).setCellStyle(style_header);
 	        
-	        row10.createCell(8).setCellValue("N° Guia de Remision");
+	        row10.createCell(8).setCellValue("PESO TOTAL KGR");
 	        row10.getCell(8).setCellStyle(style_header);
 	        
-	        row10.createCell(9).setCellValue("Estado");
+	        row10.createCell(9).setCellValue("ESTADO");
 	        row10.getCell(9).setCellStyle(style_header);
 	        // Bloque Fin
 	       
@@ -3805,26 +3831,26 @@ public class ReporteAlmacen implements Serializable {
 		        rows.createCell(2).setCellValue(proyecto.getFechaEmision());
 		        rows.getCell(2).setCellStyle(style_cell);
 		        
-//		        rows.createCell(3).setCellValue(proyecto.getNombreMes());
-//		        rows.getCell(3).setCellStyle(style_cell);
-//		        
-//		        rows.createCell(4).setCellValue(proyecto.getNombreAlmacen());
-//		        rows.getCell(4).setCellStyle(style_cell);
-//		        
-//		        rows.createCell(5).setCellValue(ingreso.getNroOrdenSalida());
-//		        rows.getCell(5).setCellStyle(style_cell);
-//		        
-//		        rows.createCell(6).setCellValue(ingreso.getFechaEmision());
-//		        rows.getCell(6).setCellStyle(style_cell);
-//		        
-//		        rows.createCell(7).setCellValue(ingreso.getNombreMovimiento());
-//		        rows.getCell(7).setCellStyle(style_cell);
-//		        
-//		        rows.createCell(8).setCellValue(ingreso.getNroGuiaRemision());
-//		        rows.getCell(8).setCellStyle(style_cell);
-//		        
-//		        rows.createCell(9).setCellValue(ingreso.getNombreEstado());
-//		        rows.getCell(9).setCellStyle(style_cell);
+		        rows.createCell(3).setCellValue(proyecto.getNroProyectoManifiesto());
+		        rows.getCell(3).setCellStyle(style_cell);
+		        
+		        rows.createCell(4).setCellValue(proyecto.getNroProgramacion());
+		        rows.getCell(4).setCellStyle(style_cell);
+		        
+		        rows.createCell(5).setCellValue(proyecto.getNombreMovimiento());
+		        rows.getCell(5).setCellStyle(style_cell);
+		        
+		        rows.createCell(6).setCellValue(proyecto.getNombreAlmacenDestino());
+		        rows.getCell(6).setCellStyle(style_cell);
+		        
+		        rows.createCell(7).setCellValue(dec_form.format(getBigDecimal(proyecto.getVolumenTotal())));
+		        rows.getCell(7).setCellStyle(style_cell);
+		        
+		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(proyecto.getPesoTotalKgr())));
+		        rows.getCell(8).setCellStyle(style_cell);
+		        
+		        rows.createCell(9).setCellValue(proyecto.getNombreEstado());
+		        rows.getCell(9).setCellStyle(style_cell);
 	            
 	            row++;
 	            count++;
@@ -3848,8 +3874,272 @@ public class ReporteAlmacen implements Serializable {
 	public HSSFWorkbook generaExcelReporteDetalleProyectoManifiesto(String ruta,
 																	ProductoProyectoManifiestoBean productoProyectoManifiestoBean,
 																	List<ProductoProyectoManifiestoBean> listaDetalleProyectoManifiesto) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("PROYECTO DE MANIFIESTO");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 2000);
+	        sheet.setColumnWidth(3, 5000);
+	        sheet.setColumnWidth(4, 5000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 7000);
+			sheet.setColumnWidth(8, 6000);
+			sheet.setColumnWidth(9, 6000);
+			sheet.setColumnWidth(10, 6000);
+			sheet.setColumnWidth(11, 6000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell.setFont(font_norm);
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+			
+			HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f2.setFont(font_norm);
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);
+	        style_cell_f2.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f3.setFont(font_norm);
+	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);
+	        style_cell_f3.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f4 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f4.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f4.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f4.setFont(font_norm);
+	        style_cell_f4.setBorderTop((short) 1);
+	        style_cell_f4.setBorderLeft((short) 1);
+	        style_cell_f4.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f5 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f5.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f5.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f5.setFont(font_norm);
+	        style_cell_f5.setBorderLeft((short) 1);
+	        style_cell_f5.setBorderRight((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
+	        InputStream is = new FileInputStream(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			byte[] bytes = IOUtils.toByteArray(is);
+			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+			is.close();
+			CreationHelper helper = wb.getCreationHelper();
+			Drawing drawing = sheet.createDrawingPatriarch();
+			ClientAnchor anchor = helper.createClientAnchor();
+			anchor.setCol1(1);
+			anchor.setRow1(1);
+			Picture pict = drawing.createPicture(anchor, pictureIdx);
+			pict.resize();
+	        
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(9).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(9).setCellStyle(style_cabecera);
+	        
+	        HSSFRow row2 = sheet.createRow((short) 2);
+	        StringBuilder det_fecha = new StringBuilder();
+	        Date fecha_hora = Calendar.getInstance().getTime();
+	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
+			row2.createCell(9).setCellValue(det_fecha.toString());
+	        row2.getCell(9).setCellStyle(style_cabecera);
+	        
+	        StringBuilder det_hora = new StringBuilder();
+	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
+	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
+	        HSSFRow row3 = sheet.createRow((short) 3);
+			row3.createCell(9).setCellValue(det_hora.toString());
+	        row3.getCell(9).setCellStyle(style_cabecera);
+			// Bloque Fin
+			
+			
+	        // Bloque Inicio
+	        HSSFRow row5 = sheet.createRow((short) 5);
+			row5.createCell(1).setCellValue("REPORTE DE PROYECTO DE MANIFIESTO");
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);	
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row7 = sheet.createRow((short) 7);
+	        
+	        HSSFRichTextString for_rep_ddi = new HSSFRichTextString("DDI: ");
+	        HSSFRichTextString for_des_ddi = new HSSFRichTextString(listaDetalleProyectoManifiesto.get(0).getNombreDdi());
+	        RichTextString det_ddi = new HSSFRichTextString(for_rep_ddi.getString() + for_des_ddi.getString());
+	        int tam_ddi = listaDetalleProyectoManifiesto.get(0).getNombreDdi().length();
+	        det_ddi.applyFont(0, 5, font_bold);
+	        det_ddi.applyFont(5, tam_ddi + 5, font_norm);	        
+			row7.createCell(1).setCellValue(det_ddi);	
+			
+			HSSFRichTextString for_rep_anio = new HSSFRichTextString("AÑO: ");
+	        HSSFRichTextString for_des_anio = new HSSFRichTextString(productoProyectoManifiestoBean.getCodigoAnio());
+	        RichTextString det_anio = new HSSFRichTextString(for_rep_anio.getString() + for_des_anio.getString());
+	        int tam_anio = productoProyectoManifiestoBean.getCodigoAnio().length();
+	        det_anio.applyFont(0, 5, font_bold);
+	        det_anio.applyFont(5, tam_anio + 5, font_norm);	        
+			row7.createCell(4).setCellValue(det_anio);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaDetalleProyectoManifiesto.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaDetalleProyectoManifiesto.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(productoProyectoManifiestoBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(productoProyectoManifiestoBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row10 = sheet.createRow((short) 10);
+	        
+	        row10.createCell(1).setCellValue("ITEM");
+	        row10.getCell(1).setCellStyle(style_header);
+	        
+	        row10.createCell(2).setCellValue("FECHA EMISION");
+	        row10.getCell(2).setCellStyle(style_header);
+	        
+	        row10.createCell(3).setCellValue("NRO PROY. MANIFIESTO");
+	        row10.getCell(3).setCellStyle(style_header);
+	        
+	        row10.createCell(4).setCellValue("NRO PROGRAMACION");
+	        row10.getCell(4).setCellStyle(style_header);
+	        
+	        row10.createCell(5).setCellValue("TIPO MOVIMIENTO");
+	        row10.getCell(5).setCellStyle(style_header);
+	        
+	        row10.createCell(6).setCellValue("ESTADO");
+	        row10.getCell(6).setCellStyle(style_header);
+	        
+	        row10.createCell(7).setCellValue("PRODUCTO");
+	        row10.getCell(7).setCellStyle(style_header);
+	        
+	        row10.createCell(8).setCellValue("UNIDAD");
+	        row10.getCell(8).setCellStyle(style_header);
+	        
+	        row10.createCell(9).setCellValue("CANTIDAD");
+	        row10.getCell(9).setCellStyle(style_header);
+			
+	        row10.createCell(11).setCellValue("VOLUMEN M3");
+	        row10.getCell(11).setCellStyle(style_header);
+			
+	        row10.createCell(12).setCellValue("PESO TOTAL KGR");
+	        row10.getCell(12).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+			int row = 0;
+			int count = 1;
+			boolean ind_primero = false;
+			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
+			BigDecimal volumenSubTotal = BigDecimal.ZERO;
+			BigDecimal pesoSubTotal = BigDecimal.ZERO;
+			String nroProyectoManifiesto = Constantes.EMPTY;
+	        for (ProductoProyectoManifiestoBean proyecto : listaDetalleProyectoManifiesto) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) row + 1);
+	        	
+	        	rows.createCell(1).setCellValue(count);
+		        rows.getCell(1).setCellStyle(style_cell);
+
+		        rows.createCell(2).setCellValue(proyecto.getFechaEmision());
+		        rows.getCell(2).setCellStyle(style_cell);
+		        
+		        rows.createCell(3).setCellValue(proyecto.getNroProyectoManifiesto());
+		        rows.getCell(3).setCellStyle(style_cell);
+		        
+		        rows.createCell(4).setCellValue(proyecto.getNroProgramacion());
+		        rows.getCell(4).setCellStyle(style_cell);
+		        
+		        rows.createCell(5).setCellValue(proyecto.getNombreMovimiento());
+		        rows.getCell(5).setCellStyle(style_cell);
+		        
+		        rows.createCell(6).setCellValue(proyecto.getNombreAlmacenDestino());
+		        rows.getCell(6).setCellStyle(style_cell);
+		        
+		        rows.createCell(7).setCellValue(dec_form.format(getBigDecimal(proyecto.getVolumenTotal())));
+		        rows.getCell(7).setCellStyle(style_cell);
+		        
+		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(proyecto.getPesoTotal())));
+		        rows.getCell(8).setCellStyle(style_cell);
+		        
+		        rows.createCell(9).setCellValue(proyecto.getNombreEstado());
+		        rows.getCell(9).setCellStyle(style_cell);
+	            
+	            row++;
+	            count++;
+	        }
+	        // Bloque Fin
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
