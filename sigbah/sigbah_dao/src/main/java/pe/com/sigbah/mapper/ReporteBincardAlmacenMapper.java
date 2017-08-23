@@ -21,7 +21,7 @@ public class ReporteBincardAlmacenMapper implements RowMapper<BincardAlmacenBean
 	@Override
 	public BincardAlmacenBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		BincardAlmacenBean bincardAlmacen = new BincardAlmacenBean();
-		bincardAlmacen.setIdRegistro(rs.getInt("IDE_REGISTRO"));
+		bincardAlmacen.setIdRegistro(rs.getString("IDE_REGISTRO"));
 		bincardAlmacen.setCodigoAnio(rs.getString("COD_ANIO"));		
 		bincardAlmacen.setCodigoMes(rs.getString("COD_MES"));
 		bincardAlmacen.setNombreMes(rs.getString("NOMBRE_MES"));

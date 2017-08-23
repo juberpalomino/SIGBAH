@@ -17,7 +17,7 @@ public class BincardAlmacenBean implements Serializable {
 	private String codigoMes;
 	private Integer idAlmacen;
 	private Integer idProducto;	
-	private Integer idRegistro;
+	private String idRegistro;
 	private String nombreMes;
 	private String nroLote;
 	private String nroBincard;
@@ -100,13 +100,13 @@ public class BincardAlmacenBean implements Serializable {
 	/**
 	 * @return the idRegistro
 	 */
-	public Integer getIdRegistro() {
+	public String getIdRegistro() {
 		return idRegistro;
 	}
 	/**
 	 * @param idRegistro the idRegistro to set
 	 */
-	public void setIdRegistro(Integer idRegistro) {
+	public void setIdRegistro(String idRegistro) {
 		this.idRegistro = idRegistro;
 	}
 	/**

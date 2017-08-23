@@ -144,6 +144,26 @@ public class ReporteAlmacen implements Serializable {
 	
 	/**
 	 * Retorna el valor parseado.
+	 * @param campo - Valor del parámetro a evaluar, tipo Object.
+	 * @return valor - Valor de la cadena.
+	 */
+	private static String getString(Object campo) {
+		if (campo != null) {
+			if (campo instanceof Integer) {
+				return String.valueOf((Integer) campo);
+			} else if (campo instanceof Long) {
+				return String.valueOf((Long) campo);
+			} else if (campo instanceof BigDecimal) {
+				return String.valueOf((BigDecimal) campo);
+			} else {
+				return (String) campo;
+			}
+		}
+		return Constantes.EMPTY; 	
+	}
+	
+	/**
+	 * Retorna el valor parseado.
 	 * @param campo - Valor del parámetro a evaluar, tipo BigDecimal.
 	 * @return valor - Valor de la campo sino cero.
 	 */
@@ -429,7 +449,7 @@ public class ReporteAlmacen implements Serializable {
 				p = new Paragraph(proyecto.getNombreAlmacenDestino(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-				cell.setVerticalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(proyecto.getVolumenTotal())), normal);
@@ -1297,7 +1317,7 @@ public class ReporteAlmacen implements Serializable {
 				p = new Paragraph(ordenSalida.getNombreAlmacenDestino(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-				cell.setVerticalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(ordenSalida.getImporteTotal())), normal);
@@ -2161,7 +2181,7 @@ public class ReporteAlmacen implements Serializable {
 				p = new Paragraph(ordenIngreso.getNombreAlmacenProcedencia(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-				cell.setVerticalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(ordenIngreso.getImporteTotal())), normal);
@@ -3031,7 +3051,7 @@ public class ReporteAlmacen implements Serializable {
 				p = new Paragraph(guiaRemision.getNombreAlmacenDestino(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-				cell.setVerticalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				table.addCell(cell);
 				
 				p = new Paragraph(dec_form.format(getBigDecimal(guiaRemision.getPesoTotalKgr())), normal);
@@ -3611,24 +3631,661 @@ public class ReporteAlmacen implements Serializable {
 
 	/**
 	 * @param ruta
+	 * @param kardexAlmacenBean 
 	 * @param listaKardexAlmacen
 	 * @throws Exception 
 	 */
 	public void generaPDFReporteKardexAlmacen(String ruta, 
+											  KardexAlmacenBean kardexAlmacenBean, 
 											  List<KardexAlmacenBean> listaKardexAlmacen) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte	
+			float[] f1 = {100};
+			
+			float[] f3 = {40, 30, 30};
+			
+			float[] f5 = {15, 20, 30, 20, 15};
+
+			float[] f11 = {5, 8, 15, 8, 8, 8, 9, 10, 10, 10, 9};
+			
+			BaseColor header = new BaseColor(242, 242, 242);
+			
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			   
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("KARDEX N° ");
+			det_encabezado.append(kardexAlmacenBean.getIdAlmacen());
+			det_encabezado.append(Constantes.SEPARADOR);
+			det_encabezado.append(listaKardexAlmacen.get(0).getNroKardex());
+			p = new Paragraph(det_encabezado.toString(), titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("PRODUCTO: ", negrita);
+			pdet = new Paragraph(listaKardexAlmacen.get(0).getNombreProducto(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			p = new Paragraph("UNIDAD MEDIDA: ", negrita);
+			pdet = new Paragraph(listaKardexAlmacen.get(0).getNombreUnidad(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_mes_anio = new StringBuilder();
+			det_mes_anio.append("MES: ");
+			det_mes_anio.append(getMes(kardexAlmacenBean.getCodigoMes()));
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(Constantes.SEPARADOR);
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(kardexAlmacenBean.getCodigoAnio());
+			p = new Paragraph(det_mes_anio.toString(), negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("ALMACEN: ", negrita);
+			pdet = new Paragraph(listaKardexAlmacen.get(0).getNombreAlmacen(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(11);
+			table.setWidths(f11);
+			
+			p = new Paragraph("Item", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Fecha", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Documento", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Ingresos", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Salidas", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Saldo", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Precio Compra (S/.)", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Precio Promedio (S/.)", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Importe Valorado (S/.)", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Motivo", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Nro Orden", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			int row = 1;
+			
+			for (KardexAlmacenBean kardex : listaKardexAlmacen) {
+			
+				table = new PdfPTable(11);
+				table.setWidths(f11);
+				
+				p = new Paragraph(String.valueOf(row), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+			
+				p = new Paragraph(kardex.getFecha(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(kardex.getConcepto(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(kardex.getCantidadIngresos())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(kardex.getCantidadSalidas())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(kardex.getCantidadSaldo())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(kardex.getPrecioCompra())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(kardex.getPrecioPromedio())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(kardex.getImporteValorizado())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(kardex.getMotivo()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(kardex.getNroOrden()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				document.add(table);	             
+				
+				row++;
+			}
+			// Bloque Fin
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(5);
+			table.setWidths(f5);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			p = new Paragraph("Jefe de Almacén", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			p = new Paragraph("Jefe DDI", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
 	}
 
 	/**
 	 * @param ruta
+	 * @param bincardAlmacenBean 
 	 * @param listaBincardAlmacen
 	 * @throws Exception 
 	 */
 	public void generaPDFReporteBincardAlmacen(String ruta, 
+											   BincardAlmacenBean bincardAlmacenBean, 
 											   List<BincardAlmacenBean> listaBincardAlmacen) throws Exception {
-		// TODO Auto-generated method stub
-		
+		Document document = null;
+		try {
+			document = new Document(PageSize.A4, 0, 0, 20, 20);
+			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
+			
+			document.open();
+			 
+			// Considerar que cada campo en array es una columna table de tu reporte	
+			float[] f1 = {100};
+			
+			float[] f3 = {55, 25, 20};
+			
+			float[] f5 = {15, 20, 30, 20, 15};
+
+			float[] f8 = {5, 10, 25, 10, 10, 10, 20, 10};
+			
+			BaseColor header = new BaseColor(242, 242, 242);
+			
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+
+			Paragraph p     = null;
+			Paragraph pdet 	= null;
+			PdfPTable table = null;
+			PdfPCell cell   = null;
+
+			Font titulo = FontFactory.getFont(FontFactory.HELVETICA, 14, Font.BOLD, BaseColor.BLACK);
+			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK);			
+			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK);
+			   
+			
+			// Bloque Inicio
+			table = new PdfPTable(1);
+			table.setWidths(f1);
+			
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("BINCARD N° ");
+			det_encabezado.append(bincardAlmacenBean.getIdAlmacen());
+			det_encabezado.append(Constantes.SEPARADOR);
+			det_encabezado.append(listaBincardAlmacen.get(0).getNroBincard());
+			p = new Paragraph(det_encabezado.toString(), titulo);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("PRODUCTO: ", negrita);
+			pdet = new Paragraph(listaBincardAlmacen.get(0).getNombreProducto(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			p = new Paragraph("UNIDAD MEDIDA: ", negrita);
+			pdet = new Paragraph(listaBincardAlmacen.get(0).getNombreUnidad(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			StringBuilder det_mes_anio = new StringBuilder();
+			det_mes_anio.append("MES: ");
+			det_mes_anio.append(getMes(bincardAlmacenBean.getCodigoMes()));
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(Constantes.SEPARADOR);
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(bincardAlmacenBean.getCodigoAnio());
+			p = new Paragraph(det_mes_anio.toString(), negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(3);
+			table.setWidths(f3);
+			
+			p = new Paragraph("ALMACEN: ", negrita);
+			pdet = new Paragraph(listaBincardAlmacen.get(0).getNombreAlmacen(), normal);
+			p.add(pdet);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBorderColor(BaseColor.WHITE);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea	
+
+			
+			// Bloque Inicio
+			table = new PdfPTable(8);
+			table.setWidths(f8);
+			
+			p = new Paragraph("Item", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Fecha", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Documento", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Ingresos", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Salidas", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Saldo", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Motivo", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			p = new Paragraph("Nro Orden", negrita);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(header);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin
+			
+			
+			// Bloque Inicio
+			int row = 1;
+			
+			for (BincardAlmacenBean bincard : listaBincardAlmacen) {
+			
+				table = new PdfPTable(8);
+				table.setWidths(f8);
+				
+				p = new Paragraph(String.valueOf(row), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+			
+				p = new Paragraph(bincard.getFecha(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(bincard.getConcepto(), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(bincard.getCantidadIngresos())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(bincard.getCantidadSalidas())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(dec_form.format(getBigDecimal(bincard.getCantidadSaldo())), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(bincard.getMotivo()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				p = new Paragraph(getString(bincard.getNroOrden()), normal);
+				cell = new PdfPCell(p);
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cell);
+				
+				document.add(table);	             
+				
+				row++;
+			}
+			// Bloque Fin
+			
+			
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
+			
+			
+			// Bloque Inicio
+			table = new PdfPTable(5);
+			table.setWidths(f5);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			p = new Paragraph("Jefe de Almacén", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			p = new Paragraph("Jefe DDI", normal);
+			cell = new PdfPCell(p);
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.TOP);
+			table.addCell(cell);
+			
+			cell = new PdfPCell();
+			cell.setBorder(PdfPCell.NO_BORDER);
+			table.addCell(cell);
+			
+			document.add(table);
+			// Bloque Fin			
+			
+		} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+		} finally {
+			if (document != null) {
+				document.close();
+			}
+		}
 	}
 
 	/**
@@ -3647,14 +4304,14 @@ public class ReporteAlmacen implements Serializable {
 	        
 	        sheet.setColumnWidth(0, 500);
 	        sheet.setColumnWidth(1, 1500);
-	        sheet.setColumnWidth(2, 2000);
-	        sheet.setColumnWidth(3, 5000);
-	        sheet.setColumnWidth(4, 5000);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
 	        sheet.setColumnWidth(5, 7000);
 	        sheet.setColumnWidth(6, 5000);
-			sheet.setColumnWidth(7, 7000);
-			sheet.setColumnWidth(8, 6000);
-			sheet.setColumnWidth(9, 6000);
+			sheet.setColumnWidth(7, 5000);
+			sheet.setColumnWidth(8, 5000);
+			sheet.setColumnWidth(9, 4000);
 			
 			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
 	        
@@ -3693,6 +4350,22 @@ public class ReporteAlmacen implements Serializable {
 	        style_cell.setBorderLeft((short) 1);	        
 	        style_cell.setBorderRight((short) 1);
 	        style_cell.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f2.setFont(font_norm);	        
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);	        
+	        style_cell_f2.setBorderRight((short) 1);
+	        style_cell_f2.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f3.setFont(font_norm);	        
+	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);	        
+	        style_cell_f3.setBorderRight((short) 1);
+	        style_cell_f3.setBorderTop((short) 1);
 	        
 	        
 	        // Bloque Inicio
@@ -3823,19 +4496,19 @@ public class ReporteAlmacen implements Serializable {
 	        int count = 1;
 	        for (ProyectoManifiestoBean proyecto : listaProyectoManifiesto) {
 	        	
-	        	HSSFRow rows = sheet.createRow((short) row + 1);
+	        	HSSFRow rows = sheet.createRow((short) row);
 	        	
 	        	rows.createCell(1).setCellValue(count);
-		        rows.getCell(1).setCellStyle(style_cell);
+		        rows.getCell(1).setCellStyle(style_cell_f3);
 
 		        rows.createCell(2).setCellValue(proyecto.getFechaEmision());
-		        rows.getCell(2).setCellStyle(style_cell);
+		        rows.getCell(2).setCellStyle(style_cell_f3);
 		        
 		        rows.createCell(3).setCellValue(proyecto.getNroProyectoManifiesto());
-		        rows.getCell(3).setCellStyle(style_cell);
+		        rows.getCell(3).setCellStyle(style_cell_f3);
 		        
 		        rows.createCell(4).setCellValue(proyecto.getNroProgramacion());
-		        rows.getCell(4).setCellStyle(style_cell);
+		        rows.getCell(4).setCellStyle(style_cell_f3);
 		        
 		        rows.createCell(5).setCellValue(proyecto.getNombreMovimiento());
 		        rows.getCell(5).setCellStyle(style_cell);
@@ -3844,13 +4517,13 @@ public class ReporteAlmacen implements Serializable {
 		        rows.getCell(6).setCellStyle(style_cell);
 		        
 		        rows.createCell(7).setCellValue(dec_form.format(getBigDecimal(proyecto.getVolumenTotal())));
-		        rows.getCell(7).setCellStyle(style_cell);
+		        rows.getCell(7).setCellStyle(style_cell_f2);
 		        
 		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(proyecto.getPesoTotalKgr())));
-		        rows.getCell(8).setCellStyle(style_cell);
+		        rows.getCell(8).setCellStyle(style_cell_f2);
 		        
 		        rows.createCell(9).setCellValue(proyecto.getNombreEstado());
-		        rows.getCell(9).setCellStyle(style_cell);
+		        rows.getCell(9).setCellStyle(style_cell_f3);
 	            
 	            row++;
 	            count++;
@@ -3880,16 +4553,16 @@ public class ReporteAlmacen implements Serializable {
 	        
 	        sheet.setColumnWidth(0, 500);
 	        sheet.setColumnWidth(1, 1500);
-	        sheet.setColumnWidth(2, 2000);
-	        sheet.setColumnWidth(3, 5000);
-	        sheet.setColumnWidth(4, 5000);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
 	        sheet.setColumnWidth(5, 7000);
-	        sheet.setColumnWidth(6, 5000);
-			sheet.setColumnWidth(7, 7000);
-			sheet.setColumnWidth(8, 6000);
-			sheet.setColumnWidth(9, 6000);
-			sheet.setColumnWidth(10, 6000);
-			sheet.setColumnWidth(11, 6000);
+	        sheet.setColumnWidth(6, 4000);
+			sheet.setColumnWidth(7, 11000);
+			sheet.setColumnWidth(8, 4000);
+			sheet.setColumnWidth(9, 4000);
+			sheet.setColumnWidth(10, 5000);
+			sheet.setColumnWidth(11, 5000);
 			
 			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
 	        
@@ -3909,6 +4582,7 @@ public class ReporteAlmacen implements Serializable {
 	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
 	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 	        style_tit_cabecera.setFont(font_bold);
+	        style_tit_cabecera.setWrapText(true);
 	        
 	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
 	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
@@ -3933,16 +4607,16 @@ public class ReporteAlmacen implements Serializable {
 			HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
 	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 			style_cell_f2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-	        style_cell_f2.setFont(font_norm);
+	        style_cell_f2.setFont(font_bold);
 	        style_cell_f2.setBorderBottom((short) 1);
 	        style_cell_f2.setBorderLeft((short) 1);
 	        style_cell_f2.setBorderRight((short) 1);
 			
 			HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
-	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 			style_cell_f3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 	        style_cell_f3.setFont(font_norm);
-	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderTop((short) 1);
 	        style_cell_f3.setBorderLeft((short) 1);
 	        style_cell_f3.setBorderRight((short) 1);
 			
@@ -3961,6 +4635,44 @@ public class ReporteAlmacen implements Serializable {
 	        style_cell_f5.setBorderLeft((short) 1);
 	        style_cell_f5.setBorderRight((short) 1);
 	        
+	        HSSFCellStyle style_cell_f6 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f6.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f6.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f6.setFont(font_norm);
+	        style_cell_f6.setBorderTop((short) 1);
+	        style_cell_f6.setBorderLeft((short) 1);
+	        style_cell_f6.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f7 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f7.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f7.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f7.setFont(font_norm);
+	        style_cell_f7.setBorderLeft((short) 1);
+	        style_cell_f7.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f8 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f8.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f8.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f8.setFont(font_norm);
+	        style_cell_f8.setBorderTop((short) 1);
+	        style_cell_f8.setBorderLeft((short) 1);
+	        style_cell_f8.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f9 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f9.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f9.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f9.setFont(font_norm);
+	        style_cell_f9.setBorderLeft((short) 1);
+	        style_cell_f9.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f10 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f10.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f10.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f10.setFont(font_bold);
+	        style_cell_f10.setBorderBottom((short) 1);
+	        style_cell_f10.setBorderLeft((short) 1);
+	        style_cell_f10.setBorderRight((short) 1);
+	        
 	        
 	        // Bloque Inicio
 	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
@@ -3977,31 +4689,36 @@ public class ReporteAlmacen implements Serializable {
 			pict.resize();
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
-			row1.createCell(9).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
-	        row1.getCell(9).setCellStyle(style_cabecera);
+			row1.createCell(11).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(11).setCellStyle(style_cabecera);
 	        
 	        HSSFRow row2 = sheet.createRow((short) 2);
 	        StringBuilder det_fecha = new StringBuilder();
 	        Date fecha_hora = Calendar.getInstance().getTime();
 	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
 	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
-			row2.createCell(9).setCellValue(det_fecha.toString());
-	        row2.getCell(9).setCellStyle(style_cabecera);
+			row2.createCell(11).setCellValue(det_fecha.toString());
+	        row2.getCell(11).setCellStyle(style_cabecera);
 	        
 	        StringBuilder det_hora = new StringBuilder();
 	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
 	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
 	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
 	        HSSFRow row3 = sheet.createRow((short) 3);
-			row3.createCell(9).setCellValue(det_hora.toString());
-	        row3.getCell(9).setCellStyle(style_cabecera);
+			row3.createCell(11).setCellValue(det_hora.toString());
+	        row3.getCell(11).setCellStyle(style_cabecera);
 			// Bloque Fin
 			
 			
 	        // Bloque Inicio
 	        HSSFRow row5 = sheet.createRow((short) 5);
-			row5.createCell(1).setCellValue("REPORTE DE PROYECTO DE MANIFIESTO");
-	        row5.getCell(1).setCellStyle(style_tit_cabecera);	
+			StringBuilder det_titulo = new StringBuilder();
+			det_titulo.append("REPORTE DE PROYECTO DE MANIFIESTO ");
+			det_titulo.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_titulo.append(" DETALLE POR PRODUCTO");
+			row5.createCell(1).setCellValue(det_titulo.toString());
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);
+	        row5.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
 	        // Bloque Fin
 			
 	        
@@ -4083,15 +4800,16 @@ public class ReporteAlmacen implements Serializable {
 	        row10.createCell(9).setCellValue("CANTIDAD");
 	        row10.getCell(9).setCellStyle(style_header);
 			
-	        row10.createCell(11).setCellValue("VOLUMEN M3");
-	        row10.getCell(11).setCellStyle(style_header);
+	        row10.createCell(10).setCellValue("VOLUMEN M3");
+	        row10.getCell(10).setCellStyle(style_header);
 			
-	        row10.createCell(12).setCellValue("PESO TOTAL KGR");
-	        row10.getCell(12).setCellStyle(style_header);
+	        row10.createCell(11).setCellValue("PESO TOTAL KGR");
+	        row10.getCell(11).setCellStyle(style_header);
 	        // Bloque Fin
 	       
 	        
 	        // Bloque Inicio
+			int hrow = 11;
 			int row = 0;
 			int count = 1;
 			boolean ind_primero = false;
@@ -4101,37 +4819,185 @@ public class ReporteAlmacen implements Serializable {
 			String nroProyectoManifiesto = Constantes.EMPTY;
 	        for (ProductoProyectoManifiestoBean proyecto : listaDetalleProyectoManifiesto) {
 	        	
-	        	HSSFRow rows = sheet.createRow((short) row + 1);
-	        	
-	        	rows.createCell(1).setCellValue(count);
-		        rows.getCell(1).setCellStyle(style_cell);
-
-		        rows.createCell(2).setCellValue(proyecto.getFechaEmision());
-		        rows.getCell(2).setCellStyle(style_cell);
-		        
-		        rows.createCell(3).setCellValue(proyecto.getNroProyectoManifiesto());
-		        rows.getCell(3).setCellStyle(style_cell);
-		        
-		        rows.createCell(4).setCellValue(proyecto.getNroProgramacion());
-		        rows.getCell(4).setCellStyle(style_cell);
-		        
-		        rows.createCell(5).setCellValue(proyecto.getNombreMovimiento());
-		        rows.getCell(5).setCellStyle(style_cell);
-		        
-		        rows.createCell(6).setCellValue(proyecto.getNombreAlmacenDestino());
-		        rows.getCell(6).setCellStyle(style_cell);
-		        
-		        rows.createCell(7).setCellValue(dec_form.format(getBigDecimal(proyecto.getVolumenTotal())));
-		        rows.getCell(7).setCellStyle(style_cell);
-		        
-		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(proyecto.getPesoTotal())));
-		        rows.getCell(8).setCellStyle(style_cell);
-		        
-		        rows.createCell(9).setCellValue(proyecto.getNombreEstado());
-		        rows.getCell(9).setCellStyle(style_cell);
+	        	HSSFRow rows = sheet.createRow((short) hrow);
+				
+				if (!nroProyectoManifiesto.equals(proyecto.getNroProyectoManifiesto())) {
+					
+					if (count > 1) {
+				
+						rows.createCell(1).setCellValue(Constantes.EMPTY);
+						rows.getCell(1).setCellStyle(style_cell_f2);
+						
+						rows.createCell(2).setCellValue(Constantes.EMPTY);
+						rows.getCell(2).setCellStyle(style_cell_f2);
+						
+						rows.createCell(3).setCellValue(Constantes.EMPTY);
+						rows.getCell(3).setCellStyle(style_cell_f2);
+						
+						rows.createCell(4).setCellValue(Constantes.EMPTY);
+						rows.getCell(4).setCellStyle(style_cell_f2);
+						
+						rows.createCell(5).setCellValue(Constantes.EMPTY);
+						rows.getCell(5).setCellStyle(style_cell_f2);
+						
+						rows.createCell(6).setCellValue(Constantes.EMPTY);
+						rows.getCell(6).setCellStyle(style_cell_f2);
+						
+						rows.createCell(7).setCellValue("TOTAL PROYECTO");
+						rows.getCell(7).setCellStyle(style_cell_f2);
+						
+						rows.createCell(8).setCellValue(Constantes.EMPTY);
+						rows.getCell(8).setCellStyle(style_cell_f2);
+						
+						rows.createCell(9).setCellValue(dec_form.format(cantidadSubTotal));
+						rows.getCell(9).setCellStyle(style_cell_f10);
+						
+						rows.createCell(10).setCellValue(dec_form.format(volumenSubTotal));
+						rows.getCell(10).setCellStyle(style_cell_f10);
+						
+						rows.createCell(11).setCellValue(dec_form.format(pesoSubTotal));
+						rows.getCell(11).setCellStyle(style_cell_f10);
+						
+						cantidadSubTotal = BigDecimal.ZERO;
+						volumenSubTotal = BigDecimal.ZERO;
+						pesoSubTotal = BigDecimal.ZERO;
+						hrow++;
+						
+						rows = sheet.createRow((short) hrow);
+						
+					}
+						
+					row++;
+				
+					nroProyectoManifiesto = proyecto.getNroProyectoManifiesto();
+					
+					rows.createCell(1).setCellValue(row);
+					rows.getCell(1).setCellStyle(style_cell_f3);
+					
+					rows.createCell(2).setCellValue(proyecto.getFechaEmision());
+					rows.getCell(2).setCellStyle(style_cell_f3);
+					
+					rows.createCell(3).setCellValue(nroProyectoManifiesto);
+					rows.getCell(3).setCellStyle(style_cell_f3);
+					
+					rows.createCell(4).setCellValue(proyecto.getNroProgramacion());
+					rows.getCell(4).setCellStyle(style_cell_f3);
+					
+					rows.createCell(5).setCellValue(proyecto.getNombreMovimiento());
+					rows.getCell(5).setCellStyle(style_cell_f4);
+					
+					rows.createCell(6).setCellValue(proyecto.getNombreEstado());
+					rows.getCell(6).setCellStyle(style_cell_f3);
+				
+					ind_primero = true;
+				
+				} else {
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f5);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f5);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f5);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f5);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f5);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f5);				
+				
+				}
+				
+				rows.createCell(7).setCellValue(proyecto.getNombreProducto());
+				if (ind_primero) {
+					rows.getCell(7).setCellStyle(style_cell_f4);
+				} else {
+					rows.getCell(7).setCellStyle(style_cell_f5);
+				}				
+				
+				rows.createCell(8).setCellValue(proyecto.getNombreUnidad());
+				if (ind_primero) {
+					rows.getCell(8).setCellStyle(style_cell_f6);
+				} else {
+					rows.getCell(8).setCellStyle(style_cell_f7);
+				}
+				
+				rows.createCell(9).setCellValue(dec_form.format(getBigDecimal(proyecto.getCantidad())));
+				if (ind_primero) {
+					rows.getCell(9).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(9).setCellStyle(style_cell_f9);
+				}
+				
+				rows.createCell(10).setCellValue(dec_form.format(getBigDecimal(proyecto.getVolumenTotal())));
+				if (ind_primero) {
+					rows.getCell(10).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(10).setCellStyle(style_cell_f9);
+				}
+				
+				rows.createCell(11).setCellValue(dec_form.format(getBigDecimal(proyecto.getPesoTotal())));
+				if (ind_primero) {
+					rows.getCell(11).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(11).setCellStyle(style_cell_f9);
+				}
+				
+				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(proyecto.getCantidad()));
+				volumenSubTotal = volumenSubTotal.add(getBigDecimal(proyecto.getVolumenTotal()));
+				pesoSubTotal = pesoSubTotal.add(getBigDecimal(proyecto.getPesoTotal()));
+				count++;
+				
+				ind_primero = false;
+				
+				// Subtotal del ultimo registro
+				if (count == listaDetalleProyectoManifiesto.size() + 1) {
+				
+					hrow++;
+						
+					rows = sheet.createRow((short) hrow);
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f2);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f2);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f2);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f2);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f2);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f2);
+					
+					rows.createCell(7).setCellValue("TOTAL PROYECTO");
+					rows.getCell(7).setCellStyle(style_cell_f2);
+					
+					rows.createCell(8).setCellValue(Constantes.EMPTY);
+					rows.getCell(8).setCellStyle(style_cell_f2);
+					
+					rows.createCell(9).setCellValue(dec_form.format(cantidadSubTotal));
+					rows.getCell(9).setCellStyle(style_cell_f10);
+					
+					rows.createCell(10).setCellValue(dec_form.format(volumenSubTotal));
+					rows.getCell(10).setCellStyle(style_cell_f10);
+					
+					rows.createCell(11).setCellValue(dec_form.format(pesoSubTotal));
+					rows.getCell(11).setCellStyle(style_cell_f10);
+				
+				}
 	            
-	            row++;
-	            count++;
+	            hrow++;
 	        }
 	        // Bloque Fin
 			
@@ -4152,8 +5018,243 @@ public class ReporteAlmacen implements Serializable {
 	public HSSFWorkbook generaExcelReporteOrdenSalida(String ruta, 
 													  OrdenSalidaBean ordenSalidaBean,
 													  List<OrdenSalidaBean> listaOrdenSalida) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("ORDEN DE SALIDA");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 5000);
+			sheet.setColumnWidth(8, 5000);
+			sheet.setColumnWidth(9, 4000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);     
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);	        
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);	        
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+	        style_cell.setFont(font_norm);	        
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);	        
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f2.setFont(font_norm);	        
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);	        
+	        style_cell_f2.setBorderRight((short) 1);
+	        style_cell_f2.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f3.setFont(font_norm);	        
+	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);	        
+	        style_cell_f3.setBorderRight((short) 1);
+	        style_cell_f3.setBorderTop((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
+	        InputStream is = new FileInputStream(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			byte[] bytes = IOUtils.toByteArray(is);
+			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+			is.close();
+			CreationHelper helper = wb.getCreationHelper();
+			Drawing drawing = sheet.createDrawingPatriarch();
+			ClientAnchor anchor = helper.createClientAnchor();
+			anchor.setCol1(1);
+			anchor.setRow1(1);
+			Picture pict = drawing.createPicture(anchor, pictureIdx);
+			pict.resize();
+	        
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(9).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(9).setCellStyle(style_cabecera);
+	        
+	        HSSFRow row2 = sheet.createRow((short) 2);
+	        StringBuilder det_fecha = new StringBuilder();
+	        Date fecha_hora = Calendar.getInstance().getTime();
+	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
+			row2.createCell(9).setCellValue(det_fecha.toString());
+	        row2.getCell(9).setCellStyle(style_cabecera);
+	        
+	        StringBuilder det_hora = new StringBuilder();
+	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
+	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
+	        HSSFRow row3 = sheet.createRow((short) 3);
+			row3.createCell(9).setCellValue(det_hora.toString());
+	        row3.getCell(9).setCellStyle(style_cabecera);
+			// Bloque Fin
+			
+			
+	        // Bloque Inicio
+	        HSSFRow row5 = sheet.createRow((short) 5);
+			row5.createCell(1).setCellValue("REPORTE DE ORDENES DE SALIDA");
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);	
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row7 = sheet.createRow((short) 7);
+	        
+	        HSSFRichTextString for_rep_ddi = new HSSFRichTextString("DDI: ");
+	        HSSFRichTextString for_des_ddi = new HSSFRichTextString(listaOrdenSalida.get(0).getNombreDdi());
+	        RichTextString det_ddi = new HSSFRichTextString(for_rep_ddi.getString() + for_des_ddi.getString());
+	        int tam_ddi = listaOrdenSalida.get(0).getNombreDdi().length();
+	        det_ddi.applyFont(0, 5, font_bold);
+	        det_ddi.applyFont(5, tam_ddi + 5, font_norm);	        
+			row7.createCell(1).setCellValue(det_ddi);	
+			
+			HSSFRichTextString for_rep_anio = new HSSFRichTextString("AÑO: ");
+	        HSSFRichTextString for_des_anio = new HSSFRichTextString(ordenSalidaBean.getCodigoAnio());
+	        RichTextString det_anio = new HSSFRichTextString(for_rep_anio.getString() + for_des_anio.getString());
+	        int tam_anio = ordenSalidaBean.getCodigoAnio().length();
+	        det_anio.applyFont(0, 5, font_bold);
+	        det_anio.applyFont(5, tam_anio + 5, font_norm);	        
+			row7.createCell(4).setCellValue(det_anio);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaOrdenSalida.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaOrdenSalida.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(ordenSalidaBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(ordenSalidaBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row10 = sheet.createRow((short) 10);
+	        
+	        row10.createCell(1).setCellValue("ITEM");
+	        row10.getCell(1).setCellStyle(style_header);
+	        
+	        row10.createCell(2).setCellValue("FECHA EMISION");
+	        row10.getCell(2).setCellStyle(style_header);
+	        
+	        row10.createCell(3).setCellValue("NRO ORDEN DE SALIDA");
+	        row10.getCell(3).setCellStyle(style_header);
+	        
+	        row10.createCell(4).setCellValue("NRO GUIA REMISION");
+	        row10.getCell(4).setCellStyle(style_header);
+	        
+	        row10.createCell(5).setCellValue("TIPO MOVIMIENTO");
+	        row10.getCell(5).setCellStyle(style_header);
+	        
+	        row10.createCell(6).setCellValue("DESTINO");
+	        row10.getCell(6).setCellStyle(style_header);
+	        
+	        row10.createCell(7).setCellValue("IMPORTE TOTAL");
+	        row10.getCell(7).setCellStyle(style_header);
+	        
+	        row10.createCell(8).setCellValue("PESO TOTAL KGR");
+	        row10.getCell(8).setCellStyle(style_header);
+	        
+	        row10.createCell(9).setCellValue("ESTADO");
+	        row10.getCell(9).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+	        int row = 11;
+	        int count = 1;
+	        for (OrdenSalidaBean ordenSalida : listaOrdenSalida) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) row);
+	        	
+	        	rows.createCell(1).setCellValue(count);
+		        rows.getCell(1).setCellStyle(style_cell_f3);
+
+		        rows.createCell(2).setCellValue(ordenSalida.getFechaEmision());
+		        rows.getCell(2).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(3).setCellValue(ordenSalida.getNroOrdenSalida());
+		        rows.getCell(3).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(4).setCellValue(ordenSalida.getNroGuiaRemision());
+		        rows.getCell(4).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(5).setCellValue(ordenSalida.getNombreMovimiento());
+		        rows.getCell(5).setCellStyle(style_cell);
+		        
+		        rows.createCell(6).setCellValue(ordenSalida.getNombreAlmacenDestino());
+		        rows.getCell(6).setCellStyle(style_cell);
+		        
+		        rows.createCell(7).setCellValue(dec_form.format(getBigDecimal(ordenSalida.getImporteTotal())));
+		        rows.getCell(7).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(ordenSalida.getPesoTotalKgr())));
+		        rows.getCell(8).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(9).setCellValue(ordenSalida.getNombreEstado());
+		        rows.getCell(9).setCellStyle(style_cell_f3);
+	            
+	            row++;
+	            count++;
+	        }
+	        // Bloque Fin
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
@@ -4166,8 +5267,465 @@ public class ReporteAlmacen implements Serializable {
 	public HSSFWorkbook generaExcelReporteDetalleOrdenSalida(String ruta, 
 															 ProductoSalidaBean productoSalidaBean,
 															 List<ProductoSalidaBean> listaDetalleOrdenSalida) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("ORDEN DE SALIDA");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 4000);
+			sheet.setColumnWidth(7, 11000);
+			sheet.setColumnWidth(8, 4000);
+			sheet.setColumnWidth(9, 4000);
+			sheet.setColumnWidth(10, 6000);
+			sheet.setColumnWidth(11, 5000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);
+			style_tit_cabecera.setWrapText(true);
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell.setFont(font_norm);
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+			
+			HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f2.setFont(font_bold);
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);
+	        style_cell_f2.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f3.setFont(font_norm);
+	        style_cell_f3.setBorderTop((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);
+	        style_cell_f3.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f4 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f4.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f4.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f4.setFont(font_norm);
+	        style_cell_f4.setBorderTop((short) 1);
+	        style_cell_f4.setBorderLeft((short) 1);
+	        style_cell_f4.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f5 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f5.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f5.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f5.setFont(font_norm);
+	        style_cell_f5.setBorderLeft((short) 1);
+	        style_cell_f5.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f6 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f6.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f6.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f6.setFont(font_norm);
+	        style_cell_f6.setBorderTop((short) 1);
+	        style_cell_f6.setBorderLeft((short) 1);
+	        style_cell_f6.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f7 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f7.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f7.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f7.setFont(font_norm);
+	        style_cell_f7.setBorderLeft((short) 1);
+	        style_cell_f7.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f8 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f8.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f8.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f8.setFont(font_norm);
+	        style_cell_f8.setBorderTop((short) 1);
+	        style_cell_f8.setBorderLeft((short) 1);
+	        style_cell_f8.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f9 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f9.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f9.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f9.setFont(font_norm);
+	        style_cell_f9.setBorderLeft((short) 1);
+	        style_cell_f9.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f10 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f10.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f10.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f10.setFont(font_bold);
+	        style_cell_f10.setBorderBottom((short) 1);
+	        style_cell_f10.setBorderLeft((short) 1);
+	        style_cell_f10.setBorderRight((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
+	        InputStream is = new FileInputStream(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			byte[] bytes = IOUtils.toByteArray(is);
+			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+			is.close();
+			CreationHelper helper = wb.getCreationHelper();
+			Drawing drawing = sheet.createDrawingPatriarch();
+			ClientAnchor anchor = helper.createClientAnchor();
+			anchor.setCol1(1);
+			anchor.setRow1(1);
+			Picture pict = drawing.createPicture(anchor, pictureIdx);
+			pict.resize();
+	        
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(11).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(11).setCellStyle(style_cabecera);
+	        
+	        HSSFRow row2 = sheet.createRow((short) 2);
+	        StringBuilder det_fecha = new StringBuilder();
+	        Date fecha_hora = Calendar.getInstance().getTime();
+	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
+			row2.createCell(11).setCellValue(det_fecha.toString());
+	        row2.getCell(11).setCellStyle(style_cabecera);
+	        
+	        StringBuilder det_hora = new StringBuilder();
+	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
+	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
+	        HSSFRow row3 = sheet.createRow((short) 3);
+			row3.createCell(11).setCellValue(det_hora.toString());
+	        row3.getCell(11).setCellStyle(style_cabecera);
+			// Bloque Fin
+			
+			
+	        // Bloque Inicio
+	        HSSFRow row5 = sheet.createRow((short) 5);
+			StringBuilder det_titulo = new StringBuilder();
+			det_titulo.append("REPORTE DE ORDEN DE SALIDA ");
+			det_titulo.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_titulo.append(" DETALLE POR PRODUCTO");
+			row5.createCell(1).setCellValue(det_titulo.toString());
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);
+			row5.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row7 = sheet.createRow((short) 7);
+	        
+	        HSSFRichTextString for_rep_ddi = new HSSFRichTextString("DDI: ");
+	        HSSFRichTextString for_des_ddi = new HSSFRichTextString(listaDetalleOrdenSalida.get(0).getNombreDdi());
+	        RichTextString det_ddi = new HSSFRichTextString(for_rep_ddi.getString() + for_des_ddi.getString());
+	        int tam_ddi = listaDetalleOrdenSalida.get(0).getNombreDdi().length();
+	        det_ddi.applyFont(0, 5, font_bold);
+	        det_ddi.applyFont(5, tam_ddi + 5, font_norm);	        
+			row7.createCell(1).setCellValue(det_ddi);	
+			
+			HSSFRichTextString for_rep_anio = new HSSFRichTextString("AÑO: ");
+	        HSSFRichTextString for_des_anio = new HSSFRichTextString(productoSalidaBean.getCodigoAnio());
+	        RichTextString det_anio = new HSSFRichTextString(for_rep_anio.getString() + for_des_anio.getString());
+	        int tam_anio = productoSalidaBean.getCodigoAnio().length();
+	        det_anio.applyFont(0, 5, font_bold);
+	        det_anio.applyFont(5, tam_anio + 5, font_norm);	        
+			row7.createCell(4).setCellValue(det_anio);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaDetalleOrdenSalida.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaDetalleOrdenSalida.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(productoSalidaBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(productoSalidaBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row10 = sheet.createRow((short) 10);
+	        
+	        row10.createCell(1).setCellValue("ITEM");
+	        row10.getCell(1).setCellStyle(style_header);
+	        
+	        row10.createCell(2).setCellValue("FECHA EMISION");
+	        row10.getCell(2).setCellStyle(style_header);
+	        
+	        row10.createCell(3).setCellValue("NRO ORDEN SALIDA");
+	        row10.getCell(3).setCellStyle(style_header);
+	        
+	        row10.createCell(4).setCellValue("NRO GUIA REMISION");
+	        row10.getCell(4).setCellStyle(style_header);
+	        
+	        row10.createCell(5).setCellValue("TIPO MOVIMIENTO");
+	        row10.getCell(5).setCellStyle(style_header);
+	        
+	        row10.createCell(6).setCellValue("ESTADO");
+	        row10.getCell(6).setCellStyle(style_header);
+	        
+	        row10.createCell(7).setCellValue("PRODUCTO");
+	        row10.getCell(7).setCellStyle(style_header);
+	        
+	        row10.createCell(8).setCellValue("UNIDAD");
+	        row10.getCell(8).setCellStyle(style_header);
+	        
+	        row10.createCell(9).setCellValue("CANTIDAD");
+	        row10.getCell(9).setCellStyle(style_header);
+			
+	        row10.createCell(10).setCellValue("PRECIO UNIT. PROMEDIO");
+	        row10.getCell(10).setCellStyle(style_header);
+			
+	        row10.createCell(11).setCellValue("IMPORTE TOTAL");
+	        row10.getCell(11).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+			int hrow = 11;
+			int row = 0;
+			int count = 1;
+			boolean ind_primero = false;
+			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
+			BigDecimal precioUnitarioSubTotal = BigDecimal.ZERO;
+			BigDecimal importeSubTotal = BigDecimal.ZERO;
+			String nroOrdenSalida = Constantes.EMPTY;
+	        for (ProductoSalidaBean producto : listaDetalleOrdenSalida) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) hrow);
+				
+				if (!nroOrdenSalida.equals(producto.getNroOrdenSalida())) {
+					
+					if (count > 1) {
+				
+						rows.createCell(1).setCellValue(Constantes.EMPTY);
+						rows.getCell(1).setCellStyle(style_cell_f2);
+						
+						rows.createCell(2).setCellValue(Constantes.EMPTY);
+						rows.getCell(2).setCellStyle(style_cell_f2);
+						
+						rows.createCell(3).setCellValue(Constantes.EMPTY);
+						rows.getCell(3).setCellStyle(style_cell_f2);
+						
+						rows.createCell(4).setCellValue(Constantes.EMPTY);
+						rows.getCell(4).setCellStyle(style_cell_f2);
+						
+						rows.createCell(5).setCellValue(Constantes.EMPTY);
+						rows.getCell(5).setCellStyle(style_cell_f2);
+						
+						rows.createCell(6).setCellValue(Constantes.EMPTY);
+						rows.getCell(6).setCellStyle(style_cell_f2);
+						
+						rows.createCell(7).setCellValue("TOTAL ORDEN");
+						rows.getCell(7).setCellStyle(style_cell_f2);
+						
+						rows.createCell(8).setCellValue(Constantes.EMPTY);
+						rows.getCell(8).setCellStyle(style_cell_f2);
+						
+						rows.createCell(9).setCellValue(dec_form.format(cantidadSubTotal));
+						rows.getCell(9).setCellStyle(style_cell_f10);
+						
+						rows.createCell(10).setCellValue(dec_form.format(precioUnitarioSubTotal));
+						rows.getCell(10).setCellStyle(style_cell_f10);
+						
+						rows.createCell(11).setCellValue(dec_form.format(importeSubTotal));
+						rows.getCell(11).setCellStyle(style_cell_f10);
+						
+						cantidadSubTotal = BigDecimal.ZERO;
+						precioUnitarioSubTotal = BigDecimal.ZERO;
+						importeSubTotal = BigDecimal.ZERO;
+						hrow++;
+						
+						rows = sheet.createRow((short) hrow);
+						
+					}
+						
+					row++;
+				
+					nroOrdenSalida = producto.getNroOrdenSalida();
+					
+					rows.createCell(1).setCellValue(row);
+					rows.getCell(1).setCellStyle(style_cell_f3);
+					
+					rows.createCell(2).setCellValue(producto.getFechaEmision());
+					rows.getCell(2).setCellStyle(style_cell_f3);
+					
+					rows.createCell(3).setCellValue(nroOrdenSalida);
+					rows.getCell(3).setCellStyle(style_cell_f3);
+					
+					rows.createCell(4).setCellValue(producto.getNroGuiaRemision());
+					rows.getCell(4).setCellStyle(style_cell_f3);
+					
+					rows.createCell(5).setCellValue(producto.getNombreMovimiento());
+					rows.getCell(5).setCellStyle(style_cell_f4);
+					
+					rows.createCell(6).setCellValue(producto.getNombreEstado());
+					rows.getCell(6).setCellStyle(style_cell_f3);
+				
+					ind_primero = true;
+				
+				} else {
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f5);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f5);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f5);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f5);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f5);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f5);				
+				
+				}
+				
+				rows.createCell(7).setCellValue(producto.getNombreProducto());
+				if (ind_primero) {
+					rows.getCell(7).setCellStyle(style_cell_f4);
+				} else {
+					rows.getCell(7).setCellStyle(style_cell_f5);
+				}				
+				
+				rows.createCell(8).setCellValue(producto.getNombreUnidad());
+				if (ind_primero) {
+					rows.getCell(8).setCellStyle(style_cell_f6);
+				} else {
+					rows.getCell(8).setCellStyle(style_cell_f7);
+				}
+				
+				rows.createCell(9).setCellValue(dec_form.format(getBigDecimal(producto.getCantidad())));
+				if (ind_primero) {
+					rows.getCell(9).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(9).setCellStyle(style_cell_f9);
+				}
+				
+				rows.createCell(10).setCellValue(dec_form.format(getBigDecimal(producto.getPrecioUnitario())));
+				if (ind_primero) {
+					rows.getCell(10).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(10).setCellStyle(style_cell_f9);
+				}
+				
+				rows.createCell(11).setCellValue(dec_form.format(getBigDecimal(producto.getImporteTotal())));
+				if (ind_primero) {
+					rows.getCell(11).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(11).setCellStyle(style_cell_f9);
+				}
+				
+				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(producto.getCantidad()));
+				precioUnitarioSubTotal = precioUnitarioSubTotal.add(getBigDecimal(producto.getPrecioUnitario()));
+				importeSubTotal = importeSubTotal.add(getBigDecimal(producto.getImporteTotal()));
+				count++;
+				
+				ind_primero = false;
+				
+				// Subtotal del ultimo registro
+				if (count == listaDetalleOrdenSalida.size() + 1) {
+				
+					hrow++;
+						
+					rows = sheet.createRow((short) hrow);
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f2);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f2);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f2);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f2);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f2);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f2);
+					
+					rows.createCell(7).setCellValue("TOTAL ORDEN");
+					rows.getCell(7).setCellStyle(style_cell_f2);
+					
+					rows.createCell(8).setCellValue(Constantes.EMPTY);
+					rows.getCell(8).setCellStyle(style_cell_f2);
+					
+					rows.createCell(9).setCellValue(dec_form.format(cantidadSubTotal));
+					rows.getCell(9).setCellStyle(style_cell_f10);
+					
+					rows.createCell(10).setCellValue(dec_form.format(precioUnitarioSubTotal));
+					rows.getCell(10).setCellStyle(style_cell_f10);
+					
+					rows.createCell(11).setCellValue(dec_form.format(importeSubTotal));
+					rows.getCell(11).setCellStyle(style_cell_f10);
+				
+				}
+	            
+	            hrow++;
+	        }
+	        // Bloque Fin
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
@@ -4180,8 +5738,243 @@ public class ReporteAlmacen implements Serializable {
 	public HSSFWorkbook generaExcelReporteOrdenIngreso(String ruta, 
 													   OrdenIngresoBean ordenIngresoBean,
 													   List<OrdenIngresoBean> listaOrdenIngreso) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("ORDEN DE INGRESO");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 5000);
+			sheet.setColumnWidth(8, 5000);
+			sheet.setColumnWidth(9, 4000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);     
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);	        
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);	        
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+	        style_cell.setFont(font_norm);	        
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);	        
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f2.setFont(font_norm);	        
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);	        
+	        style_cell_f2.setBorderRight((short) 1);
+	        style_cell_f2.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f3.setFont(font_norm);	        
+	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);	        
+	        style_cell_f3.setBorderRight((short) 1);
+	        style_cell_f3.setBorderTop((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
+	        InputStream is = new FileInputStream(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			byte[] bytes = IOUtils.toByteArray(is);
+			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+			is.close();
+			CreationHelper helper = wb.getCreationHelper();
+			Drawing drawing = sheet.createDrawingPatriarch();
+			ClientAnchor anchor = helper.createClientAnchor();
+			anchor.setCol1(1);
+			anchor.setRow1(1);
+			Picture pict = drawing.createPicture(anchor, pictureIdx);
+			pict.resize();
+	        
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(9).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(9).setCellStyle(style_cabecera);
+	        
+	        HSSFRow row2 = sheet.createRow((short) 2);
+	        StringBuilder det_fecha = new StringBuilder();
+	        Date fecha_hora = Calendar.getInstance().getTime();
+	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
+			row2.createCell(9).setCellValue(det_fecha.toString());
+	        row2.getCell(9).setCellStyle(style_cabecera);
+	        
+	        StringBuilder det_hora = new StringBuilder();
+	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
+	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
+	        HSSFRow row3 = sheet.createRow((short) 3);
+			row3.createCell(9).setCellValue(det_hora.toString());
+	        row3.getCell(9).setCellStyle(style_cabecera);
+			// Bloque Fin
+			
+			
+	        // Bloque Inicio
+	        HSSFRow row5 = sheet.createRow((short) 5);
+			row5.createCell(1).setCellValue("REPORTE DE ORDENES DE INGRESO");
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);	
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row7 = sheet.createRow((short) 7);
+	        
+	        HSSFRichTextString for_rep_ddi = new HSSFRichTextString("DDI: ");
+	        HSSFRichTextString for_des_ddi = new HSSFRichTextString(listaOrdenIngreso.get(0).getNombreDdi());
+	        RichTextString det_ddi = new HSSFRichTextString(for_rep_ddi.getString() + for_des_ddi.getString());
+	        int tam_ddi = listaOrdenIngreso.get(0).getNombreDdi().length();
+	        det_ddi.applyFont(0, 5, font_bold);
+	        det_ddi.applyFont(5, tam_ddi + 5, font_norm);	        
+			row7.createCell(1).setCellValue(det_ddi);	
+			
+			HSSFRichTextString for_rep_anio = new HSSFRichTextString("AÑO: ");
+	        HSSFRichTextString for_des_anio = new HSSFRichTextString(ordenIngresoBean.getCodigoAnio());
+	        RichTextString det_anio = new HSSFRichTextString(for_rep_anio.getString() + for_des_anio.getString());
+	        int tam_anio = ordenIngresoBean.getCodigoAnio().length();
+	        det_anio.applyFont(0, 5, font_bold);
+	        det_anio.applyFont(5, tam_anio + 5, font_norm);	        
+			row7.createCell(4).setCellValue(det_anio);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaOrdenIngreso.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaOrdenIngreso.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(ordenIngresoBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(ordenIngresoBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row10 = sheet.createRow((short) 10);
+	        
+	        row10.createCell(1).setCellValue("ITEM");
+	        row10.getCell(1).setCellStyle(style_header);
+	        
+	        row10.createCell(2).setCellValue("FECHA EMISION");
+	        row10.getCell(2).setCellStyle(style_header);
+	        
+	        row10.createCell(3).setCellValue("NRO ORDEN DE INGRESO");
+	        row10.getCell(3).setCellStyle(style_header);
+	        
+	        row10.createCell(4).setCellValue("NRO ORDEN DE COMPRA");
+	        row10.getCell(4).setCellStyle(style_header);
+	        
+	        row10.createCell(5).setCellValue("TIPO MOVIMIENTO");
+	        row10.getCell(5).setCellStyle(style_header);
+	        
+	        row10.createCell(6).setCellValue("ORIGEN");
+	        row10.getCell(6).setCellStyle(style_header);
+	        
+	        row10.createCell(7).setCellValue("IMPORTE TOTAL");
+	        row10.getCell(7).setCellStyle(style_header);
+	        
+	        row10.createCell(8).setCellValue("PESO TOTAL KGR");
+	        row10.getCell(8).setCellStyle(style_header);
+	        
+	        row10.createCell(9).setCellValue("ESTADO");
+	        row10.getCell(9).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+	        int row = 11;
+	        int count = 1;
+	        for (OrdenIngresoBean ordenIngreso : listaOrdenIngreso) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) row);
+	        	
+	        	rows.createCell(1).setCellValue(count);
+		        rows.getCell(1).setCellStyle(style_cell_f3);
+
+		        rows.createCell(2).setCellValue(ordenIngreso.getFechaEmision());
+		        rows.getCell(2).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(3).setCellValue(ordenIngreso.getNroOrdenIngreso());
+		        rows.getCell(3).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(4).setCellValue(ordenIngreso.getNroOrdenCompra());
+		        rows.getCell(4).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(5).setCellValue(ordenIngreso.getNombreMovimiento());
+		        rows.getCell(5).setCellStyle(style_cell);
+		        
+		        rows.createCell(6).setCellValue(ordenIngreso.getNombreAlmacenProcedencia());
+		        rows.getCell(6).setCellStyle(style_cell);
+		        
+		        rows.createCell(7).setCellValue(dec_form.format(getBigDecimal(ordenIngreso.getImporteTotal())));
+		        rows.getCell(7).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(ordenIngreso.getPesoTotalKgr())));
+		        rows.getCell(8).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(9).setCellValue(ordenIngreso.getNombreEstado());
+		        rows.getCell(9).setCellStyle(style_cell_f3);
+	            
+	            row++;
+	            count++;
+	        }
+	        // Bloque Fin
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
@@ -4194,8 +5987,465 @@ public class ReporteAlmacen implements Serializable {
 	public HSSFWorkbook generaExcelReporteDetalleOrdenIngreso(String ruta, 
 															  ProductoIngresoBean productoIngresoBean,
 															  List<ProductoIngresoBean> listaDetalleOrdenIngreso) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("ORDEN DE INGRESO");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 4000);
+			sheet.setColumnWidth(7, 11000);
+			sheet.setColumnWidth(8, 4000);
+			sheet.setColumnWidth(9, 4000);
+			sheet.setColumnWidth(10, 5000);
+			sheet.setColumnWidth(11, 5000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);
+			style_tit_cabecera.setWrapText(true);
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell.setFont(font_norm);
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+			
+			HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f2.setFont(font_bold);
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);
+	        style_cell_f2.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f3.setFont(font_norm);
+	        style_cell_f3.setBorderTop((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);
+	        style_cell_f3.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f4 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f4.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f4.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f4.setFont(font_norm);
+	        style_cell_f4.setBorderTop((short) 1);
+	        style_cell_f4.setBorderLeft((short) 1);
+	        style_cell_f4.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f5 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f5.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f5.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f5.setFont(font_norm);
+	        style_cell_f5.setBorderLeft((short) 1);
+	        style_cell_f5.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f6 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f6.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f6.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f6.setFont(font_norm);
+	        style_cell_f6.setBorderTop((short) 1);
+	        style_cell_f6.setBorderLeft((short) 1);
+	        style_cell_f6.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f7 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f7.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f7.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f7.setFont(font_norm);
+	        style_cell_f7.setBorderLeft((short) 1);
+	        style_cell_f7.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f8 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f8.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f8.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f8.setFont(font_norm);
+	        style_cell_f8.setBorderTop((short) 1);
+	        style_cell_f8.setBorderLeft((short) 1);
+	        style_cell_f8.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f9 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f9.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f9.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f9.setFont(font_norm);
+	        style_cell_f9.setBorderLeft((short) 1);
+	        style_cell_f9.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f10 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f10.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f10.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f10.setFont(font_bold);
+	        style_cell_f10.setBorderBottom((short) 1);
+	        style_cell_f10.setBorderLeft((short) 1);
+	        style_cell_f10.setBorderRight((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
+	        InputStream is = new FileInputStream(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			byte[] bytes = IOUtils.toByteArray(is);
+			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+			is.close();
+			CreationHelper helper = wb.getCreationHelper();
+			Drawing drawing = sheet.createDrawingPatriarch();
+			ClientAnchor anchor = helper.createClientAnchor();
+			anchor.setCol1(1);
+			anchor.setRow1(1);
+			Picture pict = drawing.createPicture(anchor, pictureIdx);
+			pict.resize();
+	        
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(11).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(11).setCellStyle(style_cabecera);
+	        
+	        HSSFRow row2 = sheet.createRow((short) 2);
+	        StringBuilder det_fecha = new StringBuilder();
+	        Date fecha_hora = Calendar.getInstance().getTime();
+	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
+			row2.createCell(11).setCellValue(det_fecha.toString());
+	        row2.getCell(11).setCellStyle(style_cabecera);
+	        
+	        StringBuilder det_hora = new StringBuilder();
+	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
+	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
+	        HSSFRow row3 = sheet.createRow((short) 3);
+			row3.createCell(11).setCellValue(det_hora.toString());
+	        row3.getCell(11).setCellStyle(style_cabecera);
+			// Bloque Fin
+			
+			
+	        // Bloque Inicio
+	        HSSFRow row5 = sheet.createRow((short) 5);
+			StringBuilder det_titulo = new StringBuilder();
+			det_titulo.append("REPORTE DE ORDENES DE INGRESO ");
+			det_titulo.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_titulo.append(" DETALLE POR PRODUCTO");
+			row5.createCell(1).setCellValue(det_titulo.toString());
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);	
+			row5.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row7 = sheet.createRow((short) 7);
+	        
+	        HSSFRichTextString for_rep_ddi = new HSSFRichTextString("DDI: ");
+	        HSSFRichTextString for_des_ddi = new HSSFRichTextString(listaDetalleOrdenIngreso.get(0).getNombreDdi());
+	        RichTextString det_ddi = new HSSFRichTextString(for_rep_ddi.getString() + for_des_ddi.getString());
+	        int tam_ddi = listaDetalleOrdenIngreso.get(0).getNombreDdi().length();
+	        det_ddi.applyFont(0, 5, font_bold);
+	        det_ddi.applyFont(5, tam_ddi + 5, font_norm);	        
+			row7.createCell(1).setCellValue(det_ddi);	
+			
+			HSSFRichTextString for_rep_anio = new HSSFRichTextString("AÑO: ");
+	        HSSFRichTextString for_des_anio = new HSSFRichTextString(productoIngresoBean.getCodigoAnio());
+	        RichTextString det_anio = new HSSFRichTextString(for_rep_anio.getString() + for_des_anio.getString());
+	        int tam_anio = productoIngresoBean.getCodigoAnio().length();
+	        det_anio.applyFont(0, 5, font_bold);
+	        det_anio.applyFont(5, tam_anio + 5, font_norm);	        
+			row7.createCell(4).setCellValue(det_anio);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaDetalleOrdenIngreso.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaDetalleOrdenIngreso.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(productoIngresoBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(productoIngresoBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row10 = sheet.createRow((short) 10);
+	        
+	        row10.createCell(1).setCellValue("ITEM");
+	        row10.getCell(1).setCellStyle(style_header);
+	        
+	        row10.createCell(2).setCellValue("FECHA EMISION");
+	        row10.getCell(2).setCellStyle(style_header);
+	        
+	        row10.createCell(3).setCellValue("NRO ORDEN INGRESO");
+	        row10.getCell(3).setCellStyle(style_header);
+	        
+	        row10.createCell(4).setCellValue("NRO ORDEN COMPRA");
+	        row10.getCell(4).setCellStyle(style_header);
+	        
+	        row10.createCell(5).setCellValue("TIPO MOVIMIENTO");
+	        row10.getCell(5).setCellStyle(style_header);
+	        
+	        row10.createCell(6).setCellValue("ESTADO");
+	        row10.getCell(6).setCellStyle(style_header);
+	        
+	        row10.createCell(7).setCellValue("PRODUCTO");
+	        row10.getCell(7).setCellStyle(style_header);
+	        
+	        row10.createCell(8).setCellValue("UNIDAD");
+	        row10.getCell(8).setCellStyle(style_header);
+	        
+	        row10.createCell(9).setCellValue("CANTIDAD");
+	        row10.getCell(9).setCellStyle(style_header);
+			
+	        row10.createCell(10).setCellValue("PRECIO UNITARIO");
+	        row10.getCell(10).setCellStyle(style_header);
+			
+	        row10.createCell(11).setCellValue("IMPORTE TOTAL");
+	        row10.getCell(11).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+			int hrow = 11;
+			int row = 0;
+			int count = 1;
+			boolean ind_primero = false;
+			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
+			BigDecimal precioUnitarioSubTotal = BigDecimal.ZERO;
+			BigDecimal importeSubTotal = BigDecimal.ZERO;
+			String nroOrdenIngreso = Constantes.EMPTY;
+			for (ProductoIngresoBean producto : listaDetalleOrdenIngreso) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) hrow);
+				
+				if (!nroOrdenIngreso.equals(producto.getNroOrdenIngreso())) {
+					
+					if (count > 1) {
+				
+						rows.createCell(1).setCellValue(Constantes.EMPTY);
+						rows.getCell(1).setCellStyle(style_cell_f2);
+						
+						rows.createCell(2).setCellValue(Constantes.EMPTY);
+						rows.getCell(2).setCellStyle(style_cell_f2);
+						
+						rows.createCell(3).setCellValue(Constantes.EMPTY);
+						rows.getCell(3).setCellStyle(style_cell_f2);
+						
+						rows.createCell(4).setCellValue(Constantes.EMPTY);
+						rows.getCell(4).setCellStyle(style_cell_f2);
+						
+						rows.createCell(5).setCellValue(Constantes.EMPTY);
+						rows.getCell(5).setCellStyle(style_cell_f2);
+						
+						rows.createCell(6).setCellValue(Constantes.EMPTY);
+						rows.getCell(6).setCellStyle(style_cell_f2);
+						
+						rows.createCell(7).setCellValue("TOTAL ORDEN");
+						rows.getCell(7).setCellStyle(style_cell_f2);
+						
+						rows.createCell(8).setCellValue(Constantes.EMPTY);
+						rows.getCell(8).setCellStyle(style_cell_f2);
+						
+						rows.createCell(9).setCellValue(dec_form.format(cantidadSubTotal));
+						rows.getCell(9).setCellStyle(style_cell_f10);
+						
+						rows.createCell(10).setCellValue(dec_form.format(precioUnitarioSubTotal));
+						rows.getCell(10).setCellStyle(style_cell_f10);
+						
+						rows.createCell(11).setCellValue(dec_form.format(importeSubTotal));
+						rows.getCell(11).setCellStyle(style_cell_f10);
+						
+						cantidadSubTotal = BigDecimal.ZERO;
+						precioUnitarioSubTotal = BigDecimal.ZERO;
+						importeSubTotal = BigDecimal.ZERO;
+						hrow++;
+						
+						rows = sheet.createRow((short) hrow);
+						
+					}
+						
+					row++;
+				
+					nroOrdenIngreso = producto.getNroOrdenIngreso();
+					
+					rows.createCell(1).setCellValue(row);
+					rows.getCell(1).setCellStyle(style_cell_f3);
+					
+					rows.createCell(2).setCellValue(producto.getFechaEmision());
+					rows.getCell(2).setCellStyle(style_cell_f3);
+					
+					rows.createCell(3).setCellValue(nroOrdenIngreso);
+					rows.getCell(3).setCellStyle(style_cell_f3);
+					
+					rows.createCell(4).setCellValue(producto.getNroOrdenCompra());
+					rows.getCell(4).setCellStyle(style_cell_f3);
+					
+					rows.createCell(5).setCellValue(producto.getNombreMovimiento());
+					rows.getCell(5).setCellStyle(style_cell_f4);
+					
+					rows.createCell(6).setCellValue(producto.getNombreEstado());
+					rows.getCell(6).setCellStyle(style_cell_f3);
+				
+					ind_primero = true;
+				
+				} else {
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f5);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f5);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f5);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f5);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f5);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f5);				
+				
+				}
+				
+				rows.createCell(7).setCellValue(producto.getNombreProducto());
+				if (ind_primero) {
+					rows.getCell(7).setCellStyle(style_cell_f4);
+				} else {
+					rows.getCell(7).setCellStyle(style_cell_f5);
+				}				
+				
+				rows.createCell(8).setCellValue(producto.getNombreUnidad());
+				if (ind_primero) {
+					rows.getCell(8).setCellStyle(style_cell_f6);
+				} else {
+					rows.getCell(8).setCellStyle(style_cell_f7);
+				}
+				
+				rows.createCell(9).setCellValue(dec_form.format(getBigDecimal(producto.getCantidad())));
+				if (ind_primero) {
+					rows.getCell(9).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(9).setCellStyle(style_cell_f9);
+				}
+				
+				rows.createCell(10).setCellValue(dec_form.format(getBigDecimal(producto.getPrecioUnitario())));
+				if (ind_primero) {
+					rows.getCell(10).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(10).setCellStyle(style_cell_f9);
+				}
+				
+				rows.createCell(11).setCellValue(dec_form.format(getBigDecimal(producto.getImporteTotal())));
+				if (ind_primero) {
+					rows.getCell(11).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(11).setCellStyle(style_cell_f9);
+				}
+				
+				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(producto.getCantidad()));
+				precioUnitarioSubTotal = precioUnitarioSubTotal.add(getBigDecimal(producto.getPrecioUnitario()));
+				importeSubTotal = importeSubTotal.add(getBigDecimal(producto.getImporteTotal()));
+				count++;
+				
+				ind_primero = false;
+				
+				// Subtotal del ultimo registro
+				if (count == listaDetalleOrdenIngreso.size() + 1) {
+				
+					hrow++;
+						
+					rows = sheet.createRow((short) hrow);
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f2);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f2);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f2);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f2);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f2);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f2);
+					
+					rows.createCell(7).setCellValue("TOTAL ORDEN");
+					rows.getCell(7).setCellStyle(style_cell_f2);
+					
+					rows.createCell(8).setCellValue(Constantes.EMPTY);
+					rows.getCell(8).setCellStyle(style_cell_f2);
+					
+					rows.createCell(9).setCellValue(dec_form.format(cantidadSubTotal));
+					rows.getCell(9).setCellStyle(style_cell_f10);
+					
+					rows.createCell(10).setCellValue(dec_form.format(precioUnitarioSubTotal));
+					rows.getCell(10).setCellStyle(style_cell_f10);
+					
+					rows.createCell(11).setCellValue(dec_form.format(importeSubTotal));
+					rows.getCell(11).setCellStyle(style_cell_f10);
+				
+				}
+	            
+	            hrow++;
+	        }
+	        // Bloque Fin
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
@@ -4208,8 +6458,243 @@ public class ReporteAlmacen implements Serializable {
 	public HSSFWorkbook generaExcelReporteGuiaRemision(String ruta, 
 													   GuiaRemisionBean guiaRemisionBean,
 													   List<GuiaRemisionBean> listaGuiaRemision) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("GUIA DE REMISION");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 7000);
+			sheet.setColumnWidth(7, 7000);
+			sheet.setColumnWidth(8, 5000);
+			sheet.setColumnWidth(9, 4000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);     
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);	        
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);	        
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+	        style_cell.setFont(font_norm);	        
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);	        
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f2.setFont(font_norm);	        
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);	        
+	        style_cell_f2.setBorderRight((short) 1);
+	        style_cell_f2.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f3.setFont(font_norm);	        
+	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);	        
+	        style_cell_f3.setBorderRight((short) 1);
+	        style_cell_f3.setBorderTop((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
+	        InputStream is = new FileInputStream(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			byte[] bytes = IOUtils.toByteArray(is);
+			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+			is.close();
+			CreationHelper helper = wb.getCreationHelper();
+			Drawing drawing = sheet.createDrawingPatriarch();
+			ClientAnchor anchor = helper.createClientAnchor();
+			anchor.setCol1(1);
+			anchor.setRow1(1);
+			Picture pict = drawing.createPicture(anchor, pictureIdx);
+			pict.resize();
+	        
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(9).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(9).setCellStyle(style_cabecera);
+	        
+	        HSSFRow row2 = sheet.createRow((short) 2);
+	        StringBuilder det_fecha = new StringBuilder();
+	        Date fecha_hora = Calendar.getInstance().getTime();
+	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
+			row2.createCell(9).setCellValue(det_fecha.toString());
+	        row2.getCell(9).setCellStyle(style_cabecera);
+	        
+	        StringBuilder det_hora = new StringBuilder();
+	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
+	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
+	        HSSFRow row3 = sheet.createRow((short) 3);
+			row3.createCell(9).setCellValue(det_hora.toString());
+	        row3.getCell(9).setCellStyle(style_cabecera);
+			// Bloque Fin
+			
+			
+	        // Bloque Inicio
+	        HSSFRow row5 = sheet.createRow((short) 5);
+			row5.createCell(1).setCellValue("REPORTE DE GUIA DE REMISION");
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);	
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row7 = sheet.createRow((short) 7);
+	        
+	        HSSFRichTextString for_rep_ddi = new HSSFRichTextString("DDI: ");
+	        HSSFRichTextString for_des_ddi = new HSSFRichTextString(listaGuiaRemision.get(0).getNombreDdi());
+	        RichTextString det_ddi = new HSSFRichTextString(for_rep_ddi.getString() + for_des_ddi.getString());
+	        int tam_ddi = listaGuiaRemision.get(0).getNombreDdi().length();
+	        det_ddi.applyFont(0, 5, font_bold);
+	        det_ddi.applyFont(5, tam_ddi + 5, font_norm);	        
+			row7.createCell(1).setCellValue(det_ddi);	
+			
+			HSSFRichTextString for_rep_anio = new HSSFRichTextString("AÑO: ");
+	        HSSFRichTextString for_des_anio = new HSSFRichTextString(guiaRemisionBean.getCodigoAnio());
+	        RichTextString det_anio = new HSSFRichTextString(for_rep_anio.getString() + for_des_anio.getString());
+	        int tam_anio = guiaRemisionBean.getCodigoAnio().length();
+	        det_anio.applyFont(0, 5, font_bold);
+	        det_anio.applyFont(5, tam_anio + 5, font_norm);	        
+			row7.createCell(4).setCellValue(det_anio);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaGuiaRemision.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaGuiaRemision.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(guiaRemisionBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(guiaRemisionBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row10 = sheet.createRow((short) 10);
+	        
+	        row10.createCell(1).setCellValue("ITEM");
+	        row10.getCell(1).setCellStyle(style_header);
+	        
+	        row10.createCell(2).setCellValue("FECHA EMISION");
+	        row10.getCell(2).setCellStyle(style_header);
+	        
+	        row10.createCell(3).setCellValue("NRO ORDEN SALIDA");
+	        row10.getCell(3).setCellStyle(style_header);
+	        
+	        row10.createCell(4).setCellValue("NRO GUIA REMISION");
+	        row10.getCell(4).setCellStyle(style_header);
+	        
+	        row10.createCell(5).setCellValue("NRO MANIFIESTO");
+	        row10.getCell(5).setCellStyle(style_header);
+	        
+	        row10.createCell(6).setCellValue("TIPO MOVIMIENTO");
+	        row10.getCell(6).setCellStyle(style_header);
+	        
+	        row10.createCell(7).setCellValue("DESTINO");
+	        row10.getCell(7).setCellStyle(style_header);
+	        
+	        row10.createCell(8).setCellValue("PESO TOTAL KGR");
+	        row10.getCell(8).setCellStyle(style_header);
+	        
+	        row10.createCell(9).setCellValue("ESTADO");
+	        row10.getCell(9).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+	        int row = 11;
+	        int count = 1;
+	        for (GuiaRemisionBean guiaRemision : listaGuiaRemision) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) row);
+	        	
+	        	rows.createCell(1).setCellValue(count);
+		        rows.getCell(1).setCellStyle(style_cell_f3);
+
+		        rows.createCell(2).setCellValue(guiaRemision.getFechaEmision());
+		        rows.getCell(2).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(3).setCellValue(guiaRemision.getNroOrdenSalida());
+		        rows.getCell(3).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(4).setCellValue(guiaRemision.getNroGuiaRemision());
+		        rows.getCell(4).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(5).setCellValue(guiaRemision.getNroManifiestoCarga());
+		        rows.getCell(5).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(6).setCellValue(guiaRemision.getNombreMovimiento());
+		        rows.getCell(6).setCellStyle(style_cell);
+		        
+		        rows.createCell(7).setCellValue(guiaRemision.getNombreAlmacenDestino());
+		        rows.getCell(7).setCellStyle(style_cell);
+		        
+		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(guiaRemision.getPesoTotalKgr())));
+		        rows.getCell(8).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(9).setCellValue(guiaRemision.getNombreEstado());
+		        rows.getCell(9).setCellStyle(style_cell_f3);
+	            
+	            row++;
+	            count++;
+	        }
+	        // Bloque Fin
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
@@ -4222,32 +6707,928 @@ public class ReporteAlmacen implements Serializable {
 	public HSSFWorkbook generaExcelReporteDetalleGuiaRemision(String ruta,
 															  DetalleGuiaRemisionBean detalleGuiaRemisionBean, 
 															  List<DetalleGuiaRemisionBean> listaDetalleGuiaRemision) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("GUIA DE REMISION");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 6000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 7000);
+			sheet.setColumnWidth(7, 4000);
+			sheet.setColumnWidth(8, 11000);
+			sheet.setColumnWidth(9, 4000);
+			sheet.setColumnWidth(10, 5000);
+			sheet.setColumnWidth(11, 5000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 9));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);
+			style_tit_cabecera.setWrapText(true);
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell.setFont(font_norm);
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+			
+			HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f2.setFont(font_bold);
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);
+	        style_cell_f2.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f3.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f3.setFont(font_norm);
+	        style_cell_f3.setBorderTop((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);
+	        style_cell_f3.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f4 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f4.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f4.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f4.setFont(font_norm);
+	        style_cell_f4.setBorderTop((short) 1);
+	        style_cell_f4.setBorderLeft((short) 1);
+	        style_cell_f4.setBorderRight((short) 1);
+			
+			HSSFCellStyle style_cell_f5 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f5.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			style_cell_f5.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f5.setFont(font_norm);
+	        style_cell_f5.setBorderLeft((short) 1);
+	        style_cell_f5.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f6 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f6.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f6.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f6.setFont(font_norm);
+	        style_cell_f6.setBorderTop((short) 1);
+	        style_cell_f6.setBorderLeft((short) 1);
+	        style_cell_f6.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f7 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f7.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f7.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f7.setFont(font_norm);
+	        style_cell_f7.setBorderLeft((short) 1);
+	        style_cell_f7.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f8 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f8.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f8.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f8.setFont(font_norm);
+	        style_cell_f8.setBorderTop((short) 1);
+	        style_cell_f8.setBorderLeft((short) 1);
+	        style_cell_f8.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f9 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f9.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f9.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f9.setFont(font_norm);
+	        style_cell_f9.setBorderLeft((short) 1);
+	        style_cell_f9.setBorderRight((short) 1);
+	        
+	        HSSFCellStyle style_cell_f10 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f10.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f10.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style_cell_f10.setFont(font_bold);
+	        style_cell_f10.setBorderBottom((short) 1);
+	        style_cell_f10.setBorderLeft((short) 1);
+	        style_cell_f10.setBorderRight((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        String path = ruta.substring(0, ruta.indexOf(Constantes.REPORT_PATH_RESOURCES));
+	        InputStream is = new FileInputStream(path.concat(Constantes.IMAGE_INDECI_REPORT_PATH));
+			byte[] bytes = IOUtils.toByteArray(is);
+			int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+			is.close();
+			CreationHelper helper = wb.getCreationHelper();
+			Drawing drawing = sheet.createDrawingPatriarch();
+			ClientAnchor anchor = helper.createClientAnchor();
+			anchor.setCol1(1);
+			anchor.setRow1(1);
+			Picture pict = drawing.createPicture(anchor, pictureIdx);
+			pict.resize();
+	        
+			HSSFRow row1 = sheet.createRow((short) 1);
+			row1.createCell(11).setCellValue(Constantes.TITULO_ENCABEZADO_REPORTE);
+	        row1.getCell(11).setCellStyle(style_cabecera);
+	        
+	        HSSFRow row2 = sheet.createRow((short) 2);
+	        StringBuilder det_fecha = new StringBuilder();
+	        Date fecha_hora = Calendar.getInstance().getTime();
+	        det_fecha.append(Constantes.FECHA_ENCABEZADO_REPORTE);
+	        det_fecha.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_FECHA, fecha_hora));	        
+			row2.createCell(11).setCellValue(det_fecha.toString());
+	        row2.getCell(11).setCellStyle(style_cabecera);
+	        
+	        StringBuilder det_hora = new StringBuilder();
+	        det_hora.append(Constantes.HORA_ENCABEZADO_REPORTE);
+	        det_hora.append(DateUtil.obtenerFechaFormateada(Constantes.FORMATO_HORA, fecha_hora));
+	        det_hora.append(Constantes.ESPACIO_ENCABEZADO_REPORTE_EXCEL);
+	        HSSFRow row3 = sheet.createRow((short) 3);
+			row3.createCell(11).setCellValue(det_hora.toString());
+	        row3.getCell(11).setCellStyle(style_cabecera);
+			// Bloque Fin
+			
+			
+	        // Bloque Inicio
+	        HSSFRow row5 = sheet.createRow((short) 5);
+			StringBuilder det_titulo = new StringBuilder();
+			det_titulo.append("REPORTE DE GUIA DE REMISION ");
+			det_titulo.append(Constantes.SALTO_LINEA_PARRAFO);
+			det_titulo.append(" DETALLE POR PRODUCTO");
+			row5.createCell(1).setCellValue(det_titulo.toString());
+	        row5.getCell(1).setCellStyle(style_tit_cabecera);	
+			row5.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row7 = sheet.createRow((short) 7);
+	        
+	        HSSFRichTextString for_rep_ddi = new HSSFRichTextString("DDI: ");
+	        HSSFRichTextString for_des_ddi = new HSSFRichTextString(listaDetalleGuiaRemision.get(0).getNombreDdi());
+	        RichTextString det_ddi = new HSSFRichTextString(for_rep_ddi.getString() + for_des_ddi.getString());
+	        int tam_ddi = listaDetalleGuiaRemision.get(0).getNombreDdi().length();
+	        det_ddi.applyFont(0, 5, font_bold);
+	        det_ddi.applyFont(5, tam_ddi + 5, font_norm);	        
+			row7.createCell(1).setCellValue(det_ddi);	
+			
+			HSSFRichTextString for_rep_anio = new HSSFRichTextString("AÑO: ");
+	        HSSFRichTextString for_des_anio = new HSSFRichTextString(detalleGuiaRemisionBean.getCodigoAnio());
+	        RichTextString det_anio = new HSSFRichTextString(for_rep_anio.getString() + for_des_anio.getString());
+	        int tam_anio = detalleGuiaRemisionBean.getCodigoAnio().length();
+	        det_anio.applyFont(0, 5, font_bold);
+	        det_anio.applyFont(5, tam_anio + 5, font_norm);	        
+			row7.createCell(4).setCellValue(det_anio);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row8 = sheet.createRow((short) 8);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaDetalleGuiaRemision.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaDetalleGuiaRemision.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row8.createCell(1).setCellValue(det_alm);	
+			
+			HSSFRichTextString for_rep_mes_ini = new HSSFRichTextString("MES INICIO: ");
+			String mesInicio = getMes(detalleGuiaRemisionBean.getCodigoMesInicio());
+	        HSSFRichTextString for_des_mes_ini = new HSSFRichTextString(mesInicio);
+	        HSSFRichTextString for_rep_mes_fin = new HSSFRichTextString("   MES FIN: ");
+	        String mesFin = getMes(detalleGuiaRemisionBean.getCodigoMesFin());
+	        HSSFRichTextString for_des_mes_fin = new HSSFRichTextString(mesFin);
+	        RichTextString det_mes = new HSSFRichTextString(for_rep_mes_ini.getString() + for_des_mes_ini.getString() + 
+	        												for_rep_mes_fin.getString() + for_des_mes_fin.getString());
+	        det_mes.applyFont(0, 12, font_bold);
+	        det_mes.applyFont(12, mesInicio.length() + 12, font_norm);
+	        det_mes.applyFont(mesInicio.length() + 12, mesInicio.length() + 24, font_bold);
+	        det_mes.applyFont(mesInicio.length() + 24, mesInicio.length() + mesFin.length() + 24, font_norm);
+	        row8.createCell(4).setCellValue(det_mes);	
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row10 = sheet.createRow((short) 10);
+	        
+	        row10.createCell(1).setCellValue("ITEM");
+	        row10.getCell(1).setCellStyle(style_header);
+	        
+	        row10.createCell(2).setCellValue("FECHA EMISION");
+	        row10.getCell(2).setCellStyle(style_header);
+	        
+	        row10.createCell(3).setCellValue("NRO ORDEN SALIDA");
+	        row10.getCell(3).setCellStyle(style_header);
+	        
+	        row10.createCell(4).setCellValue("NRO GUIA REMISION");
+	        row10.getCell(4).setCellStyle(style_header);
+	        
+	        row10.createCell(5).setCellValue("NRO MANIFIESTO");
+	        row10.getCell(5).setCellStyle(style_header);
+	        
+	        row10.createCell(6).setCellValue("TIPO MOVIMIENTO");
+	        row10.getCell(6).setCellStyle(style_header);
+	        
+	        row10.createCell(7).setCellValue("ESTADO");
+	        row10.getCell(7).setCellStyle(style_header);
+	        
+	        row10.createCell(8).setCellValue("PRODUCTO");
+	        row10.getCell(8).setCellStyle(style_header);
+	        
+	        row10.createCell(9).setCellValue("UNIDAD");
+	        row10.getCell(9).setCellStyle(style_header);
+			
+	        row10.createCell(10).setCellValue("CANTIDAD");
+	        row10.getCell(10).setCellStyle(style_header);
+			
+	        row10.createCell(11).setCellValue("PESO TOTAL KGR");
+	        row10.getCell(11).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+			int hrow = 11;
+			int row = 0;
+			int count = 1;
+			boolean ind_primero = false;
+			BigDecimal cantidadSubTotal = BigDecimal.ZERO;
+			BigDecimal pesoSubTotal = BigDecimal.ZERO;
+			String nroGuiaRemision = Constantes.EMPTY;
+			for (DetalleGuiaRemisionBean guia : listaDetalleGuiaRemision) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) hrow);
+				
+				if (!nroGuiaRemision.equals(guia.getNroGuiaRemision())) {
+					
+					if (count > 1) {
+				
+						rows.createCell(1).setCellValue(Constantes.EMPTY);
+						rows.getCell(1).setCellStyle(style_cell_f2);
+						
+						rows.createCell(2).setCellValue(Constantes.EMPTY);
+						rows.getCell(2).setCellStyle(style_cell_f2);
+						
+						rows.createCell(3).setCellValue(Constantes.EMPTY);
+						rows.getCell(3).setCellStyle(style_cell_f2);
+						
+						rows.createCell(4).setCellValue(Constantes.EMPTY);
+						rows.getCell(4).setCellStyle(style_cell_f2);
+						
+						rows.createCell(5).setCellValue(Constantes.EMPTY);
+						rows.getCell(5).setCellStyle(style_cell_f2);
+						
+						rows.createCell(6).setCellValue(Constantes.EMPTY);
+						rows.getCell(6).setCellStyle(style_cell_f2);
+						
+						rows.createCell(7).setCellValue(Constantes.EMPTY);
+						rows.getCell(7).setCellStyle(style_cell_f2);
+						
+						rows.createCell(8).setCellValue("TOTAL ORDEN");
+						rows.getCell(8).setCellStyle(style_cell_f2);
+						
+						rows.createCell(9).setCellValue(Constantes.EMPTY);
+						rows.getCell(9).setCellStyle(style_cell_f2);
+						
+						rows.createCell(10).setCellValue(dec_form.format(cantidadSubTotal));
+						rows.getCell(10).setCellStyle(style_cell_f10);
+						
+						rows.createCell(11).setCellValue(dec_form.format(pesoSubTotal));
+						rows.getCell(11).setCellStyle(style_cell_f10);
+						
+						cantidadSubTotal = BigDecimal.ZERO;
+						pesoSubTotal = BigDecimal.ZERO;
+						hrow++;
+						
+						rows = sheet.createRow((short) hrow);
+						
+					}
+						
+					row++;
+				
+					nroGuiaRemision = guia.getNroGuiaRemision();
+					
+					rows.createCell(1).setCellValue(row);
+					rows.getCell(1).setCellStyle(style_cell_f3);
+					
+					rows.createCell(2).setCellValue(guia.getFechaEmision());
+					rows.getCell(2).setCellStyle(style_cell_f3);
+					
+					rows.createCell(3).setCellValue(guia.getNroOrdenSalida());
+					rows.getCell(3).setCellStyle(style_cell_f3);
+					
+					rows.createCell(4).setCellValue(nroGuiaRemision);
+					rows.getCell(4).setCellStyle(style_cell_f3);
+					
+					rows.createCell(5).setCellValue(guia.getNroManifiestoCarga());
+					rows.getCell(5).setCellStyle(style_cell_f3);
+					
+					rows.createCell(6).setCellValue(guia.getNombreMovimiento());
+					rows.getCell(6).setCellStyle(style_cell_f4);
+					
+					rows.createCell(7).setCellValue(guia.getNombreEstado());
+					rows.getCell(7).setCellStyle(style_cell_f3);
+				
+					ind_primero = true;
+				
+				} else {
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f5);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f5);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f5);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f5);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f5);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f5);
+
+					rows.createCell(7).setCellValue(Constantes.EMPTY);
+					rows.getCell(7).setCellStyle(style_cell_f5);	
+				
+				}
+				
+				rows.createCell(8).setCellValue(guia.getNombreProducto());
+				if (ind_primero) {
+					rows.getCell(8).setCellStyle(style_cell_f4);
+				} else {
+					rows.getCell(8).setCellStyle(style_cell_f5);
+				}				
+				
+				rows.createCell(9).setCellValue(guia.getUnidadMedida());
+				if (ind_primero) {
+					rows.getCell(9).setCellStyle(style_cell_f6);
+				} else {
+					rows.getCell(9).setCellStyle(style_cell_f7);
+				}
+
+				rows.createCell(10).setCellValue(dec_form.format(getBigDecimal(guia.getCantidad())));
+				if (ind_primero) {
+					rows.getCell(10).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(10).setCellStyle(style_cell_f9);
+				}
+				
+				rows.createCell(11).setCellValue(dec_form.format(getBigDecimal(guia.getPesoTotal())));
+				if (ind_primero) {
+					rows.getCell(11).setCellStyle(style_cell_f8);
+				} else {
+					rows.getCell(11).setCellStyle(style_cell_f9);
+				}
+				
+				cantidadSubTotal = cantidadSubTotal.add(getBigDecimal(guia.getCantidad()));
+				pesoSubTotal = pesoSubTotal.add(getBigDecimal(guia.getPesoTotal()));
+				count++;
+				
+				ind_primero = false;
+				
+				// Subtotal del ultimo registro
+				if (count == listaDetalleGuiaRemision.size() + 1) {
+				
+					hrow++;
+						
+					rows = sheet.createRow((short) hrow);
+				
+					rows.createCell(1).setCellValue(Constantes.EMPTY);
+					rows.getCell(1).setCellStyle(style_cell_f2);
+					
+					rows.createCell(2).setCellValue(Constantes.EMPTY);
+					rows.getCell(2).setCellStyle(style_cell_f2);
+					
+					rows.createCell(3).setCellValue(Constantes.EMPTY);
+					rows.getCell(3).setCellStyle(style_cell_f2);
+					
+					rows.createCell(4).setCellValue(Constantes.EMPTY);
+					rows.getCell(4).setCellStyle(style_cell_f2);
+					
+					rows.createCell(5).setCellValue(Constantes.EMPTY);
+					rows.getCell(5).setCellStyle(style_cell_f2);
+					
+					rows.createCell(6).setCellValue(Constantes.EMPTY);
+					rows.getCell(6).setCellStyle(style_cell_f2);
+					
+					rows.createCell(7).setCellValue(Constantes.EMPTY);
+					rows.getCell(7).setCellStyle(style_cell_f2);
+					
+					rows.createCell(8).setCellValue("TOTAL ORDEN");
+					rows.getCell(8).setCellStyle(style_cell_f2);
+					
+					rows.createCell(9).setCellValue(Constantes.EMPTY);
+					rows.getCell(9).setCellStyle(style_cell_f2);
+					
+					rows.createCell(10).setCellValue(dec_form.format(cantidadSubTotal));
+					rows.getCell(10).setCellStyle(style_cell_f10);
+					
+					rows.createCell(11).setCellValue(dec_form.format(pesoSubTotal));
+					rows.getCell(11).setCellStyle(style_cell_f10);
+				
+				}
+	            
+	            hrow++;
+	        }
+	        // Bloque Fin
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
 	 * @param ruta
+	 * @param kardexAlmacenBean 
 	 * @param listaKardexAlmacen
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public HSSFWorkbook generaExcelReporteKardexAlmacen(String ruta, 
+														KardexAlmacenBean kardexAlmacenBean, 
 														List<KardexAlmacenBean> listaKardexAlmacen) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("KARDEX");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 7000);
+	        sheet.setColumnWidth(4, 5000);
+	        sheet.setColumnWidth(5, 5000);
+	        sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 6000);
+			sheet.setColumnWidth(8, 6000);
+			sheet.setColumnWidth(9, 6000);
+			sheet.setColumnWidth(10, 5000);
+			sheet.setColumnWidth(11, 5000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 11));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);     
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);	        
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);	        
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+	        style_cell.setFont(font_norm);	        
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);	        
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f2.setFont(font_norm);	        
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);	        
+	        style_cell_f2.setBorderRight((short) 1);
+	        style_cell_f2.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f3.setFont(font_norm);	        
+	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);	        
+	        style_cell_f3.setBorderRight((short) 1);
+	        style_cell_f3.setBorderTop((short) 1);
+			
+			HSSFCellStyle style_cell_f4 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f4.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f4.setVerticalAlignment(HSSFCellStyle.VERTICAL_BOTTOM);
+	        style_cell_f4.setFont(font_norm);
+	        style_cell_f4.setBorderTop((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        HSSFRow row1 = sheet.createRow((short) 1);
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("KARDEX N° ");
+			det_encabezado.append(kardexAlmacenBean.getIdAlmacen());
+			det_encabezado.append(Constantes.SEPARADOR);
+			det_encabezado.append(listaKardexAlmacen.get(0).getNroKardex());
+			row1.createCell(1).setCellValue(det_encabezado.toString());
+	        row1.getCell(1).setCellStyle(style_tit_cabecera);	
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row3 = sheet.createRow((short) 3);
+	        
+	        HSSFRichTextString for_rep_pro = new HSSFRichTextString("PRODUCTO: ");
+	        HSSFRichTextString for_des_pro = new HSSFRichTextString(listaKardexAlmacen.get(0).getNombreProducto());
+	        RichTextString det_pro = new HSSFRichTextString(for_rep_pro.getString() + for_des_pro.getString());
+	        int tam_pro = listaKardexAlmacen.get(0).getNombreProducto().length();
+	        det_pro.applyFont(0, 10, font_bold);
+	        det_pro.applyFont(10, tam_pro + 10, font_norm);	        
+			row3.createCell(1).setCellValue(det_pro);	
+			
+			HSSFRichTextString for_rep_uni = new HSSFRichTextString("UNIDAD MEDIDA: ");
+	        HSSFRichTextString for_des_uni = new HSSFRichTextString(listaKardexAlmacen.get(0).getNombreUnidad());
+	        RichTextString det_uni = new HSSFRichTextString(for_rep_uni.getString() + for_des_uni.getString());
+	        int tam_uni = listaKardexAlmacen.get(0).getNombreUnidad().length();
+	        det_uni.applyFont(0, 15, font_bold);
+	        det_uni.applyFont(15, tam_uni + 15, font_norm);	        
+			row3.createCell(6).setCellValue(det_uni);
+			
+			StringBuilder det_mes_anio = new StringBuilder();
+			det_mes_anio.append("MES: ");
+			det_mes_anio.append(getMes(kardexAlmacenBean.getCodigoMes()));
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(Constantes.SEPARADOR);
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(kardexAlmacenBean.getCodigoAnio());
+			row3.createCell(11).setCellValue(det_mes_anio.toString());			
+			row3.getCell(11).setCellStyle(style_tit_cabecera);
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row4 = sheet.createRow((short) 4);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaKardexAlmacen.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaKardexAlmacen.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row4.createCell(1).setCellValue(det_alm);	
+
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row6 = sheet.createRow((short) 6);
+	        
+	        row6.createCell(1).setCellValue("Item");
+	        row6.getCell(1).setCellStyle(style_header);
+	        
+	        row6.createCell(2).setCellValue("Fecha");
+	        row6.getCell(2).setCellStyle(style_header);
+	        
+	        row6.createCell(3).setCellValue("Documento");
+	        row6.getCell(3).setCellStyle(style_header);
+	        
+	        row6.createCell(4).setCellValue("Ingresos");
+	        row6.getCell(4).setCellStyle(style_header);
+	        
+	        row6.createCell(5).setCellValue("Salidas");
+	        row6.getCell(5).setCellStyle(style_header);
+	        
+	        row6.createCell(6).setCellValue("Saldo");
+	        row6.getCell(6).setCellStyle(style_header);
+	        
+	        row6.createCell(7).setCellValue("Precio Compra (S/.)");
+	        row6.getCell(7).setCellStyle(style_header);
+	        
+	        row6.createCell(8).setCellValue("Precio Promedio (S/.)");
+	        row6.getCell(8).setCellStyle(style_header);
+	        
+	        row6.createCell(9).setCellValue("Importe Valorado (S/.)");
+	        row6.getCell(9).setCellStyle(style_header);
+			
+			row6.createCell(10).setCellValue("Motivo");
+	        row6.getCell(10).setCellStyle(style_header);
+			
+			row6.createCell(11).setCellValue("Nro Orden");
+	        row6.getCell(11).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+	        int row = 7;
+	        int count = 1;
+	        for (KardexAlmacenBean kardex : listaKardexAlmacen) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) row);
+	        	
+	        	rows.createCell(1).setCellValue(count);
+		        rows.getCell(1).setCellStyle(style_cell_f3);
+
+		        rows.createCell(2).setCellValue(kardex.getFecha());
+		        rows.getCell(2).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(3).setCellValue(kardex.getConcepto());
+		        rows.getCell(3).setCellStyle(style_cell);
+		        
+		        rows.createCell(4).setCellValue(dec_form.format(getBigDecimal(kardex.getCantidadIngresos())));
+		        rows.getCell(4).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(5).setCellValue(dec_form.format(getBigDecimal(kardex.getCantidadSalidas())));
+		        rows.getCell(5).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(6).setCellValue(dec_form.format(getBigDecimal(kardex.getCantidadSaldo())));
+		        rows.getCell(6).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(7).setCellValue(dec_form.format(getBigDecimal(kardex.getPrecioCompra())));
+		        rows.getCell(7).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(8).setCellValue(dec_form.format(getBigDecimal(kardex.getPrecioPromedio())));
+		        rows.getCell(8).setCellStyle(style_cell_f2);
+				
+				rows.createCell(9).setCellValue(dec_form.format(getBigDecimal(kardex.getImporteValorizado())));
+		        rows.getCell(9).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(10).setCellValue(getString(kardex.getMotivo()));
+		        rows.getCell(10).setCellStyle(style_cell);
+				
+				rows.createCell(11).setCellValue(getString(kardex.getNroOrden()));
+		        rows.getCell(11).setCellStyle(style_cell_f3);
+	            
+	            row++;
+	            count++;
+	        }
+	        // Bloque Fin
+			
+			HSSFRow rows = sheet.createRow((short) row + 6);
+			
+			rows.createCell(3).setCellValue("Jefe de Almacén");
+		    rows.getCell(3).setCellStyle(style_cell_f4);
+				
+			rows.createCell(7).setCellValue("Jefe DDI");
+		    rows.getCell(7).setCellStyle(style_cell_f4);	
+			
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
 
 	/**
 	 * @param ruta
+	 * @param bincardAlmacenBean 
 	 * @param listaBincardAlmacen
 	 * @return Objeto.
 	 * @throws Exception 
 	 */
 	public HSSFWorkbook generaExcelReporteBincardAlmacen(String ruta, 
+														 BincardAlmacenBean bincardAlmacenBean, 
 														 List<BincardAlmacenBean> listaBincardAlmacen) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		HSSFWorkbook wb = new HSSFWorkbook();
+		try {				
+	        HSSFSheet sheet = wb.createSheet("BINCARD");
+	        
+	        sheet.setColumnWidth(0, 500);
+	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(2, 4000);
+	        sheet.setColumnWidth(3, 10000);
+	        sheet.setColumnWidth(4, 6000);
+	        sheet.setColumnWidth(5, 7000);
+	        sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 5000);
+			sheet.setColumnWidth(8, 5000);
+			
+			sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 11));
+	        
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
+			
+	        HSSFFont font_bold = wb.createFont();
+	        font_bold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	        
+	        HSSFFont font_norm = wb.createFont();
+	        font_norm.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+
+	        HSSFCellStyle style_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_cabecera.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cabecera.setFont(font_norm);
+	        
+	        HSSFCellStyle style_tit_cabecera = (HSSFCellStyle) wb.createCellStyle();
+	        style_tit_cabecera.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_tit_cabecera.setFont(font_bold);     
+	        
+	        HSSFCellStyle style_header = (HSSFCellStyle) wb.createCellStyle();
+	        style_header.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_header.setFont(font_bold);	        
+	        HSSFColor color = setColor(wb, (byte) 242, (byte)242, (byte) 242);
+	        style_header.setFillForegroundColor(color.getIndex());
+	        style_header.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	        style_header.setBorderBottom((short) 1);
+	        style_header.setBorderLeft((short) 1);	        
+	        style_header.setBorderRight((short) 1);
+	        style_header.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+	        style_cell.setFont(font_norm);	        
+	        style_cell.setBorderBottom((short) 1);
+	        style_cell.setBorderLeft((short) 1);	        
+	        style_cell.setBorderRight((short) 1);
+	        style_cell.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_f2.setFont(font_norm);	        
+	        style_cell_f2.setBorderBottom((short) 1);
+	        style_cell_f2.setBorderLeft((short) 1);	        
+	        style_cell_f2.setBorderRight((short) 1);
+	        style_cell_f2.setBorderTop((short) 1);
+	        
+	        HSSFCellStyle style_cell_f3 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f3.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style_cell_f3.setFont(font_norm);	        
+	        style_cell_f3.setBorderBottom((short) 1);
+	        style_cell_f3.setBorderLeft((short) 1);	        
+	        style_cell_f3.setBorderRight((short) 1);
+	        style_cell_f3.setBorderTop((short) 1);
+			
+			HSSFCellStyle style_cell_f4 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_f4.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			style_cell_f4.setVerticalAlignment(HSSFCellStyle.VERTICAL_BOTTOM);
+	        style_cell_f4.setFont(font_norm);
+	        style_cell_f4.setBorderTop((short) 1);
+	        
+	        
+	        // Bloque Inicio
+	        HSSFRow row1 = sheet.createRow((short) 1);
+			StringBuilder det_encabezado = new StringBuilder();
+			det_encabezado.append("BINCARD N° ");
+			det_encabezado.append(bincardAlmacenBean.getIdAlmacen());
+			det_encabezado.append(Constantes.SEPARADOR);
+			det_encabezado.append(listaBincardAlmacen.get(0).getNroBincard());
+			row1.createCell(1).setCellValue(det_encabezado.toString());
+	        row1.getCell(1).setCellStyle(style_tit_cabecera);	
+	        // Bloque Fin
+			
+	        
+	        // Bloque Inicio
+	        HSSFRow row3 = sheet.createRow((short) 3);
+	        
+	        HSSFRichTextString for_rep_pro = new HSSFRichTextString("PRODUCTO: ");
+	        HSSFRichTextString for_des_pro = new HSSFRichTextString(listaBincardAlmacen.get(0).getNombreProducto());
+	        RichTextString det_pro = new HSSFRichTextString(for_rep_pro.getString() + for_des_pro.getString());
+	        int tam_pro = listaBincardAlmacen.get(0).getNombreProducto().length();
+	        det_pro.applyFont(0, 10, font_bold);
+	        det_pro.applyFont(10, tam_pro + 10, font_norm);	        
+			row3.createCell(1).setCellValue(det_pro);	
+			
+			HSSFRichTextString for_rep_uni = new HSSFRichTextString("UNIDAD MEDIDA: ");
+	        HSSFRichTextString for_des_uni = new HSSFRichTextString(listaBincardAlmacen.get(0).getNombreUnidad());
+	        RichTextString det_uni = new HSSFRichTextString(for_rep_uni.getString() + for_des_uni.getString());
+	        int tam_uni = listaBincardAlmacen.get(0).getNombreUnidad().length();
+	        det_uni.applyFont(0, 15, font_bold);
+	        det_uni.applyFont(15, tam_uni + 15, font_norm);	        
+			row3.createCell(4).setCellValue(det_uni);
+			
+			StringBuilder det_mes_anio = new StringBuilder();
+			det_mes_anio.append("MES: ");
+			det_mes_anio.append(getMes(bincardAlmacenBean.getCodigoMes()));
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(Constantes.SEPARADOR);
+			det_mes_anio.append(Constantes.ESPACIO);
+			det_mes_anio.append(bincardAlmacenBean.getCodigoAnio());
+			row3.createCell(8).setCellValue(det_mes_anio.toString());			
+			row3.getCell(8).setCellStyle(style_tit_cabecera);
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio
+	        HSSFRow row4 = sheet.createRow((short) 4);
+	        
+	        HSSFRichTextString for_rep_alm = new HSSFRichTextString("ALMACEN: ");
+	        HSSFRichTextString for_des_alm = new HSSFRichTextString(listaBincardAlmacen.get(0).getNombreAlmacen());
+	        RichTextString det_alm = new HSSFRichTextString(for_rep_alm.getString() + for_des_alm.getString());
+	        int tam_alm = listaBincardAlmacen.get(0).getNombreAlmacen().length();
+	        det_alm.applyFont(0, 9, font_bold);
+	        det_alm.applyFont(9, tam_alm + 9, font_norm);	        
+	        row4.createCell(1).setCellValue(det_alm);	
+
+	        // Bloque Fin
+	        
+	        
+			// Bloque Inicio	        
+	        HSSFRow row6 = sheet.createRow((short) 6);
+	        
+	        row6.createCell(1).setCellValue("Item");
+	        row6.getCell(1).setCellStyle(style_header);
+	        
+	        row6.createCell(2).setCellValue("Fecha");
+	        row6.getCell(2).setCellStyle(style_header);
+	        
+	        row6.createCell(3).setCellValue("Documento");
+	        row6.getCell(3).setCellStyle(style_header);
+	        
+	        row6.createCell(4).setCellValue("Ingresos");
+	        row6.getCell(4).setCellStyle(style_header);
+	        
+	        row6.createCell(5).setCellValue("Salidas");
+	        row6.getCell(5).setCellStyle(style_header);
+	        
+	        row6.createCell(6).setCellValue("Saldo");
+	        row6.getCell(6).setCellStyle(style_header);
+			
+			row6.createCell(7).setCellValue("Motivo");
+	        row6.getCell(7).setCellStyle(style_header);
+			
+			row6.createCell(8).setCellValue("Nro Orden");
+	        row6.getCell(8).setCellStyle(style_header);
+	        // Bloque Fin
+	       
+	        
+	        // Bloque Inicio
+	        int row = 7;
+	        int count = 1;
+	        for (BincardAlmacenBean bincard : listaBincardAlmacen) {
+	        	
+	        	HSSFRow rows = sheet.createRow((short) row);
+	        	
+	        	rows.createCell(1).setCellValue(count);
+		        rows.getCell(1).setCellStyle(style_cell_f3);
+
+		        rows.createCell(2).setCellValue(bincard.getFecha());
+		        rows.getCell(2).setCellStyle(style_cell_f3);
+		        
+		        rows.createCell(3).setCellValue(bincard.getConcepto());
+		        rows.getCell(3).setCellStyle(style_cell);
+		        
+		        rows.createCell(4).setCellValue(dec_form.format(getBigDecimal(bincard.getCantidadIngresos())));
+		        rows.getCell(4).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(5).setCellValue(dec_form.format(getBigDecimal(bincard.getCantidadSalidas())));
+		        rows.getCell(5).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(6).setCellValue(dec_form.format(getBigDecimal(bincard.getCantidadSaldo())));
+		        rows.getCell(6).setCellStyle(style_cell_f2);
+		        
+		        rows.createCell(7).setCellValue(getString(bincard.getMotivo()));
+		        rows.getCell(7).setCellStyle(style_cell);
+				
+				rows.createCell(8).setCellValue(getString(bincard.getNroOrden()));
+		        rows.getCell(8).setCellStyle(style_cell_f3);
+	            
+	            row++;
+	            count++;
+	        }
+	        // Bloque Fin
+			
+			HSSFRow rows = sheet.createRow((short) row + 6);
+			
+			rows.createCell(3).setCellValue("Jefe de Almacén");
+		    rows.getCell(3).setCellStyle(style_cell_f4);
+				
+			rows.createCell(6).setCellValue("Jefe DDI");
+		    rows.getCell(6).setCellStyle(style_cell_f4);	
+			
+			
+    	} catch(Exception e) {
+    		LOGGER.error(e);
+    		throw new Exception();
+    	}
+		return wb;
 	}
     
 }

@@ -295,7 +295,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			reporte.generaPDFReporteDetalleGuiaRemision(file_path.toString(), detalleGuiaRemisionBean, listaDetalleGuiaRemision);
 	    		}
 			} else if (tipoReporte.equals(Constantes.FIVE_INT)) { // Reporte de Kardex y Bincard
-	    		if (isNullOrEmpty(nroLote)) { // Reporte de Kardex
+	    		if (isNullOrEmpty(verificaParametro(nroLote))) { // Reporte de Kardex
 	    			file_name = "Reporte_Kardex";
 	    			KardexAlmacenBean kardexAlmacenBean = new KardexAlmacenBean();
 	    			kardexAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);	    			
@@ -307,7 +307,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			if (isEmpty(listaKardexAlmacen)) {
 	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 	    			}
-	    			reporte.generaPDFReporteKardexAlmacen(file_path.toString(), listaKardexAlmacen);
+	    			reporte.generaPDFReporteKardexAlmacen(file_path.toString(), kardexAlmacenBean, listaKardexAlmacen);
 	    		} else { // Reporte de Bincard
 	    			file_name = "Reporte_Bincard";
 	    			BincardAlmacenBean bincardAlmacenBean = new BincardAlmacenBean();
@@ -321,7 +321,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			if (isEmpty(listaBincardAlmacen)) {
 	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 	    			}
-	    			reporte.generaPDFReporteBincardAlmacen(file_path.toString(), listaBincardAlmacen);
+	    			reporte.generaPDFReporteBincardAlmacen(file_path.toString(), bincardAlmacenBean, listaBincardAlmacen);
 	    		}
 			}
 	    	
@@ -520,7 +520,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			wb = reporte.generaExcelReporteDetalleGuiaRemision(file_path.toString(), detalleGuiaRemisionBean, listaDetalleGuiaRemision);
 	    		}
 			} else if (tipoReporte.equals(Constantes.FIVE_INT)) { // Reporte de Kardex y Bincard
-	    		if (isNullOrEmpty(nroLote)) { // Reporte de Kardex
+	    		if (isNullOrEmpty(verificaParametro(nroLote))) { // Reporte de Kardex
 	    			file_name = "Reporte_Kardex";
 	    			KardexAlmacenBean kardexAlmacenBean = new KardexAlmacenBean();
 	    			kardexAlmacenBean.setTipoOrigen(Constantes.TIPO_ORIGEN_ALMACENES);	    			
@@ -532,7 +532,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			if (isEmpty(listaKardexAlmacen)) {
 	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 	    			}
-	    			wb = reporte.generaExcelReporteKardexAlmacen(file_path.toString(), listaKardexAlmacen);
+	    			wb = reporte.generaExcelReporteKardexAlmacen(file_path.toString(), kardexAlmacenBean, listaKardexAlmacen);
 	    		} else { // Reporte de Bincard
 	    			file_name = "Reporte_Bincard";
 	    			BincardAlmacenBean bincardAlmacenBean = new BincardAlmacenBean();
@@ -546,7 +546,7 @@ public class ReporteAlmacenController extends BaseController {
 	    			if (isEmpty(listaBincardAlmacen)) {
 	    				return Constantes.COD_VALIDACION_GENERAL; // Sin registros asociados
 	    			}
-	    			wb = reporte.generaExcelReporteBincardAlmacen(file_path.toString(), listaBincardAlmacen);
+	    			wb = reporte.generaExcelReporteBincardAlmacen(file_path.toString(), bincardAlmacenBean, listaBincardAlmacen);
 	    		}
 			}
 	    	

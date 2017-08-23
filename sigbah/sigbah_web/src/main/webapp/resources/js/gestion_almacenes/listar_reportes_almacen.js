@@ -99,7 +99,11 @@ $(document).ready(function() {
 		bootstrapValidatorTipReporte.validate();
 		if (bootstrapValidatorRepAlmacen.isValid() && bootstrapValidatorTipReporte.isValid()) {
 			loadding(true);
-			
+			var codigoProducto = null;
+			if (!esnulo($('#sel_producto').val())) {
+				var arr = $('#sel_producto').val().split('_');
+				codigoProducto = arr[0];
+			}
 			var params = { 
 				tipoReporte : $('input[name="rb_tip_reporte"]:checked').val(),
 				anio : $('#sel_anio').val(),
@@ -107,8 +111,8 @@ $(document).ready(function() {
 				mesFin : verificaParametroInt($('#sel_mes_fin').val()),
 				tipoMovimiento : verificaParametroInt($('#sel_tip_movimiento').val()),
 				flagProducto : $('#chk_inc_producto').is(':checked') ? '1' : '0',
-				codigoProducto : verificaParametroInt($('#sel_producto').val()),
-				nroLote : verificaParametroInt($('#sel_nro_bincard').val()),
+				codigoProducto : verificaParametroInt(codigoProducto),
+				nroLote : verificaParametro($('#sel_nro_bincard').val()),
 				codigoAlmacen : usuarioBean.idAlmacen
 			};	
 			
@@ -149,6 +153,11 @@ $(document).ready(function() {
 		bootstrapValidatorTipReporte.validate();
 		if (bootstrapValidatorRepAlmacen.isValid() && bootstrapValidatorTipReporte.isValid()) {
 			loadding(true);
+			var codigoProducto = null;
+			if (!esnulo($('#sel_producto').val())) {
+				var arr = $('#sel_producto').val().split('_');
+				codigoProducto = arr[0];
+			}		
 			var params = { 
 				tipoReporte : $('input[name="rb_tip_reporte"]:checked').val(),
 				anio : $('#sel_anio').val(),
@@ -156,8 +165,8 @@ $(document).ready(function() {
 				mesFin : verificaParametroInt($('#sel_mes_fin').val()),
 				tipoMovimiento : verificaParametroInt($('#sel_tip_movimiento').val()),
 				flagProducto : $('#chk_inc_producto').is(':checked') ? '1' : '0',
-				codigoProducto : verificaParametroInt($('#sel_producto').val()),
-				nroLote : verificaParametroInt($('#sel_nro_bincard').val()),
+				codigoProducto : verificaParametroInt(codigoProducto),
+				nroLote : verificaParametro($('#sel_nro_bincard').val()),
 				codigoAlmacen : usuarioBean.idAlmacen
 			};	
 			

@@ -21,7 +21,7 @@ public class ReporteKardexAlmacenMapper implements RowMapper<KardexAlmacenBean> 
 	@Override
 	public KardexAlmacenBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		KardexAlmacenBean kardexAlmacen = new KardexAlmacenBean();
-		kardexAlmacen.setIdRegistro(rs.getInt("IDE_REGISTRO"));
+		kardexAlmacen.setIdRegistro(rs.getString("IDE_REGISTRO"));
 		kardexAlmacen.setCodigoAnio(rs.getString("COD_ANIO"));		
 		kardexAlmacen.setCodigoMes(rs.getString("COD_MES"));
 		kardexAlmacen.setNombreMes(rs.getString("NOMBRE_MES"));
