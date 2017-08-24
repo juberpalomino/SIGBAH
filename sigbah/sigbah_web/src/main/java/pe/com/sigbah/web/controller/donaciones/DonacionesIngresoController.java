@@ -1099,7 +1099,7 @@ public class DonacionesIngresoController extends BaseController {
 			List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
 			List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
 			List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
-			if (isEmpty(lista) || isEmpty(listaProductos)) {
+			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaDocumentos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
 			DonacionesIngresoBean general = lista.get(0);
@@ -1196,7 +1196,7 @@ public class DonacionesIngresoController extends BaseController {
 	    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
 				List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
 				List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
-				if (isEmpty(lista) || isEmpty(listaProductos)) {
+				if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaDocumentos)) {
 					return Constantes.COD_VALIDACION_GENERAL;
 				}			
 				DonacionesIngresoBean general = lista.get(0);

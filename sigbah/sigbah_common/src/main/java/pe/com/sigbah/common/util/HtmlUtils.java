@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import pe.com.sigbah.common.bean.ItemBean;
+import pe.com.sigbah.common.bean.RolMenuBean;
 
 /**
  * @className: HtmlUtils.java
@@ -103,6 +104,84 @@ public class HtmlUtils implements Serializable {
         }         
                 outPut +=       "</tbody>" +
                             "</table>";
+         return outPut;
+    }
+	
+	public static String mostrarRol(List<RolMenuBean> listaRolMenu){
+
+		String outPut="";
+		outPut +="<div id=\"myjstree1\">";
+		outPut +="<ul>";
+        for(int i=0;i<listaRolMenu.size();i++){  
+        	
+        	if(listaRolMenu.get(i).getIdPadre()==0){
+        		System.out.println("IDPADRE: "+listaRolMenu.get(i).getIdPadre());
+        		 outPut +="<li>"+listaRolMenu.get(i).getNombreMenu()+"</li>";
+        		 outPut +="<ul>";
+ 	        	for(int j=0;j<listaRolMenu.size();j++){
+ 	        		if(listaRolMenu.get(i).getIdMenu()==listaRolMenu.get(j).getIdPadre() && listaRolMenu.get(j).getIdPadre()!=0){
+ 	        			outPut +="<li>"+listaRolMenu.get(j).getNombreMenu()+"</li>";
+ 	        			outPut +="<ul>";
+ 	        			for(int k=0;k<listaRolMenu.size();k++){
+ 	        				if(listaRolMenu.get(j).getIdMenu()==listaRolMenu.get(k).getIdPadre() && listaRolMenu.get(k).getIdPadre()!=0){
+ 	        					outPut +="<li>"+listaRolMenu.get(k).getNombreMenu()+"</li>";
+ 	        				}
+ 	        			}
+ 	        			outPut +="</ul>";
+ 	        		}
+ 	        	}
+ 	        	outPut +="</ul>";
+        		 
+        	}
+        	
+	        	
+        	
+
+        }         
+        outPut +="</ul>";
+        outPut +="</div>";
+         return outPut;
+    }
+	
+	public static String mostrarMenuRol(List<RolMenuBean> listaRolMenu){
+
+		String outPut="";
+		outPut +="<div id=\"myjstree1\">";
+		outPut +="<ul>";
+        for(int i=0;i<listaRolMenu.size();i++){  
+        	
+        	if(listaRolMenu.get(i).getIdPadre()==0){
+        		 outPut +="<li>"+listaRolMenu.get(i).getNombreMenu();
+        		 outPut +="<ul>";
+ 	        	for(int j=0;j<listaRolMenu.size();j++){
+ 	        		if(listaRolMenu.get(i).getIdMenu()==listaRolMenu.get(j).getIdPadre() && listaRolMenu.get(j).getIdPadre()!=0){
+ 	        			if(listaRolMenu.get(j).getExiste().equals("1") && listaRolMenu.get(j).getHijo().equals("0")){
+ 	        				outPut +="<li><a href=\"#\" class=\"jstree-clicked\" onclick=\"actualizarRol("+listaRolMenu.get(j).getIdPadre()+"," +listaRolMenu.get(j).getIdMenu()+")\">"+listaRolMenu.get(j).getNombreMenu()+"</a>";
+ 	        			}else{
+ 	        				outPut +="<li><a href=\"#\" onclick=\"actualizarRol("+listaRolMenu.get(j).getIdPadre()+"," +listaRolMenu.get(j).getIdMenu()+")\">"+listaRolMenu.get(j).getNombreMenu()+"</a>";
+ 	        			}
+ 	        			outPut +="<ul>";
+ 	        			for(int k=0;k<listaRolMenu.size();k++){
+ 	        				if(listaRolMenu.get(j).getIdMenu()==listaRolMenu.get(k).getIdPadre() && listaRolMenu.get(k).getIdPadre()!=0){
+ 	        					if(listaRolMenu.get(k).getExiste().equals("1")){
+ 	        						outPut +="<li><a href=\"#\" class=\"jstree-clicked\" onclick=\"actualizarRol("+listaRolMenu.get(k).getIdPadre()+"," +listaRolMenu.get(k).getIdMenu()+")\">"+listaRolMenu.get(k).getNombreMenu()+"</a></li>";
+ 	        					}else{
+ 	        						outPut +="<li><a href=\"#\" onclick=\"actualizarRol("+listaRolMenu.get(k).getIdPadre()+"," +listaRolMenu.get(k).getIdMenu()+")\">"+listaRolMenu.get(k).getNombreMenu()+"</a></li>";
+ 	        					}
+ 	        					
+ 	        				}
+ 	        			}
+ 	        			outPut +="</li>";
+ 	        			outPut +="</ul>";
+ 	        		}
+ 	        	}
+ 	        	outPut +="</li>";
+ 	        	outPut +="</ul>";
+        		 
+        	}
+        }         
+        outPut +="</ul>";
+        outPut +="</div>";
          return outPut;
     }
 	

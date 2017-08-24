@@ -1177,7 +1177,7 @@ public class DonacionesSalidaController extends BaseController {
 			List<DonacionesSalidaBean> lista = donacionService.listarReporteDonacionSalida(codigo);
 			List<ProductoDonacionSalidaBean> listaProductos = donacionService.listarProductosReporteDonacionSalida(codigo);
 			List<DocumentoSalidaBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionSalida(codigo);
-			if (isEmpty(lista) || isEmpty(listaProductos)) {
+			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaDocumentos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
 			DonacionesSalidaBean general = lista.get(0);

@@ -1096,7 +1096,7 @@ public class DonacionesController extends BaseController {
 			List<ProductoDonacionBean> listaProductos = donacionService.listarReporteDonacionProductos(codigo);
 			List<RegionDonacionBean> listaRegiones = donacionService.listarReporteDonacionRegiones(codigo);
 
-			if (isEmpty(lista) || isEmpty(listaProductos)) {
+			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaRegiones)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
 			DonacionesBean producto = lista.get(0);

@@ -5,8 +5,8 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
 		<li>Administración</li>
-		<li>Catálogo de Productos</li>
-		<li>Lista de Catálogo de Productos SIGA</li>
+		<li>Seguridad</li>
+		<li>Lista de Usuarios</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -28,7 +28,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Productos</h2>
+						<h2>Búsqueda de Usuarios</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -37,44 +37,20 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_con_donaciones" class="form-horizontal">
+							<form id="frm_usuarios" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
-								<input type="hidden" id="txt_cod_ddi" name="txt_cod_ddi" value="${txt_cod_ddi}">
 								<div class="form-group">
-									<label class="col-sm-2 control-label">Grupo:</label>
-									<div class="col-sm-4">
-										<select id="sel_grupo" name="sel_grupo" class="form-control">
-											<c:forEach items="${lista_anio}" var="item">
+									<label class="col-sm-1 control-label">DDI:</label>
+									<div class="col-sm-2">
+										<select id="sel_ddi" name="sel_ddi" class="form-control">
+											<option value="0">Todos</option>
+											<c:forEach items="${lista_ddi}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
 									</div>
-									
-									<label class="col-sm-2 control-label">Clase:</label>
-									<div class="col-sm-4">
-										<select id="sel_clase" name="sel_clase" class="form-control">
-											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
-									
-									<label class="col-sm-2 control-label">Familia:</label>
-									<div class="col-sm-4">
-										<select id="sel_clase" name="sel_familia" class="sel_familia">
-											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-									</div>
-									
-									<label class="col-sm-2 control-label">Producto:</label>
-									<div class="col-sm-2 form-group">
-										<input type="text" name="txt_producto" id="txt_producto" class="form-control upperValue" maxlength="10">
-									</div>
-			
-									
+
 									<div class="col-sm-2">
 										<button class="btn btn-primary" type="button" id="btn_buscar">
 											<i class="fa fa-search"></i>
@@ -104,7 +80,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Lista de Productos</h2>
+						<h2>Lista de Usuarios</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
@@ -132,15 +108,17 @@
 						<!-- widget content -->
 						<div class="widget-body">
 
-							<table id="tbl_producto" class="table table-bordered table-hover tbl-responsive">
+							<table id="tbl_usuarios" class="table table-bordered table-hover tbl-responsive">
 								<thead>			                
 									<tr>
 										<th></th>
 										<th>N°</th>
-										<th>Nombre Producto</th>
-										<th>Código SIGA</th>
-										<th>Agregar</th>
-
+										<th>DDI</th>
+										<th>ID</th>
+										<th>Username</th>
+										<th>Usuario</th>
+										<th>Correo</th>
+										<th>Cargo</th>
 									</tr>
 								</thead>
 							</table>
@@ -250,4 +228,4 @@
 </div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
-<script src="${pageContext.request.contextPath}/resources/js/administracion/listar_catalogo_productos.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/administracion/listar_usuarios.js"></script>

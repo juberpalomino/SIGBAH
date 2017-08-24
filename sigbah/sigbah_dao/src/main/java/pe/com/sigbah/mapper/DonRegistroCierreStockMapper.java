@@ -26,9 +26,9 @@ public class DonRegistroCierreStockMapper implements RowMapper<CierreStockBean> 
 		cierreStock.setNombreMes(rs.getString("NOMBRE_MES"));
 		cierreStock.setIdAlmacen(rs.getInt("IDE_ALMACEN"));
 		cierreStock.setNombreAlmacen(rs.getString("NOMBRE_ALMACEN"));		
-		cierreStock.setIdResponsable(rs.getInt("FK_IDE_RESPONSABLE_DON"));
+		cierreStock.setIdResponsable(rs.getInt("FK_IDE_RESPONSABLE_ALM"));
 		cierreStock.setResponsable(rs.getString("RESPONSABLE"));
-		cierreStock.setFlagCierreAlmacen(rs.getString("FLG_CIERRE_DON"));		
+		cierreStock.setFlagCierreAlmacen(rs.getString("FLG_CIERRE_ALM"));		
 		cierreStock.setNombreEstado(rs.getString("ESTADO"));
 		cierreStock.setObservacion(rs.getString("OBSERVACION"));
 		cierreStock.setFecha(rs.getString("FEC_MODIFICA"));

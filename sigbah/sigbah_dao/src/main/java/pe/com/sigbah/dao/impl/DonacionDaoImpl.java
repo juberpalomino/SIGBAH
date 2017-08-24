@@ -4860,7 +4860,7 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			input_objParametros.addValue("PI_IDE_ALMACEN", cierreStockBean.getIdAlmacen(), Types.NUMERIC);
 			input_objParametros.addValue("PI_COD_ANIO", cierreStockBean.getCodigoAnio(), Types.VARCHAR);
 			input_objParametros.addValue("PI_COD_MES", cierreStockBean.getCodigoMes(), Types.VARCHAR);			
-			input_objParametros.addValue("PI_FLG_CIERRE_DON", cierreStockBean.getFlagCierreAlmacen(), Types.VARCHAR);			
+			input_objParametros.addValue("PI_FLG_CIERRE_ALM", cierreStockBean.getFlagCierreAlmacen(), Types.VARCHAR);			
 			input_objParametros.addValue("PI_FK_IDE_RESPONSABLE_ALM", cierreStockBean.getIdResponsable(), Types.NUMERIC);
 			input_objParametros.addValue("PI_OBSERVACION", cierreStockBean.getObservacion(), Types.VARCHAR);
 			input_objParametros.addValue("PI_USUARIO", cierreStockBean.getUsuarioRegistro(), Types.VARCHAR);
@@ -4876,7 +4876,7 @@ public class DonacionDaoImpl extends JdbcDaoSupport implements DonacionDao, Seri
 			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));			
 			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("PI_COD_MES", new SqlParameter("PI_COD_MES", Types.VARCHAR));
-			output_objParametros.put("PI_FLG_CIERRE_DON", new SqlParameter("PI_FLG_CIERRE_DON", Types.VARCHAR));
+			output_objParametros.put("PI_FLG_CIERRE_ALM", new SqlParameter("PI_FLG_CIERRE_ALM", Types.VARCHAR));
 			output_objParametros.put("PI_FK_IDE_RESPONSABLE_ALM", new SqlParameter("PI_FK_IDE_RESPONSABLE_ALM", Types.NUMERIC));
 			output_objParametros.put("PI_OBSERVACION", new SqlParameter("PI_OBSERVACION", Types.VARCHAR));
 			output_objParametros.put("PI_USUARIO", new SqlParameter("PI_USUARIO", Types.VARCHAR));;

@@ -10,7 +10,7 @@ $(document).ready(function() {
 			grabarDetalleCierreStock(false);
 		} else {
 			var idEstado = $('#sel_estado').val();
-			if (idEstado == '0') { // Pendiente
+			if (idEstado == '1') { // Pendiente
 				grabarDetalleCierreStock(false);
 			} else { // Cerrado
 				var msg = 'Esta usted seguro de efectuar el cierre del Mes: ';

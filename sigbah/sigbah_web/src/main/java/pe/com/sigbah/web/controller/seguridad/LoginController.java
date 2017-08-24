@@ -3,7 +3,7 @@ package pe.com.sigbah.web.controller.seguridad;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.AlmacenBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.DetalleUsuarioBean;
+import pe.com.sigbah.common.bean.DonacionesIngresoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.DateUtil;
@@ -58,7 +60,8 @@ public class LoginController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-    public Object doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, Model model) {
+    public Object doProcessForm(@ModelAttribute("usuario") UsuarioBean usuario, BindingResult result, 
+    							HttpServletRequest request, HttpServletResponse response, Model model) {
     	String indicador = Constantes.ZERO_STRING;
         boolean isAccessOk = true;
         
@@ -83,10 +86,13 @@ public class LoginController extends BaseController {
 	            	if (!isEmpty(listaAlmacenUsuario) && listaAlmacenUsuario.size() > 1) {
 	            		if (!isNullInteger(idAlmacen)) {
 	            			AlmacenBean almacenBean = obtenerAlmacen(listaAlmacenUsuario, idAlmacen);
+	            			CierreStockBean mesTrabajo = administracionService.obtenerMesTrabajo(almacenBean.getIdAlmacen());
+	            			usuario.setCodigoAnio(mesTrabajo.getCodigoAnio());
+	            			usuario.setCodigoMes(mesTrabajo.getCodigoMes());
 	            			usuario.setIdAlmacen(almacenBean.getIdAlmacen());
 	            			usuario.setCodigoAlmacen(almacenBean.getCodigoAlmacen());
 	            			usuario.setNombreAlmacen(almacenBean.getNombreAlmacen());
-	            			usuario.setCodigoAnio(String.valueOf(DateUtil.getAnioActual()));
+	            			//usuario.setCodigoAnio(String.valueOf(DateUtil.getAnioActual()));
 	            			context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
 		            		indicador = Constantes.ONE_STRING;
 	            		} else {
@@ -95,11 +101,14 @@ public class LoginController extends BaseController {
 	            	} else {
 	            		if (listaAlmacenUsuario.size() == 1) {
 	            			AlmacenBean almacen = listaAlmacenUsuario.get(0);
+	            			CierreStockBean mesTrabajo = administracionService.obtenerMesTrabajo(almacen.getIdAlmacen());
+	            			usuario.setCodigoAnio(mesTrabajo.getCodigoAnio());
+	            			usuario.setCodigoMes(mesTrabajo.getCodigoMes());
 		            		usuario.setIdAlmacen(almacen.getIdAlmacen());
 	            			usuario.setCodigoAlmacen(almacen.getCodigoAlmacen());
 	            			usuario.setNombreAlmacen(almacen.getNombreAlmacen());
 	            		}
-	            		usuario.setCodigoAnio(String.valueOf(DateUtil.getAnioActual()));
+	            		//usuario.setCodigoAnio(String.valueOf(DateUtil.getAnioActual()));
 	            		context().setAttribute("usuarioBean", usuario, RequestAttributes.SCOPE_SESSION);
 	            		indicador = Constantes.ONE_STRING;
 	            	}

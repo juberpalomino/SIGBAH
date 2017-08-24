@@ -191,13 +191,36 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Consulta_PedidoCompra.jsp" />
 	</definition>
 	
+	<definition name="listar-tablas" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Listar_Tablas.jsp" />
+	</definition>
+	<definition name="listar-tablas-generales" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Listar_Tablas_Generales.jsp" />
+	</definition>
+	<definition name="listar-tablas-ddi" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Listar_Tablas_Ddi.jsp" />
+	</definition>
+	<definition name="registrar-tablas-generales" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Registrar_Tablas_Generales4.jsp" />
+	</definition>
+	
+	<definition name="listar-usuarios" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Listar_Usuarios.jsp" />
+	</definition>
+	<definition name="registrar-usuarios" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Registrar_Usuarios.jsp" />
+	</definition>
+	<definition name="listar-roles" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Listar_Roles.jsp" />
+	</definition>
+	
 	<definition name="listar-catalogo-productos" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Listar_Catalogo_Productos.jsp" />
 	</definition>
-	<definition name="Registrar-catalogo-productos" extends="principal-layout">
+	<definition name="registrar-catalogo-productos" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Registrar_Catalogo_Productos.jsp" />
 	</definition>
-	<definition name="Registrar-catalogo-productos_SIGA" extends="principal-layout">
+	<definition name="registrar-catalogo-productos-siga" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/administracion/ADM_Registrar_Catalogo_Productos_SIGA.jsp" />
 	</definition>
 	
