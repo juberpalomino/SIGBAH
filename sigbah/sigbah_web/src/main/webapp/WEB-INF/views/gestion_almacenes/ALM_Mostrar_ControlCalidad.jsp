@@ -398,7 +398,7 @@
 								</div>
 								
 								<div class="tab-pane fade" id="div_alimentarios">
-									
+								
 									<!-- Widget ID (each widget will need unique ID)-->
 									<div class="jarviswidget jarviswidget-color-blueLight">
 									
@@ -432,19 +432,18 @@
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>Nº</th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Lote</th>
-															<th>Fecha Vencimiento</th>
-															<th>Cantidad de Lote</th>
-															<th>Cantidad para la Muestra</th>
-															<th>Envase Primario</th>
-															<th>Envase Secundario</th>
-															<th>Olor</th>
-															<th>Color</th>
-															<th>Textura</th>
-															<th>Sabor</th>
+															<th class="opc-center">Nº</th>
+															<th id="th_producto" class="opc-center">Producto</th>
+															<th class="opc-center">Unidad de Medida</th>
+															<th id="th_lote" class="opc-center">Lote</th>
+															<th class="opc-center">Fecha Vencimiento</th>
+															<th id="th_can_lote" class="opc-center">Cantidad de Lote</th>
+															<th id="th_can_muestra" class="opc-center">Cantidad para la Muestra</th>
+															<th class="opc-center">Envase Primario</th>
+															<th class="opc-center">Olor</th>
+															<th class="opc-center">Color</th>
+															<th class="opc-center">Textura</th>
+															<th class="opc-center">Sabor</th>
 														</tr>
 													</thead>
 												</table>
@@ -506,16 +505,16 @@
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>Nº</th>
-															<th>Producto</th>
-															<th>Unidad de Medida</th>
-															<th>Lote</th>
-															<th>Fecha Vencimiento</th>
-															<th>Cantidad de Lote</th>
-															<th>Cantidad para la Muestra</th>
-															<th>Envase Primario</th>
-															<th>Especif. Técnicas</th>
-															<th>Conformidad</th>
+															<th class="opc-center">Nº</th>
+															<th id="th_no_producto" class="opc-center">Producto</th>
+															<th class="opc-center">Unidad de Medida</th>
+															<th id="th_no_lote" class="opc-center">Lote</th>
+															<th class="opc-center">Fecha Vencimiento</th>
+															<th id="th_no_can_lote" class="opc-center">Cantidad de Lote</th>
+															<th id="th_no_can_muestra" class="opc-center">Cantidad para la Muestra</th>
+															<th class="opc-center">Envase Primario</th>
+															<th class="opc-center">Especif. Técnicas</th>
+															<th class="opc-center">Conformidad</th>
 														</tr>
 													</thead>
 												</table>
@@ -577,10 +576,10 @@
 													<thead>			                
 														<tr>
 															<th></th>
-															<th>Nº</th>
-															<th>Tipo Documento</th>
-															<th>Nro Documento</th>
-															<th>Fecha</th>
+															<th class="opc-center">Nº</th>
+															<th id="th_tip_documento" class="opc-center">Tipo Documento</th>
+															<th class="opc-center">Nro Documento</th>
+															<th class="opc-center">Fecha</th>
 														</tr>
 													</thead>
 												</table>

@@ -1,5 +1,7 @@
 package pe.com.sigbah.common.bean;
 
+import java.math.BigDecimal;
+
 /**
  * @className: LoteProductoBean.java
  * @description: 
@@ -14,6 +16,8 @@ public class LoteProductoBean extends BaseOutputBean {
 	private Integer idProducto;
 	private String nroLote;
 	private String lote;
+	private BigDecimal cantidad;
+	private BigDecimal precioUnitario;
 	
 	
 	/**
@@ -75,6 +79,30 @@ public class LoteProductoBean extends BaseOutputBean {
 	 */
 	public void setLote(String lote) {
 		this.lote = lote;
+	}
+	/**
+	 * @return the cantidad
+	 */
+	public BigDecimal getCantidad() {
+		return cantidad;
+	}
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
+	}
+	/**
+	 * @return the precioUnitario
+	 */
+	public BigDecimal getPrecioUnitario() {
+		return precioUnitario;
+	}
+	/**
+	 * @param precioUnitario the precioUnitario to set
+	 */
+	public void setPrecioUnitario(BigDecimal precioUnitario) {
+		this.precioUnitario = precioUnitario;
 	}
 
 }

@@ -1605,17 +1605,17 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	public List<ItemBean> listarTipoProducto(ItemBean itemBean) throws Exception {
 		ItemBean item = new ItemBean();
 		List<ItemBean> lista = new ArrayList<ItemBean>();
-			item.setIcodigo(1);
-			item.setDescripcion("Alimento");
-			lista.add(item);
-			item = new ItemBean();
-			item.setIcodigo(2);
-			item.setDescripcion("No alimentario");
-			lista.add(item);
-			item = new ItemBean();
-			item.setIcodigo(3);
-			item.setDescripcion("Ambos");
-			lista.add(item);
+		item.setIcodigo(1);
+		item.setDescripcion("Alimento");
+		lista.add(item);
+		item = new ItemBean();
+		item.setIcodigo(2);
+		item.setDescripcion("No alimentario");
+		lista.add(item);
+		item = new ItemBean();
+		item.setIcodigo(3);
+		item.setDescripcion("Ambos");
+		lista.add(item);
 		return lista;
 	}
 	
@@ -1623,17 +1623,17 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	public List<ItemBean> listarEstadoPedidoCompra(ItemBean itemBean) throws Exception {
 		ItemBean item = new ItemBean();
 		List<ItemBean> lista = new ArrayList<ItemBean>();
-			item.setIcodigo(0);
-			item.setDescripcion("Anulado");
-			lista.add(item);
-			item = new ItemBean();
-			item.setIcodigo(1);
-			item.setDescripcion("Pendiente");
-			lista.add(item);
-			item = new ItemBean();
-			item.setIcodigo(2);
-			item.setDescripcion("Atendido");
-			lista.add(item);
+		item.setIcodigo(0);
+		item.setDescripcion("Anulado");
+		lista.add(item);
+		item = new ItemBean();
+		item.setIcodigo(1);
+		item.setDescripcion("Pendiente");
+		lista.add(item);
+		item = new ItemBean();
+		item.setIcodigo(2);
+		item.setDescripcion("Atendido");
+		lista.add(item);
 		return lista;
 	}
 
@@ -1644,14 +1644,13 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	public List<ItemBean> listarEstadoDee(ItemBean itemBean) throws Exception {
 		ItemBean item = new ItemBean();
 		List<ItemBean> lista = new ArrayList<ItemBean>();
-			item.setIcodigo(1);
-			item.setDescripcion("Vigente");
-			lista.add(item);
-			item = new ItemBean();
-			item.setIcodigo(2);
-			item.setDescripcion("Finalizado");
-			lista.add(item);
-			
+		item.setIcodigo(1);
+		item.setDescripcion("Vigente");
+		lista.add(item);
+		item = new ItemBean();
+		item.setIcodigo(2);
+		item.setDescripcion("Finalizado");
+		lista.add(item);			
 		return lista;
 	}
 
@@ -1662,14 +1661,14 @@ public class GeneralDaoImpl extends JdbcDaoSupport implements GeneralDao, Serial
 	public List<ItemBean> listarEstadoRequerimiento(ItemBean itemBean) throws Exception {
 		ItemBean item = new ItemBean();
 		List<ItemBean> lista = new ArrayList<ItemBean>();
-			item.setIcodigo(1);
-			item.setDescripcion("Activo");
-			lista.add(item);
-			item = new ItemBean();
-			item.setIcodigo(0);
-			item.setDescripcion("Anulado");
-			lista.add(item);
-			
+		item.setIcodigo(1);
+		item.setDescripcion("Activo");
+		lista.add(item);
+		item = new ItemBean();
+		item.setIcodigo(0);
+		item.setDescripcion("Anulado");
+		lista.add(item);			
 		return lista;
 	}
+	
 }

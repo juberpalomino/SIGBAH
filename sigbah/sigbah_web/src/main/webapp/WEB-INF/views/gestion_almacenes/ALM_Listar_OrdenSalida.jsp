@@ -145,12 +145,12 @@
 										<th></th>
 										<th>Nº</th>
 										<th>Año</th>
-										<th>Mes</th>
-										<th>Almacén</th>
+										<th id="th_mes">Mes</th>
+										<th id="th_almacen">Almacén</th>
 										<th>N° Orden de Salida</th>
 										<th>Fecha</th>
-										<th>Tipo de Movimiento</th>
-										<th>N° Guia de Remision</th>
+										<th id="th_tip_movimiento">Tipo de Movimiento</th>
+										<th id="th_nro_gui_remision">N° Guia de Remision</th>
 										<th>Estado</th>
 									</tr>
 								</thead>

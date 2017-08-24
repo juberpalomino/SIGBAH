@@ -12,6 +12,7 @@ public class ProductoBean extends BaseOutputBean {
 
 	private static final long serialVersionUID = 1L;
 	
+	private Integer idAlmacen;
 	private Integer idProducto;
 	private String nombreProducto;
 	private String codigoProducto;
@@ -194,6 +195,20 @@ public class ProductoBean extends BaseOutputBean {
 	 */
 	public void setVolumenUnitario(BigDecimal volumenUnitario) {
 		this.volumenUnitario = volumenUnitario;
+	}
+
+	/**
+	 * @return the idAlmacen
+	 */
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+
+	/**
+	 * @param idAlmacen the idAlmacen to set
+	 */
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
 	}
 
 }

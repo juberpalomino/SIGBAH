@@ -46,6 +46,7 @@ import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
@@ -80,6 +81,7 @@ import pe.com.sigbah.mapper.DocumentoSalidaMapper;
 import pe.com.sigbah.mapper.EstadoCartillaInventarioMapper;
 import pe.com.sigbah.mapper.GuiaRemisionMapper;
 import pe.com.sigbah.mapper.LoteProductoMapper;
+import pe.com.sigbah.mapper.LoteProductoSalidaMapper;
 import pe.com.sigbah.mapper.ManifiestoMapper;
 import pe.com.sigbah.mapper.ManifiestoVehiculoMapper;
 import pe.com.sigbah.mapper.NroControlCalidadMapper;
@@ -91,6 +93,7 @@ import pe.com.sigbah.mapper.ProductoIngresoMapper;
 import pe.com.sigbah.mapper.ProductoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.ProductoSalidaMapper;
 import pe.com.sigbah.mapper.ProductoStockAlmacenMapper;
+import pe.com.sigbah.mapper.ProductosStockMapper;
 import pe.com.sigbah.mapper.ProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.RegistroCartillaInventarioMapper;
 import pe.com.sigbah.mapper.RegistroCierreStockMapper;
@@ -5183,6 +5186,94 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			throw new Exception();
 		}		
 		LOGGER.info("[listarReporteBincard] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductosStock(pe.com.sigbah.common.bean.ProductoBean)
+	 */
+	@Override
+	public List<ProductoBean> listarProductosStock(ProductoBean productoBean) throws Exception {
+		LOGGER.info("[listarProductosStock] Inicio ");
+		List<ProductoBean> lista = new ArrayList<ProductoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			input_objParametros.addValue("PI_IDE_ALMACEN", productoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_IDE_CATEGORIA_PRODUCTO", productoBean.getIdCategoria(), Types.NUMERIC);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_LISTAR_PRODUCTOS_STOCK");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_IDE_CATEGORIA_PRODUCTO", new SqlParameter("PI_IDE_CATEGORIA_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_CURSOR", new SqlOutParameter("PO_CURSOR", OracleTypes.CURSOR, new ProductosStockMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductosStock] Ocurrio un error en la operacion del USP_SEL_LISTAR_PRODUCTOS_STOCK : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProductoBean>) out.get("PO_CURSOR");
+			}			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductosStock] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarLoteProductoSalida(pe.com.sigbah.common.bean.LoteProductoBean)
+	 */
+	@Override
+	public List<LoteProductoBean> listarLoteProductoSalida(LoteProductoBean loteProductoBean) throws Exception {
+		LOGGER.info("[listarLoteProductoSalida] Inicio ");
+		List<LoteProductoBean> lista = new ArrayList<LoteProductoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			input_objParametros.addValue("pi_IDE_ALMACEN", loteProductoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("pi_IDE_PRODUCTO", loteProductoBean.getIdProducto(), Types.NUMERIC);			
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_SEL_TAB_LOTE_PRODUCTO_SAL");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_IDE_ALMACEN", new SqlParameter("PI_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("pi_IDE_PRODUCTO", new SqlParameter("pi_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new LoteProductoSalidaMapper()));
+			
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarLoteProductoSalida] Ocurrio un error en la operacion del USP_SEL_TAB_LOTE_PRODUCTO_SAL : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<LoteProductoBean>) out.get("po_Lr_Recordset");
+			}			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarLoteProductoSalida] Fin ");
 		return lista;
 	}
 

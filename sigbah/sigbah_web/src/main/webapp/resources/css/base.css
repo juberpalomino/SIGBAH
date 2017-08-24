@@ -36,6 +36,24 @@ body {
 	text-align: right !important;
 	padding-top: 2px !important;
 }
+.opc-table-20 {
+	width: 20% !important;
+}
+.opc-table-30 {
+	width: 30% !important;
+}
+.opc-table-40 {
+	width: 40% !important;
+}
+.opc-table-50 {
+	width: 50% !important;
+}
+.opc-table-60 {
+	width: 60% !important;
+}
+.opc-table-70 {
+	width: 70% !important;
+}
 .hide {
 	display: none;
 }

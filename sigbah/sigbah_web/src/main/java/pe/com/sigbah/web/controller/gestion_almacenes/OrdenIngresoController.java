@@ -59,12 +59,11 @@ public class OrdenIngresoController extends BaseController {
 	private GeneralService generalService;
 	
 	/**
-	 * @param indicador 
 	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/inicio/{indicador}", method = RequestMethod.GET)
-    public String inicio(@PathVariable("indicador") String indicador, Model model) {
+	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
+    public String inicio(Model model) {
         try {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
@@ -77,7 +76,24 @@ public class OrdenIngresoController extends BaseController {
         	        	
         	model.addAttribute("lista_tipo_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.TWO_INT, Constantes.ONE_INT)));
         	
-        	model.addAttribute("indicador", indicador);
+        	OrdenIngresoBean ordenIngreso = new OrdenIngresoBean();
+        	ordenIngreso.setIdDdi(usuarioBean.getIdDdi());
+        	ordenIngreso.setCodigoDdi(usuarioBean.getCodigoDdi());
+    		ordenIngreso.setNombreDdi(usuarioBean.getNombreDdi());
+        	ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
+    		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
+    		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
+    		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
+    		if (!isEmpty(listaAlmacenActivo)) {
+    			ordenIngreso.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+    			ordenIngreso.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+    			ordenIngreso.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+    			ordenIngreso.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+    			ordenIngreso.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+    		}
+    		
+    		model.addAttribute("ordenIngreso", getParserObject(ordenIngreso));
+        	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {

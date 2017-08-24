@@ -28,7 +28,7 @@ $(document).ready(function() {
 		    var anio = fecha.substring(6, 10);		    
 		    if (mes != ordenIngreso.codigoMes || anio != ordenIngreso.codigoAnio) {
 		    	$('#hid_val_fec_trabajo').val('0');
-		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	addWarnMessage(null, mensajeValidacionAnioMesCerrado);
 		    	$('#'+$(this).attr('id')).focus();
 		    } else {
 		    	$('#hid_val_fec_trabajo').val('1');
@@ -220,7 +220,7 @@ $(document).ready(function() {
 		if (bootstrapValidator.isValid()) {
 			
 			if ($('#hid_val_fec_trabajo').val() == '0') {
-		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	addWarnMessage(null, mensajeValidacionAnioMesCerrado);
 		    	return;
 			}
 			
@@ -234,7 +234,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio/1';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio';
 		$(location).attr('href', url);
 		
 	});
@@ -245,6 +245,7 @@ $(document).ready(function() {
 		$('#h4_tit_productos').html('Nuevo Producto');
 		limpiarFormularioProducto();
 		
+		$('#sel_cat_producto').prop('disabled', false);
 		$('#sel_producto').html('');
 		if ($('#sel_producto').hasClass('select2-hidden-accessible')) {
 			$('#sel_producto').select2('destroy');
@@ -284,6 +285,7 @@ $(document).ready(function() {
 			$('#hid_cod_producto').val(obj.idDetalleIngreso);
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
+			$('#sel_cat_producto').prop('disabled', true);
 			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.nombreUnidad+'_'+obj.nombreEnvase, obj.nroLote);
 			
 			$('#txt_uni_medida').val(obj.nombreUnidad);
@@ -446,7 +448,7 @@ $(document).ready(function() {
 		var cantidad = $(this).val();
 		var pre_unitario = $('#txt_pre_unitario').val();
 		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
-			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
+			var imp_total = parseFloat(formatMonto(cantidad)) * parseFloat(formatMonto(pre_unitario));
 			$('#txt_imp_total').val(formatMontoAll(imp_total));
 		} else {
 			$('#txt_imp_total').val('');
@@ -457,7 +459,7 @@ $(document).ready(function() {
 		var cantidad = $('#txt_cantidad').val();
 		var pre_unitario = $(this).val();
 		if (!esnulo(cantidad) && !esnulo(pre_unitario)) {
-			var imp_total = parseFloat(cantidad) * parseFloat(pre_unitario);
+			var imp_total = parseFloat(formatMonto(cantidad)) * parseFloat(formatMonto(pre_unitario));
 			$('#txt_imp_total').val(formatMontoAll(imp_total));
 		} else {
 			$('#txt_imp_total').val('');
@@ -689,7 +691,7 @@ function inicializarDatos() {
 		if (!esnulo(ordenIngreso.idIngreso)) {
 			
 			$('#hid_cod_ord_ingreso').val(ordenIngreso.idIngreso);
-			$('#txt_nro_ord_ingreso').val(ordenIngreso.codigoAnio+'-'+ordenIngreso.codigoDdi+'-'+ordenIngreso.nroOrdenIngreso);
+			$('#txt_nro_ord_ingreso').val(ordenIngreso.codigoDdi+'-'+ordenIngreso.codigoAlmacen+'-'+ordenIngreso.nroOrdenIngreso);
 
 			$('#txt_fecha').val(ordenIngreso.fechaEmision);
 			$('#sel_estado').val(ordenIngreso.idEstado);
@@ -721,6 +723,7 @@ function inicializarDatos() {
 			
 		} else {
 			
+			$('#sel_estado').prop('disabled', true);
 			$('#txt_nro_ord_ingreso').val(ordenIngreso.nroOrdenIngreso);
 			
 			$('#li_productos').addClass('disabled');
@@ -798,19 +801,26 @@ function listarDetalleProductos(respuesta) {
 				return row;											
 			}
 		}, {
-			data : 'nombreProducto'
+			data : 'nombreProducto',
+			sClass : 'opc-table-30'
 		}, {
-			data : 'nombreUnidad'
+			data : 'nombreUnidad',
+			sClass : 'opc-center'
 		}, {
-			data : 'nroLote'
+			data : 'nroLote',
+			sClass : 'opc-right'
 		}, {
-			data : 'cantidad'
+			data : 'cantidad',
+			sClass : 'opc-right'
 		}, {
-			data : 'precioUnitario'
+			data : 'precioUnitario',
+			sClass : 'opc-right'
 		}, {
-			data : 'importeTotal'
+			data : 'importeTotal',
+			sClass : 'opc-right'
 		}, {
-			data : 'fechaVencimiento'
+			data : 'fechaVencimiento',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -820,6 +830,13 @@ function listarDetalleProductos(respuesta) {
 		ordering : false,
 		info : true
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_lote');
+		centerHeader('#th_cantidad');
+		centerHeader('#th_pre_unitario');
+		centerHeader('#th_val_total');
+	}, 500);
 	
 	listaProductosCache = respuesta;
 
@@ -869,6 +886,7 @@ function listarDetalleDocumentos(respuesta) {
 			data : 'nombreDocumento'
 		}, {
 			data : 'nroDocumento',
+			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
 					return '<button type="button" id="'+row.codigoArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
@@ -878,7 +896,8 @@ function listarDetalleDocumentos(respuesta) {
 				}											
 			}
 		}, {
-			data : 'fechaDocumento'
+			data : 'fechaDocumento',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -888,6 +907,10 @@ function listarDetalleDocumentos(respuesta) {
 		ordering : false,
 		info : true
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_tip_documento');
+	}, 500);
 	
 	listaDocumentosCache = respuesta;
 
@@ -1223,6 +1246,7 @@ function grabarDetalle(indicador) {
 				
 				$('#hid_cod_ord_ingreso').val(respuesta.idIngreso);
 				$('#txt_nro_ord_ingreso').val(respuesta.codigoOrdenIngreso);
+				$('#sel_estado').prop('disabled', false);
 		
 				$('#li_productos').attr('class', '');
 				$('#li_productos').closest('li').children('a').attr('data-toggle', 'tab');
@@ -1241,7 +1265,7 @@ function grabarDetalle(indicador) {
 		if (indicador) {
 			loadding(false);
 		} else {
-			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio/1';
+			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/inicio';
 			$(location).attr('href', url);
 		}
 		

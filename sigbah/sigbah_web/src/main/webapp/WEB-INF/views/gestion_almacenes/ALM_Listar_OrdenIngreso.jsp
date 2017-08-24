@@ -144,12 +144,12 @@
 									<tr>
 										<th></th>
 										<th>Nº</th>
-										<th>Año</th>
-										<th>DDI</th>
-										<th>Almacén</th>
+										<th id="th_anio">Año</th>
+										<th id="th_ddi">DDI</th>
+										<th id="th_almacen">Almacén</th>
 										<th>N° Orden de Ingreso</th>
 										<th>Fecha</th>
-										<th>Tipo de Movimiento</th>
+										<th id="th_tip_movimiento">Tipo de Movimiento</th>
 										<th>Estado</th>
 									</tr>
 								</thead>
@@ -177,4 +177,5 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
+<script> var ordenIngreso = JSON.parse('${ordenIngreso}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_orden_ingreso.js"></script>

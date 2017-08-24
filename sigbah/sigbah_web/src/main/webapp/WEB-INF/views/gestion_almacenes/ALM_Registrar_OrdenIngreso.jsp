@@ -486,10 +486,10 @@
 															<th>Nº</th>
 															<th>Producto</th>
 															<th>Unidad de Medida</th>
-															<th>Lote</th>
-															<th>Cantidad</th>
-															<th>Precio Unitario</th>
-															<th>Valor Total</th>
+															<th id="th_lote">Lote</th>
+															<th id="th_cantidad">Cantidad</th>
+															<th id="th_pre_unitario">Precio Unitario</th>
+															<th id="th_val_total">Valor Total</th>
 															<th>Fecha Vencimiento</th>
 														</tr>
 													</thead>
@@ -553,7 +553,7 @@
 														<tr>
 															<th></th>
 															<th>Nº</th>
-															<th>Tipo Documento</th>
+															<th id="th_tip_documento">Tipo Documento</th>
 															<th>Nro Documento</th>
 															<th>Fecha</th>
 														</tr>

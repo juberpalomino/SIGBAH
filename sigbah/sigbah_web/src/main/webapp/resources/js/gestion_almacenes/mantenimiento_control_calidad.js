@@ -32,7 +32,7 @@ $(document).ready(function() {
 		    var anio = fecha.substring(6, 10);		    
 		    if (mes != controlCalidad.codigoMes || anio != controlCalidad.codigoAnio) {
 		    	$('#hid_val_fec_trabajo').val('0');
-		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	addWarnMessage(null, mensajeValidacionAnioMesCerrado);
 		    	$('#'+$(this).attr('id')).focus();
 		    } else {
 		    	$('#hid_val_fec_trabajo').val('1');
@@ -135,10 +135,13 @@ $(document).ready(function() {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
-					var options = '<option value="">Seleccione</option>';
-			        $.each(respuesta, function(i, item) {
-			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
-			        });
+					var options = '';
+					if (respuesta.length > 0) {
+						options = '<option value="">Seleccione</option>';
+				        $.each(respuesta, function(i, item) {
+				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+				        });
+					}
 			        $('#sel_chofer').html(options);
 				}
 				loadding(false);
@@ -167,7 +170,7 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			if ($('#hid_val_fec_trabajo').val() == '0') {
-		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	addWarnMessage(null, mensajeValidacionAnioMesCerrado);
 		    	return;
 			}
 			grabarDetalle(true);	
@@ -179,7 +182,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio/1';
+		var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio';
 		$(location).attr('href', url);
 		
 	});
@@ -806,6 +809,8 @@ function inicializarDatos() {
 			
 		} else {
 			
+			$('#sel_estado').prop('disabled', true);
+			
 			$('#li_alimentarios').addClass('disabled');
 			$('#li_no_alimentarios').addClass('disabled');
 			$('#li_documentos').addClass('disabled');
@@ -888,29 +893,38 @@ function listarDetalleAlimentarios(respuesta) {
 				return row;											
 			}
 		}, {
-			data : 'nombreProducto'
+			data : 'nombreProducto',
+			sClass : 'opc-table-20'
 		}, {
-			data : 'nombreUnidad'
+			data : 'nombreUnidad',
+			sClass : 'opc-center'
 		}, {
-			data : 'cantidadLote'
+			data : 'cantidadLote',
+			sClass : 'opc-right'
 		}, {
-			data : 'fechaVencimiento'
+			data : 'fechaVencimiento',
+			sClass : 'opc-center'
 		}, {
-			data : 'cantidadLote'
+			data : 'cantidadLote',
+			sClass : 'opc-right'
 		}, {
-			data : 'cantidadMuestra'
+			data : 'cantidadMuestra',
+			sClass : 'opc-right'
 		}, {
-			data : 'valorPrimario'
+			data : 'valorPrimario',
+			sClass : 'opc-center'
 		}, {
-			data : 'valorSecundario'
+			data : 'valorOlor',
+			sClass : 'opc-center'
 		}, {
-			data : 'valorOlor'
+			data : 'valorColor',
+			sClass : 'opc-center'
 		}, {
-			data : 'valorColor'
+			data : 'valorTextura',
+			sClass : 'opc-center'
 		}, {
-			data : 'valorTextura'
-		}, {
-			data : 'valorSabor'
+			data : 'valorSabor',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -920,6 +934,13 @@ function listarDetalleAlimentarios(respuesta) {
 		ordering : false,
 		info : true
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_producto');
+		centerHeader('#th_lote');
+		centerHeader('#th_can_lote');
+		centerHeader('#th_can_muestra');
+	}, 500);
 	
 	listaAlimentariosCache = respuesta;
 
@@ -950,23 +971,32 @@ function listarDetalleNoAlimentarios(respuesta) {
 				return row;											
 			}
 		}, {
-			data : 'nombreProducto'
+			data : 'nombreProducto',
+			sClass : 'opc-table-20'
 		}, {
-			data : 'nombreUnidad'
+			data : 'nombreUnidad',
+			sClass : 'opc-center'
 		}, {
-			data : 'cantidadLote'
+			data : 'cantidadLote',
+			sClass : 'opc-right'
 		}, {
-			data : 'fechaVencimiento'
+			data : 'fechaVencimiento',
+			sClass : 'opc-center'
 		}, {
-			data : 'cantidadLote'
+			data : 'cantidadLote',
+			sClass : 'opc-right'
 		}, {
-			data : 'cantidadMuestra'
+			data : 'cantidadMuestra',
+			sClass : 'opc-right'
 		}, {
-			data : 'valorPrimario'
+			data : 'valorPrimario',
+			sClass : 'opc-center'
 		}, {
-			data : 'valorEspecTecnicas'
+			data : 'valorEspecTecnicas',
+			sClass : 'opc-center'
 		}, {
-			data : 'valorConforProducto'
+			data : 'valorConforProducto',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -976,6 +1006,13 @@ function listarDetalleNoAlimentarios(respuesta) {
 		ordering : false,
 		info : true
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_no_producto');
+		centerHeader('#th_no_lote');
+		centerHeader('#th_no_can_lote');
+		centerHeader('#th_no_can_muestra');
+	}, 500);
 	
 	listaNoAlimentariosCache = respuesta;
 
@@ -1025,6 +1062,7 @@ function listarDetalleDocumentos(respuesta) {
 			data : 'nombreDocumento'
 		}, {
 			data : 'nroDocumento',
+			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
 					return '<button type="button" id="'+row.codigoArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
@@ -1034,7 +1072,8 @@ function listarDetalleDocumentos(respuesta) {
 				}											
 			}
 		}, {
-			data : 'fechaDocumento'
+			data : 'fechaDocumento',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1044,6 +1083,10 @@ function listarDetalleDocumentos(respuesta) {
 		ordering : false,
 		info : true
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_tip_documento');
+	}, 500);
 	
 	listaDocumentosCache = respuesta;
 
@@ -1200,6 +1243,7 @@ function grabarDetalle(indicador) {
 				
 			} else {
 				
+				$('#sel_estado').prop('disabled', false);
 				$('#hid_cod_con_calidad').val(respuesta.idControlCalidad);
 				$('#txt_nro_con_calidad').val(respuesta.nroControlCalidad);
 				
@@ -1222,7 +1266,7 @@ function grabarDetalle(indicador) {
 		if (indicador) {
 			loadding(false);
 		} else {
-			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio/1';
+			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/inicio';
 			$(location).attr('href', url);
 		}
 	});	

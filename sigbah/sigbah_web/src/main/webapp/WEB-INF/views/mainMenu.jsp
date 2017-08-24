@@ -52,13 +52,13 @@
 				</a>
 				<ul id="ul_ges_almacenes">
 					<li id="li_con_calidad" class="li_men_opcion">
-						<a href="${pageContext.request.contextPath}/gestion-almacenes/control-calidad/inicio/0">Control de Calidad</a>
+						<a href="${pageContext.request.contextPath}/gestion-almacenes/control-calidad/inicio">Control de Calidad</a>
 					</li>
 					<li>
 						<a href="#">Ingresos</a>
 						<ul id="ul_ord_ingreso">
 							<li id="li_ord_ingreso" class="li_men_opcion">
-								<a href="${pageContext.request.contextPath}/gestion-almacenes/orden-ingreso/inicio/0">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/orden-ingreso/inicio">
 									<i class="fa fa-caret-right"></i>Orden de Ingreso
 								</a>
 							</li>
@@ -68,12 +68,12 @@
 						<a href="#">Salidas</a>
 						<ul id="ul_alm_salidas">
 							<li id="li_man_carga" class="li_men_opcion">
-								<a href="${pageContext.request.contextPath}/gestion-almacenes/proyecto-manifiesto/inicio/0">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/proyecto-manifiesto/inicio">
 									<i class="fa fa-caret-right"></i>Manifiesto de Carga
 								</a>
 							</li>
 							<li id="li_ord_salida" class="li_men_opcion">
-								<a href="${pageContext.request.contextPath}/gestion-almacenes/orden-salida/inicio/0">
+								<a href="${pageContext.request.contextPath}/gestion-almacenes/orden-salida/inicio">
 									<i class="fa fa-caret-right"></i>Orden de Salida
 								</a>
 							</li>

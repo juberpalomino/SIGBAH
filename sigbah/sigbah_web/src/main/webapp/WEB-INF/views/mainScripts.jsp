@@ -70,6 +70,8 @@
 	var mensajeValidacionAnulado = 'No se puede editar el registro porque se encuentra en estado anulado.';
 	var mensajeValidacionDocumento = 'No dispone de documento adjunto asociado.';
 	var mensajeValidacionSinRegistros = 'No se encuentran registros para generar el proceso.';
+	var mensajeValidacionAnioMesCerrado = 'La fecha no corresponde al año y mes de trabajo.';
+	var mensajeValidacionEdicionAnioMesCerrado = 'El registro no se puede editarse porque el mes está cerrado.';
 	var mensajeConfirmacionEliminacionVariosRegistros = 'Está seguro de eliminar los siguientes registros ?';
 	var mensajeConfirmacionEliminacionSoloUnRegistro = 'Está seguro de eliminar el registro ?';
 </script>

@@ -131,13 +131,13 @@
 									<tr>
 										<th></th>
 										<th>Nº</th>
-										<th>Año</th>
-										<th>DDI</th>
-										<th>Almacén</th>
-										<th>N° Reporte de Control de Calidad</th>
-										<th>Fecha</th>
-										<th>Tipo de Control</th>
-										<th>Estado</th>
+										<th class="opc-center">Año</th>
+										<th id="th_ddi">DDI</th>
+										<th id="th_almacen">Almacén</th>
+										<th class="opc-center">N° Reporte de Control de Calidad</th>
+										<th class="opc-center">Fecha</th>
+										<th id="th_tip_control">Tipo de Control</th>
+										<th class="opc-center">Estado</th>
 									</tr>
 								</thead>
 							</table>
@@ -164,4 +164,5 @@
 <!-- END MAIN CONTENT -->
 
 <!-- inline scripts related to this page -->
+<script> var controlCalidad = JSON.parse('${controlCalidad}'); </script>
 <script src="${pageContext.request.contextPath}/resources/js/gestion_almacenes/listar_control_calidad.js"></script>

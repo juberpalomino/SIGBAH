@@ -287,13 +287,13 @@
 																<th>Nº</th>
 																<th>Producto</th>
 																<th>Unidad de Medida</th>
-																<th>Cantidad</th>
-																<th>Peso Unitario</th>
-																<th>Peso Total Kg</th>
-																<th>Volumen Unitario</th>
-																<th>Volumen Total m3</th>
-																<th>Costo Unitario (S/.)</th>
-																<th>Costo Total (S/.)</th>
+																<th id="th_cantidad">Cantidad</th>
+																<th id="th_pre_unitario">Peso Unitario</th>
+																<th id="th_pes_total">Peso Total Kg</th>
+																<th id="th_vol_unitario">Volumen Unitario</th>
+																<th id="th_vol_total">Volumen Total m3</th>
+																<th id="th_cos_unitario">Costo Unitario (S/.)</th>
+																<th id="th_cos_total">Costo Total (S/.)</th>
 															</tr>
 														</thead>
 														<tfoot>
@@ -435,7 +435,7 @@
 														<tr>
 															<th></th>
 															<th>Nº</th>
-															<th>Tipo Documento</th>
+															<th id="th_tip_documento">Tipo Documento</th>
 															<th>Nro Documento</th>
 															<th>Fecha</th>
 														</tr>

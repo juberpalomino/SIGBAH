@@ -301,7 +301,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/inicio/1';
+		var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/inicio';
 		$(location).attr('href', url);
 		
 	});

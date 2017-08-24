@@ -64,7 +64,7 @@ $(document).ready(function() {
 		    var anio = fecha.substring(6, 10);	
 		    if (mes != donaciones.mes || anio != donaciones.anio) {
 		    	$('#hid_val_fec_trabajo').val('0');
-		    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+		    	addWarnMessage(null, mensajeValidacionAnioMesCerrado);
 		    	$('#txt_fecha').val('');
 		    	$('#'+$(this).attr('id')).focus();
 		    } else {
@@ -167,7 +167,7 @@ $(document).ready(function() {
 		
 		var bootstrapValidator = frm_dat_generales.data('bootstrapValidator');
 		if ($('#hid_val_fec_trabajo').val() == '0') {
-	    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+	    	addWarnMessage(null, mensajeValidacionAnioMesCerrado);
 	    	return;
 		}
 
@@ -1193,7 +1193,7 @@ function inicializarDatos() {
 			    var anio = fecha.substring(6, 10);	
 			    if (mes != donaciones.mes || anio != donaciones.anio) {
 			    	$('#hid_val_fec_trabajo').val('0');
-			    	addWarnMessage(null, 'La fecha no corresponde al año y mes de trabajo.');
+			    	addWarnMessage(null, mensajeValidacionAnioMesCerrado);
 			    	$('#'+$(this).attr('id')).focus();
 			    } else {
 			    	$('#hid_val_fec_trabajo').val('1');

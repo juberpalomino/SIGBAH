@@ -116,6 +116,7 @@
 														<label class="col-sm-2 control-label">Tipo Movimiento:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_tip_movimiento" name="sel_tip_movimiento" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_tipo_movimiento}" var="item">
 																    <option value="${item.icodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -127,6 +128,7 @@
 														<label class="col-sm-3 control-label">N° Proyecto de Manifiesto:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_nro_pro_manifiesto" name="sel_nro_pro_manifiesto" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_proyecto_manifiesto}" var="item">
 																    <option value="${item.idProyectoManifiesto}_${item.nroProgramacion}_${item.idProgramacion}">${item.nroProyectoManifiesto}</option>
 																</c:forEach>
@@ -164,6 +166,7 @@
 														<label class="col-sm-3 control-label">Solicitada por:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_solicitada" name="sel_solicitada" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -173,6 +176,7 @@
 														<label class="col-sm-3 control-label">Responsable:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_responsable" name="sel_responsable" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_personal}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -314,6 +318,7 @@
 														<label class="col-sm-3 control-label">Empresa de Transporte:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_emp_transporte" name="sel_emp_transporte" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_empresa_transporte}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -342,6 +347,7 @@
 														<label class="col-sm-3 control-label">Chofer:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_chofer" name="sel_chofer" class="form-control">
+																<option value="">Seleccione</option>
 																<c:forEach items="${lista_chofer}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -449,14 +455,14 @@
 														<tr>
 															<th></th>
 															<th>Nº</th>
-															<th>Producto</th>
+															<th id="th_producto">Producto</th>
 															<th>Unidad de Medida</th>
 															<th>Lote</th>
-															<th>Cantidad</th>
-															<th>Precio Unitario</th>
-															<th>Importe Total</th>
-															<th>Peso Neto Total</th>
-															<th>Peso Bruto Total</th>
+															<th id="th_cantidad">Cantidad</th>
+															<th id="th_pre_unitario">Precio Unitario</th>
+															<th id="th_imp_total">Importe Total</th>
+															<th id="th_pes_net_total">Peso Neto Total</th>
+															<th id="th_pes_bru_total">Peso Bruto Total</th>
 														</tr>
 													</thead>
 												</table>
@@ -519,7 +525,7 @@
 														<tr>
 															<th></th>
 															<th>Nº</th>
-															<th>Tipo Documento</th>
+															<th id="th_tip_documento">Tipo Documento</th>
 															<th>Nro Documento</th>
 															<th>Fecha</th>
 														</tr>
@@ -601,15 +607,22 @@
 						
 							<div id="div_pro_det_productos" class="row">																				
 								<label class="col-sm-3 control-label">Producto:</label>
-								<div class="col-sm-5 form-group">
+								<div class="col-sm-9 form-group">
 									<select id="sel_producto" name="sel_producto" class="form-control">
 									</select>
 								</div>
+							</div>
 								
+							<div class="row">
 								<label class="col-sm-2 control-label">Lote:</label>
 								<div class="col-sm-2 form-group">
 									<select id="sel_lote" name="sel_lote" class="form-control">
 									</select>
+								</div>
+								
+								<label class="col-sm-2 control-label">Cantidad Stock:</label>
+								<div class="col-sm-2 form-group">
+									<input type="text" id="txt_can_stock" class="form-control" disabled>
 								</div>
 							</div>
 							
@@ -640,7 +653,7 @@
 
 								<label class="col-sm-2 control-label">Precio Unitario (S/.):</label>
 								<div class="col-sm-2 form-group">
-									<input type="text" name="txt_pre_unitario" id="txt_pre_unitario" class="form-control monto-format" maxlength="10">
+									<input type="text" name="txt_pre_unitario" id="txt_pre_unitario" class="form-control monto-format" readonly>
 								</div>
 								
 								<label class="col-sm-2 control-label">Importe Total (S/.):</label>

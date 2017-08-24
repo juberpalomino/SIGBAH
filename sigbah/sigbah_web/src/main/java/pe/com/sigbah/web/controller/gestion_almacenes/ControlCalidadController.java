@@ -60,12 +60,11 @@ public class ControlCalidadController extends BaseController {
 	private GeneralService generalService;
 	
 	/**
-	 * @param indicador 
 	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/inicio/{indicador}", method = RequestMethod.GET)
-    public String inicio(@PathVariable("indicador") String indicador, Model model) {
+	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
+    public String inicio(Model model) {
         try {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
@@ -76,7 +75,24 @@ public class ControlCalidadController extends BaseController {
         	
         	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
         	
-        	model.addAttribute("indicador", indicador);
+        	ControlCalidadBean controlCalidad = new ControlCalidadBean();
+        	controlCalidad.setIdDdi(usuarioBean.getIdDdi());
+        	controlCalidad.setCodigoDdi(usuarioBean.getCodigoDdi());
+        	controlCalidad.setNombreDdi(usuarioBean.getNombreDdi());
+        	ControlCalidadBean parametroAlmacenActivo = new ControlCalidadBean();
+    		parametroAlmacenActivo.setIdAlmacen(usuarioBean.getIdAlmacen());
+    		parametroAlmacenActivo.setTipo(Constantes.CODIGO_TIPO_ALMACEN);
+    		List<ControlCalidadBean> listaAlmacenActivo = logisticaService.listarAlmacenActivo(parametroAlmacenActivo);
+    		if (!isEmpty(listaAlmacenActivo)) {
+    			controlCalidad.setCodigoAnio(listaAlmacenActivo.get(0).getCodigoAnio());
+    			controlCalidad.setIdAlmacen(listaAlmacenActivo.get(0).getIdAlmacen());
+    			controlCalidad.setCodigoAlmacen(listaAlmacenActivo.get(0).getCodigoAlmacen());
+    			controlCalidad.setNombreAlmacen(listaAlmacenActivo.get(0).getNombreAlmacen());
+    			controlCalidad.setCodigoMes(listaAlmacenActivo.get(0).getCodigoMes());
+    		}
+    		
+    		model.addAttribute("controlCalidad", getParserObject(controlCalidad));
+        	
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {

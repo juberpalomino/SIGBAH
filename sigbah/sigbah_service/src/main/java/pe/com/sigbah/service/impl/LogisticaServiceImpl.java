@@ -26,6 +26,7 @@ import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
@@ -814,6 +815,22 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 	@Override
 	public List<BincardAlmacenBean> listarReporteBincard(BincardAlmacenBean bincardAlmacenBean) throws Exception {
 		return logisticaDao.listarReporteBincard(bincardAlmacenBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProductosStock(pe.com.sigbah.common.bean.ProductoBean)
+	 */
+	@Override
+	public List<ProductoBean> listarProductosStock(ProductoBean productoBean) throws Exception {
+		return logisticaDao.listarProductosStock(productoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarLoteProductoSalida(pe.com.sigbah.common.bean.LoteProductoBean)
+	 */
+	@Override
+	public List<LoteProductoBean> listarLoteProductoSalida(LoteProductoBean loteProductoBean) throws Exception {
+		return logisticaDao.listarLoteProductoSalida(loteProductoBean);
 	}
 
 }

@@ -130,7 +130,7 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/inicio/1';
+		var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/inicio';
 		$(location).attr('href', url);
 		
 	});
@@ -357,6 +357,11 @@ $(document).ready(function() {
 			
 			if (listaVehiculosCache.length == 0) { // Validacion sin registros
 				addWarnMessage(null, mensajeValidacionSinRegistros);
+				return;
+			}
+			
+			if ($('#sp_tot_peso').text() == '0.00' && $('#sp_tot_peso').text() == '0.00') { // Validacion del detalle productos
+				addWarnMessage(null, 'Registre en el catálogo los pesos y volúmenes del producto.');
 				return;
 			}
 
@@ -711,23 +716,39 @@ function listarDetalleProductos(respuesta) {
 				return row;											
 			}
 		}, {
-			data : 'nombreProducto'
+			data : 'nombreProducto',
+			sClass : 'opc-table-20'
 		}, {
-			data : 'nombreUnidad'
+			data : 'nombreUnidad',
+			sClass : 'opc-center'
 		}, {
-			data : 'cantidad'
+			data : 'cantidad',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 2)
 		}, {
-			data : 'pesoUnitarioBruto'
+			data : 'pesoUnitarioBruto',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 2)
 		}, {
-			data : 'pesoTotal'
+			data : 'pesoTotal',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 2)
 		}, {
-			data : 'volumenUnitario'
+			data : 'volumenUnitario',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 2)
 		}, {
-			data : 'volumenTotal'
+			data : 'volumenTotal',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 2)
 		}, {
-			data : 'costoBruto'
+			data : 'costoBruto',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 2)
 		}, {
-			data : 'costoTotal'
+			data : 'costoTotal',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 2)
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -755,10 +776,20 @@ function listarDetalleProductos(respuesta) {
 			}, 0 );
 
 			// Update footer
-			$('#sp_tot_peso').html(parseFloat(total_page_peso).toFixed(2));
-			$('#sp_tot_volumen').html(parseFloat(total_page_volumen).toFixed(2));
+			$('#sp_tot_peso').html(formatMontoAll(parseFloat(total_page_peso).toFixed(2)));
+			$('#sp_tot_volumen').html(formatMontoAll(parseFloat(total_page_volumen).toFixed(2)));
 		}
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_cantidad');
+		centerHeader('#th_pre_unitario');
+		centerHeader('#th_pes_total');
+		centerHeader('#th_vol_unitario');
+		centerHeader('#th_vol_total');
+		centerHeader('#th_cos_unitario');
+		centerHeader('#th_cos_total');
+	}, 500);
 	
 	listaProductosCache = respuesta;
 
@@ -882,6 +913,7 @@ function listarDetalleDocumentos(respuesta) {
 			data : 'nombreDocumento'
 		}, {
 			data : 'nroDocumento',
+			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
 					return '<button type="button" id="'+row.codigoArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
@@ -891,7 +923,8 @@ function listarDetalleDocumentos(respuesta) {
 				}											
 			}
 		}, {
-			data : 'fechaDocumento'
+			data : 'fechaDocumento',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -901,6 +934,10 @@ function listarDetalleDocumentos(respuesta) {
 		ordering : false,
 		info : true
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_tip_documento');
+	}, 500);
 	
 	listaDocumentosCache = respuesta;
 
@@ -1066,7 +1103,7 @@ function grabarDetalle(indicador) {
 		if (indicador) {
 			loadding(false);
 		} else {
-			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/inicio/1';
+			var url = VAR_CONTEXT + '/gestion-almacenes/proyecto-manifiesto/inicio';
 			$(location).attr('href', url);
 		}
 	});	

@@ -1159,3 +1159,13 @@ function verificarListaJson(lista) {
 	}
 	return lista;
 }
+
+function centerHeader(element) {	
+	if ($(element).hasClass('opc-right')) {
+		$(element).removeClass('opc-right');
+	}
+	if ($(element).hasClass('opc-left')) {
+		$(element).removeClass('opc-left');
+	}	
+	$(element).addClass('opc-center');
+}

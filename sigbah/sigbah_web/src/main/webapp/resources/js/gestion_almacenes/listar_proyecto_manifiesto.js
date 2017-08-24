@@ -203,11 +203,7 @@ function inicializarDatos() {
 		$('#sel_mes').val(proyectoManifiesto.codigoMes);
 		$('#sel_almacen').val(proyectoManifiesto.idAlmacen);
 		$('#sel_almacen').prop('disabled', true);
-		if (indicador == '1') { // Retorno
-			$('#btn_buscar').click();
-		} else {
-			listarProyectoManifiesto(new Object());		
-		}
+		$('#btn_buscar').click();
 	}
 }
 

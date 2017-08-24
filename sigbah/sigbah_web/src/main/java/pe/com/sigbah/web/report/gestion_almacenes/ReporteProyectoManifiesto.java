@@ -198,7 +198,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 												   List<ManifiestoVehiculoBean> listaVehiculo) throws Exception {
 		Document document = null;
 		try {
-			document = new Document(PageSize.A4, 0, 0, 20, 20);
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
 			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
 			
 			document.open();
@@ -208,7 +208,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			
 			float[] f1 = {100};
 			
-			float[] f2 = {40, 60};
+			float[] f2 = {60, 40};
 			
 			float[] f3 = {50, 5, 45};
 

@@ -22,6 +22,7 @@ import pe.com.sigbah.common.bean.ManifiestoVehiculoBean;
 import pe.com.sigbah.common.bean.OrdenCompraBean;
 import pe.com.sigbah.common.bean.OrdenIngresoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
+import pe.com.sigbah.common.bean.ProductoBean;
 import pe.com.sigbah.common.bean.ProductoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
@@ -711,5 +712,19 @@ public interface LogisticaDao {
 	 * @throws Exception 
 	 */
 	public abstract List<BincardAlmacenBean> listarReporteBincard(BincardAlmacenBean bincardAlmacenBean) throws Exception;
+	
+	/**
+	 * @param productoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoBean> listarProductosStock(ProductoBean productoBean) throws Exception;
+	
+	/**
+	 * @param loteProductoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<LoteProductoBean> listarLoteProductoSalida(LoteProductoBean loteProductoBean) throws Exception;
 	
 }

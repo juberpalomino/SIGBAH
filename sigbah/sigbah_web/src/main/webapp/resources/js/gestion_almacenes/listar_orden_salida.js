@@ -63,6 +63,8 @@ $(document).ready(function() {
 		var indices = [];
 		var codigo = '';
 		var anio = '';
+		var idEstado = null;
+		var fechaEmision = null;
 		tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ord_salida.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -73,6 +75,8 @@ $(document).ready(function() {
 				var idSalida = listaOrdenSalidaCache[index].idSalida;
 				codigo = codigo + idSalida + '_';
 				anio = listaOrdenSalidaCache[index].codigoAnio;
+				idEstado = listaOrdenSalidaCache[index].idEstado;
+				fechaEmision = listaOrdenSalidaCache[index].fechaEmision;
 			}
 		});
 		
@@ -85,6 +89,19 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
+			
+			if (idEstado == ESTADO_ANULADO) {
+				addWarnMessage(null, mensajeValidacionAnulado);
+				return;
+			}
+			
+			var mes = fechaEmision.substring(3, 5);
+		    var anio = fechaEmision.substring(6, 10);		    
+		    if (mes != ordenSalida.codigoMes || anio != ordenSalida.codigoAnio) {
+		    	addWarnMessage(null, mensajeValidacionEdicionAnioMesCerrado);
+		    	return;
+		    }
+			
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/orden-salida/mantenimientoOrdenSalida/';
 			$(location).attr('href', url + codigo + '/' + anio);
@@ -206,11 +223,7 @@ function inicializarDatos() {
 		$('#sel_mes').val(ordenSalida.codigoMes);
 		$('#sel_almacen').val(ordenSalida.idAlmacen);
 		$('#sel_almacen').prop('disabled', true);
-		if (indicador == '1') { // Retorno
-			$('#btn_buscar').click();
-		} else {
-			listarOrdenSalida(new Object());		
-		}
+		$('#btn_buscar').click();
 	}
 }
 
@@ -239,21 +252,25 @@ function listarOrdenSalida(respuesta) {
 				return row;											
 			}
 		}, {
-			data : 'codigoAnio'
+			data : 'codigoAnio',
+			sClass : 'opc-center'
 		}, {
 			data : 'nombreMes'
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroOrdenSalida'
+			data : 'nroOrdenSalida',
+			sClass : 'opc-center'
 		}, {
-			data : 'fechaEmision'
+			data : 'fechaEmision',
+			sClass : 'opc-center'
 		}, {
 			data : 'nombreMovimiento'
 		}, {
 			data : 'nroGuiaRemision'
 		}, {
-			data : 'nombreEstado'
+			data : 'nombreEstado',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -268,6 +285,13 @@ function listarOrdenSalida(respuesta) {
 			{ width : '15%', targets : 7 }
   		]
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_mes');
+		centerHeader('#th_almacen');
+		centerHeader('#th_tip_movimiento');
+		centerHeader('#th_nro_gui_remision');
+	}, 500);
 	
 	listaOrdenSalidaCache = respuesta;
 

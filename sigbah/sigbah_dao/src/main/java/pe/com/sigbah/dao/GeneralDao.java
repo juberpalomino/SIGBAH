@@ -318,27 +318,30 @@ public interface GeneralDao {
 
 	/**
 	 * @param itemBean
-	 * @return
+	 * @return Lista de registros.
+	 * @throws Exception
 	 */
 	public abstract List<ItemBean> listarTipoProducto(ItemBean itemBean) throws Exception;
 
 	/**
 	 * @param itemBean
-	 * @return
+	 * @return Lista de registros.
 	 * @throws Exception
 	 */
-	List<ItemBean> listarEstadoPedidoCompra(ItemBean itemBean) throws Exception;
+	public abstract List<ItemBean> listarEstadoPedidoCompra(ItemBean itemBean) throws Exception;
+	
+	/**
+	 * @param itemBean
+	 * @return Lista de registros.
+	 * @throws Exception
+	 */
+	public abstract List<ItemBean> listarEstadoDee(ItemBean itemBean) throws Exception;
 
 	/**
 	 * @param itemBean
-	 * @return
+	 * @return Lista de registros.
+	 * @throws Exception
 	 */
-	public abstract List<ItemBean> listarEstadoDee(ItemBean itemBean)throws Exception;
-
-	/**
-	 * @param itemBean
-	 * @return
-	 */
-	public abstract List<ItemBean> listarEstadoRequerimiento(ItemBean itemBean)throws Exception;
+	public abstract List<ItemBean> listarEstadoRequerimiento(ItemBean itemBean) throws Exception;
 
 }

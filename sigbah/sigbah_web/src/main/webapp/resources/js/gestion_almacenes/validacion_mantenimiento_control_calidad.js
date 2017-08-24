@@ -130,9 +130,18 @@ $(document).ready(function() {
 			},
 			txt_can_lote : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Lote.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+	            				return { valid: false, message: 'Debe ingresar Cantidad de Lote.' }
+	            			}
+		                	var cantidadMuestra = $('#txt_can_muestra').val();
+	                		if (!esnulo(cantidadMuestra)) {
+	                			frm_det_alimentarios.bootstrapValidator('revalidateField', 'txt_can_muestra');
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			txt_can_muestra : {
@@ -144,8 +153,8 @@ $(document).ready(function() {
 	            			}
 		                	var cantidadLote = $('#txt_can_lote').val();
 	                		if (!esnulo(cantidadLote)) {
-	                			var cantidadMuestra = parseFloat(value);
-	                			cantidadLote = parseFloat(cantidadLote);
+	                			var cantidadMuestra = parseFloat(formatMonto(value));
+	                			cantidadLote = parseFloat(formatMonto(cantidadLote));
 	                			if (cantidadMuestra > cantidadLote) {
 	                				return { valid: false, message: 'La cantidad de la muestra siempre debe ser menor o igual a la cantidad del lote.' }
 	                			}
@@ -235,9 +244,18 @@ $(document).ready(function() {
 			},
 			txt_no_can_lote : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad de Lote.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+	            				return { valid: false, message: 'Debe ingresar Cantidad de Lote.' }
+	            			}
+		                	var cantidadMuestra = $('#txt_no_can_muestra').val();
+	                		if (!esnulo(cantidadMuestra)) {
+	                			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'txt_no_can_muestra');
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			txt_no_can_muestra : {
@@ -249,8 +267,8 @@ $(document).ready(function() {
 	            			}
 		                	var cantidadLote = $('#txt_no_can_lote').val();
 	                		if (!esnulo(cantidadLote)) {
-	                			var cantidadMuestra = parseFloat(value);
-	                			cantidadLote = parseFloat(cantidadLote);
+	                			var cantidadMuestra = parseFloat(formatMonto(value));
+	                			cantidadLote = parseFloat(formatMonto(cantidadLote));
 	                			if (cantidadMuestra > cantidadLote) {
 	                				return { valid: false, message: 'La cantidad de la muestra siempre debe ser menor o igual a la cantidad del lote.' }
 	                			}

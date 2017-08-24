@@ -60,12 +60,11 @@ public class ProyectoManifiestoController extends BaseController {
 	private GeneralService generalService;
 	
 	/**
-	 * @param indicador 
 	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
-	@RequestMapping(value = "/inicio/{indicador}", method = RequestMethod.GET)
-    public String inicio(@PathVariable("indicador") String indicador, Model model) {
+	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
+    public String inicio(Model model) {
         try {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
@@ -94,7 +93,6 @@ public class ProyectoManifiestoController extends BaseController {
     		
     		model.addAttribute("proyectoManifiesto", getParserObject(proyectoManifiesto));
         	
-        	model.addAttribute("indicador", indicador);
         	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {

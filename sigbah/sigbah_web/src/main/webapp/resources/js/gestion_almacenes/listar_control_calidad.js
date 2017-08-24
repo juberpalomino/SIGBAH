@@ -62,6 +62,7 @@ $(document).ready(function() {
 		var indices = [];
 		var codigo = '';
 		var idEstado = null;
+		var fechaEmision = null;
 		tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_con_calidad.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -72,6 +73,7 @@ $(document).ready(function() {
 				var idControlCalidad = listaControlCalidadCache[index].idControlCalidad;
 				codigo = codigo + idControlCalidad + '_';
 				idEstado = listaControlCalidadCache[index].idEstado;
+				fechaEmision = listaControlCalidadCache[index].fechaEmision;
 			}
 		});
 		
@@ -89,6 +91,13 @@ $(document).ready(function() {
 				addWarnMessage(null, mensajeValidacionAnulado);
 				return;
 			}
+			
+			var mes = fechaEmision.substring(3, 5);
+		    var anio = fechaEmision.substring(6, 10);		    
+		    if (mes != controlCalidad.codigoMes || anio != controlCalidad.codigoAnio) {
+		    	addWarnMessage(null, mensajeValidacionEdicionAnioMesCerrado);
+		    	return;
+		    }		
 			
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/control-calidad/mantenimientoControlCalidad/';
@@ -202,16 +211,12 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-		$('#sel_anio').val(usuarioBean.codigoAnio);
-		$('#sel_ddi').val(usuarioBean.idDdi);
-		$('#sel_almacen').val(usuarioBean.idAlmacen);
+		$('#sel_anio').val(controlCalidad.codigoAnio);
+		$('#sel_ddi').val(controlCalidad.idDdi);
+		$('#sel_almacen').val(controlCalidad.idAlmacen);
 		$('#sel_ddi').prop('disabled', true);
 		$('#sel_almacen').prop('disabled', true);
-		if (indicador == '1') { // Retorno
-			$('#btn_buscar').click();
-		} else {
-			listarControlCalidad(new Object());
-		}
+		$('#btn_buscar').click();
 	}
 }
 
@@ -240,19 +245,23 @@ function listarControlCalidad(respuesta) {
 				return row;											
 			}
 		}, {
-			data : 'codigoAnio'
+			data : 'codigoAnio',
+			sClass : 'opc-center'
 		}, {
 			data : 'nombreDdi'
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroControlCalidad'
+			data : 'nroControlCalidad',
+			sClass : 'opc-center'
 		}, {
-			data : 'fechaEmision'
+			data : 'fechaEmision',
+			sClass : 'opc-center'
 		}, {
 			data : 'tipoControlCalidad'
 		}, {
-			data : 'nombreEstado'
+			data : 'nombreEstado',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -268,6 +277,12 @@ function listarControlCalidad(respuesta) {
 			{ width : '18%', targets : 7 }
 		]
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_ddi');
+		centerHeader('#th_almacen');
+		centerHeader('#th_tip_control');
+	}, 500);
 	
 	listaControlCalidadCache = respuesta;
 

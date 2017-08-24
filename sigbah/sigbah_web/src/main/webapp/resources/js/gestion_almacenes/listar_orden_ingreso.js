@@ -63,6 +63,7 @@ $(document).ready(function() {
 		var indices = [];
 		var codigo = '';
 		var idEstado = null;
+		var fechaEmision = null;
 		tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]').each(function(index) {
 			if (tbl_mnt_ord_ingreso.DataTable().rows().$('input[type="checkbox"]')[index].checked) {
 				indices.push(index);				
@@ -73,6 +74,7 @@ $(document).ready(function() {
 				var idIngreso = listaOrdenIngresoCache[index].idIngreso;
 				codigo = codigo + idIngreso + '_';
 				idEstado = listaOrdenIngresoCache[index].idEstado;
+				fechaEmision = listaOrdenIngresoCache[index].fechaEmision;
 			}
 		});
 		
@@ -90,6 +92,13 @@ $(document).ready(function() {
 				addWarnMessage(null, mensajeValidacionAnulado);
 				return;
 			}
+			
+			var mes = fechaEmision.substring(3, 5);
+		    var anio = fechaEmision.substring(6, 10);		    
+		    if (mes != ordenIngreso.codigoMes || anio != ordenIngreso.codigoAnio) {
+		    	addWarnMessage(null, mensajeValidacionEdicionAnioMesCerrado);
+		    	return;
+		    }
 			
 			loadding(true);
 			var url = VAR_CONTEXT + '/gestion-almacenes/orden-ingreso/mantenimientoOrdenIngreso/';
@@ -206,16 +215,12 @@ function inicializarDatos() {
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
 	} else {
-		$('#sel_anio').val(usuarioBean.codigoAnio);
-		$('#sel_ddi').val(usuarioBean.idDdi);
-		$('#sel_almacen').val(usuarioBean.idAlmacen);
+		$('#sel_anio').val(ordenIngreso.codigoAnio);
+		$('#sel_ddi').val(ordenIngreso.idDdi);
+		$('#sel_almacen').val(ordenIngreso.idAlmacen);
 		$('#sel_ddi').prop('disabled', true);
 		$('#sel_almacen').prop('disabled', true);
-		if (indicador == '1') { // Retorno
-			$('#btn_buscar').click();
-		} else {
-			listarOrdenIngreso(new Object());		
-		}
+		$('#btn_buscar').click();
 	}
 }
 
@@ -250,13 +255,16 @@ function listarOrdenIngreso(respuesta) {
 		}, {
 			data : 'nombreAlmacen'
 		}, {
-			data : 'nroOrdenIngreso'
+			data : 'nroOrdenIngreso',
+			sClass : 'opc-center'
 		}, {
-			data : 'fechaEmision'
+			data : 'fechaEmision',
+			sClass : 'opc-center'
 		}, {
 			data : 'nombreMovimiento'
 		}, {
-			data : 'nombreEstado'
+			data : 'nombreEstado',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -271,6 +279,13 @@ function listarOrdenIngreso(respuesta) {
 			{ width : '15%', targets : 7 }
   		]
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_anio');
+		centerHeader('#th_ddi');
+		centerHeader('#th_almacen');
+		centerHeader('#th_tip_movimiento');
+	}, 500);
 	
 	listaOrdenIngresoCache = respuesta;
 

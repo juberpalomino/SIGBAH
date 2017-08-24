@@ -133,9 +133,18 @@ $(document).ready(function() {
 			},
 			txt_fec_entrega : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Fecha de Entrega.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+	            				return { valid: false, message: 'Debe ingresar Fecha de Entrega.' }
+	            			}
+		                	var fechaRegistro = $('#txt_fecha').val();
+	                		if (comparafecha(value, fechaRegistro) != 1) {
+	                		    return { valid: false, message: 'La fecha de entrega debe ser menor a la fecha de emisión.' }
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			sel_chofer : {
@@ -160,7 +169,7 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_can_lote : {
+			sel_lote : {
 				validators : {
 					notEmpty : {
 						message : 'Debe ingresar Cantidad de Lote.'
@@ -169,15 +178,28 @@ $(document).ready(function() {
 			},
 			txt_cantidad : {
 				validators : {
-					notEmpty : {
-						message : 'Debe ingresar Cantidad.'
-					}
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+	            				return { valid: false, message: 'Debe ingresar Cantidad.' }
+	            			}
+		                	var cantidadStock = $('#txt_can_stock').val();
+	                		if (!esnulo(cantidadStock)) {
+	                			cantidadStock = parseFloat(formatMonto(cantidadStock));
+	                			var cantidad = parseFloat(formatMonto(value));
+	                			if (cantidad > cantidadStock) {	                			
+	                				return { valid: false, message: 'La cantidad no puede ser mayor a la cantidad stock.' }
+	                			}
+	                		}
+		            		return true;
+		                }
+		            }
 				}
 			},
 			txt_pre_unitario : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar Precio Unitario.'
+						message : 'El campo Precio Unitario es obligatorio.'
 					}
 				}
 			}
