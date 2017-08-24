@@ -273,7 +273,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			table = new PdfPTable(1);
 			table.setWidths(f1);
 			
-			p = new Paragraph("BIENES DE AYUDA ALIMENTARIA", titulo);
+			p = new Paragraph("PROYECTO DE MANIFIESTO DE CARGA N° ".concat(proyectoManifiesto.getNroProyectoManifiesto()), titulo);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -287,7 +287,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			table = new PdfPTable(1);
 			table.setWidths(f1);
 			
-			p = new Paragraph("PROYECTO DE MANIFIESTO DE CARGA", titulo);
+			p = new Paragraph("BIENES DE AYUDA ALIMENTARIA", titulo);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -295,10 +295,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			table.addCell(cell);
 			
 			document.add(table);
-			
-
-			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-						
+					
 			
 			
 			table = new PdfPTable(1);
@@ -317,10 +314,6 @@ public class ReporteProyectoManifiesto implements Serializable {
 			
 			
 			
-			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-			
-			
-			
 			table = new PdfPTable(1);
 			table.setWidths(f1);
 			
@@ -334,7 +327,7 @@ public class ReporteProyectoManifiesto implements Serializable {
 			table.addCell(cell);
 			
 			document.add(table);
-			
+
 			
 			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
 			

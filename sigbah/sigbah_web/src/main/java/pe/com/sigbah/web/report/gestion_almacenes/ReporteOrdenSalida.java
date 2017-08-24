@@ -312,10 +312,7 @@ public class ReporteOrdenSalida implements Serializable {
 			document.add(table);
 			
 			
-			
-			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-			
-			
+
 			
 			table = new PdfPTable(1);
 			table.setWidths(f1);
@@ -333,9 +330,7 @@ public class ReporteOrdenSalida implements Serializable {
 			
 			
 			
-			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-			
-			
+		
 			
 			table = new PdfPTable(1);
 			table.setWidths(f1);
@@ -352,11 +347,7 @@ public class ReporteOrdenSalida implements Serializable {
 			document.add(table);
 			
 			
-			
-			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-
-			
-			
+		
 			table = new PdfPTable(1);
 			table.setWidths(f1);
 			
@@ -372,9 +363,7 @@ public class ReporteOrdenSalida implements Serializable {
 			document.add(table);
 			
 			
-			
-			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
-	
+
 			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
 			
 			
