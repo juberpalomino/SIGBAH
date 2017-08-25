@@ -2,7 +2,7 @@ var listaEmergenciaSinpadCache = new Object();
 
 var tbl_mnt_emer_sinpad = $('#tbl_mnt_emer_sinpad');
 var frm_emer_sinpad = $('#frm_emer_sinpad');
-
+var region='';
 $(document).ready(function() {
 
 	frm_emer_sinpad.bootstrapValidator({
@@ -32,11 +32,13 @@ $(document).ready(function() {
 		var bootstrapValidator = frm_emer_sinpad.data('bootstrapValidator');
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
-
+			if(esnulo(region)){
+				region=$('#sel_region').val();
+			}
 			var params = { 
 				codAnio : $('#sel_anio').val(),
 				codMes : $('#sel_mes').val(),
-				idRegion : $('#sel_region').val(),
+				idRegion : region,
 				idFenomeno : $('#sel_fenomeno').val()
 			};
 			
@@ -47,6 +49,7 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					listarEmergencia(respuesta);
+					region=$('#sel_region').val();
 				}
 				loadding(false);
 			});
@@ -89,7 +92,11 @@ $(document).ready(function() {
 			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
 			loadding(true);
-			var url = VAR_CONTEXT + '/programacion-bath/emergencia/mantenimientoEmergencia/'+codigo+'/'+codigoAnio;
+			var region=$('#sel_region').val();
+			var anio = $('#sel_anio').val();
+			var mes = esnulo($('#sel_mes').val())?0:$('#sel_mes').val();
+			var fenomeno = $('#sel_fenomeno').val();
+			var url = VAR_CONTEXT + '/programacion-bath/emergencia/mantenimientoEmergencia/'+codigo+'/'+codigoAnio+'/'+region+'/'+anio+'/'+mes+'/'+fenomeno;
 //			$(location).attr('href', url + codigo);
 			$(location).attr('href', url );
 			
@@ -208,6 +215,7 @@ function inicializarDatos() {
 	} else {		
 		if (indicador == '1') { // Retorno
 			$('#btn_aceptar').click();
+			$('#sel_region').val(region);
 		} else {
 			listarEmergencia(new Object());
 		}
@@ -259,17 +267,24 @@ function listarEmergencia(respuesta) {
 		}, {
 //			data : 'poblacionInei'
 //		}, {
-			data : 'famAfectado'
+			data : 'famAfectado',
+			sClass : 'opc-right'
+				
 		}, {
-			data : 'famDamnificado'
+			data : 'famDamnificado',
+			sClass : 'opc-right'
 		}, {
-			data : 'totalFam'
+			data : 'totalFam',
+			sClass : 'opc-right'
 		}, {
-			data : 'persoAfectado'
+			data : 'persoAfectado',
+			sClass : 'opc-right'
 		}, {
-			data : 'persoDamnificado'
+			data : 'persoDamnificado',
+			sClass : 'opc-right'
 		}, {
-			data : 'totalPerso'
+			data : 'totalPerso',
+			sClass : 'opc-right'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -278,6 +293,43 @@ function listarEmergencia(respuesta) {
 		paging : false,
 		ordering : false,
 		info : false,
+		'footerCallback' : function ( row, data, start, end, display ) {
+			var api = this.api(), data;	 
+			
+			// Remove the formatting to get integer data for summation
+			var intVal = function ( i ) {
+				return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ?	i : 0;
+			};
+ 			
+			total_fam_afec = api.column(11, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			
+			total_fam_dam = api.column(12, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_fam = api.column(13, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_per_afec = api.column(14, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_per_dam = api.column(15, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_per = api.column(16, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+
+			// Update footer
+			$('#sp_tot_fam_afec').html(parseFloat(total_fam_afec).toFixed(0));
+			$('#sp_tot_fam_dam').html(parseFloat(total_fam_dam).toFixed(0));
+			$('#sp_tot_fam').html(parseFloat(total_fam).toFixed(0));
+			$('#sp_tot_per_afec').html(parseFloat(total_per_afec).toFixed(0));
+			$('#sp_tot_per_dam').html(parseFloat(total_per_dam).toFixed(0));
+			$('#sp_tot_per').html(parseFloat(total_per).toFixed(0));
+		
+		},
 		iDisplayLength : 15, 
 //		aLengthMenu : [
 //			[15, 50, 100],

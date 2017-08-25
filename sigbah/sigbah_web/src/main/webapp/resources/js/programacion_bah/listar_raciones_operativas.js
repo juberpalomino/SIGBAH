@@ -231,7 +231,7 @@ function listarRacion(respuesta) {
 		}, {
 			data : 'nombreRacion'
 		}, {
-			data : 'diasAtencion'
+			data : 'diasAtencion',sClass : 'opc-right'
 		} ],
 		
 		

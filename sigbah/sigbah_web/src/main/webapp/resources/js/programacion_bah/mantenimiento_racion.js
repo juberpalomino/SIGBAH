@@ -320,8 +320,8 @@ function listarProductos(respuesta) {
 						return row;											
 					}
 				}, {data : 'nombProducto'}, 
-				{data : 'pesoUnitarioPres'}, 
-				{data : 'cantRacionKg'}
+				{data : 'pesoUnitarioPres',sClass : 'opc-right'}, 
+				{data : 'cantRacionKg',sClass : 'opc-right'}
 			],
 			language : {
 				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'

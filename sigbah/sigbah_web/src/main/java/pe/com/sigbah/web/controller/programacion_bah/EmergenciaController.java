@@ -140,106 +140,20 @@ private static final long serialVersionUID = 1L;
 	    } 
 	}
 	
-	/**
-	 * @param codigo 
-	 * @param request 
-	 * @param response
-	 * @return Objeto.
-	 */
-//	@RequestMapping(value = "/exportarPdf/{codigo}", method = RequestMethod.GET)
-//	@ResponseBody
-//	public String exportarPdf(@PathVariable("codigo") Integer codigo, HttpServletRequest request, HttpServletResponse response) {
-//	    try {
-//			List<DetalleProductoEmergenciaBean> lista = programacionService.listarDetalleProductoControlCalidad(codigo);
-//			if (isEmpty(lista)) {
-//				return Constantes.COD_VALIDACION_GENERAL;
-//			}			
-//			DetalleProductoEmergenciaBean producto = lista.get(0);
-//
-//			ExportarArchivo printer = new ExportarArchivo();
-//			StringBuilder jasperFile = new StringBuilder();
-//			jasperFile.append(getPath(request));
-//			jasperFile.append(File.separator);
-//			jasperFile.append(Constantes.REPORT_PATH_ALMACENES);
-//			if (producto.getFlagTipoProducto().equals(Constantes.ONE_STRING)) {
-//				jasperFile.append("Control_Calidad_Alimentaria.jrxml");
-//			} else {
-//				jasperFile.append("Control_Calidad_No_Alimentaria.jrxml");
-//			}
-//			
-//			Map<String, Object> parameters = new HashMap<String, Object>();
-//
-//			// Agregando los parámetros del reporte
-//			StringBuilder logo_indeci_path = new StringBuilder();
-//			logo_indeci_path.append(getPath(request));
-//			logo_indeci_path.append(File.separator);
-//			logo_indeci_path.append(Constantes.IMAGE_INDECI_REPORT_PATH);
-//			parameters.put("P_LOGO_INDECI", logo_indeci_path.toString());			
-//			StringBuilder logo_wfp_path = new StringBuilder();
-//			logo_wfp_path.append(getPath(request));
-//			logo_wfp_path.append(File.separator);
-//			logo_wfp_path.append(Constantes.IMAGE_WFP_REPORT_PATH);
-//			parameters.put("P_LOGO_WFP", logo_wfp_path.toString());			
-//			StringBuilder logo_check_path = new StringBuilder();
-//			logo_check_path.append(getPath(request));
-//			logo_check_path.append(File.separator);
-//			logo_check_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-//			parameters.put("P_LOGO_CHECK", logo_check_path.toString());			
-//			StringBuilder logo_check_min_path = new StringBuilder();
-//			logo_check_min_path.append(getPath(request));
-//			logo_check_min_path.append(File.separator);
-//			logo_check_min_path.append(Constantes.IMAGE_CHECK_REPORT_PATH);
-//			parameters.put("P_LOGO_CHECK_MIN", logo_check_min_path.toString());			
-//			parameters.put("P_NRO_CONTROL_CALIDAD", producto.getNroControlCalidad());
-//			parameters.put("P_DDI", producto.getNombreDdi());			
-//			parameters.put("P_ALMACEN", producto.getNombreAlmacen());
-//			parameters.put("P_FECHA_EMISION", producto.getFechaEmision());
-//			parameters.put("P_TIPO_CONTROL", producto.getTipoControlCalidad());
-//			parameters.put("P_ALMACEN_ORIGEN_DESTINO", producto.getNombreAlmacen());
-//			parameters.put("P_PROVEEDOR", producto.getProveedorDestino());
-//			parameters.put("P_NRO_ORDEN_COMPRA", producto.getNroOrdenCompra());
-//			parameters.put("P_CONCLUSIONES", producto.getConclusiones());
-//			parameters.put("P_RECOMENDACIONES", producto.getRecomendaciones());
-//
-//			byte[] array = printer.exportPdf(jasperFile.toString(), parameters, lista);
-//			InputStream input = new ByteArrayInputStream(array);
-//	        
-//	        String file_name = "Reporte_Control_Calidad";
-//			file_name = file_name.concat(Constantes.EXTENSION_FORMATO_PDF);
-//	    	
-//	        response.resetBuffer();
-//            response.setContentType(Constantes.MIME_APPLICATION_PDF);
-//            response.setHeader("Content-Disposition", "attachment; filename="+file_name);            
-//			response.setHeader("Pragma", "no-cache");
-//			response.setHeader("Cache-Control", "no-store");
-//			response.setHeader("Pragma", "private");
-//			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-//			response.setDateHeader("Expires", 1);
-//			
-//			byte[] buffer = new byte[4096];
-//	    	int n = 0;
-//
-//	    	OutputStream output = response.getOutputStream();
-//	    	while ((n = input.read(buffer)) != -1) {
-//	    	    output.write(buffer, 0, n);
-//	    	}
-//	    	output.close();
-//
-//	    	return Constantes.COD_EXITO_GENERAL;
-//	    } catch (Exception e) {
-//	    	LOGGER.error(e.getMessage(), e);
-//	    	return Constantes.COD_ERROR_GENERAL;
-//	    } 
-//	}
+
 	
 	/**
 	 * @param codigo 
 	 * @param model
 	 * @return - Retorna a la vista JSP.
-	 */
-	@RequestMapping(value = "/mantenimientoEmergencia/{codigo}/{codigoAnio}", method = RequestMethod.GET)
+	 */ 
+	@RequestMapping(value = "/mantenimientoEmergencia/{codigo}/{codigoAnio}/{region}/{anio}/{mes}/{fenomeno}", method = RequestMethod.GET)
     public String mantenimientoEmergencia(@PathVariable("codigo") Integer codigo,
     									  @PathVariable("codigoAnio") String codigoAnio,
+    									  @PathVariable("region") String region,
+    									  @PathVariable("anio") String anio,
+    									  @PathVariable("mes") String mes,
+    									  @PathVariable("fenomeno") String fenomeno,
     									  Model model) {
         try {
         	ListaRespuestaEmergenciaBean detalle = new ListaRespuestaEmergenciaBean();
@@ -253,7 +167,12 @@ private static final long serialVersionUID = 1L;
     		model.addAttribute("lista_alimentaria", getParserObject(detalle.getLstAlimentaria()));
     		model.addAttribute("lista_no_alimentaria", getParserObject(detalle.getLstNoAlimentaria()));
     		
-
+    		model.addAttribute("codiRegion", region);
+    		model.addAttribute("codiAnio", anio);
+    		model.addAttribute("codiMes", mes);
+    		model.addAttribute("codiFenomeno", fenomeno);
+    		
+    		
             
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);

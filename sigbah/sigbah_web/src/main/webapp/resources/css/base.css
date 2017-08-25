@@ -178,3 +178,22 @@ table.dataTable thead .sorting_desc {
 	background-color: white !important; 
 	border-color: white !important;
 }
+
+.breadcrumb {
+	font-weight: bold; 
+}
+
+.modal-header .close{
+	color:white;
+}
+.close{
+	opacity: 1;
+
+}
+
+#miModal {
+
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+   
+}

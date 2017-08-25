@@ -25,7 +25,7 @@
 			<article class="col-xs-12 col-sm-12">
 			
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div class="jarviswidget">
+				<div>
 
 					<!-- widget div-->
 					<div>

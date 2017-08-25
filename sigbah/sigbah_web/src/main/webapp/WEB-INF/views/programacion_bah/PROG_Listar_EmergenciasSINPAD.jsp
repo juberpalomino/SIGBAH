@@ -169,7 +169,7 @@
 										<th>Provincia</th>
 										<th>Distrito</th>
 <!-- 										<th>Población INEI</th> -->
-										<th>Fam. afect.</th>
+										<th>Fam. Afect.</th>
 										<th>Fam. Dam</th>
 										<th>Total Fam.</th>
 										<th>Pers. Afect.</th>
@@ -177,6 +177,19 @@
 										<th>Total Pers.</th>
 									</tr>
 								</thead>
+								<tfoot>
+									<tr>
+										<td colspan="11">
+											<span class="label-bold" style="float:right;">Total:</span>
+										</td>
+										<td colspan="1"><span id="sp_tot_fam_afec"></span></td>
+										<td colspan="1"><span id="sp_tot_fam_dam"></span></td>
+										<td colspan="1"><span id="sp_tot_fam"></span></td>
+										<td colspan="1"><span id="sp_tot_per_afec"></span></td>
+										<td colspan="1"><span id="sp_tot_per_dam"></span></td>
+										<td colspan="1"><span id="sp_tot_per"></span></td>
+									</tr>
+								</tfoot>
 							</table>
 
 						</div>

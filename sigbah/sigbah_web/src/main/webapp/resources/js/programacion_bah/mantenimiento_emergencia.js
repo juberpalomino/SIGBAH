@@ -30,9 +30,29 @@ $(document).ready(function() {
 		e.preventDefault();
 
 		loadding(true);					
-		var url = VAR_CONTEXT + '/programacion-bath/emergencia/inicio/0';
+		var url = VAR_CONTEXT + '/programacion-bath/emergencia/inicio/1';
 		$(location).attr('href', url);
 		
+	/*		
+		var params = { 
+				codAnio : codiAnio,
+				codMes : codiMes,
+				idRegion : codiRegion,
+				idFenomeno : codiFenomeno
+			};
+			  
+			loadding(true);
+			
+			consultarAjax('GET', '/programacion-bath/emergencia/listarEmergencias', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarEmergencia(respuesta);
+				}
+				loadding(false);
+			});
+			*/
+			
 	});
 	
 
@@ -61,6 +81,7 @@ function inicializarDatos() {
 	$('#ul_pro_bah').css('display', 'block');
 	$('#li_emer_sinpad').attr('class', 'active');
 	$('#li_emer_sinpad').closest('li').children('a').attr('href', '#');
+	
 	
 	if (codigoRespuesta == NOTIFICACION_ERROR) {
 		addErrorMessage(null, mensajeRespuesta);
@@ -250,4 +271,129 @@ function cargarTipoControl(val_tip_control) {
 		$('#sel_chofer').prop('disabled', true);
 		$('#txt_nro_placa').prop('disabled', true);
 	}
+}
+
+function listarEmergencia(respuesta) {
+
+	tbl_mnt_emer_sinpad.dataTable().fnDestroy();
+	
+	tbl_mnt_emer_sinpad.dataTable({
+		data : respuesta,
+		columns : [ {
+			data : 'idEmergencia',
+			sClass : 'opc-center',
+			render: function(data, type, row) {
+				if (data != null) {
+					return '<label class="checkbox">'+
+								'<input type="checkbox"><i></i>'+
+							'</label>';	
+				} else {
+					return '';	
+				}											
+			}	
+		}, {	
+			data : 'idEmergencia',
+			render : function(data, type, full, meta) {
+				var row = meta.row + 1;
+				return row;											
+			}
+		}, {
+			data : 'codAnio'
+		}, {
+			data : 'nombreMes'
+		}, {
+			data : 'fecha'
+		}, {
+			data : 'idEmergencia'
+		}, {
+			data : 'descFenomeno'
+		}, {
+			data : 'nombreEmergencia'
+		}, {
+			data : 'desDepartamento'
+		}, {
+			data : 'desProvincia'
+		}, {
+			data : 'desDistrito'
+		}, {
+//			data : 'poblacionInei'
+//		}, {
+			data : 'famAfectado',
+			sClass : 'opc-right'
+				
+		}, {
+			data : 'famDamnificado',
+			sClass : 'opc-right'
+		}, {
+			data : 'totalFam',
+			sClass : 'opc-right'
+		}, {
+			data : 'persoAfectado',
+			sClass : 'opc-right'
+		}, {
+			data : 'persoDamnificado',
+			sClass : 'opc-right'
+		}, {
+			data : 'totalPerso',
+			sClass : 'opc-right'
+		} ],
+		language : {
+			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
+		},
+		bFilter : true, 
+		paging : false,
+		ordering : false,
+		info : false,
+		'footerCallback' : function ( row, data, start, end, display ) {
+			var api = this.api(), data;	 
+			
+			// Remove the formatting to get integer data for summation
+			var intVal = function ( i ) {
+				return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ?	i : 0;
+			};
+ 			
+			total_fam_afec = api.column(11, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			
+			total_fam_dam = api.column(12, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_fam = api.column(13, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_per_afec = api.column(14, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_per_dam = api.column(15, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+			total_per = api.column(16, { page: 'current'} ).data().reduce( function (a, b) {
+				return intVal(a) + intVal(b);
+			}, 0 );
+
+			// Update footer
+			$('#sp_tot_fam_afec').html(parseFloat(total_fam_afec).toFixed(0));
+			$('#sp_tot_fam_dam').html(parseFloat(total_fam_dam).toFixed(0));
+			$('#sp_tot_fam').html(parseFloat(total_fam).toFixed(0));
+			$('#sp_tot_per_afec').html(parseFloat(total_per_afec).toFixed(0));
+			$('#sp_tot_per_dam').html(parseFloat(total_per_dam).toFixed(0));
+			$('#sp_tot_per').html(parseFloat(total_per).toFixed(0));
+		
+		},
+		iDisplayLength : 15, 
+//		aLengthMenu : [
+//			[15, 50, 100],
+//			[15, 50, 100]
+//		],
+		columnDefs : [
+			{ width : '15%', targets : 3 },
+			{ width : '15%', targets : 4 },
+			{ width : '15%', targets : 5 },
+			{ width : '18%', targets : 7 }
+		]
+	});
+	
+	listaEmergenciaSinpadCache = respuesta;
+
 }

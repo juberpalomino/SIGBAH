@@ -25,11 +25,9 @@
 			<article class="col-xs-12 col-sm-12">
 			
 				<!-- Widget ID (each widget will need unique ID)-->
-				<div class="jarviswidget">
-
+				
 					<!-- widget div-->
-					<div>
-	
+					
 						<!-- widget content -->
 						<div class="widget-body">
 	
@@ -329,10 +327,9 @@
 						</div>
 						<!-- end widget content -->
 	
-					</div>
 					<!-- end widget div -->
 	
-				</div>
+				
 				<!-- end widget -->
 			
 			</article>	
@@ -357,7 +354,7 @@
 				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Seleccionar distritos según INEI</h4>
 			</div>
 			
-			<div class="modal-body">
+			<div class="modal-body" id="miModal">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12">
 						<form id="frm_det_prog_ubigeo" class="form-horizontal" role="form">
@@ -478,7 +475,7 @@
 				<h4 class="modal-title label-bold" id="h4_tit_alimentarios">Emergencias</h4>
 			</div>
 			
-			<div class="modal-body">
+			<div class="modal-body" id="miModal">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12">
 						<form id="frm_det_prog_ubigeo" class="form-horizontal" role="form">
@@ -657,17 +654,17 @@
 							</div>
 							<div class="row">
 								<div class="form-group">
-											<div class="col-sm-1"></div>
-									<label class="col-sm-1 control-label label-bold">Dpto:</label>
+<!-- 											<div class="col-sm-1"></div> -->
+									<label class="col-sm-1 control-label label-bold">Departamento:</label>
 									<div class="col-sm-2">
 										<input type="text" id="txt_m_dto" class="form-control" disabled>
 									</div>
 									<label class="col-sm-1 control-label label-bold">Provincia:</label>
-									<div class="col-sm-2">
+									<div class="col-sm-3">
 										<input type="text" id="txt_m_prov" class="form-control" disabled>
 									</div>
 									<label class="col-sm-1 control-label label-bold">Distrito:</label>
-									<div class="col-sm-2">
+									<div class="col-sm-3">
 										<input type="text" id="txt_m_dist" class="form-control" disabled>
 									</div>
 								</div>	

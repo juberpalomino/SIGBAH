@@ -439,12 +439,12 @@ $('#btn_aceptar_ubigeo').click(function(e) {
 			if (bootstrapValidator.isValid()) {
 				
 				var params = { 
-						//			idEmergencia : $('#hid_cod_dam_afec').val(),
-									fkIdRequerimiento : $('#hid_cod_dam_afec').val(), 
-									famAfectadoReal : $('#txt_fam_afec').val(),
-									famDamnificadoReal : $('#txt_fam_dam').val(),
-									persoAfectadoReal : $('#txt_per_afec').val(),
-									persoDamnificadoReal :  $('#txt_per_dam').val()
+						//			idEmergencia : $('#hid_cod_dam_afec').val(), replaceAll( text, busca, reemplaza )
+									fkIdRequerimiento : $('#hid_cod_dam_afec').val(),   
+									famAfectadoReal :replaceAll( $('#txt_fam_afec').val(), ",","" ) ,
+									famDamnificadoReal :replaceAll( $('#txt_fam_dam').val(), ",","" ) ,
+									persoAfectadoReal :replaceAll( $('#txt_per_afec').val(), ",","" ) , 
+									persoDamnificadoReal : replaceAll( $('#txt_per_dam').val(), ",","" )
 									
 								};
 				
@@ -632,17 +632,17 @@ function listarEmergenciasActivas(respuesta) {
 			}, {
 //				data : 'poblacionInei'
 //			}, {
-				data : 'famAfectado'
+				data : 'famAfectado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)
 			}, {
-				data : 'famDamnificado'
+				data : 'famDamnificado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)
 			}, {
-				data : 'totalFam'
+				data : 'totalFam',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)
 			}, {
-				data : 'persoAfectado'
+				data : 'persoAfectado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)
 			}, {
-				data : 'persoDamnificado'
+				data : 'persoDamnificado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)
 			}, {
-				data : 'totalPerso'
+				data : 'totalPerso',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)
 			} ],
 			language : {
 				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -694,7 +694,7 @@ function listarUbigeoInei(respuesta) {
 				}, {data : 'coddist'}, 
 				{data : 'desprov'}, 
 				{data : 'desdist'}, 
-				{data : 'poblacionInei'} 
+				{data : 'poblacionInei',sClass : 'opc-right'} 
 			],
 			language : {
 				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -748,19 +748,19 @@ function listarDetalleRequerimiento(respuesta) {
 				{data : 'desProvincia'}, 
 				{data : 'desDistrito'}, 
 				{data : 'idEmergencia'},
-				{data : 'poblacionINEI'},
-				{data : 'famAfectado'},
-				{data : 'famDamnificado'},
-				{data : 'totalFam'},
-				{data : 'persoAfectado'},
-				{data : 'persoDamnificado'},
-				{data : 'totalPerso'},
-				{data : 'famAfectadoReal'},
-				{data : 'famDamnificadoReal'},
-				{data : 'totalFamReal'},
-				{data : 'persoAfectadoReal'}, 
-				{data : 'persoDamnificadoReal'}, 
-				{data : 'totalPersoReal'}
+				{data : 'poblacionINEI',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'famAfectado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'famDamnificado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'totalFam',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'persoAfectado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'persoDamnificado',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'totalPerso',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'famAfectadoReal',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'famDamnificadoReal',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'totalFamReal',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)},
+				{data : 'persoAfectadoReal',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)}, 
+				{data : 'persoDamnificadoReal',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)}, 
+				{data : 'totalPersoReal',sClass : 'opc-right',render: $.fn.dataTable.render.number( ',', '.', 0)}
 			],
 			language : {
 				'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -821,19 +821,19 @@ function listarDetalleRequerimiento(respuesta) {
 				}, 0 );
 
 				// Update footer
-				$('#sp_tot_inei').html(parseFloat(total_inei).toFixed(2));
-				$('#sp_tot_fam_afec').html(parseFloat(total_fam_afec).toFixed(2));
-				$('#sp_tot_fam_dam').html(parseFloat(total_fam_dam).toFixed(2));
-				$('#sp_tot_fam').html(parseFloat(total_fam).toFixed(2));
-				$('#sp_tot_per_afec').html(parseFloat(total_per_afec).toFixed(2));
-				$('#sp_tot_per_dam').html(parseFloat(total_per_dam).toFixed(2));
-				$('#sp_tot_per').html(parseFloat(total_per).toFixed(2));
-				$('#sp_tot_fam_afec_real').html(parseFloat(total_fam_afec_real).toFixed(2));
-				$('#sp_tot_fam_dam_real').html(parseFloat(total_fam_dam_real).toFixed(2));
-				$('#sp_tot_fam_real').html(parseFloat(total_fam_real).toFixed(2));
-				$('#sp_tot_per_afec_real').html(parseFloat(total_per_afec_real).toFixed(2));
-				$('#sp_tot_per_dam_real').html(parseFloat(total_per_dam_real).toFixed(2));
-				$('#sp_tot_per_real').html(parseFloat(total_per_real).toFixed(2));
+				$('#sp_tot_inei').html(parseFloat(total_inei).toFixed(0));
+				$('#sp_tot_fam_afec').html(parseFloat(total_fam_afec).toFixed(0));
+				$('#sp_tot_fam_dam').html(parseFloat(total_fam_dam).toFixed(0));
+				$('#sp_tot_fam').html(parseFloat(total_fam).toFixed(0));
+				$('#sp_tot_per_afec').html(parseFloat(total_per_afec).toFixed(0));
+				$('#sp_tot_per_dam').html(parseFloat(total_per_dam).toFixed(0));
+				$('#sp_tot_per').html(parseFloat(total_per).toFixed(0));
+				$('#sp_tot_fam_afec_real').html(parseFloat(total_fam_afec_real).toFixed(0));
+				$('#sp_tot_fam_dam_real').html(parseFloat(total_fam_dam_real).toFixed(0));
+				$('#sp_tot_fam_real').html(parseFloat(total_fam_real).toFixed(0));
+				$('#sp_tot_per_afec_real').html(parseFloat(total_per_afec_real).toFixed(0));
+				$('#sp_tot_per_dam_real').html(parseFloat(total_per_dam_real).toFixed(0));
+				$('#sp_tot_per_real').html(parseFloat(total_per_real).toFixed(0));
 			
 			},
 			iDisplayLength : 15,
@@ -850,4 +850,9 @@ function listarDetalleRequerimiento(respuesta) {
 		
 	listaDetalleRequerimientoCache = respuesta;
 
+	}
+function replaceAll( text, busca, reemplaza ){
+	while (text.toString().indexOf(busca) != -1)
+	text = text.toString().replace(busca,reemplaza);
+	return text;
 	}

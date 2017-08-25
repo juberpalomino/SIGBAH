@@ -105,7 +105,7 @@
 															<thead>			                
 																<tr>
 																	<th>Nº</th>
-																	<th>Region</th>
+																	<th>Región</th>
 																	<th>Provincia</th>
 																	<th>Distrito</th>
 																	<th>Localidad</th>
@@ -585,11 +585,16 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+    		
 <!-- inline scripts related to this page -->
 <script> var cabecera = JSON.parse('${cabecera}'); </script>
 <script> var lista_localidad = JSON.parse('${lista_localidad}'); </script>
 <script> var lista_alimentaria = JSON.parse('${lista_alimentaria}'); </script>
 <script> var lista_no_alimentaria = JSON.parse('${lista_no_alimentaria}'); </script>
+<script> var codiRegion = ${codiRegion}; </script>
+<script> var codiAnio = ${codiAnio}; </script>
+<script> var codiMes = ${codiMes}; </script>
+<script> var codiFenomeno = ${codiFenomeno}; </script>
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/mantenimiento_emergencia.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/js/programacion_bah/validacion_mantenimiento_emergencia.js"></script>
