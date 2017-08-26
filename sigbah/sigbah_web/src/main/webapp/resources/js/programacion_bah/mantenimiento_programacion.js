@@ -17,6 +17,8 @@ var tbl_det_almacenes = $('#tbl_det_almacenes');
 var tbl_pro_racion = $('#tbl_pro_racion');
 var tbl_res_pro_alimentos = $('#tbl_res_pro_alimentos');
 
+var frm_det_alimentos = $('#frm_det_alimentos');
+
 var tbl_pro_no_alimentarios = $('#tbl_pro_no_alimentarios');
 var frm_pro_no_alimentarios = $('#frm_pro_no_alimentarios');
 var tbl_res_pro_no_alimentarios = $('#tbl_res_pro_no_alimentarios');
@@ -292,22 +294,26 @@ $(document).ready(function() {
 	$('#btn_ali_actualizar').click(function(e) {
 		e.preventDefault();
 		
-		loadding(true);
-		
-		var params = { 
-			idProgramacion : $('#hid_cod_programacion').val()
-		};
-
-		consultarAjax('POST', '/programacion-bah/programacion/actualizarProgramacionRacionOperativa', params, function(respuesta) {
-			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-				loadding(false);
-				addErrorMessage(null, respuesta.mensajeRespuesta);
-			} else {
-				listarProgramacionRacionOperativa(false);
-				listarDetalleProgramacionAlimento(true);
-				addSuccessMessage(null, respuesta.mensajeRespuesta);							
-			}
-		});
+		var bootstrapValidator = frm_det_alimentos.data('bootstrapValidator');
+		bootstrapValidator.validate();
+		if (bootstrapValidator.isValid()) {		
+			loadding(true);			
+			var params = { 
+				idProgramacion : $('#hid_cod_programacion').val(),
+				diasAtencion : $('#txt_dia_atencion').val()
+			};	
+			consultarAjax('POST', '/programacion-bah/programacion/actualizarProgramacionRacionOperativa', params, function(respuesta) {
+				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+					loadding(false);
+					addErrorMessage(null, respuesta.mensajeRespuesta);
+				} else {
+					listarProgramacionRacionOperativa(false);
+					listarDetalleProgramacionAlimento(true);
+					addSuccessMessage(null, respuesta.mensajeRespuesta);							
+				}
+				frm_det_alimentos.data('bootstrapValidator').resetForm();
+			});			
+		}
 		
 	});
 	
@@ -353,7 +359,7 @@ $(document).ready(function() {
 				$.each(programacionAlimentosCache.listaProducto, function(i, item_prod) {
 					if (item.idProducto == item_prod.idProducto) {
 						contenido = contenido + '<input type="text" id="txt_ali_uni_'+item_prod.idProducto+'" onchange="sumarUnidadAlimentos();" '+ 
-									'class="form-control monto-format" value="'+obtieneParametro(item_prod.unidad)+'">';
+									'class="form-control only-numbers-format" value="'+formatMontoSinComas(item_prod.unidad)+'">';
 					}					
 			    });	
 								
@@ -771,7 +777,7 @@ $(document).ready(function() {
 					if (item.idProducto == item_prod.idProducto) {
 //						contenido = contenido + '<input type="text" id="txt_no_ali_uni_'+item_prod.idProducto+'" onchange="sumarUnidadNoAlimentarios();" '+ 
 						contenido = contenido + '<input type="text" id="txt_no_ali_uni_'+item_prod.idProducto+'" '+ 
-									'class="form-control monto-format" value="'+obtieneParametro(item_prod.unidad)+'">';
+									'class="form-control only-numbers-format" value="'+formatMontoSinComas(item_prod.unidad)+'">';
 					}					
 			    });	
 								
@@ -1434,14 +1440,14 @@ function listarDetalleProgramacionAlimento(indicador) {
 						row.append($('<td/>').html(item.departamento));
 						row.append($('<td/>').html(item.provincia));
 						row.append($('<td/>').html(item.distrito));
-						row.append($('<td/>').html(item.persAfect));
-						row.append($('<td/>').html(item.persDam));
-						row.append($('<td/>').html(item.totalPers));
-						row.append($('<td/>').html(item.totalRaciones));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.persAfect)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.persDam)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.totalPers)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.totalRaciones)));
 						$.each(item.listaProducto, function(i, item_prod) {
-							row.append($('<td class="pro_ali_'+item_prod.idProducto+'" />').html(item_prod.unidad));
+							row.append($('<td class="pro_ali_'+item_prod.idProducto+' opc-right" />').html(formatMontoSinComas(item_prod.unidad)));
 					    });					
-						row.append($('<td/>').html(item.totalTm));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.totalTm)));
 						table.append(row);
 						row_num++;
 						
@@ -1454,14 +1460,14 @@ function listarDetalleProgramacionAlimento(indicador) {
 					
 					row = $('<tr/>');
 					row.append($('<td class="opc-right" colspan="5" />').html("Total:"));
-					row.append($('<td id="pro_ali_per_afect" />').html(tot_persAfect));
-					row.append($('<td id="pro_ali_per_dam" />').html(tot_persDam));
-					row.append($('<td id="pro_ali_tot_pers" />').html(tot_totalPers));
-					row.append($('<td id="pro_ali_tot_raciones" />').html(tot_totalRaciones));
+					row.append($('<td id="pro_ali_per_afect" class="opc-right" />').html(formatMontoSinComas(tot_persAfect)));
+					row.append($('<td id="pro_ali_per_dam" class="opc-right" />').html(formatMontoSinComas(tot_persDam)));
+					row.append($('<td id="pro_ali_tot_pers" class="opc-right" />').html(formatMontoSinComas(tot_totalPers)));
+					row.append($('<td id="pro_ali_tot_raciones" class="opc-right" />').html(formatMontoSinComas(tot_totalRaciones)));
 					$.each(listaProductosRacionCache, function(i, item) {
-						row.append($('<td id="td_ali_'+item.idProducto+'" />').html(''));
+						row.append($('<td id="td_ali_'+item.idProducto+'" class="opc-right" />').html(''));
 				    });
-					row.append($('<td id="pro_ali_total_tm" />').html(tot_totalTm));
+					row.append($('<td id="pro_ali_total_tm" class="opc-right" />').html(formatMontoSinComas(tot_totalTm)));
 					table.append(row);
 				}
 				
@@ -1474,7 +1480,7 @@ function listarDetalleProgramacionAlimento(indicador) {
 							var can_unidad = $(this).find('.pro_ali_'+item.idProducto).html();
 							can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
 						});
-						$('#td_ali_'+item.idProducto).html(can_tot_unidad);
+						$('#td_ali_'+item.idProducto).html(formatMontoSinComas(can_tot_unidad));
 					});
 				}
 				
@@ -1548,11 +1554,17 @@ function listarDetalleResumenStockAlimento(respuesta) {
 		}, {
 			data : 'nombreProducto'
 		}, {
-			data : 'totalStock'
+			data : 'totalStock',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 0)
 		}, {
-			data : 'totalConsumo'
+			data : 'totalConsumo',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 0)
 		}, {
-			data : 'totalSaldo'
+			data : 'totalSaldo',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 0)
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1562,6 +1574,13 @@ function listarDetalleResumenStockAlimento(respuesta) {
 		ordering : false,
 		info : false
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_stock_tm');
+		centerHeader('#th_total_tm');
+		centerHeader('#th_saldo_tm');
+	}, 500);
+	
 }
 
 function listarProductoNoAlimentarioProgramacion(indicador) {
@@ -1684,14 +1703,14 @@ function listarDetalleProgramacionNoAlimentario(indicador) {
 						row.append($('<td/>').html(item.departamento));
 						row.append($('<td/>').html(item.provincia));
 						row.append($('<td/>').html(item.distrito));
-						row.append($('<td/>').html(item.famAfect));
-						row.append($('<td/>').html(item.famDam));
-						row.append($('<td/>').html(item.totalFam));
-						row.append($('<td/>').html(item.persAfect));
-						row.append($('<td/>').html(item.persDam));
-						row.append($('<td/>').html(item.totalPers));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.famAfect)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.famDam)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.totalFam)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.persAfect)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.persDam)));
+						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.totalPers)));
 						$.each(item.listaProducto, function(i, item_prod) {
-							row.append($('<td class="pro_ali_'+item_prod.idProducto+'" />').html(item_prod.unidad));
+							row.append($('<td class="pro_ali_'+item_prod.idProducto+' opc-right" />').html(formatMontoSinComas(item_prod.unidad)));
 					    });					
 //						row.append($('<td/>').html(item.totalTm));
 						table.append(row);
@@ -1708,14 +1727,14 @@ function listarDetalleProgramacionNoAlimentario(indicador) {
 					
 					row = $('<tr/>');
 					row.append($('<td class="opc-right" colspan="5" />').html("Total:"));
-					row.append($('<td id="pro_no_ali_fam_afect" />').html(tot_famAfect));
-					row.append($('<td id="pro_no_ali_fam_dam" />').html(tot_famDam));
-					row.append($('<td id="pro_no_ali_tot_fam" />').html(tot_totalFam));
-					row.append($('<td id="pro_no_ali_pers_afect" />').html(tot_persAfect));
-					row.append($('<td id="pro_no_ali_pers_dam" />').html(tot_persDam));
-					row.append($('<td id="pro_no_ali_tot_pers" />').html(tot_totalPers));
+					row.append($('<td id="pro_no_ali_fam_afect" class="opc-right" />').html(formatMontoSinComas(tot_famAfect)));
+					row.append($('<td id="pro_no_ali_fam_dam" class="opc-right" />').html(formatMontoSinComas(tot_famDam)));
+					row.append($('<td id="pro_no_ali_tot_fam" class="opc-right" />').html(formatMontoSinComas(tot_totalFam)));
+					row.append($('<td id="pro_no_ali_pers_afect" class="opc-right" />').html(formatMontoSinComas(tot_persAfect)));
+					row.append($('<td id="pro_no_ali_pers_dam" class="opc-right" />').html(formatMontoSinComas(tot_persDam)));
+					row.append($('<td id="pro_no_ali_tot_pers" class="opc-right" />').html(formatMontoSinComas(tot_totalPers)));
 					$.each(listaNoAlimentariosCache, function(i, item) {
-						row.append($('<td id="td_no_ali_'+item.idProducto+'" />').html(''));
+						row.append($('<td id="td_no_ali_'+item.idProducto+'" class="opc-right" />').html(''));
 				    });
 //					row.append($('<td id="pro_no_ali_total_tm" />').html(tot_totalTm));
 					table.append(row);
@@ -1730,7 +1749,7 @@ function listarDetalleProgramacionNoAlimentario(indicador) {
 							var can_unidad = $(this).find('.pro_no_ali_'+item.idProducto).html();
 							can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
 						});
-						$('#td_no_ali_'+item.idProducto).html(can_tot_unidad);
+						$('#td_no_ali_'+item.idProducto).html(formatMontoSinComas(can_tot_unidad));
 					});
 				}
 				
@@ -1809,11 +1828,17 @@ function listarDetalleResumenStockNoAlimentario(respuesta) {
 		}, {
 			data : 'nombreProducto'
 		}, {
-			data : 'totalStock'
+			data : 'totalStock',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 0)
 		}, {
-			data : 'totalConsumo'
+			data : 'totalConsumo',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 0)
 		}, {
-			data : 'totalSaldo'
+			data : 'totalSaldo',
+			sClass : 'opc-right',
+			render: $.fn.dataTable.render.number( ',', '.', 0)
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1823,6 +1848,13 @@ function listarDetalleResumenStockNoAlimentario(respuesta) {
 		ordering : false,
 		info : false
 	});
+	
+	setTimeout(function () {
+		centerHeader('#th_no_stock');
+		centerHeader('#th_no_stock');
+		centerHeader('#th_no_stock');
+	}, 500);
+	
 }
 
 function obtenerRequerimiento(codigo) {
@@ -1901,10 +1933,10 @@ function sumarUnidadAlimentos() {
 	$.each(listaProductosRacionCache, function(i, item) {			
 		var unidad = $('#txt_ali_uni_'+item.idProducto).val();
 		if (!esnulo(unidad)) {
-			total = total + parseFloat(unidad);
+			total = total + parseInt(unidad);
 		}			
     });
-	$('#txt_ali_tot_tm').val(formatMontoAll(total));
+	$('#txt_ali_tot_tm').val(formatMontoSinComas(total));
 }
 
 function cargarProductoNoAlimentario(idCategoria, codigoProducto) {
@@ -2004,6 +2036,7 @@ function listarDetalleDocumentos(respuesta) {
 			data : 'nombreDocumento'
 		}, {
 			data : 'nroDocumento',
+			sClass : 'opc-center',
 			render: function(data, type, row) {
 				if (data != null) {
 					return '<button type="button" id="'+row.codigoArchivoAlfresco+'" name="'+row.nombreArchivo+'"'+ 
@@ -2013,9 +2046,11 @@ function listarDetalleDocumentos(respuesta) {
 				}											
 			}
 		}, {
-			data : 'fechaDocumento'
+			data : 'fechaDocumento',
+			sClass : 'opc-center'
 		}, {
-			data : 'nombreArchivo'
+			data : 'nombreArchivo',
+			sClass : 'opc-center'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -2023,7 +2058,7 @@ function listarDetalleDocumentos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaDocumentosCache = respuesta;

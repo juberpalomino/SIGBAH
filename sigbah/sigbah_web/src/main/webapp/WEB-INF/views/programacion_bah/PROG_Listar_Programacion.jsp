@@ -63,7 +63,7 @@
 									<label class="col-sm-2 control-label">Fenómeno:</label>
 									<div class="col-sm-4 form-group">
 										<select id="sel_fenomeno" name="sel_fenomeno" class="form-control">
-											<option value="">Todos</option>
+											<option value="99">Todos</option>
 											<c:forEach items="${lista_fenomeno}" var="item">
 											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -75,7 +75,7 @@
 									<label class="col-sm-1 control-label">Estado:</label>
 									<div class="col-sm-2 form-group">
 										<select id="sel_estado" name="sel_estado" class="form-control">
-											<option value="">Todos</option>
+											<option value="99">Todos</option>
 											<c:forEach items="${lista_estado}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -153,8 +153,8 @@
 										<th>Mes</th>
 										<th>N° Programación</th>
 										<th>Fecha Programación</th>
-										<th>Fenómeno</th>
-										<th>Emergencia</th>
+										<th>Descripción</th>
+										<th>Fenómeno</th>										
 										<th>N° DEE</th>
 										<th>Estado</th>
 										<th>Región Destino</th>

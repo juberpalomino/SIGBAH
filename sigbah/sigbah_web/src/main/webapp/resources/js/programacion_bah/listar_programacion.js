@@ -358,9 +358,9 @@ function listarDetalleProgramacion(respuesta) {
 		}, {
 			data : 'fechaProgramacion'
 		}, {
-			data : 'nombreFenomeno'
-		}, {
 			data : 'nombreProgramacion'
+		}, {
+			data : 'nombreFenomeno'
 		}, {
 			data : 'nroDee'
 		}, {

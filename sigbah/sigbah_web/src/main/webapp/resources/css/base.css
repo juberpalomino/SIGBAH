@@ -178,3 +178,8 @@ table.dataTable thead .sorting_desc {
 	background-color: white !important; 
 	border-color: white !important;
 }
+
+.close {
+	color: #fff; 
+	opacity: 1;
+}

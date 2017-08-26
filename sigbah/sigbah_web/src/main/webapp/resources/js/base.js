@@ -1082,7 +1082,7 @@ function formatMontoSinDecimalInput() {
 }
 
 function formatMontoSinComas(monto) {
-	if(monto != null){
+	if (monto != null) {
 		var textMonto = monto.toString();
 		monto = $.trim(textMonto).replace(/\,/g,'');//Suprimimos las comas antes de parsear el monto
 		if (monto == '') {

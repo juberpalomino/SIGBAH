@@ -75,6 +75,29 @@ $(document).ready(function() {
 		}
 	});
 	
+	frm_det_alimentos.bootstrapValidator({
+		framework : 'bootstrap',
+		excluded : [':disabled', ':hidden'],
+		fields : {
+			txt_dia_atencion : {
+				validators : {
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+                				return { valid: false, message: 'Debe ingresar Dias de Atención.' }
+                			}
+		                	var diasAtencion = parseInt(value);
+                    		if (diasAtencion < 1 || diasAtencion > 10) {
+                    			return { valid: false, message: 'Debe del rango de 1 a 10 dias.' }
+		            		}
+		            		return true;
+		                }
+		            }
+				}
+			}		
+		}
+	});
+	
 	frm_pro_no_alimentarios.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],
