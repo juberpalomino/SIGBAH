@@ -116,7 +116,10 @@ $(function() {
     formatMontoInput();
     
     formatMontoSinDecimalInput();
-
+    $(document).on('focus', ':input:enabled:not([readonly]).monto-format3', function() {
+		var value = parseFloat($(this).val().replace(/\,/g,''));
+		value = value == '0' ? '0' : (value ? $(this).val(value.toFixed(3)) : $(this).val(''));	// version considerando '0'
+	});
 });
 
 /**
@@ -1082,7 +1085,7 @@ function formatMontoSinDecimalInput() {
 }
 
 function formatMontoSinComas(monto) {
-	if(monto != null){
+	if (monto != null) {
 		var textMonto = monto.toString();
 		monto = $.trim(textMonto).replace(/\,/g,'');//Suprimimos las comas antes de parsear el monto
 		if (monto == '') {
