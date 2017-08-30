@@ -699,7 +699,7 @@
 			</div>
 			
 			<div class="modal-body">
-				<form class="form-horizontal" role="form">
+				<form id="frm_pro_can_manifiesto" class="form-horizontal" role="form">
 					<div class="row">
 						<div class="col-xs-12 col-sm-12">
 						

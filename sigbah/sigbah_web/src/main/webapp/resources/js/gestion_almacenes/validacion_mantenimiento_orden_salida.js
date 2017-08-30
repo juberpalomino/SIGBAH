@@ -206,6 +206,33 @@ $(document).ready(function() {
 		}
 	});
 	
+//	frm_pro_can_manifiesto.bootstrapValidator({
+//		framework : 'bootstrap',
+//		excluded : [':disabled', ':hidden'],
+//		fields : {
+//			txt_can_salida : {
+//				validators : {
+//					callback: {
+//		                callback: function(value, validator, field) {
+//		                	if (esnulo(value)) {
+//	            				return { valid: false, message: 'Debe ingresar Cantidad Salida.' }
+//	            			}
+//		                	var cantidadStock = $('#txt_can_stock').val();
+//	                		if (!esnulo(cantidadStock)) {
+//	                			cantidadStock = parseFloat(formatMonto(cantidadStock));
+//	                			var cantidad = parseFloat(formatMonto(value));
+//	                			if (cantidad > cantidadStock) {	                			
+//	                				return { valid: false, message: 'La cantidad no puede ser mayor a la cantidad stock.' }
+//	                			}
+//	                		}
+//		            		return true;
+//		                }
+//		            }
+//				}
+//			}
+//		}
+//	});
+	
 	frm_det_documentos.bootstrapValidator({
 		framework : 'bootstrap',
 		excluded : [':disabled', ':hidden'],

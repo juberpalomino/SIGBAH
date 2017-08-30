@@ -7,6 +7,8 @@ var frm_dat_generales = $('#frm_dat_generales');
 var tbl_det_productos = $('#tbl_det_productos');
 var frm_det_productos = $('#frm_det_productos');
 
+var frm_pro_can_manifiesto = $('#frm_pro_can_manifiesto');
+
 var tbl_det_documentos = $('#tbl_det_documentos');
 var frm_det_documentos = $('#frm_det_documentos');
 
@@ -662,8 +664,7 @@ $(document).ready(function() {
 					var row_num = 1;
 					
 					var tot_vol_bruto = 0;
-					var tot_pes_bruto = 0;
-					
+					var tot_pes_bruto = 0;					
 					$.each(respuesta, function(index, item) {
 						row = $('<tr class="item_pro_man" />');
 						row.append($('<td/>').html(row_num));
@@ -671,25 +672,24 @@ $(document).ready(function() {
 						row.append($('<td/>').html(item.nombreUnidad));
 						row.append($('<td/>').html(item.cantidadProgramada));
 						row.append($('<td/>').html(item.cantidadDespachada));
-						row.append($('<td/>').html(item.cantidadPorDespachar));
-						var htm_cantidad = '<input type="text" name="txt_cantidad" id="txt_cantidad_'+item.idProducto+'" '+
-									   	   'value="'+item.cantidadSalida+'" class="form-control only-numbers-format" '+
-									   	   'onkeypress="validateOnlyNumeric(event)" maxlength="10">';						
+						row.append($('<td id="td_sal_despachar_'+item.idProducto+'" />').html(item.cantidadPorDespachar));
+						var htm_cantidad = '<input type="text" name="txt_can_salida" id="txt_can_salida_'+item.idProducto+'" '+
+									   	   'value="'+item.cantidadSalida+'" class="form-control input-xs only-numbers-format" '+
+									   	   'onkeypress="validateOnlyNumeric(event)" maxlength="10" '+
+									   	   'onchange="validarCantidadSalida('+item.idProducto+')">'+
+									   	   '<span id="sp_can_salida_'+item.idProducto+'" class="control-label label-error" />';						
 						row.append($('<td/>').html(htm_cantidad));
-						row.append($('<td/>').html(item.stockAlmacen));				
-						row.append($('<td/>').html(item.volumenUnitario));
-						row.append($('<td class="opc-table-10" />').html('0'));
+						row.append($('<td id="td_sto_almacen_'+item.idProducto+'" />').html(item.stockAlmacen));				
+						row.append($('<td id="td_vol_total_'+item.idProducto+'" />').html('0'));
+						row.append($('<td id="td_pes_tot_bruto_'+item.idProducto+'" class="opc-table-10" />').html('0'));
 						table.append(row);
 						row_num++;
-						
-						tot_vol_bruto = tot_vol_bruto + parseFloat(verificaParametroInt(item.volumenUnitario));
-//						tot_pes_bruto = tot_pes_bruto + parseFloat(verificaParametroInt(item.persDam));
 					});
 					
 					row = $('<tr/>');
 					row.append($('<td class="opc-right" colspan="8" />').html("Total:"));
-					row.append($('<td/>').html(tot_vol_bruto));
-					row.append($('<td/>').html(tot_pes_bruto));
+					row.append($('<td id="td_tot_vol_bruto" />').html(tot_vol_bruto));
+					row.append($('<td id="td_tot_pes_bruto" />').html(tot_pes_bruto));
 					table.append(row);
 				}
 				
@@ -702,6 +702,67 @@ $(document).ready(function() {
 			}
 		});
 			
+	});
+	
+	$('#btn_ace_pro_manifiesto').click(function(e) {
+		e.preventDefault();
+		
+		$.each(listaProductoManifiestoSalidaCache, function(i, item) {
+//	    	if (item.idProducto == idProducto) {
+//	    		volumenUnitario = parseFloat(verificaParametroInt(item.volumenUnitario));
+//	    		pesoUnitarioBruto = parseFloat(verificaParametroInt(item.pesoUnitarioBruto));
+//	    		return false;
+//	    	}
+	    });
+
+		
+//		if (bootstrapValidator.isValid()) {
+//			var idProducto = null;
+//			var val_producto = $('#sel_producto').val();
+//			if (!esnulo(val_producto)) {
+//				var arr = val_producto.split('_');
+//				idProducto = arr[0];
+//			}			
+//			var nroLote = null;
+//			var val_nroLote = $('#sel_lote').val();
+//			if (!esnulo(val_nroLote)) {
+//				var arr = val_nroLote.split('_');
+//				nroLote = arr[0];
+//			}
+//			var indControl = null;
+//			var idDetalleSalida = $('#hid_cod_producto').val();
+//			if (esnulo(idDetalleSalida)) {
+//				indControl = 'I'; // I= INSERT
+//			} else {
+//				indControl = 'U'; // U= UPDATE
+//			}
+//			var params = { 
+//				idDetalleSalida : idDetalleSalida,
+//				idSalida : $('#hid_cod_ord_salida').val(),
+//				idProducto : idProducto,
+//				cantidad : formatMonto($('#txt_cantidad').val()),
+//				precioUnitario : formatMonto($('#txt_pre_unitario').val()),
+//				importeTotal : formatMonto($('#txt_imp_total').val()),
+//				nroLote : nroLote,
+//				indControl : indControl
+//			};
+//
+//			loadding(true);
+//			
+//			consultarAjax('POST', '/gestion-almacenes/orden-salida/grabarProductoOrdenSalida', params, function(respuesta) {
+//				$('#div_det_productos').modal('hide');
+//				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+//					loadding(false);
+//					addErrorMessage(null, respuesta.mensajeRespuesta);
+//				} else {
+//					listarProductoOrdenSalida(true);					
+//					addSuccessMessage(null, respuesta.mensajeRespuesta);					
+//				}
+//				frm_det_productos.data('bootstrapValidator').resetForm();
+//			});
+//			
+//		}
+		
 	});
 	
 	$('#href_doc_nuevo').click(function(e) {
@@ -1666,3 +1727,34 @@ function cargarDistrito(codigo, codigoDistrito) {
 	});
 }
 
+function validarCantidadSalida(idProducto) {
+	var cantidad = $('#txt_can_salida_'+idProducto).val();	
+	if (!esnulo(cantidad)) {
+		cantidad = parseFloat(cantidad);
+		var sal_despachar = parseFloat($('#td_sal_despachar_'+idProducto).html());
+		var sto_almacen = parseFloat($('#td_sto_almacen_'+idProducto).html());
+		var msj = '';
+		if (cantidad > sal_despachar) {
+			msj = msj + 'La cantidad de Salida debe ser menor o igual al Saldo por Despachar.<br>';
+		}
+		if (cantidad > sto_almacen) {
+			msj = msj + 'La cantidad de Salida debe ser menor al Stock de Almacén.';
+		}
+
+		$('#sp_can_salida_'+idProducto).html(msj);
+		
+		if (esnulo(msj)) {
+			var volumenUnitario = null;
+			var pesoUnitarioBruto = null;
+			$.each(listaProductoManifiestoSalidaCache, function(i, item) {
+		    	if (item.idProducto == idProducto) {
+		    		volumenUnitario = parseFloat(verificaParametroInt(item.volumenUnitario));
+		    		pesoUnitarioBruto = parseFloat(verificaParametroInt(item.pesoUnitarioBruto));
+		    		return false;
+		    	}
+		    });				
+			$('#td_vol_total_'+idProducto).html(formatMontoAll(cantidad * volumenUnitario));
+			$('#td_pes_tot_bruto_'+idProducto).html(formatMontoAll(cantidad * pesoUnitarioBruto));
+		}
+	}
+}

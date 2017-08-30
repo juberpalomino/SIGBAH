@@ -1174,15 +1174,19 @@ function centerHeader(element) {
 	$(element).addClass('opc-center');
 }
 
-function validateOnlyNumeric(evt) {
-	var theEvent = evt || window.event;
-	var key = theEvent.keyCode || theEvent.which;
-	key = String.fromCharCode( key );
-	var regex = /[0-9]|\./;
-	if (!regex.test(key)) {
-	    theEvent.returnValue = false;
-	    if (theEvent.preventDefault) {
-	    	theEvent.preventDefault();
-	    }
-	}
+function validateOnlyNumeric(event) {
+	var key = (document.all) ? event.keyCode : event.which;
+    switch (key) {
+        case 0:
+            return true;
+            break;
+        case 8:
+            return true;
+            break;
+        default:
+            var patron = /[0-9]/;
+            var te = String.fromCharCode(key);
+            return patron.test(te);
+            break;
+    }
 }
