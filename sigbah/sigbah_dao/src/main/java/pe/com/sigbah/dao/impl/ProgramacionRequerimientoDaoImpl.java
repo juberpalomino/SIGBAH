@@ -97,7 +97,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 			input_objParametros.addValue("PI_COD_MES", Utils.getParam(programacionBean.getCodigoMes()), Types.VARCHAR);
 			input_objParametros.addValue("PI_IDE_DDI", programacionBean.getIdDdi(), Types.NUMERIC);
 			input_objParametros.addValue("PI_FENOMENO", Utils.getParamInt(programacionBean.getIdFenomeno()), Types.NUMERIC);
-			input_objParametros.addValue("PI_ESTADO", Utils.getParamInt(programacionBean.getIdEstado()), Types.NUMERIC);
+			input_objParametros.addValue("PI_ESTADO", programacionBean.getIdEstado(), Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
 			objJdbcCall.withoutProcedureColumnMetaDataAccess();
@@ -252,7 +252,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		List<RequerimientoBean> lista = new ArrayList<RequerimientoBean>();
 		try {
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();		
-			input_objParametros.addValue("PI_COD_ANIO", requerimientoBean.getCodAnio(), Types.VARCHAR);
+//			input_objParametros.addValue("PI_COD_ANIO", requerimientoBean.getCodAnio(), Types.VARCHAR);
 			input_objParametros.addValue("PI_IDE_DDI", requerimientoBean.getIdDdi(), Types.NUMERIC);
 			
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -262,7 +262,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 			objJdbcCall.withProcedureName("USP_SEL_REQUERIMIENTO");
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
-			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
+//			output_objParametros.put("PI_COD_ANIO", new SqlParameter("PI_COD_ANIO", Types.VARCHAR));
 			output_objParametros.put("PI_IDE_DDI", new SqlParameter("PI_IDE_DDI", Types.NUMERIC));
 			output_objParametros.put("PO_LR_RECORDSET", new SqlOutParameter("PO_LR_RECORDSET", OracleTypes.CURSOR, new ProgramacionRequerimientoMapper()));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
@@ -693,6 +693,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 		try {			
 			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
 			input_objParametros.addValue("PI_FK_IDE_PROGRAMACION", racionOperativaBean.getIdProgramacion(), Types.NUMERIC);
+			input_objParametros.addValue("PI_NUM_DIAS", racionOperativaBean.getDiasAtencion(), Types.NUMERIC);
 			input_objParametros.addValue("PI_USERNAME", racionOperativaBean.getUsuarioRegistro(), Types.VARCHAR);			
 
 			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
@@ -703,6 +704,7 @@ public class ProgramacionRequerimientoDaoImpl extends JdbcDaoSupport implements 
 
 			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
 			output_objParametros.put("PI_FK_IDE_PROGRAMACION", new SqlParameter("PI_FK_IDE_PROGRAMACION", Types.NUMERIC));
+			output_objParametros.put("PI_NUM_DIAS", new SqlParameter("PI_NUM_DIAS", Types.NUMERIC));
 			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
 			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("PO_MENSAJE_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
