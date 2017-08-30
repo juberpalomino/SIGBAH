@@ -31,6 +31,7 @@ import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.LoteProductoBean;
 import pe.com.sigbah.common.bean.OrdenSalidaBean;
 import pe.com.sigbah.common.bean.ProductoBean;
+import pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.ProductoSalidaBean;
 import pe.com.sigbah.common.bean.ProyectoManifiestoBean;
 import pe.com.sigbah.common.bean.UbigeoBean;
@@ -572,6 +573,27 @@ public class OrdenSalidaController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return producto;
+	}
+	
+	/**
+	 * @param request
+	 * @param response
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/listarProductoManifiestoSalida", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarProductoManifiestoSalida(HttpServletRequest request, HttpServletResponse response) {
+		List<ProductoProyectoManifiestoBean> lista = null;
+		try {			
+			ProductoProyectoManifiestoBean productoProyectoManifiesto = new ProductoProyectoManifiestoBean();			
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(productoProyectoManifiesto, request.getParameterMap());
+			lista = logisticaService.listarProductoManifiestoSalida(productoProyectoManifiesto);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
 	}
 	
 	/**

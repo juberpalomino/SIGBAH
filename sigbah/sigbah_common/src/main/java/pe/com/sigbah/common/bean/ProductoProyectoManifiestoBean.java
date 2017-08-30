@@ -40,6 +40,12 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	private String nombreMovimiento;
 	private String nombreAlmacenDestino;
 	private String nombreEstado;
+	private Integer idSalida;
+	private BigDecimal cantidadProgramada;
+	private BigDecimal cantidadDespachada;
+	private BigDecimal cantidadPorDespachar;
+	private BigDecimal cantidadSalida;
+	private BigDecimal stockAlmacen;
 	
 	
 	/**
@@ -461,6 +467,90 @@ public class ProductoProyectoManifiestoBean extends BaseOutputBean {
 	 */
 	public void setNombreEstado(String nombreEstado) {
 		this.nombreEstado = nombreEstado;
+	}
+
+	/**
+	 * @return the idSalida
+	 */
+	public Integer getIdSalida() {
+		return idSalida;
+	}
+
+	/**
+	 * @param idSalida the idSalida to set
+	 */
+	public void setIdSalida(Integer idSalida) {
+		this.idSalida = idSalida;
+	}
+
+	/**
+	 * @return the cantidadProgramada
+	 */
+	public BigDecimal getCantidadProgramada() {
+		return cantidadProgramada;
+	}
+
+	/**
+	 * @param cantidadProgramada the cantidadProgramada to set
+	 */
+	public void setCantidadProgramada(BigDecimal cantidadProgramada) {
+		this.cantidadProgramada = cantidadProgramada;
+	}
+
+	/**
+	 * @return the cantidadDespachada
+	 */
+	public BigDecimal getCantidadDespachada() {
+		return cantidadDespachada;
+	}
+
+	/**
+	 * @param cantidadDespachada the cantidadDespachada to set
+	 */
+	public void setCantidadDespachada(BigDecimal cantidadDespachada) {
+		this.cantidadDespachada = cantidadDespachada;
+	}
+
+	/**
+	 * @return the cantidadPorDespachar
+	 */
+	public BigDecimal getCantidadPorDespachar() {
+		return cantidadPorDespachar;
+	}
+
+	/**
+	 * @param cantidadPorDespachar the cantidadPorDespachar to set
+	 */
+	public void setCantidadPorDespachar(BigDecimal cantidadPorDespachar) {
+		this.cantidadPorDespachar = cantidadPorDespachar;
+	}
+
+	/**
+	 * @return the cantidadSalida
+	 */
+	public BigDecimal getCantidadSalida() {
+		return cantidadSalida;
+	}
+
+	/**
+	 * @param cantidadSalida the cantidadSalida to set
+	 */
+	public void setCantidadSalida(BigDecimal cantidadSalida) {
+		this.cantidadSalida = cantidadSalida;
+	}
+
+	/**
+	 * @return the stockAlmacen
+	 */
+	public BigDecimal getStockAlmacen() {
+		return stockAlmacen;
+	}
+
+	/**
+	 * @param stockAlmacen the stockAlmacen to set
+	 */
+	public void setStockAlmacen(BigDecimal stockAlmacen) {
+		this.stockAlmacen = stockAlmacen;
 	}
 
 }

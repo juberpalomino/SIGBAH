@@ -78,13 +78,33 @@ $(document).ready(function() {
 					}
 				}
 			},
-			txt_cantidad : {
+			sel_lote : {
 				validators : {
 					notEmpty : {
-						message : 'Debe ingresar Cantidad.'
+						message : 'Debe ingresar Cantidad de Lote.'
 					}
 				}
-			}
+			},
+			txt_cantidad : {
+				validators : {
+					callback: {
+		                callback: function(value, validator, field) {
+		                	if (esnulo(value)) {
+	            				return { valid: false, message: 'Debe ingresar Cantidad.' }
+	            			}
+		                	var cantidadStock = $('#txt_can_stock').val();
+	                		if (!esnulo(cantidadStock)) {
+	                			cantidadStock = parseFloat(formatMonto(cantidadStock));
+	                			var cantidad = parseFloat(formatMonto(value));
+	                			if (cantidad > cantidadStock) {	                			
+	                				return { valid: false, message: 'La cantidad de Salida debe ser menor al Stock de Almacén.' }
+	                			}
+	                		}
+		            		return true;
+		                }
+		            }
+				}
+			},
 		}
 	});
 	

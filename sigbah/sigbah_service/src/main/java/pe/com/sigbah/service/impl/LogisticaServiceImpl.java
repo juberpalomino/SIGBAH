@@ -833,4 +833,20 @@ public class LogisticaServiceImpl implements LogisticaService, Serializable {
 		return logisticaDao.listarLoteProductoSalida(loteProductoBean);
 	}
 
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#listarProductoManifiestoSalida(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProductoProyectoManifiestoBean> listarProductoManifiestoSalida(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.listarProductoManifiestoSalida(productoProyectoManifiestoBean);
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.service.LogisticaService#grabarProductoManifiestoSalida(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public ProductoProyectoManifiestoBean grabarProductoManifiestoSalida(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		return logisticaDao.grabarProductoManifiestoSalida(productoProyectoManifiestoBean);
+	}
+
 }

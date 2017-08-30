@@ -1,4 +1,5 @@
 var listaProductosCache = new Object();
+var listaProductoManifiestoSalidaCache = new Object();
 var listaDocumentosCache = new Object();
 
 var frm_dat_generales = $('#frm_dat_generales');
@@ -407,9 +408,9 @@ $(document).ready(function() {
 			$('#txt_uni_medida').val(obj.nombreUnidad);
 			$('#txt_pes_net_unitario').val(obj.pesoUnitarioNeto);
 			$('#txt_pes_bru_unitario').val(obj.pesoUnitarioBruto);
-			$('#txt_cantidad').val(obj.cantidad);
+			$('#txt_cantidad').val(formatMontoSinComas(obj.cantidad));
 			$('#txt_pre_unitario').val(obj.precioUnitario);
-			$('#txt_imp_total').val(obj.importeTotal);
+			$('#txt_imp_total').val(formatMontoAll(obj.importeTotal));
 			
 			$('#div_det_productos').modal('show');
 		}
@@ -609,6 +610,98 @@ $(document).ready(function() {
 		} else {
 			$('#txt_imp_total').val('');
 		}
+	});
+	
+	$('#href_agr_pro_manifiesto').click(function(e) {
+		e.preventDefault();
+		
+		var nro_pro_manifiesto = $('#sel_nro_pro_manifiesto').val();
+		if (esnulo(nro_pro_manifiesto)) {
+			addWarnMessage(null, 'Debe seleccionar el N° de Proyecto de Manifiesto.');
+			return;
+		}
+		
+		var row = $('#tbl_det_productos > tbody > tr').length;
+		var empty = null;
+		$('#tbl_det_productos tr.odd').each(function() {		
+			empty = $(this).find('.dataTables_empty').text();
+			return false;
+		});					
+		if (esnulo(empty) && row > 0) {
+			addWarnMessage(null, 'Para agregar productos del manifiesto debe eliminar todos los productos.');
+			return;
+		}
+		
+		var arr = nro_pro_manifiesto.split('_');
+		$('#txt_nro_pro_manifiesto').val(arr[1]);
+		
+		var params = { 
+			idProyectoManifiesto : arr[0]
+		};		
+		
+		consultarAjaxSincrono('GET', '/gestion-almacenes/orden-salida/listarProductoManifiestoSalida', params, function(respuesta) {
+			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+				addErrorMessage(null, respuesta.mensajeRespuesta);
+			} else {
+				
+				var table = $('<table id="tbl_pro_can_manifiesto" />').addClass('table table-bordered table-hover tbl-responsive');
+				var row = $('<tr/>');
+				row.append($('<th class="table-dinamic" />').text('N°'));
+				row.append($('<th class="table-dinamic" />').text('Producto'));
+				row.append($('<th class="table-dinamic" />').text('Unidad Medida'));
+				row.append($('<th class="table-dinamic" />').text('Cantidad Programada'));
+				row.append($('<th class="table-dinamic" />').text('Cantidad Despachada'));
+				row.append($('<th class="table-dinamic" />').text('Saldo por Despachar'));
+				row.append($('<th class="table-dinamic" />').text('Cantidad Salida'));
+				row.append($('<th class="table-dinamic" />').text('Stock Almacén'));		
+				row.append($('<th class="table-dinamic" />').text('Volumen Total'));
+				row.append($('<th class="table-dinamic" />').text('Peso Total Bruto'));
+				table.append(row);
+		
+				if (respuesta.length > 0) {
+					var row_num = 1;
+					
+					var tot_vol_bruto = 0;
+					var tot_pes_bruto = 0;
+					
+					$.each(respuesta, function(index, item) {
+						row = $('<tr class="item_pro_man" />');
+						row.append($('<td/>').html(row_num));
+						row.append($('<td class="opc-table-30" />').html(item.nombreProducto));
+						row.append($('<td/>').html(item.nombreUnidad));
+						row.append($('<td/>').html(item.cantidadProgramada));
+						row.append($('<td/>').html(item.cantidadDespachada));
+						row.append($('<td/>').html(item.cantidadPorDespachar));
+						var htm_cantidad = '<input type="text" name="txt_cantidad" id="txt_cantidad_'+item.idProducto+'" '+
+									   	   'value="'+item.cantidadSalida+'" class="form-control only-numbers-format" '+
+									   	   'onkeypress="validateOnlyNumeric(event)" maxlength="10">';						
+						row.append($('<td/>').html(htm_cantidad));
+						row.append($('<td/>').html(item.stockAlmacen));				
+						row.append($('<td/>').html(item.volumenUnitario));
+						row.append($('<td class="opc-table-10" />').html('0'));
+						table.append(row);
+						row_num++;
+						
+						tot_vol_bruto = tot_vol_bruto + parseFloat(verificaParametroInt(item.volumenUnitario));
+//						tot_pes_bruto = tot_pes_bruto + parseFloat(verificaParametroInt(item.persDam));
+					});
+					
+					row = $('<tr/>');
+					row.append($('<td class="opc-right" colspan="8" />').html("Total:"));
+					row.append($('<td/>').html(tot_vol_bruto));
+					row.append($('<td/>').html(tot_pes_bruto));
+					table.append(row);
+				}
+				
+				$('#div_pro_can_manifiesto').html(table);
+				
+				listaProductoManifiestoSalidaCache = verificarListaJson(respuesta);
+				
+				$('#div_det_pro_manifiesto').modal('show');	
+				
+			}
+		});
+			
 	});
 	
 	$('#href_doc_nuevo').click(function(e) {

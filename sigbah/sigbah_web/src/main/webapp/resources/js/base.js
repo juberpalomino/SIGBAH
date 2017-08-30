@@ -116,6 +116,7 @@ $(function() {
     formatMontoInput();
     
     formatMontoSinDecimalInput();
+    
     $(document).on('focus', ':input:enabled:not([readonly]).monto-format3', function() {
 		var value = parseFloat($(this).val().replace(/\,/g,''));
 		value = value == '0' ? '0' : (value ? $(this).val(value.toFixed(3)) : $(this).val(''));	// version considerando '0'
@@ -903,7 +904,7 @@ function formatMontoInput() {
 				pastedText = e.clipboardData.getData('text/plain');
 			}
 			e.preventDefault();
-			if (fnValidarFormatoWebPymesWithComma(pastedText) || (pastedText)) {
+			if (fnValidarFormatoWithComma(pastedText) || (pastedText)) {
 				if(/[,]/g.test(pastedText)){
 					pastedText = pastedText.replace(/[,]/g,'');
 				}
@@ -982,7 +983,7 @@ function formatMontoInput() {
  * @param {String}variable
  * @returns {Boolean}
  */
-function fnValidarFormatoWebPymesWithComma(variable){
+function fnValidarFormatoWithComma(variable){
 	var f14d2	= new RegExp(/^(-?[0-9]{1,2}(,)){0,1}([0-9]{3}(,)){0,3}([0-9]{3})(\.[0-9]{1,2})?$/);
 	var f3d2	= new RegExp(/^-?([0-9]{1,3})(\.[0-9]{1,2})?$/);
 	
@@ -1043,7 +1044,7 @@ function formatMontoAll(monto) {
 			monto = monto.substring(1, monto.length);
 		}
 	}
-	return monto
+	return monto;
 }
 
 function formatMontoSinDecimalInput() {
@@ -1171,4 +1172,17 @@ function centerHeader(element) {
 		$(element).removeClass('opc-left');
 	}	
 	$(element).addClass('opc-center');
+}
+
+function validateOnlyNumeric(evt) {
+	var theEvent = evt || window.event;
+	var key = theEvent.keyCode || theEvent.which;
+	key = String.fromCharCode( key );
+	var regex = /[0-9]|\./;
+	if (!regex.test(key)) {
+	    theEvent.returnValue = false;
+	    if (theEvent.preventDefault) {
+	    	theEvent.preventDefault();
+	    }
+	}
 }

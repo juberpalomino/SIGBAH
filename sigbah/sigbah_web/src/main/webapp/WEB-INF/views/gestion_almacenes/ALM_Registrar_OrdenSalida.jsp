@@ -135,7 +135,7 @@
 															</select>
 														</div>
 														
-														<label class="col-sm-2 control-label">N° de Requerimiento:</label>
+														<label class="col-sm-2 control-label">N° de Programación:</label>
 														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_requerimiento" class="form-control" disabled>
 														</div>
@@ -428,7 +428,11 @@
 											<span class="widget-icon"> <i class="fa fa-table"></i> </span>
 											<h2>Detalle de Productos</h2>
 											
-											<div class="jarviswidget-ctrls" role="menu">   
+											<div class="jarviswidget-ctrls" role="menu">
+												<a href="#" id="href_agr_pro_manifiesto" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+													data-original-title="Agregar Productos de Manifiesto">
+													<i class="fa fa-retweet"></i>
+												</a>
 												<a href="#" id="href_pro_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 													data-original-title="Nuevo">
 													<i class="fa fa-file-o"></i>
@@ -648,7 +652,7 @@
 							<div class="row">
 								<label class="col-sm-2 control-label">Cantidad:</label>
 								<div class="col-sm-2 form-group">
-									<input type="text" name="txt_cantidad" id="txt_cantidad" class="form-control monto-format" maxlength="10">
+									<input type="text" name="txt_cantidad" id="txt_cantidad" class="form-control only-numbers-format" maxlength="10">
 								</div>
 
 								<label class="col-sm-2 control-label">Precio Unitario (S/.):</label>
@@ -675,6 +679,53 @@
 				&nbsp; &nbsp;
 				
 				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_producto">
+					<i class="fa fa-mail-forward"></i>
+					Cancelar
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal -->
+<div id="div_det_pro_manifiesto" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog modal-80-large">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title label-bold">Producto: Ingrese la Cantidad para la Orden de Salida</h4>
+			</div>
+			
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12">
+						
+							<div class="row">																				
+								<label class="col-sm-3 control-label">N° de Proyecto de Manifiesto:</label>
+								<div class="col-sm-3 form-group">
+									<input type="text" id="txt_nro_pro_manifiesto" class="form-control" disabled>
+								</div>
+							</div>
+
+							<div id="div_pro_can_manifiesto" class="table-scroll"></div>
+
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="btn_ace_pro_manifiesto">
+					<i class="fa fa-floppy-o"></i>
+					Aceptar
+				</button>
+				
+				&nbsp; &nbsp;
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal">
 					<i class="fa fa-mail-forward"></i>
 					Cancelar
 				</button>

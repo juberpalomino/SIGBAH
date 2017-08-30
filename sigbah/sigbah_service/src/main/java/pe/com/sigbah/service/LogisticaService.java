@@ -727,4 +727,18 @@ public interface LogisticaService {
 	 */
 	public abstract List<LoteProductoBean> listarLoteProductoSalida(LoteProductoBean loteProductoBean) throws Exception;
 	
+	/**
+	 * @param productoProyectoManifiestoBean
+	 * @return Lista de registros.
+	 * @throws Exception 
+	 */
+	public abstract List<ProductoProyectoManifiestoBean> listarProductoManifiestoSalida(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception;
+
+	/**
+	 * @param productoProyectoManifiestoBean
+	 * @return Objeto.
+	 * @throws Exception 
+	 */
+	public abstract ProductoProyectoManifiestoBean grabarProductoManifiestoSalida(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception;
+
 }

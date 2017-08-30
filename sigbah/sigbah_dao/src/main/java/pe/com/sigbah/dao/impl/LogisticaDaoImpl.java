@@ -90,6 +90,7 @@ import pe.com.sigbah.mapper.OrdenSalidaMapper;
 import pe.com.sigbah.mapper.ProductoCartillaInventarioMapper;
 import pe.com.sigbah.mapper.ProductoControlCalidadMapper;
 import pe.com.sigbah.mapper.ProductoIngresoMapper;
+import pe.com.sigbah.mapper.ProductoManifiestoSalidaMapper;
 import pe.com.sigbah.mapper.ProductoProyectoManifiestoMapper;
 import pe.com.sigbah.mapper.ProductoSalidaMapper;
 import pe.com.sigbah.mapper.ProductoStockAlmacenMapper;
@@ -4550,7 +4551,7 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 			output_objParametros.put("PI_FLG_CIERRE_ALM", new SqlParameter("PI_FLG_CIERRE_ALM", Types.VARCHAR));
 			output_objParametros.put("PI_FK_IDE_RESPONSABLE_ALM", new SqlParameter("PI_FK_IDE_RESPONSABLE_ALM", Types.NUMERIC));
 			output_objParametros.put("PI_OBSERVACION", new SqlParameter("PI_OBSERVACION", Types.VARCHAR));
-			output_objParametros.put("PI_USUARIO", new SqlParameter("PI_USUARIO", Types.VARCHAR));;
+			output_objParametros.put("PI_USUARIO", new SqlParameter("PI_USUARIO", Types.VARCHAR));
 			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
 			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
 
@@ -5275,6 +5276,101 @@ public class LogisticaDaoImpl extends JdbcDaoSupport implements LogisticaDao, Se
 		}		
 		LOGGER.info("[listarLoteProductoSalida] Fin ");
 		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#listarProductoManifiestoSalida(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public List<ProductoProyectoManifiestoBean> listarProductoManifiestoSalida(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[listarProductoManifiestoSalida] Inicio ");
+		List<ProductoProyectoManifiestoBean> lista = new ArrayList<ProductoProyectoManifiestoBean>();
+		try {
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();			
+			input_objParametros.addValue("pi_IDE_PROYECTO_MANIF", productoProyectoManifiestoBean.getIdProyectoManifiesto(), Types.NUMERIC);		
+			
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_LISTAR_PROYECTO_MANIF_PROD");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("pi_IDE_PROYECTO_MANIF", new SqlParameter("pi_IDE_PROYECTO_MANIF", Types.NUMERIC));
+			output_objParametros.put("po_Lr_Recordset", new SqlOutParameter("po_Lr_Recordset", OracleTypes.CURSOR, new ProductoManifiestoSalidaMapper()));
+			output_objParametros.put("po_CODIGO_RESPUESTA", new SqlOutParameter("po_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("po_MENSAJE_RESPUESTA", new SqlOutParameter("po_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			String codigoRespuesta = (String) out.get("po_CODIGO_RESPUESTA");
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("po_MENSAJE_RESPUESTA");
+				LOGGER.info("[listarProductoManifiestoSalida] Ocurrio un error en la operacion del USP_LISTAR_PROYECTO_MANIF_PROD : "+mensajeRespuesta);
+				throw new Exception();
+			} else {
+				lista = (List<ProductoProyectoManifiestoBean>) out.get("po_Lr_Recordset");
+			}			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[listarProductoManifiestoSalida] Fin ");
+		return lista;
+	}
+
+	/* (non-Javadoc)
+	 * @see pe.com.sigbah.dao.LogisticaDao#grabarProductoManifiestoSalida(pe.com.sigbah.common.bean.ProductoProyectoManifiestoBean)
+	 */
+	@Override
+	public ProductoProyectoManifiestoBean grabarProductoManifiestoSalida(ProductoProyectoManifiestoBean productoProyectoManifiestoBean) throws Exception {
+		LOGGER.info("[grabarProductoManifiestoSalida] Inicio ");
+		ProductoProyectoManifiestoBean registroProductoProyectoManifiesto = new ProductoProyectoManifiestoBean();
+		try {			
+			MapSqlParameterSource input_objParametros = new MapSqlParameterSource();
+			input_objParametros.addValue("PI_FK_IDE_SALIDA", productoProyectoManifiestoBean.getIdSalida(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_ALMACEN", productoProyectoManifiestoBean.getIdAlmacen(), Types.NUMERIC);
+			input_objParametros.addValue("PI_FK_IDE_PRODUCTO", productoProyectoManifiestoBean.getIdProducto(), Types.NUMERIC);			
+			input_objParametros.addValue("PI_CANTIDAD", productoProyectoManifiestoBean.getCantidad(), Types.NUMERIC);
+			input_objParametros.addValue("PI_USERNAME", productoProyectoManifiestoBean.getUsuarioRegistro(), Types.VARCHAR);
+
+			objJdbcCall = new SimpleJdbcCall(getJdbcTemplate());
+			objJdbcCall.withoutProcedureColumnMetaDataAccess();
+			objJdbcCall.withCatalogName(Constantes.PACKAGE_LOGISTICA);
+			objJdbcCall.withSchemaName(Constantes.ESQUEMA_SINPAD);
+			objJdbcCall.withProcedureName("USP_INS_PROD_SALIDA_PROY_MANIF");
+
+			LinkedHashMap<String, SqlParameter> output_objParametros = new LinkedHashMap<String, SqlParameter>();
+			output_objParametros.put("PI_FK_IDE_SALIDA", new SqlParameter("PI_FK_IDE_SALIDA", Types.NUMERIC));			
+			output_objParametros.put("PI_FK_IDE_ALMACEN", new SqlParameter("PI_FK_IDE_ALMACEN", Types.NUMERIC));
+			output_objParametros.put("PI_FK_IDE_PRODUCTO", new SqlParameter("PI_FK_IDE_PRODUCTO", Types.NUMERIC));
+			output_objParametros.put("PI_CANTIDAD", new SqlParameter("PI_CANTIDAD", Types.NUMERIC));
+			output_objParametros.put("PI_USERNAME", new SqlParameter("PI_USERNAME", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_CODIGO_RESPUESTA", Types.VARCHAR));
+			output_objParametros.put("PO_CODIGO_RESPUESTA", new SqlOutParameter("PO_MENSAJE_RESPUESTA", Types.VARCHAR));
+
+			objJdbcCall.declareParameters((SqlParameter[]) SpringUtil.getHashMapObjectsArray(output_objParametros));
+			
+			Map<String, Object> out = objJdbcCall.execute(input_objParametros);
+			
+			String codigoRespuesta = (String) out.get("PO_CODIGO_RESPUESTA");
+			
+			if (codigoRespuesta.equals(Constantes.COD_ERROR_GENERAL)) {
+				String mensajeRespuesta = (String) out.get("PO_MENSAJE_RESPUESTA");
+				LOGGER.info("[grabarProductoManifiestoSalida] Ocurrio un error en la operacion del USP_INS_PROD_SALIDA_PROY_MANIF : "+mensajeRespuesta);
+    			throw new Exception();
+    		}
+
+			registroProductoProyectoManifiesto.setCodigoRespuesta(codigoRespuesta);
+			registroProductoProyectoManifiesto.setMensajeRespuesta((String) out.get("PO_MENSAJE_RESPUESTA"));
+	
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new Exception();
+		}		
+		LOGGER.info("[grabarProductoManifiestoSalida] Fin ");
+		return registroProductoProyectoManifiesto;
 	}
 
 }
