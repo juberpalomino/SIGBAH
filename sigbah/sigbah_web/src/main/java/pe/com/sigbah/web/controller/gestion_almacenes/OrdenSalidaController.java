@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
@@ -594,6 +595,41 @@ public class OrdenSalidaController extends BaseController {
 			return getBaseRespuesta(null);
 		}
 		return lista;
+	}
+	
+	/**
+	 * @param idSalida 
+	 * @param arrIdProducto 
+	 * @param arrCantidad 
+	 * @return objeto en formato json
+	 */
+	@RequestMapping(value = "/grabarProductoManifiestoSalida", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object grabarProductoManifiestoSalida(@RequestParam(value="idSalida") Integer idSalida,
+												 @RequestParam(value="arrIdProducto[]") List<Integer> arrIdProducto,
+												 @RequestParam(value="arrCantidad[]") List<BigDecimal> arrCantidad) {
+		ProductoProyectoManifiestoBean producto = null;
+		try {
+			// Retorno los datos de session
+        	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+        	
+        	for (int i = 0; i < arrIdProducto.size(); i++) {        		
+        		ProductoProyectoManifiestoBean productoProyectoManifiestoBean = new ProductoProyectoManifiestoBean();
+        		productoProyectoManifiestoBean.setIdSalida(idSalida);
+        		productoProyectoManifiestoBean.setIdAlmacen(usuarioBean.getIdAlmacen());
+        		productoProyectoManifiestoBean.setIdProducto(arrIdProducto.get(i));
+        		productoProyectoManifiestoBean.setCantidad(arrCantidad.get(i));
+            	productoProyectoManifiestoBean.setUsuarioRegistro(usuarioBean.getUsuario());    			
+    			producto = logisticaService.grabarProductoManifiestoSalida(productoProyectoManifiestoBean);
+        	}
+        	
+			producto.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return producto;
 	}
 	
 	/**

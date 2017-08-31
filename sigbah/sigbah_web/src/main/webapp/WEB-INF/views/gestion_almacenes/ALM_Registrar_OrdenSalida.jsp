@@ -644,7 +644,7 @@
 								</div>
 
 								<label class="col-sm-2 control-label">Peso Bruto Unitario:</label>
-								<div class="col-sm-2 smart-form form-group">
+								<div class="col-sm-2 form-group">
 									<input type="text" id="txt_pes_bru_unitario" class="form-control" disabled>
 								</div>
 							</div>

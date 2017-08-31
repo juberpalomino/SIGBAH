@@ -190,7 +190,7 @@ public class ReporteOrdenIngreso implements Serializable {
 										 List<DocumentoIngresoBean> listaDocumento) throws Exception {
 		Document document = null;
 		try {
-			document = new Document(PageSize.A4, 0, 0, 20, 20);
+			document = new Document(PageSize.A4.rotate(), 0, 0, 20, 20);
 			PdfWriter.getInstance(document, new FileOutputStream(ruta));    
 			
 			document.open();
@@ -210,7 +210,7 @@ public class ReporteOrdenIngreso implements Serializable {
 			
 			float[] f7 = {30, 2, 20, 2, 25, 2, 19};
 
-			float[] f9 = {5, 20, 10, 10, 10, 10, 10, 10, 15};
+			float[] f8 = {5, 30, 10, 10, 10, 10, 10, 15};
 
 			Paragraph p     = null;
 			PdfPTable table = null;
@@ -341,7 +341,7 @@ public class ReporteOrdenIngreso implements Serializable {
 			table = new PdfPTable(1);
 			table.setWidths(f1);
 			
-			p = new Paragraph("Nombre Proveedor : ".concat(getString(ordenIngreso.getProvRep())), normal);
+			p = new Paragraph("Nombre Proveedor : ".concat(getString(ordenIngreso.getRazonSocial())), normal);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -439,8 +439,8 @@ public class ReporteOrdenIngreso implements Serializable {
 			document.add(new Paragraph(Constantes.ESPACIO)); // Salto de linea
 				
 			
-			table = new PdfPTable(9);
-			table.setWidths(f9);
+			table = new PdfPTable(8);
+			table.setWidths(f8);
 			
 			p = new Paragraph("N°", negrita);
 			cell = new PdfPCell(p);
@@ -457,13 +457,6 @@ public class ReporteOrdenIngreso implements Serializable {
 			table.addCell(cell);
 			
 			p = new Paragraph("Unidad Medida", negrita);
-			cell = new PdfPCell(p);
-			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-			cell.setBackgroundColor(header);
-			table.addCell(cell);
-			
-			p = new Paragraph("Envase", negrita);
 			cell = new PdfPCell(p);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -512,8 +505,8 @@ public class ReporteOrdenIngreso implements Serializable {
 			
 			for (ProductoIngresoBean producto : listaProducto) {
 			
-				table = new PdfPTable(9);
-				table.setWidths(f9);
+				table = new PdfPTable(8);
+				table.setWidths(f8);
 				
 				p = new Paragraph(String.valueOf(row_pro), normal);
 				cell = new PdfPCell(p);
@@ -528,12 +521,6 @@ public class ReporteOrdenIngreso implements Serializable {
 				table.addCell(cell);
 				
 				p = new Paragraph(producto.getNombreUnidad(), normal);
-				cell = new PdfPCell(p);
-				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				table.addCell(cell);
-				
-				p = new Paragraph(producto.getNombreEnvase(), normal);
 				cell = new PdfPCell(p);
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				cell.setVerticalAlignment(Element.ALIGN_MIDDLE);

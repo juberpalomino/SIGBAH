@@ -44,6 +44,7 @@ public class RegistroOrdenIngresoMapper implements RowMapper<OrdenIngresoBean> {
 		ordenIngreso.setIdProveedor(rs.getInt("FK_IDE_PROVEEDOR"));
 		ordenIngreso.setProvRep(rs.getString("PROV_REP"));
 		ordenIngreso.setRepresentante(rs.getString("REPRESENTANTE"));
+		ordenIngreso.setRazonSocial(rs.getString("RAZON_SOCIAL"));
 		ordenIngreso.setIdAlmacenProcedencia(rs.getInt("FK_ID_ALM_PROCEDENCIA"));
 		ordenIngreso.setNombreAlmacenProcedencia(rs.getString("NOMBRE_ALMACEN_PROCEDENCIA"));
 		ordenIngreso.setIdMedioTransporte(rs.getInt("FK_IDE_MED_TRANSPORTE"));

@@ -58,6 +58,7 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	private String codigoMesFin;
 	private BigDecimal importeTotal;
 	private BigDecimal pesoTotalKgr;
+	private String razonSocial;
 	
 	
 	/**
@@ -623,6 +624,18 @@ public class OrdenIngresoBean extends BaseOutputBean {
 	 */
 	public void setPesoTotalKgr(BigDecimal pesoTotalKgr) {
 		this.pesoTotalKgr = pesoTotalKgr;
+	}
+	/**
+	 * @return the razonSocial
+	 */
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+	/**
+	 * @param razonSocial the razonSocial to set
+	 */
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
 
 }
