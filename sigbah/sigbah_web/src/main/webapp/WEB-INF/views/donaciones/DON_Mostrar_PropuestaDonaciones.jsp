@@ -88,7 +88,6 @@
 														<label class="col-sm-2 control-label">Estado de la Donación:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_estado" name="sel_estado" class="form-control" disabled>
-																<option value="1">En Propuesta</option>
 																<c:forEach items="${lista_estado}" var="item">
 																    <option value="${item.vcodigo}">${item.descripcion}</option>
 																</c:forEach>
@@ -231,7 +230,7 @@
 															
 														</div>
 														<div class="col-sm-11 form-group">
-															<textarea rows="3" name="txt_finalidad" id="txt_finalidad" class="form-control"></textarea>
+															<textarea rows="3" name="txt_finalidad" id="txt_finalidad" class="form-control" placeholder="Ingresar la finalidad de la donación"></textarea>
 														</div>
 													</div>
 								
@@ -260,7 +259,7 @@
 														<div class="col-sm-1 form-group">
 															
 														</div>
-														<div class="col-sm-3 form-group">
+														<div class="col-sm-6 form-group">
 															<select id="sel_oficina" name="sel_oficina" class="form-control">
 																<option value="">Seleccione</option>
 																<c:forEach items="${lista_oficinas}" var="item">
@@ -269,7 +268,7 @@
 															</select>
 														</div> 
 													    <div class="col-sm-1 form-group"></div> 
-														<div class="col-sm-3 form-group">
+														<div class="col-sm-4 form-group">
 															<select id="sel_personal_oficina" name="sel_personal_oficina" class="form-control">
 																<option value="">Seleccione</option>
 																<c:forEach items="${lista_personal_oficina}" var="item">
@@ -304,7 +303,7 @@
 															
 														</div>
 														<div class="col-sm-11 form-group">
-															<textarea rows="5" name="txt_a" id="txt_a" class="form-control"></textarea>
+															<textarea rows="5" name="txt_a" id="txt_a" class="form-control" placeholder="Texto 1: Ingresar el objeto de la calificación"></textarea>
 														</div>
 													</div>
 													<div class="row">
@@ -312,7 +311,7 @@
 															
 														</div>
 														<div class="col-sm-11 form-group">
-															<textarea rows="5" name="txt_b" id="txt_b" class="form-control"></textarea>
+															<textarea rows="5" name="txt_b" id="txt_b" class="form-control" placeholder="Texto 1: Ingresar el texto de la aceptación o negación de la donación"></textarea>
 														</div>
 													</div>
 

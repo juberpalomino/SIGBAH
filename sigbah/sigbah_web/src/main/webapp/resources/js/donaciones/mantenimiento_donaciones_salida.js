@@ -500,6 +500,8 @@ $(document).ready(function() {
 		$('#h4_tit_no_alimentarios').html('Nuevo Producto');
 		$('#frm_det_productos').trigger('reset');
 		$('#hid_cod_producto').val('0');
+		$('#sel_producto').prop('disabled', false);
+		$('#sel_cat_producto').prop('disabled', false);
 		limpiarFormularioProducto();
 		$('#div_det_productos').modal('show');
 		
@@ -529,7 +531,7 @@ $(document).ready(function() {
 			$('#hid_cod_producto').val(obj.idSalidaDet);
 			
 			$('#sel_cat_producto').val(obj.idCategoria);
-						
+			$('#sel_cat_producto').prop('disabled', true);			
 			cargarProducto(obj.idCategoria, obj.idProducto+'_'+obj.unidadMedida+'_'+obj.pesoNetoUnitario+'_'+obj.pesoBrutoUnitario+'_'+obj.idDonacion+'_'+obj.precioUnitario);
 			
 			$('#txt_uni_medida').val(obj.unidadMedida);
@@ -1346,7 +1348,7 @@ function listarEstadosDonacion(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaAlimentariosCache = respuesta;
@@ -1419,7 +1421,7 @@ function listarDetalleProductos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaProductosCache = respuesta;
@@ -1444,6 +1446,7 @@ function cargarProducto(idCategoria, codigoProducto) {
 	        $('#sel_producto').html(options);
 	        if (codigoProducto != null) {
 	        	$('#sel_producto').val(codigoProducto);
+	        	$('#sel_producto').prop('disabled', true);
 //				cargarLote(codigoProducto, codigoLote);				
 	        } else {
 //	        	var arr = $('#sel_lis_producto').val().split('_');
@@ -1534,7 +1537,7 @@ function listarDetalleDocumentos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaDocumentosCache = respuesta;

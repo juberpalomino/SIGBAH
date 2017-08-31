@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
@@ -51,6 +52,7 @@ import pe.com.sigbah.common.util.ExportarArchivo;
 import pe.com.sigbah.common.util.HtmlUtils;
 import pe.com.sigbah.common.util.Utils;
 import pe.com.sigbah.service.GeneralService;
+import pe.com.sigbah.service.AdministracionService;
 import pe.com.sigbah.service.DonacionService;
 import pe.com.sigbah.service.LogisticaService;
 import pe.com.sigbah.web.controller.common.BaseController;
@@ -80,35 +82,47 @@ public class DonacionesSalidaController extends BaseController {
 	
 	@Autowired 
 	private LogisticaService logisticaService;
+	
+	@Autowired 
+	private AdministracionService administracionService;
 	/**
 	 * @param model 
 	 * @return - Retorna a la vista JSP.
 	 */
 	@RequestMapping(value = "/inicio", method = RequestMethod.GET)
     public String inicio(Model model) {
+		String ruta="";
         try {       
         	System.out.println("DONACIONES Salida");
         	// Retorno los datos de session
            	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-
-        	model.addAttribute("lista_anio", generalService.listarAnios());
-        	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
-        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
-        	//model.addAttribute("lista_ddi", listaDdi);
-        	//model.addAttribute("lista_est_donacion", donacionService.listarEstadoDonacionUsuario(new ItemBean(usuarioBean.getIdUsuario(), "DONACION")));
-        	//model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
-        	
-        	model.addAttribute("lista_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.ONE_INT,Constantes.TWO_INT)));
-        	
-        	//model.addAttribute("lista_estado", generalService.listarEstadoDonacion(new ItemBean()));
-        	model.addAttribute("txt_cod_ddi", usuarioBean.getCodigoDdi());
-        	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
-
+           	if(usuarioBean.getIdAlmacen()==null){
+           		model.addAttribute("txt_mensaje", "Usted no tiene almacén de trabajo");
+           		ruta = "noAlmacen";
+           	}else{
+           		
+           		CierreStockBean cierre = new CierreStockBean();
+           		cierre = administracionService.mesTrabajoActivo(usuarioBean.getIdAlmacen(), Constantes.TIPO_ORIGEN_DONACIONES);
+           		System.out.println("TRABAJO : "+cierre.getCodigoMes());
+           		if(cierre.getCodigoMes()==null){
+           			ruta = "mesNoAbierto";
+           		}else{
+		        	model.addAttribute("lista_anio", generalService.listarAnios());
+		        	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
+		        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
+		
+		        	model.addAttribute("lista_movimiento", generalService.listarTipoMovimiento(new ItemBean(Constantes.ONE_INT,Constantes.TWO_INT)));
+		
+		        	model.addAttribute("txt_cod_ddi", usuarioBean.getCodigoDdi());
+		        	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
+		        	ruta="listar-donaciones-salida";
+           		}
+           	}
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "listar-donaciones-salida";
+        return ruta;
     }
 	
 	/**
@@ -1177,7 +1191,7 @@ public class DonacionesSalidaController extends BaseController {
 			List<DonacionesSalidaBean> lista = donacionService.listarReporteDonacionSalida(codigo);
 			List<ProductoDonacionSalidaBean> listaProductos = donacionService.listarProductosReporteDonacionSalida(codigo);
 			List<DocumentoSalidaBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionSalida(codigo);
-			if (isEmpty(lista) || isEmpty(listaProductos)) {
+			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaDocumentos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
 			DonacionesSalidaBean general = lista.get(0);

@@ -546,14 +546,14 @@ $(document).ready(function() {
 				idProducto = arr[0];
 			}
 			
-			
+			console.log($('#txt_cantidad').val());
 			
 			var params = { 
 				idIngreso : $('#hid_id_ingreso').val(),	
 				idIngresoDet : $('#hid_cod_producto').val(),
 				idProducto : idProducto,
 				//idDonacion : $('#hid_id_donacion').val(),
-				cantidad : ($('#txt_cantidad').val()),
+				cantidad : $('#txt_cantidad').val(),
 				precioUnitario : $('#txt_precio').val(),
 				importeTotal : $('#txt_imp_total').val(),
 				fecVencimiento : $('#txt_fec_vencimiento').val(),
@@ -649,6 +649,7 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					var options = '';
+					options += '<option value="">Seleccione</option>';
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
 			        });
@@ -662,6 +663,7 @@ $(document).ready(function() {
 						addErrorMessage(null, respuesta.mensajeRespuesta);
 					} else {
 						var options = '';
+						options += '<option value="">Seleccione</option>';
 				        $.each(respuesta, function(i, item) {
 				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
 				        });
@@ -688,6 +690,7 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					var options = '';
+					options += '<option value="">Seleccione</option>';
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
 			        });
@@ -1127,7 +1130,7 @@ function listarEstadosDonacion(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaAlimentariosCache = respuesta;
@@ -1198,7 +1201,7 @@ function listarDetalleProductos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaProductosCache = respuesta;
@@ -1312,7 +1315,7 @@ function listarDetalleDocumentos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaDocumentosCache = respuesta;

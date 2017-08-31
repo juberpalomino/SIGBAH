@@ -77,8 +77,8 @@
 														<label class="col-sm-2 control-label">Estado:</label>
 														<div class="col-sm-2 form-group">
 															<select id="sel_estado" name="sel_estado" class="form-control">
-																<option value="1">Cerrado</option>
-																<option value="0">Pendiente</option>
+																<option value="0">Cerrado</option>
+																<option value="1">Pendiente</option>
 															</select>
 														</div>
 													</div>

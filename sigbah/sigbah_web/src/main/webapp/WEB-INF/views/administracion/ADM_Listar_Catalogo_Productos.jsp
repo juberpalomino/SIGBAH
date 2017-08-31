@@ -6,7 +6,7 @@
 	<ol class="breadcrumb">
 		<li>Administración</li>
 		<li>Catálogo de Productos</li>
-		<li>Lista de Catálogo de Productos</li>
+		<li>Lista de Productos</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -28,7 +28,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Catálogo de Productos</h2>
+						<h2>Búsqueda de Productos</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -37,32 +37,36 @@
 						<!-- widget content -->
 						<div class="widget-body widget-body-50">
 		
-							<form id="frm_con_donaciones" class="form-horizontal">
+							<form id="frm_catalogo_productos" class="form-horizontal">
 							
 								<input type="hidden" id="hid_codigo" name="hid_codigo">
-								<input type="hidden" id="txt_cod_ddi" name="txt_cod_ddi" value="${txt_cod_ddi}">
+
 								<div class="form-group">
-									<label class="col-sm-1 control-label">Categoría del Producto:</label>
-									<div class="col-sm-2">
+									<label class="col-sm-2 control-label">Categoría del Producto:</label>
+									<div class="col-sm-3">
 										<select id="sel_catalogo_producto" name="sel_catalogo_producto" class="form-control">
-											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
+											<option value="0">Todos</option>
+											<c:forEach items="${lista_categoria}" var="item">
+											    <option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
+									</div>
+									
+									<div class="col-sm-1">
+										<button class="btn btn-primary" type="button" id="btn_buscar_cat">
+											<i class="fa fa-search"></i>
+											Buscar
+										</button>
 									</div>
 									
 									<label class="col-sm-1 control-label">Producto:</label>
-									<div class="col-sm-2">
-										<select id="sel_producto" name="sel_producto" class="form-control">
-											<c:forEach items="${lista_anio}" var="item">
-											    <option value="${item.vcodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
+									<div class="col-sm-3 form-group">
+										<input type="text" name="txt_nombre" id="txt_nombre" class="form-control" maxlength="50">
 									</div>
 			
 									
-									<div class="col-sm-2">
-										<button class="btn btn-primary" type="button" id="btn_buscar">
+									<div class="col-sm-1">
+										<button class="btn btn-primary" type="button" id="btn_buscar_nom">
 											<i class="fa fa-search"></i>
 											Buscar
 										</button>
@@ -97,16 +101,16 @@
 								data-original-title="Exportar Excel">
 								<i class="fa fa-file-excel-o"></i>
 							</a> 
-							<a href="#" id="href_imprimir" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
-								data-original-title="Imprimir">
-								<i class="fa fa-file-pdf-o"></i>
-							</a>
 							<a href="#" id="href_editar" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Editar">
 								<i class="fa fa-edit"></i>
 							</a>
 							<a href="#" id="href_nuevo" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
 								data-original-title="Nuevo">
+								<i class="fa fa-file-o"></i>
+							</a>
+							<a href="#" id="href_nuevo_sig" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
+								data-original-title="Nuevo SIGA">
 								<i class="fa fa-file-o"></i>
 							</a>
 						</div>
@@ -154,89 +158,6 @@
 	
 </div>
 <!-- END MAIN CONTENT -->
-
-<!-- Modal -->
-<div id="div_estado" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" id="btn_clo_documentos" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title label-bold" id="h4_tit_documentos">Estado de la Donación</h4>
-			</div>
-			
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12">
-						<form id="frm_nue_estado" class="form-horizontal" role="form">
-							
-							<input type="hidden" id="hid_est_documento" name="hid_est_documento">
-
-							<div class="form-group">																				
-								<label class="col-sm-3 control-label">Nuevo Estado:</label>
-								<div class="col-sm-8">
-									<select id="sel_estados_donacion" name="sel_estados_donacion" class="form-control">
-										<option value="0">Seleccione</option>
-										<c:forEach items="${lista_est_donacion}" var="item">
-											<option value="${item.icodigo}">${item.descripcion}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<div id="divRegiones">
-									<label class="col-sm-3 control-label">Seleccione Región a Distribuir</label>
-									<div class="col-sm-8">
-										<select id="sel_region_donacion" name="sel_region_donacion" class="form-control">
-											<option value="">Seleccione</option>
-											<c:forEach items="${lista_region}" var="item">
-												<option value="${item.icodigo}">${item.descripcion}</option>
-											</c:forEach>
-										</select>
-										
-							
-									</div class="col-sm-12">
-									
-									<div>
-										<table id="tbl_regiones" class="table table-bordered table-hover tbl-responsive">
-											<thead>			                
-												<tr>
-													<th>N°</th>
-													<th>Región</th>
-													<th>Eliminar</th>
-												</tr>
-											</thead>
-										</table>
-									</div>
-									
-									
-									
-								</div>
-							</div>
-							
-						</form>
-					</div>
-				</div>
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" id="btn_act_estado">
-					<i class="fa fa-floppy-o"></i>
-					Aceptar
-				</button>
-				
-				&nbsp; &nbsp;
-				
-				<button type="button" class="btn btn-default" data-dismiss="modal" id="btn_can_documento">
-					<i class="fa fa-mail-forward"></i>
-					Cancelar
-				</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 <!-- inline scripts related to this page -->
 <script src="${pageContext.request.contextPath}/resources/js/administracion/listar_catalogo_productos.js"></script>

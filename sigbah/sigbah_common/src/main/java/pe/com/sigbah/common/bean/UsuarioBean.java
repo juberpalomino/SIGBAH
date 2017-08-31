@@ -26,6 +26,9 @@ public class UsuarioBean implements Serializable {
 	private String codigoAnio;
 	private String email;
 	private String codigoMes;
+	private String flagActivo;
+	private String codigoRespuesta;
+	private String mensajeRespuesta;
 	
 	
 	/**
@@ -289,6 +292,30 @@ public class UsuarioBean implements Serializable {
 				+ ", idAlmacen=" + idAlmacen + ", codigoAlmacen=" + codigoAlmacen + ", nombreAlmacen=" + nombreAlmacen
 				+ ", password=" + password + ", sessionId=" + sessionId + ", codigoAnio=" + codigoAnio + ", email="
 				+ email + ", codigoMes=" + codigoMes + "]";
+	}
+
+	public String getFlagActivo() {
+		return flagActivo;
+	}
+
+	public void setFlagActivo(String flagActivo) {
+		this.flagActivo = flagActivo;
+	}
+
+	public String getCodigoRespuesta() {
+		return codigoRespuesta;
+	}
+
+	public void setCodigoRespuesta(String codigoRespuesta) {
+		this.codigoRespuesta = codigoRespuesta;
+	}
+
+	public String getMensajeRespuesta() {
+		return mensajeRespuesta;
+	}
+
+	public void setMensajeRespuesta(String mensajeRespuesta) {
+		this.mensajeRespuesta = mensajeRespuesta;
 	}
 	
 }

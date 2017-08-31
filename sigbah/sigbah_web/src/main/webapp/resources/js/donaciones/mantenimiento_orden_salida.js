@@ -160,6 +160,7 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					var options = '';
+					options += '<option value="">Seleccione</option>';
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
 			        });
@@ -173,6 +174,7 @@ $(document).ready(function() {
 						addErrorMessage(null, respuesta.mensajeRespuesta);
 					} else {
 						var options = '';
+						options += '<option value="">Seleccione</option>';
 				        $.each(respuesta, function(i, item) {
 				            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
 				        });
@@ -199,6 +201,7 @@ $(document).ready(function() {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
 					var options = '';
+					options += '<option value="">Seleccione</option>';
 			        $.each(respuesta, function(i, item) {
 			            options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
 			        });
@@ -879,7 +882,7 @@ function listarDetalleProductos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaProductosCache = respuesta;
@@ -947,7 +950,7 @@ function listarDetalleDocumentos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaDocumentosCache = respuesta;

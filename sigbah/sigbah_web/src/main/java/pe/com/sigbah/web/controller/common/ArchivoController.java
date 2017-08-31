@@ -1,10 +1,15 @@
 package pe.com.sigbah.web.controller.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.BatchUpdateException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Locale;
@@ -12,6 +17,10 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -22,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import oracle.jdbc.OraclePreparedStatement;
 import pe.com.sigbah.common.util.Constantes;
 
 /**
@@ -201,6 +211,127 @@ public class ArchivoController extends BaseController {
 	 */
 	private static String getPropertyValue(MessageSource messageSource, String mensaje) {
 		return messageSource.getMessage(mensaje, null, Locale.getDefault());
+	}
+	
+	@RequestMapping(value = "/cargarArchivoExcel", method = RequestMethod.POST)
+	@ResponseBody
+	public String cargarArchivoExcel(MultipartHttpServletRequest request, HttpServletResponse response) {
+		String alfrescoId = null;
+		try {			
+			LOGGER.info("[cargarArchivoExcel] Inicio ");
+			
+			StringBuilder path = new StringBuilder();
+			path.append(getPath(request));
+			path.append(File.separator);
+			path.append(getPropertyValue(messageSource, "params.file.resources"));
+			path.append(File.separator);
+			path.append(getPropertyValue(messageSource, "params.file.upload"));
+			
+			Iterator<String> itr = request.getFileNames();
+			MultipartFile mpf = request.getFile(itr.next());
+
+			StringBuilder file_name = new StringBuilder();
+			int pos_file_name = mpf.getOriginalFilename().lastIndexOf(Constantes.PUNTO);
+			file_name.append(mpf.getOriginalFilename().substring(0, pos_file_name));
+			file_name.append(Constantes.UNDERLINE);
+			file_name.append(Calendar.getInstance().getTime().getTime());
+			file_name.append(mpf.getOriginalFilename().substring(pos_file_name));
+			
+			
+			StringBuilder file_doc = new StringBuilder();
+			file_doc.append(path.toString());
+			file_doc.append(File.separator);
+			file_doc.append(file_name.toString());
+			
+			mpf.transferTo(new File(file_doc.toString()));
+
+			String contentType = request.getContentType();
+			
+			String uploadDirectory = getPropertyValue(messageSource, request.getParameter("uploadDirectory"));
+			
+//			alfrescoId = manageAlfresco.uploadFile(file_doc.toString(), uploadDirectory, contentType);
+//			
+//			alfrescoId = StringUtils.trimToEmpty(alfrescoId);
+//			
+//			if (alfrescoId.equals(Constantes.CODIGO_ERROR_401) ||
+//				alfrescoId.equals(Constantes.CODIGO_ERROR_403) ||
+//				alfrescoId.equals(Constantes.CODIGO_ERROR_404) ||
+//				alfrescoId.equals(Constantes.CODIGO_ERROR_500)) {
+//				throw new Exception();
+//			}
+//			
+			File file_temp = new File(file_doc.toString());
+			
+			System.out.println("ARVHIVO: "+file_doc.toString());
+			
+//    		if (file_temp.delete()){
+//    			LOGGER.info("[cargarArchivoExcel] "+file_temp.getName()+" se borra el archivo temporal.");
+//    		} else {
+//    			LOGGER.info("[cargarArchivoExcel] "+file_temp.getName()+" no se logró borrar el archivo temporal.");
+//    		}
+				
+			
+			Class.forName ("oracle.jdbc.OracleDriver"); 
+            Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@200.48.54.22:1521:INTEGRAL", "SINPAD", "SINPAD");
+            PreparedStatement sql_statement = null;
+            String jdbc_insert_sql = "INSERT INTO XLS_POI"
+                            + "(KEYWORD, TOTAL_COUNT) VALUES"
+                            + "(?,?)";
+            sql_statement = conn.prepareStatement(jdbc_insert_sql);
+            // we set batch size as 5. You should increase this 
+            // depending on the number of rows in your Excel document
+            ((OraclePreparedStatement)sql_statement).setExecuteBatch(5);
+            /* We should now load excel objects and loop through the worksheet data */
+            FileInputStream input_document = new FileInputStream(new File("xls_to_oracle.xls"));
+            /* Load workbook */
+            HSSFWorkbook my_xls_workbook = new HSSFWorkbook(input_document);
+            /* Load worksheet */
+            HSSFSheet my_worksheet = my_xls_workbook.getSheetAt(0);
+            // we loop through and insert data
+            Iterator<Row> rowIterator = my_worksheet.iterator(); 
+            while(rowIterator.hasNext()) {
+                    Row row = rowIterator.next(); 
+                    Iterator<Cell> cellIterator = row.cellIterator();
+                            while(cellIterator.hasNext()) {
+                                    Cell cell = cellIterator.next();
+                                    switch(cell.getCellType()) { 
+                                    case Cell.CELL_TYPE_STRING: //handle string columns
+                                            sql_statement.setString(1, cell.getStringCellValue());                                                                                     
+                                            break;
+                                    case Cell.CELL_TYPE_NUMERIC: //handle double data
+                                            sql_statement.setDouble(2,cell.getNumericCellValue() );
+                                            break;
+                                    }
+                                   
+                            }
+                            
+                            // though we call execute here, it is done only 
+                            //when the batch size is reached.
+                           try {
+                                   sql_statement.execute();
+                            } catch(BatchUpdateException e) {
+                            //you should handle exception here if required
+                            }
+            }               
+            input_document.close();
+            /* Close prepared statement */
+            sql_statement.close();
+            /* COMMIT transaction */
+            // unproccesed batch would get processed anyway.
+            conn.commit();
+            /* Close connection */
+            conn.close();
+			
+			
+			
+			
+			LOGGER.info("[cargarArchivoExcel] Se guardo en Alfresco.");
+
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+	    	return Constantes.COD_ERROR_GENERAL;
+		}
+		return alfrescoId;
 	}
 	
 }

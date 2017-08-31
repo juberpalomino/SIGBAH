@@ -453,7 +453,7 @@ function listarDetalleRegion(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaRegionesCache = respuesta;

@@ -758,7 +758,7 @@
 							<div class="row">
 								<label class="col-sm-3 control-label">Cantidad:</label>
 								<div class="col-sm-3 form-group">
-									<input type="text" name="txt_cantidad" id="txt_cantidad" class="form-control monto-format" maxlength="10">
+									<input type="text" name="txt_cantidad" id="txt_cantidad" class="form-control" maxlength="10">
 								</div>
 							</div>
 							

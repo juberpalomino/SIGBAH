@@ -210,7 +210,7 @@ public class DonacionesController extends BaseController {
         	
         	model.addAttribute("lista_donadores", donacionService.listarDonadores(datoDonaciones));
         	
-        	model.addAttribute("lista_oficinas", generalService.listarOficinas(new ItemBean(Constantes.ZERO_INT)));
+        	model.addAttribute("lista_oficinas", generalService.listarOficinas(new ItemBean(usuarioBean.getIdDdi())));
         	
         	model.addAttribute("nombreDee", listaDee1.get(0).getDescripcion());
         	
@@ -219,7 +219,7 @@ public class DonacionesController extends BaseController {
         	model.addAttribute("lista_tipo_documento", generalService.listarTipoDocumento(new ItemBean(Constantes.ZERO_INT)));
         	
         	//Para estados
-        	
+        	model.addAttribute("lista_estado", generalService.listarEstadoDonacion(new ItemBean()));
 //
 //        	model.addAttribute("lista_estado", generalService.listarEstado(new ItemBean(null, Constantes.THREE_INT)));
 //        	
@@ -1018,10 +1018,12 @@ public class DonacionesController extends BaseController {
 			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
 			Integer idDonacion = Integer.parseInt(request.getParameter("idDonacion"));
 			Integer idEstado = Integer.parseInt(request.getParameter("idEstado"));
+			String observacion = (request.getParameter("observacion"));
 			System.out.println("ESTADO: "+idEstado);
 			donacion.setIdEstado(idEstado);
 			donacion.setIdDonacion(idDonacion);
 			donacion.setUsuarioRegistro(usuarioBean.getUsuario());
+			donacion.setObservacion(observacion);
 			donacion = donacionService.actualizarEstadoDonacion(donacion);
 			donacion.setMensajeRespuesta(getMensaje(messageSource, "msg.info.grabadoOk"));				
 
@@ -1096,7 +1098,7 @@ public class DonacionesController extends BaseController {
 			List<ProductoDonacionBean> listaProductos = donacionService.listarReporteDonacionProductos(codigo);
 			List<RegionDonacionBean> listaRegiones = donacionService.listarReporteDonacionRegiones(codigo);
 
-			if (isEmpty(lista) || isEmpty(listaProductos)) {
+			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaRegiones)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
 			DonacionesBean producto = lista.get(0);

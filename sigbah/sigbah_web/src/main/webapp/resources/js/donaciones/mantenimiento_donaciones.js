@@ -47,7 +47,7 @@ $(document).ready(function() {
 		bootstrapValidator.validate();
 		if (bootstrapValidator.isValid()) {
 			
-			var codigo = $('#hid_cod_con_calidad').val();
+			var codigo = $('#hid_id_donacion').val();
 		//	var tipoBien = $('input[name="rb_tip_bien"]:checked').val();
 			var idDonante = null;
 			var val_donante = $('#sel_donante').val();
@@ -92,6 +92,7 @@ $(document).ready(function() {
 				if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
 					addErrorMessage(null, respuesta.mensajeRespuesta);
 				} else {
+					console.log("ID DONACION: "+respuesta.idDonacion);
 					$('#hid_id_donacion').val(respuesta.idDonacion);
 					listarEstadoDonacion(false);
 					listarProductoDonacion(false);
@@ -114,19 +115,9 @@ $(document).ready(function() {
 						
 						$('#li_estados').attr('class', '');
 						$('#li_estados').closest('li').children('a').attr('data-toggle', 'tab');
-//						$('#txt_nro_con_calidad').val(respuesta.nroControlCalidad);
-//						
-//						if (tipoBien == '1') {					
-//							$('#li_alimentarios').attr('class', '');
-//							$('#li_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
-//						} else {							
-//							$('#li_no_alimentarios').attr('class', '');
-//							$('#li_no_alimentarios').closest('li').children('a').attr('data-toggle', 'tab');
-//						}
-//						$('#li_documentos').attr('class', '');
-//						$('#li_documentos').closest('li').children('a').attr('data-toggle', 'tab');
+
 						actualizarCampos(respuesta.textoCodigo, respuesta.idDonacion);
-						addSuccessMessage(null, 'Se genero el N° de Donación: '+respuesta.textoCodigo);
+						addSuccessMessage(null, 'Se genero Código de Donación: '+respuesta.textoCodigo);
 						
 					}
 					
@@ -467,44 +458,6 @@ $(document).ready(function() {
 		
 	});
 	
-//	$('#sel_cat_producto').change(function() {
-//		var idCategoria = $(this).val();		
-//		if (!esnulo(idCategoria)) {					
-//			cargarProductos(idCategoria, null);
-//		} else {
-//			$('#sel_no_producto').html('');
-//			frm_det_no_alimentarios.bootstrapValidator('revalidateField', 'sel_no_producto');
-//		}
-//	});
-//	
-//	function cargarProductos(idCategoria, codigoProducto) {
-//		var params = { 
-//			idCategoria : idCategoria
-//		};			
-//		loadding(true);
-//		consultarAjax('GET', '/donaciones/registro-donaciones/listarProductosXCategoria', params, function(respuesta) {
-//			if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
-//				addErrorMessage(null, respuesta.mensajeRespuesta);
-//			} else {
-//				var options = '';
-//		        $.each(respuesta, function(i, item) {
-//		            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
-//		        });
-//		        $('#sel_producto').html(options);
-////		        if (codigoProducto != null) {
-////		        	$('#sel_producto').val(codigoProducto);
-////					$('#sel_producto').select2();
-////					$('#sel_producto').select2({
-////						  dropdownParent: $('#frm_det_productos')
-////					});	        	
-////		        } else {
-////		        	frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
-////		        }
-//			}
-//			loadding(false);		
-//		});
-//	}
-	
 	$('#sel_dee').change(function() {
 		var codigo = $(this).val();		
 		if (!esnulo(codigo)) {
@@ -730,8 +683,7 @@ function inicializarDatos() {
 			$('#txt_codDdi').val(donaciones.codigoDdi);
 			$('#txt_idDdi').val(donaciones.idDdi);
 			
-			
-			
+
 			$('#hid_id_donacion').val(donaciones.idDonacion);	
 			$('#txt_fecha').val(donaciones.fechaEmision);
 			$('#txt_representante').val(donaciones.representante);
@@ -739,8 +691,6 @@ function inicializarDatos() {
 			$('#txt_a').val(donaciones.textoa);
 			$('#txt_b').val(donaciones.textob);
 			$('#txt_dee').val(donaciones.nombreDeclaratoria);
-			
-			
 			
 			$('#txt_codigo_cod_pro').val(donaciones.textoCodigo);
 			$('#txt_codigo_cod_doc').val(donaciones.textoCodigo);
@@ -753,46 +703,16 @@ function inicializarDatos() {
 			$('#sel_tip_persona').val(donaciones.tipoDonante);
 			$('#sel_oficina').val(donaciones.idOficina);
 			$('#sel_personal_oficina').val(donaciones.idPersonal);
+			$('#sel_estado').val(donaciones.idEstado);
 			listarDonadores(donaciones.tipoDonante,donaciones.idDonante+"_"+donaciones.representante);
 			listarPersonalOficina(donaciones.idOficina, donaciones.idPersonal);
 			
 			listarProductoDonacion(false);
 			listarDocumentoDonacion(false);
 			listarEstadoDonacion(false);
-//			if (controlCalidad.flagTipoBien == '1') {
-//				$('#li_no_alimentarios').addClass('disabled');
-//				$('#li_no_alimentarios').closest('li').children('a').removeAttr('data-toggle');
-//			} else {
-//				$('#li_alimentarios').addClass('disabled');
-//				$('#li_alimentarios').closest('li').children('a').removeAttr('data-toggle');
-//			}
-			
-//			$('#txt_fecha').val(donaciones.fechaEmision);
-//			$('#sel_estado').val(donaciones.idEstado);
-//			$('#sel_nro_ord_compra').val(donaciones.nroOrdenCompra);
-//			$('#sel_tip_control').val(donaciones.idTipoControl);
-//			$('#sel_ori_almacen').val(donaciones.idAlmacenOrigen);
-//			$('#sel_ori_en_almacen').val(donaciones.idEncargado);
-//			$('#sel_inspector').val(donaciones.idInspector);			
-//			var val_idProveedor = donaciones.provRep;
-//			$('#sel_proveedor').val(val_idProveedor);
-//			var arr = val_idProveedor.split('_');
-//			if (arr.length > 1) {
-//				$('#txt_representante').val(arr[1]);
-//			}
-//			$('#sel_emp_transporte').val(controlCalidad.idEmpresaTransporte);
-//			$('#sel_chofer').val(controlCalidad.idChofer);
-//			$('#txt_nro_placa').val(controlCalidad.nroPlaca);
-//			$('input[name=rb_tip_bien][value="'+controlCalidad.flagTipoBien+'"]').prop('checked', true);
-//			$('#txt_conclusiones').val(controlCalidad.conclusiones);
-//			$('#txt_recomendaciones').val(controlCalidad.recomendaciones);
-			
+
 			$('input[name=rb_tip_bien]').prop('disabled', true);
-			
-//			listarProductoControlCalidad(false);
-//			
-//			listarDocumentoControlCalidad(false);
-			
+
 		} else {
 			
 			console.log("TEXTO !"+donaciones.textoa);
@@ -819,15 +739,9 @@ function inicializarDatos() {
 					$('#txt_representante').val('');
 				}			
 			}
-			
- 
-			
-	//		listarDetalleDocumentos(new Object());
 
 		}
-		
 
-		
 		$('.btn_retornar').click(function(e) {
 			e.preventDefault();
 
@@ -836,9 +750,6 @@ function inicializarDatos() {
 			$(location).attr('href', url);
 			
 		});
-		
-		
-		
 		
 		$('#sel_nro_ord_compra').select2();
 
@@ -885,10 +796,7 @@ function inicializarDatos() {
 		}
 		
 	});
-
 }
-
-
 
 function descargarDocumento(codigo, nombre) {	
 	loadding(true);
@@ -973,7 +881,7 @@ function listarDetalleProductos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaProductosCache = respuesta;
@@ -995,10 +903,21 @@ function cargarProducto(idCategoria, codigoProducto) {
 	            options += '<option value="'+item.idProducto+'_'+item.nombreUnidadMedida+'">'+item.nombreProducto+'</option>';
 	        });
 	        $('#sel_lis_producto').html(options);
+	        console.log("PRODUCTO: "+codigoProducto);
 	        if (codigoProducto != null) {
-	        	$('#sel_lis_producto').val(codigoProducto);			
+	        	$('#sel_lis_producto').val(codigoProducto);
+	        	var arr = $('#sel_lis_producto').val().split('_');
+	        	console.log("valll: "+arr[0]);
+				if (arr.length > 1) {
+					$('#txt_uni_medida_pro').val(arr[1]);
+					
+				} else {
+					$('#txt_uni_medida_pro').val('');
+	
+				}
 	        } else {
 	        	var arr = $('#sel_lis_producto').val().split('_');
+	        	console.log("val: "+arr[0]);
 				if (arr.length > 1) {
 					$('#txt_uni_medida').val(arr[1]);
 					
@@ -1085,7 +1004,7 @@ function listarDetalleDocumentos(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaDocumentosCache = respuesta;
@@ -1138,7 +1057,7 @@ function listarDetalleEstados(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaEstadosCache = respuesta;
@@ -1235,20 +1154,7 @@ function listarDonadores(indicador, idDonante) {
 	        } else {
 	        	$('#sel_donante').val('');	
 	        }
-//	        	var arr = $('#sel_donante').val().split('_');
-//				if (arr.length > 1) {
-//					$('#txt_uni_medida').val(arr[1]);
-//					
-//				} else {
-//					$('#txt_uni_medida').val('');
-//	
-//				}
-//				frm_det_productos.bootstrapValidator('revalidateField', 'sel_producto');
-//	        }
-//	        $('#sel_donante').select2();
-//			$('#sel_donante').select2({
-//				  dropdownParent: $('#div_pro_det_productos')
-//			});
+
 		}
 		loadding(false);		
 	});

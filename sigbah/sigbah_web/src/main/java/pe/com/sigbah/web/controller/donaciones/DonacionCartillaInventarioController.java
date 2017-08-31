@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 
 import pe.com.sigbah.common.bean.CartillaInventarioBean;
+import pe.com.sigbah.common.bean.CierreStockBean;
 import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.EstadoCartillaInventarioBean;
 import pe.com.sigbah.common.bean.ItemBean;
@@ -34,6 +35,7 @@ import pe.com.sigbah.common.bean.StockAlmacenProductoBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
+import pe.com.sigbah.service.AdministracionService;
 import pe.com.sigbah.service.DonacionService;
 import pe.com.sigbah.service.GeneralService;
 import pe.com.sigbah.service.LogisticaService;
@@ -61,6 +63,9 @@ public class DonacionCartillaInventarioController extends BaseController {
 	@Autowired 
 	private DonacionService donacionService;
 	
+	@Autowired 
+	private AdministracionService administracionService;
+	
 	/**
 	 * @param indicador 
 	 * @param model 
@@ -68,22 +73,35 @@ public class DonacionCartillaInventarioController extends BaseController {
 	 */
 	@RequestMapping(value = "/inicio/{indicador}", method = RequestMethod.GET)
     public String inicio(@PathVariable("indicador") String indicador, Model model) {
+		String ruta="";
         try {
         	// Retorno los datos de session
         	usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
-
-        	model.addAttribute("lista_anio", generalService.listarAnios());
+        	if(usuarioBean.getIdAlmacen()==null){
+        		ruta = "noAlmacen";
+        	}else{
+        		CierreStockBean cierre = new CierreStockBean();
+           		cierre = administracionService.mesTrabajoActivo(usuarioBean.getIdAlmacen(), Constantes.TIPO_ORIGEN_DONACIONES);
+           		System.out.println("TRABAJO : "+cierre.getCodigoMes());
+           		if(cierre.getCodigoMes()==null){
+           			ruta = "mesNoAbierto";
+           		}else{
+	        		model.addAttribute("lista_anio", generalService.listarAnios());
+	            	
+	            	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
+	            	
+	            	model.addAttribute("indicador", indicador);
+	            	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
+	            	ruta="listar-donaciones-cartilla";
+           		}
+        	}
         	
-        	model.addAttribute("lista_almacen", generalService.listarAlmacen(new ItemBean(usuarioBean.getIdDdi())));
-        	
-        	model.addAttribute("indicador", indicador);
-        	model.addAttribute("base", getBaseRespuesta(Constantes.COD_EXITO_GENERAL));
 
         } catch (Exception e) {
         	LOGGER.error(e.getMessage(), e);
         	model.addAttribute("base", getBaseRespuesta(null));
         }
-        return "listar-donaciones-cartilla";
+        return ruta;
     }
 	
 	/**

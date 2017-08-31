@@ -103,9 +103,17 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
-			loadding(true);
-			var url = VAR_CONTEXT + '/donaciones/registro-donaciones/mantenimientoDonaciones/';
-			$(location).attr('href', url + codigo);
+			var obj = listaDonacionesCache[indices[0]];
+			
+//			loadding(true);
+			if(obj.idEstado=='0'){
+				addWarnMessage(null, "Esta donación está anulada");
+			}else{
+			
+				loadding(true);
+				var url = VAR_CONTEXT + '/donaciones/registro-donaciones/mantenimientoDonaciones/';
+				$(location).attr('href', url + codigo);
+			}
 		}
 		
 	});
@@ -287,19 +295,31 @@ $(document).ready(function() {
 		} else if (indices.length > 1) {
 			addWarnMessage(null, mensajeValidacionSeleccionarSoloUnRegistro);
 		} else {
-//			loadding(true);
-			$('#h4_tit_no_alimentarios').html('Nuevo Documento');
-			$('#frm_det_documentos').trigger('reset');
 			
-			$('#sel_estados_donacion').val(0);
-			$('#divRegiones').hide();
-			$('#hid_cod_documento').val('');
-			$('#hid_cod_act_alfresco').val('');
-			$('#hid_cod_ind_alfresco').val('');
-			$('#txt_sub_archivo').val(null);
-			listarRegionDonacion(codigo, true);
-			$('#hid_est_documento').val(codigo);
-			$('#div_estado').modal('show');
+			var obj = listaDonacionesCache[indices[0]];
+			
+//			loadding(true);
+			if(obj.idEstado=='0'){
+				addWarnMessage(null, "Esta donación está anulada");
+			}else if(obj.idEstado=='3'){
+				addWarnMessage(null, "Esta donación está denegada (No Autorizada)");
+			}else if(obj.idEstado=='6'){
+				addWarnMessage(null, "Esta donación ya se despachó en su totalidad");
+			}else{
+				$('#h4_tit_no_alimentarios').html('Nuevo Documento');
+				$('#frm_det_documentos').trigger('reset');
+				
+				$('#sel_estados_donacion').val(0);
+				$('#divRegiones').hide();
+				$('#hid_cod_documento').val('');
+				$('#hid_cod_act_alfresco').val('');
+				$('#hid_cod_ind_alfresco').val('');
+				$('#txt_sub_archivo').val(null);
+				listarRegionDonacion(codigo, true);
+				$('#hid_est_documento').val(codigo);
+				$('#div_estado').modal('show');
+			}
+			
 			
 		}
 		
@@ -312,7 +332,6 @@ $(document).ready(function() {
 
 		msg = 'Está seguro de actualizar el estado de la donación ?';
 
-		
 		$.SmartMessageBox({
 			title : msg,
 			content : '',
@@ -324,7 +343,8 @@ $(document).ready(function() {
 				
 				var params = { 
 					idDonacion : $('#hid_est_documento').val(),
-					idEstado : $('#sel_estados_donacion').val()
+					idEstado : $('#sel_estados_donacion').val(),
+					observacion : $('#txt_obs').val(),
 				};
 		
 				consultarAjax('POST', '/donaciones/registro-donaciones/actualizarEstadoDonacion', params, function(respuesta) {
@@ -332,9 +352,13 @@ $(document).ready(function() {
 						loadding(false);
 						addErrorMessage(null, respuesta.mensajeRespuesta);
 					} else {
-						loadding(false);
+						
 						//listarDocumentoDonacion(true);
-						addSuccessMessage(null, respuesta.mensajeRespuesta);							
+						addSuccessMessage(null, respuesta.mensajeRespuesta);
+						
+						$('#div_estado').modal('hide');
+						listarTablaDonaciones();
+						loadding(false);
 					}
 				});
 				
@@ -402,7 +426,7 @@ function listarDetalleRegion(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaRegionesCache = respuesta;
@@ -585,9 +609,6 @@ function listarEstados(respuesta) {
 		ordering : false,
 		info : false,
 		iDisplayLength : 15,
-		selecting: true, 
-        multiselect: true, 
-        selectingCheckboxes: true,
 		aLengthMenu : [
 			[15, 50, 100],
 			[15, 50, 100]

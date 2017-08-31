@@ -34,8 +34,8 @@ public class UnidadMedidaMapper implements RowMapper<ItemBean> {
 	public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		ItemBean itemBean = new ItemBean();
 		if (all_records) {
-			itemBean.setVcodigo(rs.getString("ID_UNID_MEDIDA"));
-			itemBean.setDescripcion(rs.getString("NOMBRE"));
+			itemBean.setVcodigo(rs.getString("IDE_UNID_MEDIDA"));
+			itemBean.setDescripcion(rs.getString("NOM_UNIDAD"));
 		} else {	
 			itemBean.setVcodigo(rs.getString("IDE_UNID_MEDIDA"));
 			itemBean.setDescripcion(rs.getString("NOM_UNIDAD"));

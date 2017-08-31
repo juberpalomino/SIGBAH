@@ -619,7 +619,7 @@ function listarDetalleProducto(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaProductosCache = respuesta;
@@ -689,7 +689,7 @@ function listarAjusteDetalleProducto(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaAjustesCache = respuesta;
@@ -762,7 +762,7 @@ function listarDetalleEstadoCartilla(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 
 }

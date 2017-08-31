@@ -5,23 +5,23 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import pe.com.sigbah.common.bean.ItemBean;
-import pe.com.sigbah.common.util.Constantes;
+import pe.com.sigbah.common.bean.EstadosXUsuarioBean;
 
 /**
- * @className: EstadoDonacionMapper.java
+ * @className: EstadoXUsuarioMapper.java
  * @description: 
- * @date: 17 de jul. de 2017
+ * @date: 28 de ago. de 2017
  * @author: ARCHY.
  */
-public class EstadoXUsuarioMapper implements RowMapper<ItemBean> {
+public class EstadoXUsuarioMapper implements RowMapper<EstadosXUsuarioBean> {
 
 	@Override
-	public ItemBean mapRow(ResultSet rs, int rowNum) throws SQLException {
-		ItemBean itemBean = new ItemBean();
+	public EstadosXUsuarioBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+		EstadosXUsuarioBean itemBean = new EstadosXUsuarioBean();
 
-		itemBean.setIcodigo(rs.getInt("FK_IDE_ESTADO"));
-		itemBean.setDescripcion(rs.getString("NOM_ESTADO"));
+		itemBean.setIdEstado(rs.getInt("IDE_ESTADO"));
+		itemBean.setNombreEstado(rs.getString("NOM_ESTADO"));
+		itemBean.setExiste(rs.getString("EXISTE"));
 
 		
 		return itemBean;

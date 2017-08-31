@@ -268,7 +268,7 @@ function listarDetalleAlmacenLote(respuesta) {
 		bFilter : false,
 		paging : false,
 		ordering : false,
-		info : true
+		info : false
 	});
 	
 	listaLotesCache = respuesta;

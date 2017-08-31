@@ -184,6 +184,44 @@
 					<span class="menu-item-parent">Administración</span>
 				</a>
 				<ul id="ul_administracion">
+					<li id="li_tablas_generales" class="li_men_opcion">
+						<a href="${pageContext.request.contextPath}/administracion/tablas-generales/inicioGeneral">Tablas Generales</a>
+					</li>
+					<li id="li_tablas_ddi" class="li_men_opcion">
+						<a href="${pageContext.request.contextPath}/administracion/tablas-generales/inicioDdi">Tablas DDI</a>
+					</li>
+					<li id="li_tablas" class="li_men_opcion">
+						<a href="${pageContext.request.contextPath}/administracion/tablas-generales/inicio">Consulta de Tablas</a>
+					</li>
+					
+					<li>
+						<a href="#">Catálogo de Productos</a>
+						<ul id="ul_adm_catalogo">
+							<li id="li_adm_catalogo" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/administracion/catalogo-productos/inicio">
+									<i class="fa fa-caret-right"></i>Lista de Productos 
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					<li>
+						<a href="#">Seguridad</a>
+						<ul id="ul_adm_seguridad">
+							<li id="li_adm_usuarios" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/administracion/usuarios/inicio">
+									<i class="fa fa-caret-right"></i>Usuarios
+								</a>
+							</li>
+							<li id="li_adm_roles" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/administracion/roles/inicio">
+									<i class="fa fa-caret-right"></i>Roles
+								</a>
+							</li>
+						</ul>
+					</li>
+					
+					
 					<li class="li_men_opcion">
 						<a href="general-elements.html">Parámetros</a>
 					</li>

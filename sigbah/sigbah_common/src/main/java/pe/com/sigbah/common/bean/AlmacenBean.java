@@ -15,7 +15,12 @@ public class AlmacenBean implements Serializable {
 	private Integer idAlmacen;
 	private String codigoAlmacen;
 	private String nombreAlmacen;
+	private Integer idDdi;
+	private String existe;
 	
+	private String usuario;
+	private String codigoRespuesta;
+	private String mensajeRespuesta;
 	
 	/**
 	 * @return the idUsuario
@@ -64,6 +69,36 @@ public class AlmacenBean implements Serializable {
 	 */
 	public void setCodigoAlmacen(String codigoAlmacen) {
 		this.codigoAlmacen = codigoAlmacen;
+	}
+	public Integer getIdDdi() {
+		return idDdi;
+	}
+	public void setIdDdi(Integer idDdi) {
+		this.idDdi = idDdi;
+	}
+	public String getExiste() {
+		return existe;
+	}
+	public void setExiste(String existe) {
+		this.existe = existe;
+	}
+	public String getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+	public String getCodigoRespuesta() {
+		return codigoRespuesta;
+	}
+	public void setCodigoRespuesta(String codigoRespuesta) {
+		this.codigoRespuesta = codigoRespuesta;
+	}
+	public String getMensajeRespuesta() {
+		return mensajeRespuesta;
+	}
+	public void setMensajeRespuesta(String mensajeRespuesta) {
+		this.mensajeRespuesta = mensajeRespuesta;
 	}
 
 }

@@ -27,7 +27,7 @@
 				<div class="jarviswidget">
 					<header>
 						<span class="widget-icon"><i class="fa fa-file-text-o"></i></span>
-						<h2>Búsqueda de Donantes</h2>
+						<h2>Búsqueda de Donaciones</h2>
 					</header>
 		
 					<!-- widget div-->
@@ -63,7 +63,7 @@
 									<label class="col-sm-2 control-label">Estado:</label>
 									<div class="col-sm-2">
 										<select id="sel_estado" name="sel_estado" class="form-control">
-											<option value="0">Todos</option>
+											<option value="99">Todos</option>
 											<c:forEach items="${lista_estado}" var="item">
 											    <option value="${item.vcodigo}">${item.descripcion}</option>
 											</c:forEach>
@@ -99,7 +99,7 @@
 				
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Lista de Donantes</h2>
+						<h2>Lista de Donaciones</h2>
 						
 						<div class="jarviswidget-ctrls" role="menu">   
 							<a href="#" id="href_exp_excel" class="button-icon" rel="tooltip" title="" data-placement="bottom" 
@@ -188,7 +188,7 @@
 
 							<div class="form-group">																				
 								<label class="col-sm-3 control-label">Nuevo Estado:</label>
-								<div class="col-sm-8">
+								<div class="col-sm-8 form-group">
 									<select id="sel_estados_donacion" name="sel_estados_donacion" class="form-control">
 										<option value="0">Seleccione</option>
 										<c:forEach items="${lista_est_donacion}" var="item">
@@ -197,6 +197,14 @@
 									</select>
 								</div>
 							</div>
+							
+							<div class="form-group">																				
+								<label class="col-sm-3 control-label">Observación:</label>
+								<div class="col-sm-8 form-group">
+									<textarea rows="3" name="txt_obs" id="txt_obs" class="form-control"></textarea>
+								</div>
+							</div>
+
 							
 							<div class="form-group">
 								<div id="divRegiones">
@@ -208,11 +216,9 @@
 												<option value="${item.icodigo}">${item.descripcion}</option>
 											</c:forEach>
 										</select>
-										
-							
-									</div class="col-sm-12">
+									</div>
 									
-									<div>
+									<div class="col-sm-12" style="max-height:250px;overflow:auto;">
 										<table id="tbl_regiones" class="table table-bordered table-hover tbl-responsive">
 											<thead>			                
 												<tr>
