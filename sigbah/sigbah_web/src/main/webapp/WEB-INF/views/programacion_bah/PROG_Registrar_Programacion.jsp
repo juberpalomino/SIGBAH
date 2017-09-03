@@ -4,8 +4,8 @@
 <div id="ribbon">
 	<!-- breadcrumb -->
 	<ol class="breadcrumb">
-		<li>Programación</li>
-		<li>Programación de Requerimientos</li>
+		<li class="label-bold">Programación</li>
+		<li class="label-bold">Programación de Requerimientos</li>
 	</ol>
 	<!-- end breadcrumb -->
 </div>
@@ -76,7 +76,7 @@
 												<div class="widget-body">
 								
 													<div class="row">
-														<label class="col-sm-2 control-label">Nro Programación:</label>
+														<label class="col-sm-2 control-label">N° Programación:</label>
 														<div class="col-sm-2 form-group">
 															<input type="text" id="txt_nro_programacion" class="form-control" disabled>
 														</div>
@@ -159,14 +159,14 @@
 														<div class="col-sm-7 smart-form">
 															<section>														
 																<label class="textarea textarea-resizable"> 										
-																	<textarea rows="1" id="txt_des_nro_dee" class="custom-scroll mod-readonly" disabled></textarea> 
+																	<textarea rows="2" id="txt_des_nro_dee" class="custom-scroll mod-readonly" disabled></textarea> 
 																</label>
 															</section>
 														</div>
 													</div>
 													
 													<div class="row">
-														<label class="col-sm-2 control-label">Region Destino:</label>
+														<label class="col-sm-2 control-label">Región Destino:</label>
 														<div class="col-sm-3 form-group">
 															<select id="sel_reg_destino" name="sel_reg_destino" class="form-control">
 																<option value="">Seleccione</option>
@@ -279,7 +279,7 @@
 								
 								<div class="tab-pane fade" id="div_alimentos">
 								
-									<form class="form-horizontal">
+									<form id="frm_det_alimentos" class="form-horizontal">
 								
 										<div class="row">
 											<label class="col-sm-2 control-label label-bold">Programación:</label>
@@ -315,7 +315,7 @@
 																	<th>Nº</th>
 																	<th>Producto</th>
 																	<th>Gramos por Racion</th>
-																	<th>Presentacion</th>
+																	<th>Presentación</th>
 																</tr>
 															</thead>
 															<tfoot>
@@ -334,7 +334,7 @@
 														<div class="row">
 															<label class="col-sm-6 control-label label-bold">Dias de Atención:</label>
 															<div class="col-sm-2 form-group">
-																<input type="text" id="txt_dia_atencion" class="form-control" disabled>
+																<input type="text" id="txt_dia_atencion" name="txt_dia_atencion" class="form-control onlyNumbers">
 															</div>
 															<div class="col-sm-2 opc-center">
 																<button class="btn btn-primary" type="button" id="btn_ali_actualizar">
@@ -362,13 +362,6 @@
 													
 														<div class="row">
 															<div class="col-sm-2 opc-center">
-																<button class="btn btn-default" type="button" id="btn_ali_exp_excel">
-																	<i class="fa fa-file-excel-o"></i>
-																	Exportar Excel
-																</button>
-															</div>
-															
-															<div class="col-sm-2 opc-center">
 																<button class="btn btn-primary" type="button" id="btn_ali_editar">
 																	<i class="fa fa-edit"></i>
 																	Editar
@@ -379,6 +372,13 @@
 																<button class="btn btn-danger" type="button" id="btn_ali_eliminar">
 																	<i class="fa fa-trash-o"></i>
 																	Eliminar
+																</button>
+															</div>
+														
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-default" type="button" id="btn_ali_exp_excel">
+																	<i class="fa fa-file-excel-o"></i>
+																	Exportar Excel
 																</button>
 															</div>
 														</div>
@@ -430,9 +430,9 @@
 																<tr>
 																	<th>Nº</th>
 																	<th>Producto</th>
-																	<th>Stock (TM)</th>
-																	<th>Total (TM)</th>
-																	<th>Saldo (TM)</th>
+																	<th id="th_stock_tm">Stock (TM)</th>
+																	<th id="th_total_tm">Total (TM)</th>
+																	<th id="th_saldo_tm">Saldo (TM)</th>
 																</tr>
 															</thead>
 														</table>
@@ -483,18 +483,18 @@
 												<div id="div_col_pro_no_alimentarios" class="panel-collapse collapse in">
 													<div class="panel-body">
 													
-														<div class="row">														
-															<div class="col-sm-2 opc-center">
-																<button class="btn btn-primary" type="button" id="btn_pro_editar">
-																	<i class="fa fa-edit"></i>
-																	Editar
-																</button>
-															</div>
-															
+														<div class="row">
 															<div class="col-sm-2 opc-center">
 																<button class="btn btn-primary" type="button" id="btn_pro_nuevo">
 																	<i class="fa fa-file-o"></i>
 																	Nuevo
+																</button>
+															</div>
+															
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-primary" type="button" id="btn_pro_editar">
+																	<i class="fa fa-edit"></i>
+																	Editar
 																</button>
 															</div>
 															
@@ -541,7 +541,7 @@
 														<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_det_pro_no_alimentarios" class="collapsed">
 															<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
 															<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-															Detalle de la Programación No Alimentarios 
+															Detalle de la Programación los Bienes No Alimentarios 
 														</a>
 													</h4>
 												</div>
@@ -549,13 +549,6 @@
 													<div class="panel-body">
 													
 														<div class="row">
-															<div class="col-sm-2 opc-center">
-																<button class="btn btn-default" type="button" id="btn_no_ali_exp_excel">
-																	<i class="fa fa-file-excel-o"></i>
-																	Exportar Excel
-																</button>
-															</div>
-															
 															<div class="col-sm-2 opc-center">
 																<button class="btn btn-primary" type="button" id="btn_no_ali_editar">
 																	<i class="fa fa-edit"></i>
@@ -567,6 +560,13 @@
 																<button class="btn btn-danger" type="button" id="btn_no_ali_eliminar">
 																	<i class="fa fa-trash-o"></i>
 																	Eliminar
+																</button>
+															</div>
+															
+															<div class="col-sm-2 opc-center">
+																<button class="btn btn-default" type="button" id="btn_no_ali_exp_excel">
+																	<i class="fa fa-file-excel-o"></i>
+																	Exportar Excel
 																</button>
 															</div>
 														</div>
@@ -605,7 +605,7 @@
 														<a data-toggle="collapse" data-parent="#div_acc_no_alimentarios" href="#div_col_res_no_alimentarios" class="collapsed">
 															<i class="fa fa-fw fa-plus-circle txt-color-green"></i>
 															<i class="fa fa-fw fa-minus-circle txt-color-red"></i> 
-															Resumen Alimentos
+															Resumen de Bienes No Alimentarios
 														</a>
 													</h4>
 												</div>
@@ -618,9 +618,9 @@
 																<tr>
 																	<th>Nº</th>
 																	<th>Producto</th>
-																	<th>Stock</th>
-																	<th>Total</th>
-																	<th>Saldo</th>
+																	<th id="th_no_stock">Stock</th>
+																	<th id="th_no_stock">Total</th>
+																	<th id="th_no_stock">Saldo</th>
 																</tr>
 															</thead>
 														</table>
@@ -690,7 +690,7 @@
 															<tr>
 																<th></th>
 																<th>Nº</th>
-																<th>Tipo Documento</th>
+																<th id="th_tip_documento">Tipo Documento</th>
 																<th>Nro Documento</th>
 																<th>Fecha</th>
 																<th>Nombre Archivo</th>
@@ -928,7 +928,7 @@
 
 							<div class="row">
 								<label class="col-sm-2 control-label">Distribuir:</label>
-								<div class="col-sm-6 form-group">
+								<div class="col-sm-3 form-group">
 									<label class="radio radio-inline">
 										<input type="radio" name="rb_distribuir" value="F">
 										Familia

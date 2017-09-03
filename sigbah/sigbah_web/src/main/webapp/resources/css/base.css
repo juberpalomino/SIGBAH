@@ -192,17 +192,12 @@ table.dataTable thead .sorting_desc {
 .modal-header .close{
 	color:white;
 }
-.close{
-	opacity: 1;
-
-}
 
 #miModal {
-
     max-height: calc(100vh - 200px);
-    overflow-y: auto;
-   
+    overflow-y: auto;   
 }
+
 .close {
 	color: #fff; 
 	opacity: 1;
