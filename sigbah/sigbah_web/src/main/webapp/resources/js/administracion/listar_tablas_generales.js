@@ -1015,7 +1015,7 @@ $(document).ready(function() {
 						
 						params.codigoArchivoAlfresco = resArchivo;
 
-						grabarDetalleDocumento(params);					
+						listarTablasInsertUpdate($('#sel_tablas_generales').val());			
 					}
 				});
 				

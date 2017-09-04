@@ -22,14 +22,14 @@ public class DocumentoDonacionIngresoMapper implements RowMapper<DocumentoIngres
 	@Override
 	public DocumentoIngresoBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 		DocumentoIngresoBean documento = new DocumentoIngresoBean();
-		documento.setIdDocumentoIngreso(rs.getInt("IDE_DOCUMENTO_ING"));
-		documento.setNroDocumento(rs.getString("NRO_DOCUMENTO"));
-		documento.setNombreDocumento(rs.getString("NOM_DOCUMENTO"));
-		documento.setIdTipoDocumento(rs.getInt("FK_IDE_TIP_DOCUMENTO"));
-		//documento.setObservacion(rs.getString("OBSERVACION"));
-		documento.setCodigoArchivoAlfresco(rs.getString("COD_ALFRESCO"));
-		documento.setNombreArchivo(rs.getString("NOM_ARCHIVO"));
-		documento.setFechaDocumento(rs.getString("FECHA_DOCUMENTO"));
+		documento.setIdDocumentoIngreso(rs.getInt("iuglkgklhjk"));
+//		documento.setNroDocumento(rs.getString("NRO_DOCUMENTO"));
+//		documento.setNombreDocumento(rs.getString("NOM_DOCUMENTO"));
+//		documento.setIdTipoDocumento(rs.getInt("FK_IDE_TIP_DOCUMENTO"));
+//		documento.setObservacion(rs.getString("DES"));
+//		documento.setCodigoArchivoAlfresco(rs.getString("COD_ALFRESCO"));
+//		documento.setNombreArchivo(rs.getString("NOM_ARCHIVO"));
+//		documento.setFechaDocumento(rs.getString("FECHA_DOCUMENTO"));
 		return documento;
 	}
 

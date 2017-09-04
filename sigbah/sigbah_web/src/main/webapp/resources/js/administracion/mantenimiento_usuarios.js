@@ -60,6 +60,9 @@ $(document).ready(function() {
 					$('#hid_id_usuario').val(respuesta.idUsuario);
 					$('#div_tbl_almacen').show();
 					$('#div_tbl_rol').show();
+					$('#div_tbl_estado_donacion').show();
+					$('#div_tbl_estado_programacion').show();
+					$('#div_tbl_estado_inventario').show();
 					addSuccessMessage(null, 'Se registró el usuario: '+respuesta.idUsuario);
 
 				}

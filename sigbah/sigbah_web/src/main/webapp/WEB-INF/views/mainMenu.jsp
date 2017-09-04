@@ -162,16 +162,17 @@
 					</li>
 					
 					<li>
-						<a href="#">Reportes</a>
-						<ul>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Reporte de Donaciones</a>
+						<a href="#">Consultas</a>
+						<ul id="ul_don_consultas">
+							<li id="li_consultas_stock" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/donaciones/consulta/inicio">
+									<i class="fa fa-caret-right"></i>Stock de Productos
+								</a>
 							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Ingreso de Donaciones</a>
-							</li>
-							<li class="li_men_opcion">
-								<a href="fa.html"><i class="fa fa-caret-right"></i>Salida de Donaciones</a>
+							<li id="li_consultas_historial" class="li_men_opcion">
+								<a href="${pageContext.request.contextPath}/donaciones/cartilla-inventario/inicio/0">
+									<i class="fa fa-caret-right"></i>Historial de Donaciones
+								</a>
 							</li>
 						</ul>
 					</li>

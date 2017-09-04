@@ -394,6 +394,7 @@ $(document).ready(function() {
 		$('#hid_cod_documento').val('0');
 		$('#hid_cod_act_alfresco').val('');
 		$('#hid_cod_ind_alfresco').val('');
+		$('#txt_descripcion_doc').val('');
 		$('#txt_sub_archivo').val(null);
 		$('#div_det_documentos').modal('show');
 		
@@ -424,6 +425,7 @@ $(document).ready(function() {
 			$('#sel_tipo_documento').val(obj.idTipoDocumento);
 			$('#txt_nro_documento').val(obj.nroDocumento);
 			$('#txt_doc_fecha').val(obj.fechaDocumento);
+			$('#txt_descripcion_doc').val(obj.observacion);
 			$('#hid_cod_act_alfresco').val(obj.codAlfresco);
 			$('#hid_cod_ind_alfresco').val('');
 			$('#txt_lee_sub_archivo').val(obj.nombreArchivo);
@@ -1559,6 +1561,7 @@ $('#btn_gra_documento').click(function(e) {
 			nroDocumento : $('#txt_nro_documento').val(),
 			fechaDocumento : $('#txt_doc_fecha').val(),
 			nombreArchivo : $('#txt_lee_sub_archivo').val(),
+			observacion : $('#txt_descripcion_doc').val()
 		};
 		
 		var cod_ind_alfresco = $('#hid_cod_ind_alfresco').val();

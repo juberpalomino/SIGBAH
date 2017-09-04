@@ -102,6 +102,9 @@ public class DonacionesIngresoController extends BaseController {
            		if(cierre.getCodigoMes()==null){
            			ruta = "mesNoAbierto";
            		}else{
+           			usuarioBean.setCodigoAnio(cierre.getCodigoAnio());
+           			usuarioBean.setCodigoMes(cierre.getCodigoMes());
+           			System.out.println("AÑO Y MES: "+usuarioBean.getCodigoAnio()+ " "+usuarioBean.getCodigoMes());
 		        	model.addAttribute("lista_anio", generalService.listarAnios());
 		        	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
 		        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
@@ -862,6 +865,12 @@ public class DonacionesIngresoController extends BaseController {
 			// Copia los parametros del cliente al objeto
 			BeanUtils.populate(documento, request.getParameterMap());			
 			lista = donacionService.listarDocumentoDonacionIngreso(documento);
+			
+			for(int i=0;i<lista.size();i++){
+				System.out.println("LISTA: "+lista.get(i).getObservacion());
+				System.out.println("LISTA1: "+lista.get(i).getIdDocumentoIngreso());
+				System.out.println("LISTA2: "+lista.get(i).getNroDocumento());
+			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return getBaseRespuesta(null);
@@ -1116,6 +1125,19 @@ public class DonacionesIngresoController extends BaseController {
 			List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
 			List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
 			List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
+			if(isEmpty(listaDocumentos)){
+				DocumentoDonacionIngresoBean data = new DocumentoDonacionIngresoBean();
+				data.setIdDocumentoDonacion(0);
+				data.setNroDocumento("-");
+				data.setNombreDocumento("-");	
+				data.setIdTipoDocumento(0);
+				data.setObservacion("-");
+				data.setCodAlfresco("-");
+				data.setNombreArchivo("-");
+				data.setFecha("-");
+				listaDocumentos.add(data);
+			}
+			System.out.println("DATOS_: "+listaDocumentos.size());
 			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaDocumentos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
@@ -1214,6 +1236,18 @@ public class DonacionesIngresoController extends BaseController {
 	    		List<DonacionesIngresoBean> lista = donacionService.listarReporteDonacionIngreso(codigo);
 				List<ProductoDonacionIngresoBean> listaProductos = donacionService.listarProductosReporteDonacionIngreso(codigo);
 				List<DocumentoDonacionIngresoBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionIngreso(codigo);
+				if(isEmpty(listaDocumentos)){
+					DocumentoDonacionIngresoBean data = new DocumentoDonacionIngresoBean();
+					data.setIdDocumentoDonacion(0);
+					data.setNroDocumento("-");
+					data.setNombreDocumento("-");	
+					data.setIdTipoDocumento(0);
+					data.setObservacion("-");
+					data.setCodAlfresco("-");
+					data.setNombreArchivo("-");
+					data.setFecha("-");
+					listaDocumentos.add(data);
+				}
 				if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaDocumentos)) {
 					return Constantes.COD_VALIDACION_GENERAL;
 				}			

@@ -27,6 +27,7 @@ import pe.com.sigbah.common.bean.ProductoDonacionSalidaBean;
 import pe.com.sigbah.common.bean.RegionDonacionBean;
 import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
+import pe.com.sigbah.common.bean.StockConsultaBean;
 import pe.com.sigbah.dao.DonacionDao;
 import pe.com.sigbah.service.DonacionService;
 
@@ -514,5 +515,25 @@ public class DonacionServiceImpl implements DonacionService, Serializable {
 	@Override
 	public ItemBean validaStockProducto(ItemBean itemBean) throws Exception {
 		return donacionDao.validaStockProducto(itemBean);
+	}
+	
+	@Override
+	public List<StockConsultaBean> listarConsultaStock(StockConsultaBean stockConsultaBean) throws Exception {
+		return donacionDao.listarConsultaStock(stockConsultaBean);
+	}
+	
+	@Override
+	public List<StockConsultaBean> listarReporteStockAlimentos(StockConsultaBean stockConsultaBean) throws Exception {
+		return donacionDao.listarReporteStockAlimentos(stockConsultaBean);
+	}
+	
+	@Override
+	public List<StockConsultaBean> listarReporteStockBNA(StockConsultaBean stockConsultaBean) throws Exception {
+		return donacionDao.listarReporteStockBNA(stockConsultaBean);
+	}
+	
+	@Override
+	public StockConsultaBean listarReporteStockTitulo(StockConsultaBean stockConsultaBean) throws Exception {
+		return donacionDao.listarReporteStockTitulo(stockConsultaBean);
 	}
 }

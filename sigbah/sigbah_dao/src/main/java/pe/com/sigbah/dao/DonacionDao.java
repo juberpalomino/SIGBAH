@@ -23,6 +23,7 @@ import pe.com.sigbah.common.bean.ProductoDonacionSalidaBean;
 import pe.com.sigbah.common.bean.RegionDonacionBean;
 import pe.com.sigbah.common.bean.StockAlmacenBean;
 import pe.com.sigbah.common.bean.StockAlmacenProductoLoteBean;
+import pe.com.sigbah.common.bean.StockConsultaBean;
 
 /**
  * @className: DonacionDao.java
@@ -641,6 +642,38 @@ public interface DonacionDao {
 	 * @throws Exception
 	 */
 	public abstract ItemBean validaStockProducto(ItemBean itemBean) throws Exception;
+
+
+	/**
+	 * @param stockConsultaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<StockConsultaBean> listarConsultaStock(StockConsultaBean stockConsultaBean) throws Exception;
+
+
+	/**
+	 * @param stockConsultaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<StockConsultaBean> listarReporteStockAlimentos(StockConsultaBean stockConsultaBean) throws Exception;
+
+
+	/**
+	 * @param stockConsultaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract List<StockConsultaBean> listarReporteStockBNA(StockConsultaBean stockConsultaBean) throws Exception;
+
+
+	/**
+	 * @param stockConsultaBean
+	 * @return
+	 * @throws Exception
+	 */
+	public abstract StockConsultaBean listarReporteStockTitulo(StockConsultaBean stockConsultaBean) throws Exception;
 
 
 	

@@ -104,9 +104,14 @@ public class DonacionesSalidaController extends BaseController {
            		CierreStockBean cierre = new CierreStockBean();
            		cierre = administracionService.mesTrabajoActivo(usuarioBean.getIdAlmacen(), Constantes.TIPO_ORIGEN_DONACIONES);
            		System.out.println("TRABAJO : "+cierre.getCodigoMes());
+           		
+           		
            		if(cierre.getCodigoMes()==null){
            			ruta = "mesNoAbierto";
            		}else{
+           			usuarioBean.setCodigoAnio(cierre.getCodigoAnio());
+           			usuarioBean.setCodigoMes(cierre.getCodigoMes());
+           			System.out.println("AÑO Y MES: "+usuarioBean.getCodigoAnio()+ " "+usuarioBean.getCodigoMes());
 		        	model.addAttribute("lista_anio", generalService.listarAnios());
 		        	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
 		        	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
@@ -1191,6 +1196,17 @@ public class DonacionesSalidaController extends BaseController {
 			List<DonacionesSalidaBean> lista = donacionService.listarReporteDonacionSalida(codigo);
 			List<ProductoDonacionSalidaBean> listaProductos = donacionService.listarProductosReporteDonacionSalida(codigo);
 			List<DocumentoSalidaBean> listaDocumentos = donacionService.listarDocumentosReporteDonacionSalida(codigo);
+			
+			if(isEmpty(listaDocumentos)){
+				DocumentoSalidaBean data = new DocumentoSalidaBean();
+				data.setIdSalida(0);
+				data.setIdTipoDocumento(0);
+				data.setNombreDocumento("-");	
+				data.setNroDocumento("-");
+				data.setFechaDocumento("-");
+				listaDocumentos.add(data);
+			}
+			
 			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaDocumentos)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			

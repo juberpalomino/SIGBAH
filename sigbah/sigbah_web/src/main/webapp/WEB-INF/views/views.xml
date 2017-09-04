@@ -148,6 +148,14 @@
 	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registrar_Cierre_Stock.jsp" />
 	</definition>
 	
+	<definition name="listar-consulta-stock" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Listar_Consulta_Stock.jsp" />
+	</definition>
+	
+	<definition name="listar-consulta-historial" extends="principal-layout">
+	    <put-attribute name="regionBody" value="/WEB-INF/views/donaciones/DON_Registrar_Consulta_Historial.jsp" />
+	</definition>
+	
 	<definition name="emergencias-sinpad" extends="principal-layout">
 	    <put-attribute name="regionBody" value="/WEB-INF/views/programacion_bah/PROG_Listar_EmergenciasSINPAD.jsp" />
 	</definition>

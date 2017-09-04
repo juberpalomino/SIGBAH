@@ -34,6 +34,7 @@ import pe.com.sigbah.common.bean.ControlCalidadBean;
 import pe.com.sigbah.common.bean.DetalleProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoControlCalidadBean;
 import pe.com.sigbah.common.bean.DocumentoDonacionBean;
+import pe.com.sigbah.common.bean.DocumentoDonacionIngresoBean;
 import pe.com.sigbah.common.bean.DocumentoIngresoBean;
 import pe.com.sigbah.common.bean.ItemBean;
 import pe.com.sigbah.common.bean.ProductoBean;
@@ -41,6 +42,7 @@ import pe.com.sigbah.common.bean.ProductoControlCalidadBean;
 import pe.com.sigbah.common.bean.ProductoDonacionBean;
 import pe.com.sigbah.common.bean.ProductoIngresoBean;
 import pe.com.sigbah.common.bean.RegionDonacionBean;
+import pe.com.sigbah.common.bean.UbigeoBean;
 import pe.com.sigbah.common.bean.UsuarioBean;
 import pe.com.sigbah.common.util.Constantes;
 import pe.com.sigbah.common.util.ExportarArchivo;
@@ -88,7 +90,7 @@ public class DonacionesController extends BaseController {
         	model.addAttribute("lista_mes", generalService.listarMeses(new ItemBean()));
         	List<ItemBean> listaDdi = generalService.listarDdi(new ItemBean(usuarioBean.getIdDdi()));
         	model.addAttribute("lista_ddi", listaDdi);
-        	model.addAttribute("lista_est_donacion", donacionService.listarEstadoDonacionUsuario(new ItemBean(usuarioBean.getIdUsuario(), "DONACION")));
+        	//model.addAttribute("lista_est_donacion", donacionService.listarEstadoDonacionUsuario(new ItemBean(usuarioBean.getIdUsuario(), "DONACION")));
         	model.addAttribute("lista_region", generalService.listarRegion(new ItemBean()));
         	
         	model.addAttribute("lista_estado", generalService.listarEstadoDonacion(new ItemBean()));
@@ -1097,7 +1099,14 @@ public class DonacionesController extends BaseController {
 			List<DonacionesBean> lista = donacionService.listarReporteDonacion(codigo);
 			List<ProductoDonacionBean> listaProductos = donacionService.listarReporteDonacionProductos(codigo);
 			List<RegionDonacionBean> listaRegiones = donacionService.listarReporteDonacionRegiones(codigo);
+			if(isEmpty(listaRegiones)){
+				RegionDonacionBean data = new RegionDonacionBean();
+				data.setIdDonacion(0);
+				data.setIdRegion(0);
+				data.setNombreRegion("-");	
 
+				listaRegiones.add(data);
+			}
 			if (isEmpty(lista) || isEmpty(listaProductos) || isEmpty(listaRegiones)) {
 				return Constantes.COD_VALIDACION_GENERAL;
 			}			
@@ -1186,6 +1195,25 @@ public class DonacionesController extends BaseController {
 	}
 	
 	/////////////////////////////////
+	
+	@RequestMapping(value = "/listarEstadosPorUsuario", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Object listarEstadosPorUsuario(HttpServletRequest request, HttpServletResponse response) {
+		List<ItemBean> lista = null;
+		try {			
+			ItemBean itemBean = new ItemBean();	
+			usuarioBean = (UsuarioBean) context().getAttribute("usuarioBean", RequestAttributes.SCOPE_SESSION);
+			// Copia los parametros del cliente al objeto
+			BeanUtils.populate(itemBean, request.getParameterMap());
+			itemBean.setIcodigo(usuarioBean.getIdUsuario());
+			lista = donacionService.listarEstadoDonacionUsuario(itemBean);
+			System.out.println("LISTA DON: "+lista.size());
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			return getBaseRespuesta(null);
+		}
+		return lista;
+	}
 	
 
 }

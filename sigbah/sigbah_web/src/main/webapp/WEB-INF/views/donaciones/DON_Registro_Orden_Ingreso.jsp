@@ -673,6 +673,13 @@
 							</div>
 							
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Descripción:</label>
+								<div class="col-sm-8">
+										<textarea rows="3" name="txt_descripcion_doc" id="txt_descripcion_doc" class="form-control"></textarea>
+								</div>
+							</div>
+							
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Subir Archivo:</label>
 								<div class="col-sm-8 smart-form">
 									<div class="input input-file">

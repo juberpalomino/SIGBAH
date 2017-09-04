@@ -29,6 +29,7 @@ public class DocumentoDonacionSalidaMapper implements RowMapper<DocumentoSalidaB
 		documento.setIdTipoDocumento(rs.getInt("FK_IDE_TIP_DOCUMENTO"));
 		documento.setCodigoArchivoAlfresco(rs.getString("COD_ALFRESCO"));
 		documento.setNombreArchivo(rs.getString("NOM_ARCHIVO"));
+		documento.setObservacion(rs.getString("OBSERVACION"));
 
 		return documento;
 	}

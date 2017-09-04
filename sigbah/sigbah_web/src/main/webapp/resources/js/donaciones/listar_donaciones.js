@@ -315,6 +315,7 @@ $(document).ready(function() {
 				$('#hid_cod_act_alfresco').val('');
 				$('#hid_cod_ind_alfresco').val('');
 				$('#txt_sub_archivo').val(null);
+				listarEstadosPorUsuario(codigo);
 				listarRegionDonacion(codigo, true);
 				$('#hid_est_documento').val(codigo);
 				$('#div_estado').modal('show');
@@ -619,3 +620,24 @@ function listarEstados(respuesta) {
 
 }
 
+
+function listarEstadosPorUsuario(idDonacion) {
+	console.log("ENTRO");
+	var params = { 
+		icodigoParam2 : idDonacion
+	};			
+	loadding(true);
+	consultarAjax('GET', '/donaciones/registro-donaciones/listarEstadosPorUsuario', params, function(respuesta) {
+		if (respuesta.codigoRespuesta == NOTIFICACION_ERROR) {
+			addErrorMessage(null, respuesta.mensajeRespuesta);
+		} else {
+			var options='';
+			$.each(respuesta, function(i, item) {
+				options += '<option value="'+item.vcodigo+'">'+item.descripcion+'</option>';
+			});
+			$('#sel_estados_donacion').html(options);
+
+		}
+		loadding(false);
+	});
+}

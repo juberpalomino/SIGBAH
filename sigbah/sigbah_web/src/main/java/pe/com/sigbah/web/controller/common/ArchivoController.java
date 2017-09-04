@@ -274,44 +274,55 @@ public class ArchivoController extends BaseController {
 			Class.forName ("oracle.jdbc.OracleDriver"); 
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@200.48.54.22:1521:INTEGRAL", "SINPAD", "SINPAD");
             PreparedStatement sql_statement = null;
-            String jdbc_insert_sql = "INSERT INTO XLS_POI"
-                            + "(KEYWORD, TOTAL_COUNT) VALUES"
-                            + "(?,?)";
+            String jdbc_insert_sql = "INSERT INTO BAH_TMP_INEI"
+                            + "(COD_ANIO, COD_DISTRITO,  NOMBRE_DISTRITO, POBLACION_INEI, VIVIENDAS_INEI) VALUES"
+                            + "(?,?,?,?,?)";
             sql_statement = conn.prepareStatement(jdbc_insert_sql);
             // we set batch size as 5. You should increase this 
             // depending on the number of rows in your Excel document
-            ((OraclePreparedStatement)sql_statement).setExecuteBatch(5);
+            //((OraclePreparedStatement)sql_statement).setExecuteBatch(5);
             /* We should now load excel objects and loop through the worksheet data */
-            FileInputStream input_document = new FileInputStream(new File("xls_to_oracle.xls"));
+            FileInputStream input_document = new FileInputStream(new File(file_doc.toString()));
             /* Load workbook */
             HSSFWorkbook my_xls_workbook = new HSSFWorkbook(input_document);
             /* Load worksheet */
             HSSFSheet my_worksheet = my_xls_workbook.getSheetAt(0);
             // we loop through and insert data
             Iterator<Row> rowIterator = my_worksheet.iterator(); 
+            Row row;
+            Integer cabecera=0;
             while(rowIterator.hasNext()) {
-                    Row row = rowIterator.next(); 
+                    row = rowIterator.next(); 
                     Iterator<Cell> cellIterator = row.cellIterator();
+                    if(cabecera!=0){
+                    		Integer k=1;
                             while(cellIterator.hasNext()) {
                                     Cell cell = cellIterator.next();
                                     switch(cell.getCellType()) { 
                                     case Cell.CELL_TYPE_STRING: //handle string columns
-                                            sql_statement.setString(1, cell.getStringCellValue());                                                                                     
+                                            sql_statement.setString(k, cell.getStringCellValue());   
+                                            System.out.println("DATO STRING: "+cell.getStringCellValue());
                                             break;
                                     case Cell.CELL_TYPE_NUMERIC: //handle double data
-                                            sql_statement.setDouble(2,cell.getNumericCellValue() );
+                                            sql_statement.setDouble(k,cell.getNumericCellValue() );
+                                            System.out.println("DATO Double: "+cell.getNumericCellValue());
                                             break;
+
                                     }
+                                    k++;
                                    
                             }
-                            
+                            sql_statement.execute();
+                    }    
+                    cabecera++;
                             // though we call execute here, it is done only 
                             //when the batch size is reached.
-                           try {
-                                   sql_statement.execute();
-                            } catch(BatchUpdateException e) {
-                            //you should handle exception here if required
-                            }
+//                           try {
+//                                   sql_statement.execute();
+//                            } catch(BatchUpdateException e) {
+//                            //you should handle exception here if required
+//                            }
+                            
             }               
             input_document.close();
             /* Close prepared statement */
@@ -325,7 +336,7 @@ public class ArchivoController extends BaseController {
 			
 			
 			
-			LOGGER.info("[cargarArchivoExcel] Se guardo en Alfresco.");
+			LOGGER.info("[cargarArchivoExcel] Se guardo en oRACLE.");
 
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
