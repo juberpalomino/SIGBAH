@@ -3,10 +3,13 @@ package pe.com.sigbah.web.report.programacion_bah;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -214,7 +217,7 @@ public class ReporteProgramacion implements Serializable {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
 	        HSSFSheet sheet = wb.createSheet("REGISTRO DE ALIMENTOS");
-	        
+	        sheet.setColumnWidth(0, 500);
 	        sheet.setColumnWidth(1, 1500);
 	        sheet.setColumnWidth(2, 6000);
 	        sheet.setColumnWidth(3, 6000);
@@ -235,6 +238,9 @@ public class ReporteProgramacion implements Serializable {
 			sheet.setColumnWidth(18, 6000);
 			sheet.setColumnWidth(19, 6000);
 			sheet.setColumnWidth(20, 6000);
+			
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_CANTIDAD, dec_for_symbols);
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
@@ -301,6 +307,13 @@ public class ReporteProgramacion implements Serializable {
 	        style_cell.setBorderRight((short) 1);
 	        style_cell.setBorderTop((short) 1);
 	        
+	        HSSFCellStyle style_cell_2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_2.setFont(font_norm);	        
+	        style_cell_2.setBorderBottom((short) 1);
+	        style_cell_2.setBorderLeft((short) 1);	        
+	        style_cell_2.setBorderRight((short) 1);
+	        style_cell_2.setBorderTop((short) 1);	        
 
 	        for (ProgramacionAlimentoBean alimento : listaProgramacionAlimento) {
 	        	
@@ -318,27 +331,27 @@ public class ReporteProgramacion implements Serializable {
 		        rows.createCell(4).setCellValue(alimento.getDistrito());
 		        rows.getCell(4).setCellStyle(style_cell);
 		        
-		        rows.createCell(5).setCellValue(getString(alimento.getPersAfect()));
-		        rows.getCell(5).setCellStyle(style_cell);
+		        rows.createCell(5).setCellValue(dec_form.format(alimento.getPersAfect()));
+		        rows.getCell(5).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(6).setCellValue(getString(alimento.getPersDam()));
-		        rows.getCell(6).setCellStyle(style_cell);
+		        rows.createCell(6).setCellValue(dec_form.format(alimento.getPersDam()));
+		        rows.getCell(6).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(7).setCellValue(getString(alimento.getTotalPers()));
-		        rows.getCell(7).setCellStyle(style_cell);
+		        rows.createCell(7).setCellValue(dec_form.format(alimento.getTotalPers()));
+		        rows.getCell(7).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(8).setCellValue(getString(alimento.getTotalRaciones()));
-		        rows.getCell(8).setCellStyle(style_cell);
+		        rows.createCell(8).setCellValue(dec_form.format(alimento.getTotalRaciones()));
+		        rows.getCell(8).setCellStyle(style_cell_2);
 		        
 		        int row2_9 = 9;
 		        for (ProductoAlimentoBean producto : alimento.getListaProducto()) {
-		        	rows.createCell(row2_9).setCellValue(getString(producto.getUnidad()));
-			        rows.getCell(row2_9).setCellStyle(style_cell);
+		        	rows.createCell(row2_9).setCellValue(dec_form.format(producto.getUnidad()));
+			        rows.getCell(row2_9).setCellStyle(style_cell_2);
 			        row2_9++;
 		        }
 
-		        rows.createCell(row2_9).setCellValue(getString(alimento.getTotalTm()));
-		        rows.getCell(row2_9).setCellStyle(style_cell);
+		        rows.createCell(row2_9).setCellValue(dec_form.format(alimento.getTotalTm()));
+		        rows.getCell(row2_9).setCellStyle(style_cell_2);
 	            
 	            row++;	
 	        }
@@ -346,12 +359,12 @@ public class ReporteProgramacion implements Serializable {
 	        HSSFRow row_total  = sheet.createRow((short) row + 1);
         	
 	        row_total.createCell(4).setCellValue("Total:");
-	        row_total.getCell(4).setCellStyle(style_cell);
+	        row_total.getCell(4).setCellStyle(style_cell_2);
 
 	        int row3_5 = 5;
 	        for (BigDecimal unidad : arrUnidadProducto) {
-	        	row_total.createCell(row3_5).setCellValue(getString(unidad));
-		        row_total.getCell(row3_5).setCellStyle(style_cell);
+	        	row_total.createCell(row3_5).setCellValue(dec_form.format(unidad));
+		        row_total.getCell(row3_5).setCellStyle(style_cell_2);
 		        row3_5++;
 	        }
 
@@ -362,26 +375,6 @@ public class ReporteProgramacion implements Serializable {
     		throw new Exception();
     	}
 		return wb;
-	}
-	
-	/**
-	 * Retorna el valor parseado.
-	 * @param campo - Valor del parámetro a evaluar, tipo Object.
-	 * @return valor - Valor de la cadena.
-	 */
-	private static String getString(Object campo) {
-		if (campo != null) {
-			if (campo instanceof Integer) {
-				return String.valueOf((Integer) campo);
-			} else if (campo instanceof Long) {
-				return String.valueOf((Long) campo);
-			} else if (campo instanceof BigDecimal) {
-				return String.valueOf((BigDecimal) campo);
-			} else {
-				return (String) campo;
-			}
-		}
-		return Constantes.EMPTY; 	
 	}
 
 	/**
@@ -399,7 +392,7 @@ public class ReporteProgramacion implements Serializable {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		try {				
 	        HSSFSheet sheet = wb.createSheet("REGISTRO DE NO ALIMENTARIOS");
-	        
+	        sheet.setColumnWidth(0, 500);
 	        sheet.setColumnWidth(1, 1500);
 	        sheet.setColumnWidth(2, 6000);
 	        sheet.setColumnWidth(3, 6000);
@@ -425,6 +418,9 @@ public class ReporteProgramacion implements Serializable {
 			sheet.setColumnWidth(23, 6000);
 			sheet.setColumnWidth(24, 6000);
 			sheet.setColumnWidth(25, 6000);
+			
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_CANTIDAD, dec_for_symbols);
 	        
 			HSSFRow row1 = sheet.createRow((short) 1);
 	        
@@ -497,6 +493,13 @@ public class ReporteProgramacion implements Serializable {
 	        style_cell.setBorderRight((short) 1);
 	        style_cell.setBorderTop((short) 1);
 	        
+	        HSSFCellStyle style_cell_2 = (HSSFCellStyle) wb.createCellStyle();
+	        style_cell_2.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	        style_cell_2.setFont(font_norm);	        
+	        style_cell_2.setBorderBottom((short) 1);
+	        style_cell_2.setBorderLeft((short) 1);	        
+	        style_cell_2.setBorderRight((short) 1);
+	        style_cell_2.setBorderTop((short) 1);
 
 	        for (ProgramacionNoAlimentarioBean alimento : listaProgramacionNoAlimentario) {
 	        	
@@ -514,28 +517,28 @@ public class ReporteProgramacion implements Serializable {
 		        rows.createCell(4).setCellValue(alimento.getDistrito());
 		        rows.getCell(4).setCellStyle(style_cell);
 		        
-		        rows.createCell(5).setCellValue(getString(alimento.getFamAfect()));
-		        rows.getCell(5).setCellStyle(style_cell);
+		        rows.createCell(5).setCellValue(dec_form.format(alimento.getFamAfect()));
+		        rows.getCell(5).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(6).setCellValue(getString(alimento.getFamDam()));
-		        rows.getCell(6).setCellStyle(style_cell);
+		        rows.createCell(6).setCellValue(dec_form.format(alimento.getFamDam()));
+		        rows.getCell(6).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(7).setCellValue(getString(alimento.getTotalFam()));
-		        rows.getCell(7).setCellStyle(style_cell);
+		        rows.createCell(7).setCellValue(dec_form.format(alimento.getTotalFam()));
+		        rows.getCell(7).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(8).setCellValue(getString(alimento.getPersAfect()));
-		        rows.getCell(8).setCellStyle(style_cell);
+		        rows.createCell(8).setCellValue(dec_form.format(alimento.getPersAfect()));
+		        rows.getCell(8).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(9).setCellValue(getString(alimento.getPersDam()));
-		        rows.getCell(9).setCellStyle(style_cell);
+		        rows.createCell(9).setCellValue(dec_form.format(alimento.getPersDam()));
+		        rows.getCell(9).setCellStyle(style_cell_2);
 		        
-		        rows.createCell(10).setCellValue(getString(alimento.getTotalPers()));
-		        rows.getCell(10).setCellStyle(style_cell);
+		        rows.createCell(10).setCellValue(dec_form.format(alimento.getTotalPers()));
+		        rows.getCell(10).setCellStyle(style_cell_2);
 		        
 		        int row2_11 = 11;
 		        for (ProductoAlimentoBean producto : alimento.getListaProducto()) {
-		        	rows.createCell(row2_11).setCellValue(getString(producto.getUnidad()));
-			        rows.getCell(row2_11).setCellStyle(style_cell);
+		        	rows.createCell(row2_11).setCellValue(dec_form.format(producto.getUnidad()));
+			        rows.getCell(row2_11).setCellStyle(style_cell_2);
 			        row2_11++;
 		        }
 
@@ -548,12 +551,12 @@ public class ReporteProgramacion implements Serializable {
 	        HSSFRow row_total  = sheet.createRow((short) row + 1);
         	
 	        row_total.createCell(4).setCellValue("Total:");
-	        row_total.getCell(4).setCellStyle(style_cell);
+	        row_total.getCell(4).setCellStyle(style_cell_2);
 
 	        int row3_5 = 5;
 	        for (BigDecimal unidad : arrUnidadProducto) {
-	        	row_total.createCell(row3_5).setCellValue(getString(unidad));
-		        row_total.getCell(row3_5).setCellStyle(style_cell);
+	        	row_total.createCell(row3_5).setCellValue(dec_form.format(unidad));
+		        row_total.getCell(row3_5).setCellStyle(style_cell_2);
 		        row3_5++;
 	        }
 
@@ -607,6 +610,11 @@ public class ReporteProgramacion implements Serializable {
 			Font encabezado = FontFactory.getFont(FontFactory.HELVETICA, 6, Font.NORMAL, BaseColor.BLACK);
 			Font normal = FontFactory.getFont(FontFactory.HELVETICA, 7, Font.NORMAL, BaseColor.BLACK);			
 			Font negrita = FontFactory.getFont(FontFactory.HELVETICA, 7, Font.BOLD, BaseColor.BLACK);
+			
+			DecimalFormatSymbols dec_for_symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dec_form = new DecimalFormat(Constantes.EXPRESION_CANTIDAD, dec_for_symbols);
+            DecimalFormat dec_form_1 = new DecimalFormat(Constantes.EXPRESION_MONEDA_DECIMAL_1, dec_for_symbols);
+            DecimalFormat dec_form_2 = new DecimalFormat(Constantes.EXPRESION_MONEDA, dec_for_symbols);
 			   
 			// Bloque Inicio
 			table = new PdfPTable(3);
@@ -896,25 +904,25 @@ public class ReporteProgramacion implements Serializable {
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(alimento.getPersAfect()), normal);
+						p = new Paragraph(dec_form.format(alimento.getPersAfect()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(alimento.getPersDam()), normal);
+						p = new Paragraph(dec_form.format(alimento.getPersDam()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(alimento.getTotalPers()), normal);
+						p = new Paragraph(dec_form.format(alimento.getTotalPers()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(alimento.getTotalRaciones()), normal);
+						p = new Paragraph(dec_form.format(alimento.getTotalRaciones()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -922,7 +930,7 @@ public class ReporteProgramacion implements Serializable {
 						
 						int index = 0;
 				        for (ProductoAlimentoBean producto : alimento.getListaProducto()) {
-					        p = new Paragraph(getString(producto.getUnidad()), normal);
+					        p = new Paragraph(dec_form.format(producto.getUnidad()), normal);
 							cell = new PdfPCell(p);
 							cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 							cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -932,7 +940,7 @@ public class ReporteProgramacion implements Serializable {
 							index++;
 				        }						
 						
-						p = new Paragraph(getString(alimento.getTotalTm()), normal);
+						p = new Paragraph(dec_form.format(alimento.getTotalTm()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -962,7 +970,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalPersAfect.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalPersAfect), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -970,7 +978,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalPersDam.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalPersDam), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -978,7 +986,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalTotalPers.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalTotalPers), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -986,7 +994,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalTotalRaciones.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalTotalRaciones), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1004,7 +1012,7 @@ public class ReporteProgramacion implements Serializable {
 			        }
 								
 					for (BigDecimal unidad : arrUnidadProducto) {
-				        p = new Paragraph(unidad.toString(), normal);
+				        p = new Paragraph(dec_form.format(unidad), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1013,7 +1021,7 @@ public class ReporteProgramacion implements Serializable {
 						table.addCell(cell);
 			        }
 					
-					p = new Paragraph(cantitadTotalTotalTm.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalTotalTm), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1046,7 +1054,7 @@ public class ReporteProgramacion implements Serializable {
 					        	BigDecimal totalKilogramo = producto.getUnidad() == null ? BigDecimal.ZERO : producto.getUnidad();
 					        	totalKilogramo = (totalKilogramo.multiply(arrUnidadProducto.get(index))).setScale(1, BigDecimal.ROUND_HALF_UP);
 					        	
-						        p = new Paragraph(getString(totalKilogramo), normal);
+						        p = new Paragraph(dec_form_1.format(totalKilogramo), normal);
 								cell = new PdfPCell(p);
 								cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 								cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1059,7 +1067,7 @@ public class ReporteProgramacion implements Serializable {
 								arrUnidadMetrica.add(totalKilogramo);
 					        }
 		
-							p = new Paragraph(getString(totalTmKilogramo), normal);
+							p = new Paragraph(dec_form_1.format(totalTmKilogramo), normal);
 							cell = new PdfPCell(p);
 							cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 							cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1088,7 +1096,7 @@ public class ReporteProgramacion implements Serializable {
 						for (BigDecimal unidad : arrUnidadMetrica) {
 				        	BigDecimal totalMetrica = (unidad.divide(new BigDecimal(1000))).setScale(2, BigDecimal.ROUND_HALF_UP);
 				        	
-					        p = new Paragraph(getString(totalMetrica), normal);
+					        p = new Paragraph(dec_form_2.format(totalMetrica), normal);
 							cell = new PdfPCell(p);
 							cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 							cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1099,7 +1107,7 @@ public class ReporteProgramacion implements Serializable {
 							totalTmMetrica = totalTmMetrica.add(totalMetrica);
 				        }
 	
-						p = new Paragraph(getString(totalTmMetrica), normal);
+						p = new Paragraph(dec_form_2.format(totalTmMetrica), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1270,37 +1278,37 @@ public class ReporteProgramacion implements Serializable {
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(noAlimentario.getFamAfect()), normal);
-						cell = new PdfPCell(p);
-						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-						table.addCell(cell);
-						
-						p = new Paragraph(getString(noAlimentario.getFamDam()), normal);
+						p = new Paragraph(dec_form.format(noAlimentario.getFamAfect()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(noAlimentario.getTotalFam()), normal);
+						p = new Paragraph(dec_form.format(noAlimentario.getFamDam()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(noAlimentario.getPersAfect()), normal);
-						cell = new PdfPCell(p);
-						cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-						table.addCell(cell);
-						
-						p = new Paragraph(getString(noAlimentario.getPersDam()), normal);
+						p = new Paragraph(dec_form.format(noAlimentario.getTotalFam()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 						table.addCell(cell);
 						
-						p = new Paragraph(getString(noAlimentario.getTotalPers()), normal);
+						p = new Paragraph(dec_form.format(noAlimentario.getPersAfect()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(dec_form.format(noAlimentario.getPersDam()), normal);
+						cell = new PdfPCell(p);
+						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+						table.addCell(cell);
+						
+						p = new Paragraph(dec_form.format(noAlimentario.getTotalPers()), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1308,7 +1316,7 @@ public class ReporteProgramacion implements Serializable {
 						
 						int index = 0;
 				        for (ProductoAlimentoBean producto : noAlimentario.getListaProducto()) {
-					        p = new Paragraph(getString(producto.getUnidad()), normal);
+					        p = new Paragraph(dec_form.format(producto.getUnidad()), normal);
 							cell = new PdfPCell(p);
 							cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 							cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1343,7 +1351,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalFamAfect.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalFamAfect), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1351,7 +1359,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalFamDam.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalFamDam), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1359,7 +1367,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalTotalFam.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalTotalFam), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1367,7 +1375,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalPersAfect.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalPersAfect), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1375,7 +1383,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalPersDam.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalPersDam), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1383,7 +1391,7 @@ public class ReporteProgramacion implements Serializable {
 		            cell.setRowspan(1);
 					table.addCell(cell);
 					
-					p = new Paragraph(cantitadTotalTotalPers.toString(), normal);
+					p = new Paragraph(dec_form.format(cantitadTotalTotalPers), normal);
 					cell = new PdfPCell(p);
 					cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 					cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -1401,7 +1409,7 @@ public class ReporteProgramacion implements Serializable {
 			        }
 								
 					for (BigDecimal unidad : arrUnidadProducto) {
-				        p = new Paragraph(unidad.toString(), normal);
+				        p = new Paragraph(dec_form.format(unidad), normal);
 						cell = new PdfPCell(p);
 						cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 						cell.setVerticalAlignment(Element.ALIGN_MIDDLE);

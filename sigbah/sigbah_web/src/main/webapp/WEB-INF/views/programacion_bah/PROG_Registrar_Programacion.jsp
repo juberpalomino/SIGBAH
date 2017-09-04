@@ -323,7 +323,7 @@
 																	<td colspan="2">
 																		<span class="label-bold" style="float:right;">Total (gr):</span>
 																	</td>
-																	<td colspan="1">
+																	<td colspan="1" class="opc-right">
 																		<span id="sp_tot_gr"></span>
 																	</td>
 																	<td colspan="1"></td>

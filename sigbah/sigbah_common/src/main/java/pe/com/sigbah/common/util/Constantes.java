@@ -65,6 +65,7 @@ public final class Constantes implements Serializable {
 	public static final String ESPACIO = " ";
 	public static final BigDecimal IGV = BigDecimal.valueOf(0.18);
 	public static final String EXPRESION_MONEDA = "###,###,##0.00";
+	public static final String EXPRESION_MONEDA_DECIMAL_1 = "###,###,##0.0";
 	public static final String EXPRESION_MONEDA_DECIMAL = "###,###,##0.000";
 	public static final String EXPRESION_CANTIDAD = "###,###,##0";
 	

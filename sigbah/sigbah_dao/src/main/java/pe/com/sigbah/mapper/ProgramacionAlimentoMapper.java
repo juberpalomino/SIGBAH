@@ -42,17 +42,17 @@ public class ProgramacionAlimentoMapper implements RowMapper<ProgramacionAliment
 		alimento.setDepartamento(rs.getString("DPTO"));
 		alimento.setProvincia(rs.getString("PROV"));
 		alimento.setDistrito(rs.getString("DIS"));		
-		alimento.setPersAfect(rs.getBigDecimal("NPA"));
-		alimento.setPersDam(rs.getBigDecimal("NPD"));
-		alimento.setTotalPers(rs.getBigDecimal("NPT"));
-		alimento.setTotalRaciones(rs.getBigDecimal("TOT_RACIONES"));
+		alimento.setPersAfect(rs.getBigDecimal("NPA") == null ? BigDecimal.ZERO : rs.getBigDecimal("NPA"));
+		alimento.setPersDam(rs.getBigDecimal("NPD") == null ? BigDecimal.ZERO : rs.getBigDecimal("NPD"));
+		alimento.setTotalPers(rs.getBigDecimal("NPT") == null ? BigDecimal.ZERO : rs.getBigDecimal("NPT"));
+		alimento.setTotalRaciones(rs.getBigDecimal("TOT_RACIONES") == null ? BigDecimal.ZERO : rs.getBigDecimal("TOT_RACIONES"));
 		BigDecimal totalTm = BigDecimal.ZERO;
 		List<ProductoAlimentoBean> listaProducto = new ArrayList<ProductoAlimentoBean>();
 		for (Integer idProducto : listaIdProducto) {
 			ProductoAlimentoBean producto = new ProductoAlimentoBean();
 			producto.setIdProducto(idProducto);
 			BigDecimal unidad = rs.getBigDecimal(idProducto.toString().concat("_NRO_UNIDADES"));
-			producto.setUnidad(unidad);			
+			producto.setUnidad(unidad == null ? BigDecimal.ZERO : unidad);			
 			listaProducto.add(producto);
 			totalTm = totalTm.add(unidad == null ? BigDecimal.ZERO : unidad);
 		}

@@ -491,20 +491,17 @@ $(document).ready(function() {
 		
 		var arrIdProducto = [];
 		var arrNombreProducto = [];
+		var arrUnidadProducto = [];
+		arrUnidadProducto.push(formatMonto($('#pro_ali_per_afect').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_ali_per_dam').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_ali_tot_pers').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_ali_tot_raciones').html()));
 		$.each(listaProductosRacionCache, function(i, item) {
 			arrIdProducto.push(item.idProducto);
 			arrNombreProducto.push(item.nombreProducto);
-	    });
-		
-		var arrUnidadProducto = [];
-		arrUnidadProducto.push($('#pro_ali_per_afect').html());
-		arrUnidadProducto.push($('#pro_ali_per_dam').html());
-		arrUnidadProducto.push($('#pro_ali_tot_pers').html());
-		arrUnidadProducto.push($('#pro_ali_tot_raciones').html());
-		$.each(listaProductosRacionCache, function(i, item) {
-			arrUnidadProducto.push($('#td_ali_'+item.idProducto).html());
-	    });		
-		arrUnidadProducto.push($('#pro_ali_total_tm').html());
+			arrUnidadProducto.push(formatMonto($('#td_ali_'+item.idProducto).html()));
+	    });	
+		arrUnidadProducto.push(formatMonto($('#pro_ali_total_tm').html()));
 
 		var params = { 
 			idProgramacion : $('#hid_cod_programacion').val(),
@@ -909,22 +906,19 @@ $(document).ready(function() {
 		
 		var arrIdProducto = [];
 		var arrNombreProducto = [];
+		var arrUnidadProducto = [];
+		arrUnidadProducto.push(formatMonto($('#pro_no_ali_fam_afect').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_no_ali_fam_dam').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_no_ali_tot_fam').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_no_ali_pers_afect').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_no_ali_pers_dam').html()));
+		arrUnidadProducto.push(formatMonto($('#pro_no_ali_tot_pers').html()));
 		$.each(listaNoAlimentariosCache, function(i, item) {
 			arrIdProducto.push(item.idProducto);
 			arrNombreProducto.push(item.nombreProducto);
-	    });
-		
-		var arrUnidadProducto = [];
-		arrUnidadProducto.push($('#pro_no_ali_fam_afect').html());
-		arrUnidadProducto.push($('#pro_no_ali_fam_dam').html());
-		arrUnidadProducto.push($('#pro_no_ali_tot_fam').html());
-		arrUnidadProducto.push($('#pro_no_ali_per_afect').html());
-		arrUnidadProducto.push($('#pro_no_ali_per_dam').html());
-		arrUnidadProducto.push($('#pro_no_ali_tot_pers').html());
-		$.each(listaNoAlimentariosCache, function(i, item) {
-			arrUnidadProducto.push($('#td_no_ali_'+item.idProducto).html());
-	    });		
-//		arrUnidadProducto.push($('#pro_no_ali_total_tm').html());
+			arrUnidadProducto.push(formatMonto($('#td_no_ali_'+item.idProducto).html()));
+	    });	
+//		arrUnidadProducto.push(formatMonto($('#pro_no_ali_total_tm').html()));
 
 		var params = { 
 			idProgramacion : $('#hid_cod_programacion').val(),
@@ -1352,9 +1346,11 @@ function listarDetalleRacionOperativa(respuesta) {
 		}, {
 			data : 'nombreProducto'
 		}, {
-			data : 'cantidadRacionKg'
+			data : 'cantidadRacionKg',
+			sClass : 'opc-right'
 		}, {
-			data : 'pesoUnidadPres'
+			data : 'pesoUnidadPres',
+			sClass : 'opc-right'
 		} ],
 		language : {
 			'url' : VAR_CONTEXT + '/resources/js/Spanish.json'
@@ -1478,7 +1474,7 @@ function listarDetalleProgramacionAlimento(indicador) {
 						var can_tot_unidad = 0;
 						$('tr.item_ali').each(function() {	
 							var can_unidad = $(this).find('.pro_ali_'+item.idProducto).html();
-							can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
+							can_tot_unidad = can_tot_unidad + parseInt(formatMonto(can_unidad));
 						});
 						$('#td_ali_'+item.idProducto).html(formatMontoSinComas(can_tot_unidad));
 					});
@@ -1710,7 +1706,7 @@ function listarDetalleProgramacionNoAlimentario(indicador) {
 						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.persDam)));
 						row.append($('<td class="opc-right" />').html(formatMontoSinComas(item.totalPers)));
 						$.each(item.listaProducto, function(i, item_prod) {
-							row.append($('<td class="pro_ali_'+item_prod.idProducto+' opc-right" />').html(formatMontoSinComas(item_prod.unidad)));
+							row.append($('<td class="pro_no_ali_'+item_prod.idProducto+' opc-right" />').html(formatMontoSinComas(item_prod.unidad)));
 					    });					
 //						row.append($('<td/>').html(item.totalTm));
 						table.append(row);
@@ -1747,7 +1743,7 @@ function listarDetalleProgramacionNoAlimentario(indicador) {
 						var can_tot_unidad = 0;
 						$('tr.item_no_ali').each(function() {	
 							var can_unidad = $(this).find('.pro_no_ali_'+item.idProducto).html();
-							can_tot_unidad = can_tot_unidad + parseFloat(verificaParametroInt(can_unidad));
+							can_tot_unidad = can_tot_unidad + parseInt(formatMonto(can_unidad));
 						});
 						$('#td_no_ali_'+item.idProducto).html(formatMontoSinComas(can_tot_unidad));
 					});
